@@ -13,14 +13,12 @@ export const rawMilkRoutes: Routes = [
         loadComponent: () => 
             import('./view-indent/view-indent.component').then((m) => m.ViewIndentComponent),
             title: 'View Indent'
-        
       },
       {
         path: 'view-indent-m',
         loadComponent: () => 
             import('./view-indent-m/view-indent-m.component').then((m) => m.ViewIndentMComponent),
             title: 'View Indent'
-        
       }
     ]
       }

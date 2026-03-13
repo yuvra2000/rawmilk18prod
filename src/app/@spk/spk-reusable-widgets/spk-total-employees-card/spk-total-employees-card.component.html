@@ -1,0 +1,30 @@
+<div class="card custom-card p-2">
+    <div class="card-body bg-light border">
+      <div class="d-flex align-items-start justify-content-between">
+        <div>
+          <p class="mb-0 fs-15 fw-medium">{{ title }}</p>
+          <h4 class="mb-3 fw-semibold">{{ value }}</h4>
+        </div>
+        <div>
+          <span class="avatar avatar-md {{ svgClass }} svg-white">
+            @if (iconSvg) {
+              <div [innerHTML]="iconSvg"></div>
+                }
+          </span>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="mb-0 fs-12 text-muted">
+          <span class="{{ trendClass }} fw-semibold me-1 d-inline-block">
+            <i class="{{ trendIcon }}"></i>{{ trend }}
+          </span>
+          vs Last Month
+        </div>
+        <a href="javascript:void(0)">
+          <span class="float-end fw-medium text-decoration-underline {{ textClass }}">
+            View All <i class="ti ti-arrow-narrow-right"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>

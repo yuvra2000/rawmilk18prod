@@ -1,0 +1,56 @@
+<div class="card custom-card card-style-2">
+    <div class="card-body p-0">
+      <span class="badge {{badgeClass }} rounded py-1 top-left-badge">{{ discount }}</span>
+      <div class="card-img-top p-2 border-bottom border-block-end-dashed">
+        <div class="btns-container-1 align-items-center gap-1">
+          <a
+          [routerLink]="'/apps/ecommerce/product-details'"
+          class="btn btn-icon btn-primary"
+          data-bs-toggle="tooltip" aria-label="Quick View"
+          ngbTooltip="Quick View"><i class="ti ti-eye"></i></a>
+      <a [routerLink]="'/apps/ecommerce/wishlist'"
+          class="btn btn-icon btn-secondary"
+          data-bs-toggle="tooltip" aria-label="Add to Wishlist"
+          ngbTooltip="Add to Wishlist"><i
+              class="ti ti-heart align-center"></i></a>
+       <a
+       [routerLink]="'/apps/ecommerce/cart'"
+          class="btn btn-icon btn-success"
+          data-bs-toggle="tooltip" aria-label="Move To Cart"
+          ngbTooltip="Move To Cart"><i class="ti ti-shopping-cart"></i></a>
+        </div>
+        <div class="img-box-2" [ngClass]="badgeClass + '-transparent'">
+          <img [src]="image" alt="img" class="scale-img img-fluid w-100 rounded">
+        </div>
+      </div>
+      <div class="p-3">
+        <h6 class="mb-1 fw-semibold fs-16"><a [routerLink]="['/apps/ecommerce/product-details']">{{ name }}</a></h6>
+        <div class="d-flex align-items-end justify-content-between flex-wrap">
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-baseline fs-11">
+              <div class="min-w-fit-content">
+                <!-- @for(star of [1, 2, 3, 4, 5];track $index;let i = $index){
+                <span class="text-warning me-1"  [ngClass]="{'bi bi-star-fill': i < Math.floor(star.rating), 'bi bi-star-half': i === Math.floor(star.rating) && (rating) % 1 !== 0, 'bi bi-star': i >= Math.ceil(star.rating)}"></span>
+                }   -->
+                <span class="text-warning"><i class="bi bi-star-fill me-1"></i></span>
+                <span class="text-warning"><i class="bi bi-star-fill me-1"></i></span>
+                <span class="text-warning"><i class="bi bi-star-fill me-1"></i></span>
+                <span class="text-warning"><i class="bi bi-star-half me-1"></i></span>
+            </div>
+              <p class="mb-1 ms-1 min-w-fit-content text-muted">
+                <span>({{ ratingCount }})</span> <span>Ratings</span>
+              </p>
+            </div>
+            <a href="javascript:void(0);" class="text-primary1 fs-13 fw-semibold">{{ brand }}</a>
+          </div>
+          <div class="min-w-fit-content">
+            <h5 class="fw-semibold mb-0">${{ price }}</h5>
+            <span class="fs-13 ms-2 text-muted text-decoration-line-through">${{ originalPrice }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="p-3 pt-0 d-grid">
+        <a [routerLink]="['/apps/ecommerce/cart']" class="btn btn-light">Add to Cart</a>
+      </div>
+    </div>
+  </div>

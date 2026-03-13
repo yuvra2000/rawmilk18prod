@@ -1,0 +1,21 @@
+<div
+class="progress mb-3"
+[ngClass]="size"
+role="progressbar"
+[attr.aria-valuenow]="value"
+aria-valuemin="0"
+aria-valuemax="100"
+[ngClass]="{'progress-xs': size === 'xs', 'progress-sm': size === 'sm', 'progress-lg': size === 'lg', 'progress-xl': size === 'xl'}"
+
+>
+<div
+  class="progress-bar"
+  [ngClass]="barClass"
+  [style.width.%]="value"
+>
+@if(showLabel){
+
+    <span>{{ value }}%</span>
+}
+</div>
+</div>

@@ -1,0 +1,43 @@
+<div class="card custom-card">
+    <div class="card-body">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <span class="badge {{ badgeClass }} rounded-pill">{{ badge }}</span>
+        <spk-dropdowns [Customclass]="'dropdown'" [class]="'btn btn-sm btn-icon btn-light no-caret'" [Icon]="true" [IconClass]="'ri-more-2-fill text-muted'" 
+        [Menuclass]="'dropdown-menu'"  >
+        <li><a class="dropdown-item" href="javascript:void(0);">Week</a></li>
+        <li><a class="dropdown-item" href="javascript:void(0);">Day</a></li>
+        <li><a class="dropdown-item" href="javascript:void(0);">Year</a></li>
+    </spk-dropdowns>
+      </div>
+      <h6 class="mb-2 fw-semibold">{{ title }}</h6>
+      <span class="text-muted fs-13">{{ description }}</span>
+      <div class="p-2 bg-light border d-flex align-items-center gap-3 mt-2 rounded flex-wrap">
+        <span class="avatar avatar-md {{ iconBackground }}">
+          <i class="{{ iconClass }} fs-20"></i>
+        </span>
+        <div>
+          <p class="mb-0">{{ taskTitle }}</p>
+          <span class="text-muted d-block fs-12">
+            <strong class="text-default">{{ tasksCompleted }}</strong> {{ taskDetails }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+      <div class="avatar-list-stacked">
+        @for (avatar of avatars; track $index) {
+        <span class="avatar avatar-sm avatar-rounded">
+            @if (avatar.src) {
+          <img  [src]="avatar.src" alt="img">
+            }
+            @if (avatar.count) {
+          <a  class="avatar avatar-sm {{avatar.class}} avatar-rounded text-fixed-white flex-none">{{ avatar.count }}</a>
+            }
+        </span>
+    }
+      </div>
+      <span class="fs-13 text-muted">
+        <i class="ri-calendar-line me-1"></i>{{ dueDate }}
+      </span>
+    </div>
+  </div>

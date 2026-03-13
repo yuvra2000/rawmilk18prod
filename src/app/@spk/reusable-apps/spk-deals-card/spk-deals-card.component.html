@@ -1,0 +1,22 @@
+<div class="card custom-card" [ngClass]="type">
+    <div class="card-body">
+      <div>
+        <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+          <div class="lh-1">
+            <span class="avatar avatar-sm avatar-rounded">
+              <img [src]="imgSrc" alt="">
+            </span>
+          </div>
+          <div>
+            <span class="d-block text-muted">{{ title }}</span>
+            <a href="javascript:void(0);" class="company-name">{{ companyName }}</a>
+          </div>
+        </div>
+        <div class="px-3 py-2 rounded bg-light border d-flex align-items-center justify-content-between flex-wrap">
+          <div>{{ amount }}</div>
+          <div class="text-muted fs-12"><i class="ri-calendar-line me-1"></i>{{ date }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

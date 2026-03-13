@@ -1,0 +1,22 @@
+
+    <div class="card custom-card">
+@if (TopImagePlacement) {
+    <img [src]="image" class="card-img-top" alt="...">
+}
+<div class="card-body">
+    <h6 class="card-title fw-medium">{{title}}</h6>
+    <p class="card-text mb-3 text-muted">{{discription}}</p>
+    @if(customStatusPlacement){
+        <p class="card-text mb-0"><small>{{status}}</small></p>
+    }
+</div>
+@if (bottomImagePlacement) {
+    <img [src]="image" class="card-img-bottom" alt="...">
+}
+@if(BottomStatusPlacement){
+    <div class="card-body">
+    <p class="card-text mb-0"><small>{{status}}</small></p>
+    </div>
+}
+</div>
+

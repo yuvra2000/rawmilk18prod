@@ -1,0 +1,36 @@
+<ul class="list-group list-group-flush">
+    @for (job of jobs; track $index) {
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center mb-2 flex-wrap"
+      
+    >
+      <div class="d-sm-flex">
+        <span
+          class="avatar avatar-md border border-opacity-25"
+          [ngClass]="job.iconBackground"
+        >
+        <ng-container *ngIf="job.image; else showIcon">
+            <img [src]="job.image" alt="Job Image" class="w-100 h-100 rounded-circle">
+          </ng-container>
+          <ng-template #showIcon>
+            <i [class]="job.icon + ' fs-20'"></i>
+          </ng-template>
+        </span>
+        <div class="ms-3 flex-grow-1">
+          <p class="fw-medium fs-13 mb-1">
+            <a href="javascript:void(0);">{{ job.title }}</a>
+          </p>
+          <p class="mb-0 me-3">
+            <i class="bi bi-building text-muted"></i> {{ job.company }}
+          </p>
+        </div>
+      </div>
+      @if (showApplyButton) {
+      <a href="javascript:void(0);" class="text-muted text-decoration-underline fw-semibold">
+        Apply Now
+      </a>
+    }
+    </li>
+}
+  </ul>
+  

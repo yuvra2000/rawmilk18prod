@@ -1,0 +1,19 @@
+<ul class="list-group task-activity-list">
+    @for ( task of tasks; track $index) {
+    <li [ngClass]="task.itemClass" class="list-group-item">
+      <div class="d-flex align-items-start justify-content-between">
+        <div>
+          <span class="d-block fw-semibold">
+            {{ task.label }}
+            <span [ngClass]="task.percentageClass" class="fw-medium ms-1">
+              <i [class]="task.iconClass"></i>{{ task.percentage }}
+            </span>
+          </span>
+        </div>
+        <div class="h6 mb-0 fw-semibold">
+          {{ task.count }}
+        </div>
+      </div>
+    </li>
+}
+  </ul>

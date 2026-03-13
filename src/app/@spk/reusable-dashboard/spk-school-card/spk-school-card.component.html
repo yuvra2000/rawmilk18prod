@@ -1,0 +1,99 @@
+<!-- list-group-item -->
+<li class="">
+    <div class="d-flex align-items-center gap-2">
+      <div>
+        <span class="avatar-{{svgType}} avatar-{{avatarSize}} avatar bg-{{ svgBg }} svg-{{ svgColor }}">
+          <span>{{ textTitle }}</span>
+          @if (fontIcon) {
+          <ng-container>
+            <i class="{{ fontIcon }} leading-none"></i>
+          </ng-container>
+          } @else if (imageSrc) {
+          <ng-container>
+            <img [src]="imageSrc" alt="icon" class="{{ avatarBg }}"/>
+          </ng-container>
+          } @else if(svgIcon){
+          <div [innerHTML]="icon"></div>
+          }
+          <ng-template #svgIcon> </ng-template>
+        </span>
+      </div>
+      <div class="flex-fill">
+        <div>
+          <div class="fw-semibold">{{ title }}</div>
+          <span class="text-muted mb-0 d-block"
+            >{{ description }}
+            @if (changePercentage) {
+            <span class="text-{{ arrowBg }} fw-medium ms-1"
+              >{{ changePercentage
+              }}<i class="ti ti-arrow-narrow-{{ direction }}"></i
+            ></span>
+            } @if(Verified){
+            <ng-content>
+              <i class="bi bi-patch-check-fill text-primary ms-2"></i>
+            </ng-content>
+            }
+          </span>
+        </div>
+      </div>
+      <ng-container>
+        <div class="text-end">
+          <span class="d-block mb-0 fw-semibold h8 text-{{ textColor }}">{{
+            rightTitle
+          }}</span>
+          @if(cryptovalue){
+          <ng-content>
+            <span
+              class="text-{{
+                cryptotextBg
+              }} me-2 fs-13 d-inline-flex align-items-center"
+              ><i class="ti ti-arrow-narrow-{{ direction }}"></i
+              >{{ cryptotext }}</span
+            >
+          </ng-content>
+          } @if(Arrow){
+          <ng-content>
+            <i class="ti text-{{ arrowBg }} ti-arrow-narrow-{{ direction }}"></i>
+          </ng-content>
+          }
+  
+          <span class="mb-0 text-{{ bgValue }}">{{ value }}</span>
+        </div>
+      </ng-container>
+  
+      @if(shouldShowButton){
+      <ng-container>
+        <div>
+          <button
+            aria-label="button"
+            type="button"
+            class="btn btn-sm btn-icon btn-light border"
+          >
+            <i class="ri-user-add-line"></i>
+          </button>
+        </div>
+      </ng-container>
+      } @else if(button){
+      <button type="button" class="btn btn-{{ buttonType }} btn-sm">
+        {{ btnTitle }}
+      </button>
+      } @else if(date){
+      <div class="badge bg-light text-default">{{ date }}</div>
+      } @else if(dropdown){
+        <spk-dropdowns [Customclass]="'dropdown'" [class]="'btn btn-primary-light btn-icon btn-sm no-caret'" [Icon]="true" [IconClass]="'ri-more-2-fill'" 
+        [Menuclass]="'dropdown-menu'"  >
+        <li>
+          <a class="dropdown-item text-success" href="javascript:void(0);"
+            ><i class="ri-check-line me-2 lh-1 align-middle"></i>Accept</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item text-danger" href="javascript:void(0);"
+            ><i class="ri-close-line me-2 lh-1 align-middle"></i>Reject</a
+          >
+        </li>
+    </spk-dropdowns>
+      }
+    </div>
+  </li>
+  

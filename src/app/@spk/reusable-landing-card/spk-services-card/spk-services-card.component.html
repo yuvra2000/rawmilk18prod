@@ -1,0 +1,19 @@
+
+    <div class="card custom-card landing-card">
+      <div class="card-body text-center">
+        <div class="mb-4">
+          <span class="svg-gradient avatar avatar-lg bg-{{backgroundClass}} mx-auto svg-container {{backgroundClass}} svg-white">
+            <svg [attr.xmlns]="'http://www.w3.org/2000/svg'"
+                 [attr.width]="32" [attr.height]="32"
+                 [attr.fill]="'#000000'" [attr.viewBox]="'0 0 256 256'">
+              <ng-container *ngFor="let path of iconPaths">
+                <path [attr.d]="path.d" [attr.opacity]="path.opacity || null"></path>
+              </ng-container>
+            </svg>
+          </span>
+        </div>
+        <h6 class="fw-semibold">{{ title }}</h6>
+        <p class="fs-15 text-muted mb-0">{{ description }}</p>
+      </div>
+    </div>
+  

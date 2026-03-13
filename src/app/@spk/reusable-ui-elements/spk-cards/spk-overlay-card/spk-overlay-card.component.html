@@ -1,0 +1,25 @@
+<div class="card custom-card overlay-card">
+    <img [src]="imageUrl" class="card-img" alt="Overlay image">
+    <div class="card-img-overlay d-flex flex-column p-0" [ngClass]="contentPosition">
+      <div class="card-header" *ngIf="title">
+        <div class="card-title text-fixed-white">
+          {{ title }}
+        </div>
+      </div>
+      <div class="card-body text-fixed-white">
+        @if(bodyTitle){
+
+          <div class="card-text"> {{bodyTitle}} </div>
+        }
+        @if(content){
+        <div class="card-text mb-2" >
+          {{ content }}
+        </div>
+      }
+      </div>
+      <div class="card-footer text-fixed-white" *ngIf="footerText">
+        {{ footerText }}
+      </div>
+    </div>
+  </div>
+  

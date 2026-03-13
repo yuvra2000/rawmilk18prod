@@ -1,0 +1,41 @@
+<div class="card custom-card">
+    <!-- Card Header -->
+    <div class="card-header">
+      <div class="d-flex align-items-center w-100">
+        <div class="me-2">
+          <span class="avatar avatar-rounded">
+            <img [src]="avatar" alt="avatar">
+          </span>
+        </div>
+        <div>
+          <div class="fs-15 fw-medium">{{ name }}</div>
+          <p class="mb-0 text-muted fs-11">{{ subtitle }}</p>
+        </div>
+     <div ngbDropdown class="dropdown ms-auto">
+      <a ngbDropdownToggle href="javascript:void(0);" class="btn btn-icon btn-sm btn-light no-caret" data-bs-toggle="dropdown">
+        <i class="fe fe-more-vertical"></i>
+      </a>
+      <ul ngbDropdownMenu class="dropdown-menu">
+        @for ( item of dropdownItems; track $index) {
+        <li >
+          <a class="dropdown-item" href="javascript:void(0);">{{ item }}</a>
+        </li>
+    }
+      </ul>
+    </div>
+    </div>
+    </div>
+    <!-- Card Body -->
+    <div class="card-body">
+      {{ bodyText }}
+    </div>
+  
+    <!-- Card Footer -->
+    <div class="card-footer">
+      <div class="d-flex justify-content-between flex-wrap gap-2">
+        <div class="fs-semibold fs-14">{{ footerLeftText }}</div>
+        <div [ngClass]="footerRightTextClass">{{ footerRightText }}</div>
+      </div>
+    </div>
+  </div>
+  

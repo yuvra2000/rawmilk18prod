@@ -1,0 +1,39 @@
+<li class="list-group-item">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="lh-1">
+        <div class="fw-semibold mb-1">{{ name }}</div>
+        <div>
+            <span class="text-muted fs-13">
+                @if (trend === 'up') {
+                    <span>Increased by</span>
+                  }
+                  @if (trend === 'down') {
+                    <span >Decreased by</span>
+                  }
+              <span
+                [ngClass]="{
+                  'text-success': trend === 'up',
+                  'text-danger': trend === 'down'
+                }"
+                class="fw-medium ms-1 d-inline-flex align-items-center"
+              >
+                {{ change }}
+                <i
+                  class="ms-1 ti"
+                  [ngClass]="{
+                    'ti-trending-up': trend === 'up',
+                    'ti-trending-down': trend === 'down'
+                  }"
+                ></i>
+              </span>
+            </span>
+          </div>
+          
+      </div>
+      <div class="lh-1 text-end">
+        <span class="d-block fw-semibold h6 mb-0">{{ sales }}</span>
+        <span class="d-block fs-13 text-muted">Sales</span>
+      </div>
+    </div>
+  </li>
+  

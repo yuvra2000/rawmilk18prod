@@ -1,0 +1,37 @@
+<div class="card custom-card">
+    <div class="card-body">
+      <!-- Header -->
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+        <div>
+          <span [ngClass]="'avatar avatar-sm ' + avatarBgClass">
+            <i [ngClass]="iconClass"></i>
+          </span>
+        </div>
+        <div class="flex-fill text-muted fs-14">{{ title }}</div>
+        <spk-dropdowns [Customclass]="'dropdown'" [class]="'ri-more-2-fill fs-5 text-muted no-caret p-0'" [Icon]="true" [IconClass]="''" 
+        [Menuclass]="'dropdown-menu'"  >
+        @for(option of dropdownOptions;track $index){
+          <li>
+            <a class="dropdown-item" href="javascript:void(0);">{{ option }}</a>
+          </li>
+        }
+    </spk-dropdowns>
+      </div>
+  
+      <!-- Value and Percentage -->
+      <div class="mb-3">
+        <div class="h4 fw-semibold mb-1 d-flex align-items-center flex-wrap gap-2">
+          {{ value }}
+          <span [ngClass]="'badge fs-10 ' + percentageClass">
+            <i class="ri-arrow-left-up-line"></i>{{ percentage }}
+          </span>
+        </div>
+      </div>
+  
+      <!-- Chart -->
+      <div>
+        <spk-apexcharts [chartOptions]="chartOptions"></spk-apexcharts>
+      </div>
+    </div>
+  </div>
+  

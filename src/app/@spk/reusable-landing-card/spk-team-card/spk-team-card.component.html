@@ -1,0 +1,39 @@
+<div class="card custom-card team-member">
+  <div class="card-body text-center p-2">
+    <div class="mb-4 lh-1 bg-light px-4 py-3">
+    <!-- Avatar -->
+    <span [ngClass]="'avatar avatar-xxl avatar-rounded mb-3 border border-5 ' + avatarClass">
+      <img [src]="image" class="card-img" [alt]="name" />
+    </span>
+</div>
+    <!-- Content -->
+    <div class="text-center py-2">
+      <h5 class="mb-0 fw-medium">{{ name }}</h5>
+      <p [ngClass]="'mb-1 fs-14 fw-medium ' + roleClass">{{ role }}</p>
+
+      <!-- Conditional Rendering for Description or Skills -->
+      <p *ngIf="description; else skillTemplate" class="mb-0 fs-13 text-muted op-8">{{ description }}</p>
+      <ng-template #skillTemplate>
+        <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap mt-2">
+          <span
+            *ngFor="let skill of skills"
+            class="badge bg-light text-default border rounded-pill"
+            >{{ skill }}</span
+          >
+        </div>
+      </ng-template>
+
+      <!-- Social Links -->
+      <div class="d-flex justify-content-center mt-3">
+        <a
+          *ngFor="let social of socialLinks"
+          aria-label="anchor"
+          [href]="social.link"
+          [ngClass]="'btn btn-icon btn-' + social.color + ' btn-wave ms-2 waves-effect waves-light'"
+        >
+          <i [ngClass]="social.icon"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

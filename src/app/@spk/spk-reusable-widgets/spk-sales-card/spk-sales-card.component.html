@@ -1,0 +1,25 @@
+<div class="card custom-card overflow-hidden">
+  <div class="card-body p-0">
+    <div class="d-flex justify-content-between mb-2 p-3 pb-0">
+      <div [ngClass]="'avatar avatar-lg ' + bgClass">
+        <div [ngClass]="'avatar avatar-md ' + bgClass.split('-transparent')[0]">
+          <i [ngClass]="iconClass"></i>
+        </div>
+      </div>
+      <div>
+        <div class="flex-fill fs-13 text-muted">{{ title }}</div>
+        <div class="fs-24 fw-semibold">{{ value }}</div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between py-2 px-3 bg-light border flex-wrap">
+      <div class="d-flex align-items-center mb-1">
+        <span [ngClass]="'badge rounded-pill ' + badgeClass + '-transparent me-2'">
+          <i [ngClass]="'ri-arrow-left-' + (badgeClass === 'bg-danger' ? 'down' : 'up') + '-line fs-11'"></i>
+        </span>
+        <span class="fs-14">{{ percentage }}</span>
+        <p class="fs-11 text-muted mb-0">{{ description }}</p>   
+      </div>
+      <a href="javascript:void(0);" class="text-primary text-decoration-underline">{{ linkText }}</a>
+    </div>
+  </div>
+</div>

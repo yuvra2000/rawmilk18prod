@@ -1,0 +1,45 @@
+<div class="card custom-card featured-jobs">
+    <div class="card-body">
+      <div class="bg-light p-3 border border-bottom-0">
+        <div class="btn-list float-end">
+          <a href="javascript:void(0);"
+             class="avatar avatar-rounded avatar-sm bg-primary-transparent"
+             data-bs-toggle="tooltip" data-bs-placement="top"
+             aria-label="Add to wishlist"
+            ngbTooltip="Add to wishlist">
+            <span><i class="{{wishlistIcon}} fs-15"></i></span>
+          </a>
+        </div>
+        <div class="d-flex flex-wrap gap-3 align-items-center">
+          <span class="avatar avatar-lg bg-{{avatarClass}}-transparent">
+            <i class="{{iconClass}} fs-30" [ngClass]="iconColorClass"></i>
+          </span>
+          <div>
+            <h5 class="fw-medium mb-0 d-flex align-items-center">
+              <a href="javascript:void(0);">{{ jobTitle }}</a>
+            </h5>
+            <a href="javascript:void(0);">{{ companyName }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="border p-3">
+        <div class="popular-tags mb-3">
+          @for (tag of tags; track $index) {
+          <span class="badge border bg-light text-default mb-1 me-1">
+            <i class="{{tag.icon}} text-muted me-2"></i>{{ tag.text }}
+          </span>
+        }
+        </div>
+        <div class="d-flex justify-content-between">
+          <h5 class="fw-medium mb-0">
+            {{ salary }}<span class="text-muted fw-normal">/</span><span class="text-muted fs-12">Month</span>
+          </h5>
+          <a href="javascript:void(0);"
+             class="btn btn-primary btn-sm fw-medium fs-14 d-inline-flex">
+            Apply Now <i class="fe fe-arrow-right transform-arrow ms-2 lh-base"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  

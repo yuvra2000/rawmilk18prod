@@ -1,0 +1,19 @@
+<div class="col">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="d-flex align-items-start justify-content-between flex-wrap">
+          <div>
+            <span class="d-block mb-1">{{ title }}</span>
+            <h3 class="fw-semibold mb-1">{{ value }}</h3>
+            <span class="d-block text-muted fs-13">Increased By <span [ngClass]="changeClass">{{ change }}</span></span>
+          </div>
+          <div>
+            <span [ngClass]="['avatar', 'avatar-lg', iconClass]">
+              <svg xmlns="http://www.w3.org/2000/svg" [attr.viewBox]="iconPath"></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

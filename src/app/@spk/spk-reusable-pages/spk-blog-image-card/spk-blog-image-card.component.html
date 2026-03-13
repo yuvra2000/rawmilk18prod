@@ -1,0 +1,53 @@
+
+    <div class="card custom-card">
+        @if (ImagePlacementTop) {
+      <a href="javascript:void(0);" class="p-3 pb-0 rounded-5">
+        <img [src]="postImageTop" class="rounded-2 card-img-top" alt="...">
+      </a>
+    }
+      <div class="card-body">
+        <a [routerLink]="['/pages/blog/blog-details']" class="h5 fw-semibold mb-2 d-block lh-base">
+          {{ title }}
+        </a>
+        <p class="mb-3">
+          {{ description }}
+          <a [href]="readMoreLink" class="fw-medium text-muted ms-2 align-middle fs-12 text-Augoration-underline d-inline-block">Read More ?</a>
+        </p>
+        @if(dateFooterCard){
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-xs avatar-rounded me-2">
+                        <img src="./assets/images/faces/14.jpg" alt="">
+                    </div>
+                    <div>
+                        <p class="mb-0 fw-medium">William</p>
+                    </div>
+                </div>
+                <span class="text-muted fs-12 mb-0">18,Aug 2024 - 11:25</span>
+            </div>
+        } @if(wishlistFooterCard){
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="avatar avatar-md avatar-rounded me-2">
+                    <img [src]="authorImage" alt="">
+                  </div>
+                  <div>
+                    <p class="mb-0 fw-medium">{{ authorName }}</p>
+                    <span class="text-muted fs-12 mb-0">{{ postDate }}</span>
+                  </div>
+                </div>
+                <a href="javascript:void(0);" class="avatar avatar-sm bg-danger-transparent avatar-rounded">
+                  <i class="ri-heart-line fs-14 text-danger"></i>
+                </a>
+              </div>
+        }
+      </div>
+      @if (ImagePlacementBottom) {
+        <a href="javascript:void(0);" class="p-3 rounded-5">
+          <img [src]="postImageTop" class="rounded-2 card-img-top" alt="...">
+        </a>
+      }
+
+    </div>
+
+  

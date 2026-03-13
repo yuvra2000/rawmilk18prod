@@ -1,12 +1,7 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FirebaseService } from '../../shared/services/firebase.service';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../shared/services/auth.service';
 import { AppStateService } from '../../shared/services/app-state.service';
@@ -14,9 +9,8 @@ import { AppStateService } from '../../shared/services/app-state.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule,FormsModule,ReactiveFormsModule,NgbModule,AngularFireModule,AngularFireAuthModule,AngularFireDatabaseModule,
-    AngularFirestoreModule],
-  providers: [FirebaseService],
+  imports: [RouterModule,FormsModule,ReactiveFormsModule,NgbModule],
+  providers: [],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -45,7 +39,6 @@ constructor(
   public authservice: AuthService,
   private router: Router,
   private formBuilder: FormBuilder,
-  private firebaseService: FirebaseService,
   private toastr: ToastrService ,
   private appStateService: AppStateService,
 ) {
@@ -59,10 +52,6 @@ ngOnInit(): void {
     username: ['spruko@admin.com', [Validators.required, Validators.email]],
     password: ['sprukoadmin', Validators.required],
   });
-
-  this.firestoreModule = this.firebaseService.getFirestore();
-  this.databaseModule = this.firebaseService.getDatabase();
-  this.authModule = this.firebaseService.getAuth();
 }
 
 ngOnDestroy(): void {

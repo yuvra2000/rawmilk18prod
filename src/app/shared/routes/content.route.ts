@@ -6,10 +6,10 @@ export const content: Routes = [
   {
     path: '',
     children: [
-      ...rawMilkRoutingModule.routes,
+      ...rawMilkRoutingModule.routes
     ],
   },
-]; 
+];
 @NgModule({
   imports: [RouterModule.forRoot(content)],
   exports: [RouterModule],

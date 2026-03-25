@@ -11,6 +11,7 @@ import { checkHoriMenu } from './sidebar';
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+  // test
   eventTriggered: boolean = false;
   screenWidth!: number;
   public localdata = localStorage;

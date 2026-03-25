@@ -68,7 +68,7 @@ typography
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 :root {
   --body-bg-rgb: 245, 246, 250;
-  --primary-rgb: 115, 93, 255;
+  --primary-rgb: 47, 64, 80;
   --secondary-rgb: 255, 90, 41;
   --warning-rgb: 255, 154, 19;
   --info-rgb: 12, 156, 252;
@@ -1811,14 +1811,14 @@ typography
   --bs-danger: #dc3545;
   --bs-light: #f8f9fa;
   --bs-dark: #212529;
-  --bs-primary-rgb: 13, 110, 253;
-  --bs-secondary-rgb: 108, 117, 125;
-  --bs-success-rgb: 25, 135, 84;
-  --bs-info-rgb: 13, 202, 240;
-  --bs-warning-rgb: 255, 193, 7;
-  --bs-danger-rgb: 220, 53, 69;
-  --bs-light-rgb: 248, 249, 250;
-  --bs-dark-rgb: 33, 37, 41;
+  --bs-primary-rgb: var(--primary-rgb);
+  --bs-secondary-rgb: var(--secondary-rgb);
+  --bs-success-rgb: var(--success-rgb);
+  --bs-info-rgb: var(--info-rgb);
+  --bs-warning-rgb: var(--warning-rgb);
+  --bs-danger-rgb: var(--danger-rgb);
+  --bs-light-rgb: var(--light-rgb);
+  --bs-dark-rgb: var(--dark-rgb);
   --bs-primary-text-emphasis: #052c65;
   --bs-secondary-text-emphasis: #2b2f32;
   --bs-success-text-emphasis: #0a3622;
@@ -17543,7 +17543,7 @@ html[dir=rtl] .translate-middle {
   background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f09433", endColorstr="#bc1888", GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
   color: #fff;
   border: 1px solid transparent;
 }
@@ -17622,15 +17622,6 @@ html[dir=rtl] .translate-middle {
   position: relative;
   margin-block-end: 1.5rem;
   width: 100%;
-  /* Start::Card Background Colors */
-  /* End::Card Background Colors */
-  /* Start:: Cards With Links */
-  /* Start:: Cards With Links */
-  /* End:: Cards With Links */
-  /* Start:: Card With Collapse */
-  /* End:: Card With Links */
-  /* Start::Card With FullScreen */
-  /* End::Card With FullScreen */
 }
 .card.custom-card .card-header {
   padding: 1rem;
@@ -17698,6 +17689,9 @@ html[dir=rtl] .translate-middle {
   background-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   border-radius: 0.25rem;
+}
+.card.custom-card {
+  /* Start::Card Background Colors */
 }
 .card.custom-card.card-bg-primary {
   background-color: var(--primary-color);
@@ -17858,6 +17852,11 @@ html[dir=rtl] .translate-middle {
   color: #fff;
   border-block-start: 1px solid rgba(255, 255, 255, 0.2);
 }
+.card.custom-card {
+  /* End::Card Background Colors */
+  /* Start:: Cards With Links */
+  /* Start:: Cards With Links */
+}
 .card.custom-card .card-anchor {
   position: absolute;
   top: 0;
@@ -17868,6 +17867,10 @@ html[dir=rtl] .translate-middle {
   pointer-events: auto;
   content: "";
 }
+.card.custom-card {
+  /* End:: Cards With Links */
+  /* Start:: Card With Collapse */
+}
 .card.custom-card .collapse-close {
   display: none;
 }
@@ -17877,6 +17880,10 @@ html[dir=rtl] .translate-middle {
 .card.custom-card.card .collapsed .collapse-open {
   display: none;
 }
+.card.custom-card {
+  /* End:: Card With Links */
+  /* Start::Card With FullScreen */
+}
 .card.custom-card.card-fullscreen {
   position: fixed;
   top: 0;
@@ -17885,6 +17892,9 @@ html[dir=rtl] .translate-middle {
   bottom: 0;
   z-index: 9999;
   margin: 0;
+}
+.card.custom-card {
+  /* End::Card With FullScreen */
 }
 
 @media (max-width: 575px) {
@@ -34528,9 +34538,6 @@ input.error {
 }
 
 @media (min-width: 992px) {
-  [data-nav-layout=horizontal] {
-    /* horizontal arrows */
-  }
   [data-nav-layout=horizontal][data-theme-mode=light] .app-sidebar .side-menu__item.active, [data-nav-layout=horizontal][data-theme-mode=light] .app-sidebar .side-menu__item:hover, [data-nav-layout=horizontal][data-theme-mode=dark] .app-sidebar .side-menu__item.active, [data-nav-layout=horizontal][data-theme-mode=dark] .app-sidebar .side-menu__item:hover {
     background-color: transparent;
   }
@@ -34618,6 +34625,9 @@ input.error {
   [data-nav-layout=horizontal] .horizontal-logo {
     padding: 1rem 0;
     display: block;
+  }
+  [data-nav-layout=horizontal] {
+    /* horizontal arrows */
   }
 }
 @media (min-width: 992px) and (min-width: 992px) {
@@ -41145,23 +41155,16 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 .border {
   border: 1px solid var(--default-border) !important;
   /* Start:: Border Style */
-  /* End:: Border Style */
-  /* Start::Border Colors */
-  /* End::Border Colors */
-  /* Start::border opacity */
-  /* End::border opacity */
-  /* Start::Border Widths */
-  /* End::Border Widths */
-  /* Start::Border Styles */
-  /* End::Border Styles */
-  /* Start::subtractive border */
-  /* End::subtractive border */
 }
 .border.border-dashed {
   border-style: dashed !important;
 }
 .border.border-dotted {
   border-style: dotted !important;
+}
+.border {
+  /* End:: Border Style */
+  /* Start::Border Colors */
 }
 .border.border-primary {
   border: 1px solid var(--primary-color) !important;
@@ -41391,6 +41394,10 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 .border.border-dark.border-opacity-100 {
   border-color: rgba(var(--dark-rgb), 1) !important;
 }
+.border {
+  /* End::Border Colors */
+  /* Start::border opacity */
+}
 .border.border-opacity-10 {
   --bs-border-opacity: 0.1 !important;
 }
@@ -41406,6 +41413,10 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 .border.border-opacity-100 {
   --bs-border-opacity: 1 !important;
 }
+.border {
+  /* End::border opacity */
+  /* Start::Border Widths */
+}
 .border.border-1 {
   border-width: 1px !important;
 }
@@ -41420,6 +41431,10 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 .border.border-5 {
   border-width: 5px !important;
+}
+.border {
+  /* End::Border Widths */
+  /* Start::Border Styles */
 }
 .border.border-block-start-dashed {
   border-top-style: dashed;
@@ -41445,6 +41460,10 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 .border.border-inline-start-dotted {
   border-inline-start-style: dotted;
 }
+.border {
+  /* End::Border Styles */
+  /* Start::subtractive border */
+}
 .border.border-0 {
   border: 0 !important;
 }
@@ -41459,6 +41478,9 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 .border.border-start-0 {
   border-inline-start: 0 !important;
+}
+.border {
+  /* End::subtractive border */
 }
 
 .border-top {

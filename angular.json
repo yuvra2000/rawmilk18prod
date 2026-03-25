@@ -60,10 +60,15 @@
               }
             ],
             "styles": [
+              "public/assets/css/bootstrap.css",
+              "public/assets/css/styles.css",
+              "public/assets/css/icons.css",
               "src/styles.scss",
               "./node_modules/filepond/dist/filepond.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {

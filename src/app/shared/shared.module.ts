@@ -1,13 +1,13 @@
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {  NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { HeaderComponent } from './components/header/header.component';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SwitcherComponent } from './components/switcher/switcher.component';
-import {  NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ColorPickerModule } from 'ngx-color-picker'; 
+import { ColorPickerModule } from 'ngx-color-picker';
 import { TapToTopComponent } from "./components/tap-to-top/tap-to-top.component";
 import { FooterComponent } from './components/footer/footer.component';
 import { OverlayscrollbarsModule } from "overlayscrollbars-ngx";
@@ -19,22 +19,21 @@ import { AuthenticationLayoutComponent } from './layouts/authentication-layout/a
 import { DropdownPositionDirective } from './directives/dropdown-position.directive';
 
 @NgModule({
-    declarations: [
-        PageHeaderComponent,
-        SidebarComponent,
-        MainLayoutComponent,
-        SwitcherComponent, HeaderComponent ,
-        TapToTopComponent,
-        FooterComponent,
-        SvgReplaceDirective,
-        AuthenticationLayoutComponent
-    
-    ],
-    exports: [
-        PageHeaderComponent,MainLayoutComponent,
-        SidebarComponent, SwitcherComponent, HeaderComponent, FooterComponent, TapToTopComponent,
-    ],
-    imports: [
+declarations: [
+    PageHeaderComponent,
+    SidebarComponent,
+    MainLayoutComponent,
+    SwitcherComponent, HeaderComponent ,
+    TapToTopComponent,
+    FooterComponent,
+    SvgReplaceDirective,
+    AuthenticationLayoutComponent
+],
+exports: [
+    PageHeaderComponent,MainLayoutComponent,
+    SidebarComponent, SwitcherComponent, HeaderComponent, FooterComponent, TapToTopComponent,
+],
+imports: [
     CommonModule,
     RouterModule,
     NgbModule,

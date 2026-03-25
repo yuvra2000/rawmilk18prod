@@ -1,9 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import '../public/assets/scss/bootstrap.scss';
 
-@import url("../public/assets/css/styles.css");
-// -- Icons Css --
-@import url("../public/assets/css/icons.css");
 
 
 //flatepicker
@@ -21,7 +17,7 @@
 @import 'overlayscrollbars/overlayscrollbars.css';
 
 // font awesome
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 // angular material

@@ -1,0 +1,21 @@
+<div class="toggle-container">
+  <button
+    type="button"
+    class="toggle-link"
+    [attr.aria-expanded]="!collapsed()"
+    aria-controls="collapseSection"
+    (click)="toggleCollapse()">
+     <p>
+       <i class="fa-solid fa-filter" aria-hidden="true"></i>
+       FILTER
+     </p>
+   
+    
+  </button>
+  <ng-content (click)="onIconClick()" select="[custom-icon]"></ng-content>
+</div>
+<div [ngbCollapse]="collapsed()" id="collapseSection">
+  <div class="collapsible-content p-0">
+    <ng-content></ng-content>
+  </div>
+</div>

@@ -1,0 +1,230 @@
+
+
+small{
+    position: absolute !important;
+}
+
+::ng-deep .ng-select .ng-select-container {
+  
+      border: 1.5px solid #5e9fc8 !important;
+  min-height: 32px !important;
+  height: unset !important;
+}
+
+.form-control {
+
+    border: 1.5px solid #5e9fc8 !important;
+    min-height: 32px !important;
+    height: 32px !important;
+
+       border-radius: 4px;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  // height: 32px !important;
+  // border: 1.5px solid #5e9fc8 !important;
+}
+.filter_name{
+  font-family: "Work Sans",sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1d4380;
+  text-align: left;
+}
+.reusable-btn{
+    margin-bottom: 0px;
+    background-color: #1d4380;
+    color: white;
+    font-family: Work Sans;
+    font-size: 13px;
+    padding: 5px 22px;
+    border-radius: 5px;
+}
+
+::ng-deep .ng-select .ng-clear-wrapper {
+    cursor: pointer;
+ 
+    display: block !important;
+    position: relative;
+    width: 17px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    background-color: #ebf5ff !important;
+    color: #333 !important;
+}
+/* Style placeholder text in ng-select */
+::ng-deep .custom-placeholder-style .ng-placeholder {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+}
+/* For multi-select ng-select - keep fixed height, scroll if content overflows */
+
+    // overflow-x: scroll;
+
+// /* Style selected items container to limit height and enable scroll */
+// ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container {
+//     flex-wrap: nowrap !important;
+// }
+// Add to your filter-form.component.scss
+
+// Disabled field styles
+.disabled-field {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+  background-color: #f8f9fa !important;
+  border-color: #e9ecef !important;
+  pointer-events: none;
+  
+  &:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+// Disabled label styles
+.disabled-label {
+  color: #6c757d !important;
+  opacity: 0.7;
+}
+
+// Form control disabled styles
+.form-control:disabled,
+.form-control.disabled-field {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+// Ng-select disabled styles
+.ng-select.disabled-field {
+  pointer-events: none;
+  
+  .ng-select-container {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Password toggle button disabled
+.password-toggle-btn{
+  display: flex;
+  color: #5f5f83;
+ 
+  i{
+ font-size: 18px;
+  }
+}
+.password-toggle-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// Checkbox and radio disabled styles
+.form-check.disabled-field {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  
+  .form-check-input:disabled {
+    opacity: 0.5;
+  }
+}
+
+// Textarea disabled
+textarea.disabled-field {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+  opacity: 0.6;
+  cursor: not-allowed;
+  resize: none;
+}
+
+.file-mb-1{
+  margin-bottom: 4px!important;
+}
+.disabled-field {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+     background-color: #f8f9fa !important; 
+    //  border-color: #e9ecef !important; 
+     border: 1.5px solid #5e9fc8 !important;
+    pointer-events: none;
+}
+// ✅ Updated Section Header Logic
+.section-header-container {
+    padding-left: 12px;
+    padding-right: 12px;
+    width: 100%;
+}
+
+.section-heading {
+    font-family: "Work Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1d4380;
+    text-align: left;
+    
+    // ✅ Industry Standard: Pure CSS Underline on Heading
+    display: inline-block;          // Isse heading sirf content jitni width legi
+    padding-bottom: 4px;            // Text aur underline ke beech ka space
+    // margin-bottom: 8px;             // Niche wali fields se space
+    border-bottom: 2px solid #1d4380a6; // Heading ke saath hi underline
+}
+/* =========================================
+   MODERN PROFESSIONAL CHECKBOX STYLING
+   ========================================= */
+
+.form-check-input {
+  width: 16px;  /* 20px size (Thoda bada aur clear) */
+  height: 16px; /* 20px size */
+  border: 2px solid #9ca3af; /* 🔴 Darker gray border for Unchecked state */
+  border-radius: 4px; /* Slight rounded corners (Modern look) */
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth animation */
+  margin-top: 0.15rem; /* Alignment fix with text */
+  /* --- 2. CHECKED STATE --- */
+  &:checked {
+    background-color: #1d4380; /* Theme Blue fill */
+    border-color: #1d4380;
+    
+    /* Bootstrap normally handles the white tick mark automatically, 
+       but we ensure the background looks solid. */
+  }
+
+  /* --- 3. FOCUS STATE (Accessibility & Polish) --- */
+  &:focus {
+    border-color: #1d4380;
+    outline: 0;
+    /* Soft blue glow ring when tabbed or clicked */
+    box-shadow: 0 0 0 3px rgba(29, 67, 128, 0.15); 
+  }
+
+  /* --- 4. DISABLED STATE --- */
+  &:disabled {
+    background-color: #f3f4f6;
+    border-color: #d1d5db;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+/* --- Label Alignment (Optional but recommended) --- */
+.form-check-label {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500; /* Medium weight for professional readability */
+  color: #374151; /* Dark gray, easier on eyes than pure black */
+  user-select: none; /* Text select na ho double click pe */
+  padding-left: 4px;
+}
+.input-group-text{
+      height: 32px!important;
+    border: 1px solid #5e9fc8;
+    padding: 2px 4px!important;
+}

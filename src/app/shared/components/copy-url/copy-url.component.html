@@ -1,0 +1,54 @@
+<div class="copy-url-container">
+  @if (label()) {
+    <label class="url-label">{{ label() }}</label>
+  }
+  <div class="permalink">
+    <input 
+      #urlInput
+      class="textLink" 
+      type="text" 
+      [value]="url() || placeholder()" 
+      [placeholder]="placeholder()"
+      [class.has-url]="!!url()"
+      readonly>
+
+    <button 
+      type="button" 
+      class="copy-btn"
+      [class.success]="isCopied()"
+      container="body"
+      [disabled]="!url() || isLoading()"
+      [ngbTooltip]="tooltipText()"
+      placement="top"
+      (click)="copyToClipboard()">
+      
+      @if (isLoading()) {
+        <i class="material-icons fa-spin">autorenew</i>
+      } @else if (isCopied()) {
+        <i class="material-icons">check_circle</i>
+      } @else {
+        <i class="material-icons">content_copy</i>
+      }
+    </button>
+
+    @if (showShareButton() && url()) {
+      <button 
+        type="button" 
+        class="action-btn"
+        ngbTooltip="Share URL"
+        (click)="shareUrl()">
+        <i class="material-icons">share</i>
+      </button>
+    }
+
+    @if (showOpenButton() && url()) {
+      <button 
+        type="button" 
+        class="action-btn"
+        ngbTooltip="Open URL in new tab"
+        (click)="openUrl()">
+        <i class="material-icons">open_in_new</i>
+      </button>
+    }
+  </div>
+</div>

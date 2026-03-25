@@ -1,0 +1,295 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+.advanced-grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.grid-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px 2px;
+  // background: #f8f9fa;
+  // border: 1px solid #dee2e6;
+  border-radius: 4px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Modern Search Box Styles */
+
+.search-container {
+  // Use relative positioning to contain the absolutely positioned icons.
+  position: relative;
+  width: 100%;
+  max-width: 153px; // Set a max-width for better aesthetics on large screens.
+}
+
+.search-input {
+  width: 100%;
+  height: 29px;
+  border: 1px solid #13355786; // A subtle, light-gray border.
+  border-radius: 6px; // Slightly rounded corners for a modern feel.
+  font-size: 14px;
+  color: #212529;
+
+  // ✨ KEY: Add padding to prevent text from overlapping the icons.
+  padding-left: 10px; // Space for the search icon on the left.
+  padding-right: 36px; // Space for the clear button on the right.
+
+  // Add a smooth transition for the focus effect.
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  // Modern browsers show a clear 'x' by default. This hides it so we can use our own.
+  &::-ms-clear,
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  // ✨ The most important visual feedback for the user.
+  &:focus {
+    outline: none; // Remove the default browser outline.
+    border-color: #007bff; // Use a primary color for the border.
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); // Add a soft "glow" effect.
+  }
+}
+
+.search-icon {
+  // Position the icon inside the input field.
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  font-size: 14px;
+  transform: translateY(-50%);
+  color: #6c757d; // A neutral, secondary color.
+  pointer-events: none; // Make the icon non-interactive.
+}
+.tbl-icon {
+  height: 24px;
+}
+.tbl-button {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  align-self: end;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 5px;
+  // flex-wrap: wrap;
+}
+
+// In your component's .scss file
+
+// In your component's .scss file
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  i {
+    font-size: 18px;
+    // ✨ REMOVED: Default color is no longer needed here
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+  }
+
+  // ✨ MODIFIED: The hover effect is now a generic brightness enhancement
+  &:hover:not(:disabled) i {
+    transform: scale(1.1);
+    filter: brightness(1.2); // Makes any color slightly brighter
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ✨ ADDED: Specific icon colors are now set by default
+.toolbar-btn {
+  i.fa-file-csv,
+  i.fa-file-excel {
+    color: #10431cff; // Green for success/export
+  }
+
+  i.fa-sync-alt,
+  i.fa-arrows-alt-h {
+    color: #007bff; // Blue for primary actions
+  }
+
+  i.fa-undo {
+    color: #ffc107; // Yellow for warning/reset
+  }
+
+  // A default fallback color for any other icons
+  i {
+    color: #6c757d;
+  }
+}
+
+.grid-wrapper {
+  position: relative;
+}
+
+.grid-info {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-top: none;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.info-item {
+  margin-right: 15px;
+}
+
+/* Add this new rule for the headers */
+:host ::ng-deep .ag-header-cell-label {
+  font-weight: 600;
+  justify-content: center;
+}
+
+/* Add this rule for the header background color */
+:host ::ng-deep .ag-header {
+  background-color: #1b4380;
+  min-height: 40px;
+  height: 42px;
+}
+
+/* Add this rule to create the vertical separator lines */
+:host ::ng-deep .ag-header-cell {
+  border-right: 1.8px solid #345e9eba;
+  font-family: "Work Sans", sans-serif;
+  color: white;
+}
+
+:host ::ng-deep .ag-cell {
+  border-right: 1.8px solid #3322221a;
+  font-family: "Work Sans", sans-serif;
+  text-align: center;
+
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+}
+/* Global styles for status cells */
+
+:host ::ng-deep .ag-row {
+  border-right: 1.8px solid #3322221a;
+}
+
+:host ::ng-deep .ag-center-cols-viewport {
+  min-height: 80px !important;
+}
+
+.ag-theme-material {
+  --ag-font-family: "Roboto", sans-serif;
+}
+
+/* Custom scrollbar for grid */
+.ag-body-viewport::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.ag-body-viewport::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.ag-body-viewport::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.ag-body-viewport::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+/* Elegant horizontal scrollbar only inside popup grid */
+/*
+=================================
+Status Cell Styling
+=================================
+*/
+:host ::ng-deep {
+  // The main cell remains a flex container to center the pill
+  .ag-cell.status-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .status-cell > .ag-cell-wrapper {
+    display: unset;
+  }
+  .ag-cell.status-cell .ag-cell-value {
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-weight: 500;
+    font-size: 12px;
+    text-align: center;
+    min-width: 80px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  // CORRECTED CONDITIONAL SELECTORS
+  .status-approved .ag-cell-value {
+    background-color: rgba(46, 125, 50, 0.15);
+    color: #2e7d32;
+    box-shadow: 0 0 10px rgba(46, 125, 50, 0.1);
+  }
+
+  .status-pending .ag-cell-value {
+    background-color: rgba(0, 123, 255, 0.15); // ✨ New light blue background
+    color: #0a325d; // ✨ New primary blue text
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.1); // ✨ Optional blue glow
+  }
+
+  .status-delete .ag-cell-value {
+    background-color: rgba(198, 40, 40, 0.15);
+    color: #c62828;
+    box-shadow: 0 0 10px rgba(198, 40, 40, 0.1);
+  }
+
+  .status-de-active .ag-cell-value {
+    background-color: rgba(84, 110, 122, 0.15);
+    color: #546e7a;
+    box-shadow: 0 0 10px rgba(84, 110, 122, 0.1);
+  }
+   .status-cancelled .ag-cell-value {
+    background-color: #eaddca;
+    color: #895129;
+    box-shadow: 0 0 10px #fef2f2;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .grid-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container {
+    max-width: none;
+  }
+
+  .toolbar-actions {
+    justify-content: center;
+  }
+}

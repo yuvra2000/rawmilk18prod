@@ -1,0 +1,98 @@
+:host {
+  display: block;
+  font-family: sans-serif;
+}
+
+.copy-url-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 22px 0px;
+}
+
+.url-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.permalink {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #f9fafb;
+  transition: box-shadow 0.2s ease;
+
+  &:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+}
+
+.textLink {
+  flex-grow: 1;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  background-color: transparent;
+  color: #6b7280;
+
+  &.has-url {
+    color: #111827;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.copy-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+
+  .material-icons.fa-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  &.success {
+    background-color: #10b981; // Green for success
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #1d4ed8;
+  }
+  
+  &:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+  }
+}
+
+.action-btn {
+  background-color: transparent;
+  color: #6b7280;
+  border: none;
+  border-left: 1px solid #d1d5db;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: #f3f4f6;
+    color: #111827;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

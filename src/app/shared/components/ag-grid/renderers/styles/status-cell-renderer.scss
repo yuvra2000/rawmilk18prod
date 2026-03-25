@@ -1,0 +1,12 @@
+@import 'common';
+
+.status-badge {
+  @include status-badge;
+
+  &.status-primary { background: #e3f2fd; color: #1976d2; }
+  &.status-secondary { background: #f5f5f5; color: #424242; }
+  &.status-success { background: #e8f5e8; color: #2e7d32; }
+  &.status-danger { background: #ffebee; color: #c62828; }
+  &.status-warning { background: #fff8e1; color: #f57c00; }
+  &.status-info { background: #e1f5fe; color: #0277bd; }
+}

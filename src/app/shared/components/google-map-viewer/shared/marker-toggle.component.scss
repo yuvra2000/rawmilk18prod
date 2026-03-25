@@ -1,0 +1,35 @@
+.marker-toggle-container {
+ display: flex;
+    gap: 10px;
+    padding: 8px;
+    background: white;
+    user-select: none;
+    --pegman-scaleX: 1;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+    border-radius: 4px;
+    height: 40px;
+}
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  background-color: #fff;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.2s ease-in-out;
+
+  &.active {
+    opacity: 1;
+    border-color: #007bff;
+    background-color: #e7f3ff;
+  }
+}
+
+.toggle-icon {
+//   width: 16px;
+  height: 16px;
+}

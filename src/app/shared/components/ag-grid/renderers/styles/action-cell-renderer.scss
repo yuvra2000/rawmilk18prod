@@ -1,0 +1,28 @@
+@import 'common';
+
+.action-cell {
+  @include cell-container;
+  gap: 4px;
+  padding: 2px;
+}
+
+.action-btn {
+  @include button-base;
+  padding: 4px 8px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  &.btn-primary { background: $primary-color; color: white; }
+  &.btn-secondary { background: $secondary-color; color: white; }
+  &.btn-success { background: $success-color; color: white; }
+  &.btn-danger { background: $danger-color; color: white; }
+  &.btn-warning { background: $warning-color; color: #212529; }
+  &.btn-info { background: $info-color; color: white; }
+}
+
+.action-icon-img {
+  width: 14px;
+  height: 14px;
+}

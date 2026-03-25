@@ -1,0 +1,41 @@
+/* Flex container for horizontal alignment */
+.toggle-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  // border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1.5px solid #9ba9b591;
+}
+
+/* Styling for the filter link */
+.toggle-link {
+  all:unset;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: #1d4380;
+  cursor: pointer;
+  text-decoration: none;
+      
+  p{
+    color: #1D4380; font-weight: 600; margin-bottom: 4px;
+    font-size: 17px;
+  }
+}
+
+.toggle-link i {
+  font-size: 20px; color: #1d4380; margin-top: 8px;
+}
+
+/* Styling for the custom icon link */
+.custom-icon-link {
+  cursor: pointer;
+}
+
+/* Styling for the collapsible content area */
+.collapsible-content {
+  padding: 15px;
+  border: none;
+  border-top: none;
+}

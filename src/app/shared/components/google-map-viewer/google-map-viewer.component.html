@@ -1,0 +1,142 @@
+<!-- Only render the google-map component once the API is ready -->
+ <!-- <div class="map-toolbar">
+  <button (click)="togglePolyline()">📍 Toggle Route</button>
+</div> -->
+@if (mapReady() ) {
+  <google-map
+    height="100%"
+    width="100%"
+    [center]="center()"
+    [zoom]="zoom()"
+     (mapClick)="onMapBackgroundClick($event)"
+     (mapInitialized)="onMapInitialized($event)">
+
+     <!-- ✅ Drawing Manager (Only visible if enabled) -->
+   <!-- @if (enableDrawing() && drawingReady()) {
+        <map-drawing-manager
+            [drawingControl]="true"
+            [drawingControlOptions]="drawingControlOptions"
+            (overlayComplete)="onOverlayComplete($event)"
+        ></map-drawing-manager>
+    } -->
+        @if (hasDrawings()) {
+        <div class="drawing-tools-overlay">
+            <button class="btn-tool" (click)="undoLastDrawing()" title="Undo Last Shape">
+                <i class="fa-solid fa-rotate-left"></i> Undo
+            </button>
+            <button class="btn-tool btn-danger" (click)="clearDrawings()" title="Clear All">
+                <i class="fa-solid fa-trash"></i> Clear All
+            </button>
+        </div>
+    }
+    <!-- Loop through the markers signal -->
+      @if (!playTrackService.isPlaybackActive()) {
+    @for (marker of processedMarkers(); track marker.position) {
+      <map-marker
+        [position]="marker.position"
+        [title]="marker.title"
+        [options]="marker.options"
+        (mapClick)="openInfo(marker, markerRef)"
+        #markerRef="mapMarker"
+        (mapDragend)="onMarkerDragEnd($event)">
+      </map-marker>
+    }
+     @for (geofence of visibleGeofences(); track geofence.id) {
+                @if (geofence.type === 'circle') {
+                    <!-- Circle Geofence -->
+                    <map-circle
+                        [center]="geofence.center!"
+                        [radius]="geofence.radius!"
+                        [options]="geofence.options"
+                        (mapClick)="onGeofenceClick(geofence, $event)"
+                          #mapcircle="mapCircle"
+                    ></map-circle>
+                } @else if (geofence.type === 'polygon') {
+                    <!-- Polygon Geofence -->
+                   <map-polygon
+                        [paths]="geofence.paths!"
+                        [options]="geofence.options"
+                        (mapClick)="onGeofenceClick(geofence, mappolygon)"
+                         #mappolygon="mapPolygon"
+                    ></map-polygon>
+
+
+                     <!-- Polygon Geofence -->
+                    
+                }
+            }
+
+              
+ @if (showPolyline()) {
+      <map-polyline
+        [path]="polylinePath()"
+        [options]="polylineOptions()">
+      </map-polyline>
+    }
+    <!-- The info window remains the same, but its content is now driven by a signal -->
+    <map-info-window #infoWindow>
+      <app-map-info-content [params]="selectedMarkerData()"></app-map-info-content>
+    </map-info-window>
+  }
+   <!-- ✅ NEW: EDITABLE SHAPES (Passed from Form Modal) -->
+    
+    <!-- 1. Polygons -->
+    @for (poly of polygons(); track poly) {
+      <map-polygon 
+        [paths]="poly.paths" 
+        [options]="poly"
+        (polygonMouseup)="onPolygonEdit(polyRef)" 
+        #polyRef="mapPolygon">
+      </map-polygon>
+    }
+      <!-- 2. Circles -->
+    @for (circle of circles(); track circle) {
+      <map-circle 
+        [center]="circle.center" 
+        [radius]="circle.radius" 
+        [options]="circle"
+        (circleCenterChanged)="onCircleCenterChange($event, circleRef)"
+        (circleRadiusChanged)="onCircleRadiusChange($event, circleRef)"
+        #circleRef="mapCircle">
+      </map-circle>
+    }
+
+    <!-- 3. Rectangles -->
+    @for (rect of rectangles(); track rect) {
+      <map-rectangle 
+        [bounds]="rect.bounds" 
+        [options]="rect"
+        (rectangleBoundsChanged)="onRectangleBoundsChange($event, rectRef)"
+        #rectRef="mapRectangle">
+      </map-rectangle>
+    }
+
+    <!-- 4. Extra Markers (for single point editing) -->
+    <!-- @for (marker of markers(); track marker) {
+       Only render if it's explicitly part of the 'markers' input for editing, 
+            separate from processedMarkers which handles tracking logic
+       @if (marker.draggable) {
+          <map-marker 
+             [position]="marker.position" 
+             [options]="marker"
+             (mapDragend)="onMarkerDragEnd($event)">
+          </map-marker>
+       }
+    } -->
+
+    <!-- Polyline -->
+    @if (showPolyline()) {
+      <map-polyline [path]="polylinePath()" [options]="polylineOptions()"></map-polyline>
+    }
+
+    <!-- Info Window -->
+    <!-- <map-info-window #infoWindow>
+      <app-map-info-content [params]="selectedMarkerData()"></app-map-info-content>
+    </map-info-window> -->
+  </google-map>
+} @else {
+  <!-- Optional: Show a loading indicator while the Maps API loads -->
+  <div class="map-loading-indicator">
+    <p>Loading Map...</p>
+  </div>
+}

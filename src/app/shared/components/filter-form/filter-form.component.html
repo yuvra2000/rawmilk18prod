@@ -1,247 +1,408 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate
-  class="d-flex align-items-start flex-wrap filter-bar pt-3 bg-white rounded row position-relative m-auto" [ngStyle]="filerFormClass">
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  novalidate
+  class="d-flex align-items-start flex-wrap filter-bar pt-1 rounded row position-relative m-auto"
+  [ngStyle]="filerFormClass"
+>
   @for (field of effectiveFields; track field.name) {
-  <!-- @if (form.get(field.name)) { -->
-  <!-- ✅ NEW: Section Heading Logic -->
-  <!-- Agar sectionTitle hai, toh full-width heading aur underline dikhayenge -->
-  @if (form.get(field.name)) {
-  @if (field.sectionTitle) {
-  <div class="col-12 mt-0 mb-1 section-header-container">
-    <div class="section-heading" [ngClass]="field.sectionTitleClass || ''" [ngStyle]="field.sectionTitleStyle || {}">
-      {{ field.sectionTitle }}
-    </div>
-  </div>
-  }
-  <!-- Flex Break Logic for forceNewLine -->
-  @if (field.forceNewLine) {
-  <div class="w-100 d-none d-md-block"></div>
-  }
-  <!-- @if (form.get(field.name)) { -->
-  <div [ngClass]="field?.class ? field?.class : containerClass" class="d-flex flex-column position-relative"
-    id="qmMulticontainer" [class.mb-3]="!(field?.class || containerClass).includes('mb-')">
-    <div class="d-flex align-items-center justify-content-between mb-1">
-      <label [for]="field.name" class="filter_name" [ngClass]="field.labelClass || ''"
-        [ngStyle]="field.labelStyle || {}" >
-        {{ field.label }}
-        @if (field.required) {
-        <span class="text-danger ms-1" aria-label="Required">*</span>
-        }
-      </label>
-      <!-- ✅ Button in label position -->
-      @if (field.actionButton && field.actionButton.position === 'label') {
-
-      <app-action-button [config]="field.actionButton" [fieldName]="field.name"
-        [contextPayload]="getActionContext(field.name)"></app-action-button>
+    <!-- @if (form.get(field.name)) { -->
+    <!-- ✅ NEW: Section Heading Logic -->
+    <!-- Agar sectionTitle hai, toh full-width heading aur underline dikhayenge -->
+    @if (form.get(field.name)) {
+      @if (field.sectionTitle) {
+        <div class="col-12 mt-0 mb-1 section-header-container">
+          <div
+            class="section-heading"
+            [ngClass]="field.sectionTitleClass || ''"
+            [ngStyle]="field.sectionTitleStyle || {}"
+          >
+            {{ field.sectionTitle }}
+          </div>
+        </div>
       }
-    </div>
-    <!-- ✅ Search Select Field - Uses dedicated component -->
-    @if (field.type === 'search-select') {
-    <app-search-select-field [control]="getFormControl(field.name)" [fieldName]="field.name"
-      [searchFn]="field.searchFn!" [multiple]="field.multiple ?? false"
-      [placeholder]="field.placeholder ?? 'Search ' + field.label"
-      [required]="field.required ?? false" [bindLabel]="field?.bindLabel ?? 'name'"></app-search-select-field>
-    }
-
-    <!-- ✅ Regular Select / Cascading Select - Uses dedicated component -->
-    @else if (field.type === 'select') {
-    <app-cascading-select-field [control]="getFormControl(field.name)" [fieldName]="field.name" [selectConfig]="field.slectConfig"
-      [options]="field.options || []" [placeholder]="field.placeholder ?? 'Select ' + field.label"
-      [multiple]="field.multiple ?? false" [required]="field.required ?? false" [isOpen]="field.isOpen"
-      [bindLabel]="field?.bindLabel ?? 'name'" [addTag]="field.addTag ?? false"
-      [addTagText]="field.addTagText || 'Add ' + field.label"></app-cascading-select-field>
-    }
-   @else if (field.type === 'color-select') {
-      <app-color-select-field
-        [control]="getFormControl(field.name)"
-        [fieldName]="field.name"
-        [options]="field.options || []"
-        [placeholder]="field.placeholder ?? 'Select ' + field.label"
-        [required]="field.required ?? false"
-       [colorWidth]="field.colorWidth || '130px'"         
-       [optionColorWidth]="field.optionColorWidth || '100%'"
-      ></app-color-select-field>
-    }
-    <!-- Text field -->
-    @else if (field.type === 'text') {
-    <input type="text" class="form-control" [formControlName]="field.name" [id]="field.name"
-      [placeholder]="field.placeholder ?? 'Enter ' + field.label" [attr.aria-required]="field.required"
-      [required]="field.required ?? false" [class.disabled-field]="field.disabled"
-      [appInputFormat]="field.inputFormatting ?? null" />
-    }
-
-    <!-- Password field -->
-    @else if (field.type === 'password') {
-    <div class="password-input-wrapper position-relative">
-      <input [type]="passwordVisibility()[field.name] ? 'text' : 'password'" class="form-control"
-        [formControlName]="field.name" [id]="field.name" [placeholder]="field.placeholder ?? 'Enter ' + field.label"
-        [attr.aria-required]="field.required" [required]="field.required ?? false"
-        [class.disabled-field]="field.disabled" autocomplete="new-password" />
-      <button type="button" class="btn position-absolute password-toggle-btn"
-        (click)="togglePasswordVisibility(field.name)" style="
-          right: 8px;
-          top: 50%;
-          transform: translateY(-50%);
-          border: none;
-          background: none;
-          padding: 4px;
-        ">
-        <i class="material-icons">{{
-          passwordVisibility()[field.name] ? "visibility" : "visibility_off"
-          }}</i>
-      </button>
-    </div>
-    }
-
-    <!-- Number field -->
-    @else if (field.type === 'number') {
-    <input type="number" class="form-control" [formControlName]="field.name" [id]="field.name"
-      [placeholder]="field.placeholder ?? 'Enter ' + field.label" [attr.aria-required]="field.required"
-      [required]="field.required ?? false" [min]="field.min ?? 0" [class.disabled-field]="field.disabled"
-      style="min-width: 160px;" />
-    }
-
-    <!-- Textarea -->
-    @else if (field.type === 'textarea') {
-    <textarea class="form-control" [formControlName]="field.name" [id]="field.name"
-      [placeholder]="field.placeholder ?? 'Enter ' + field.label" [attr.rows]="field.rows ?? 3"
-      [attr.aria-required]="field.required" [class.disabled-field]="field.disabled" [required]="field.required ?? false"
-      style="height: unset !important"></textarea>
-    }
-
-    <!-- Date field -->
-    @else if (field.type === 'date') {
-    <input type="date" class="form-control" [formControlName]="field.name" [id]="field.name"
-      [attr.aria-required]="field.required" [class.disabled-field]="field.disabled" [required]="field.required ?? false"
-      [min]="computeDateConstraint(field.minDate)" [max]="computeDateConstraint(field.maxDate)" />
-    }
-
-    <!-- Time field -->
-    @else if (field.type === 'time') {
-    <input type="time" class="form-control" [formControlName]="field.name" [id]="field.name"
-      [attr.aria-required]="field.required" [class.disabled-field]="field.disabled"
-      [required]="field.required ?? false" />
-    }
-    @else if (field.type === 'datetime') {
-    <input type="datetime-local" class="form-control" [formControlName]="field.name" [id]="field.name"
-      [placeholder]="field.placeholder ?? 'Select Date & Time'" [attr.aria-required]="field.required" [step]="0"
-      [class.disabled-field]="field.disabled" [required]="field.required ?? false"
-      [min]="computeDateConstraint(field.minDate)" [max]="computeDateConstraint(field.maxDate)" />
-    }
-
-    <!-- SPK Date picker -->
-   @else if (field.type === 'date-spk') {
-  <div class="form-group mb-0">
-    <div class="input-group custom-spk-group">
-      <spk-flatpickr 
-        #spk
-        [formControlName]="field.name" 
-        [id]="field.name"
-        [placeholder]="field.spkOptions?.placeholder || 'Select Date'" 
-        [class]="(field.class || '') + (field.disabled ? ' disabled-field' : '')"
-        [mode]="field.spkOptions?.mode || 'single'" 
-        [type]="field.spkOptions?.type || 'date'"
-        [enableTime]="field.spkOptions?.enableTime || false" 
-        [altInput]="field.spkOptions?.altInput !== false" 
-        [dateFormat]="field.spkOptions?.dateFormat || 'Y-m-d'" 
-       [minDate]="computeDateConstraint(field.spkOptions?.minDate,field.spkOptions?.type||'date' )"
-       [maxDate]="computeDateConstraint(field.spkOptions?.maxDate,field.spkOptions?.type||'date' )"
-        [attr.aria-required]="field.required"
-        style="background-color: transparent !important; flex: 1;"
-      ></spk-flatpickr>
-        <div class="input-group-text text-muted cursor-pointer calender-style" (click)="spk.toggle()">
-        <i class="fa-regular fa-calendar-days"></i>
-      </div>
-    </div>
-  </div>
-}
-
-    <!-- Checkbox -->
-    @else if (field.type === 'checkbox') {
-    <div class="form-check d-flex align-items-center gap-2" style=" max-width: fit-content">
-      <input type="checkbox" class="form-check-input" [formControlName]="field.name" [id]="field.name"
-        [attr.aria-required]="field.required" [class.disabled-field]="field.disabled" [ngStyle]="field.checkboxstyle || {}"
-        [required]="field.required ?? false" />
-        @if(field.checkboxLabel){
-      <label
-       class="filter_name" [ngClass]="field.labelClass || ''"
-        [for]="field.name"
-        style="white-space: nowrap"  [ngStyle]="field.labelStyle || {}"
+      <!-- Flex Break Logic for forceNewLine -->
+      @if (field.forceNewLine) {
+        <div class="w-100 d-none d-md-block"></div>
+      }
+      <!-- @if (form.get(field.name)) { -->
+      <div
+        [ngClass]="field?.class ? field?.class : containerClass"
+        class="d-flex flex-column position-relative"
+        id="qmMulticontainer"
+        [class.mb-3]="!(field?.class || containerClass).includes('mb-')"
       >
-        {{ field?.checkboxLabel ?? field.label }}
-      </label>}
-    </div>
-    }
+        <div class="d-flex align-items-center justify-content-between mb-1">
+          <label
+            [for]="field.name"
+            class="filter_name"
+            [ngClass]="field.labelClass || ''"
+            [ngStyle]="field.labelStyle || {}"
+          >
+            {{ field.label }}
+            @if (field.required) {
+              <span class="text-danger ms-1" aria-label="Required">*</span>
+            }
+          </label>
+          <!-- ✅ Button in label position -->
+          @if (field.actionButton && field.actionButton.position === "label") {
+            <app-action-button
+              [config]="field.actionButton"
+              [fieldName]="field.name"
+              [contextPayload]="getActionContext(field.name)"
+            ></app-action-button>
+          }
+        </div>
+        <!-- ✅ Search Select Field - Uses dedicated component -->
+        @if (field.type === "search-select") {
+          <app-search-select-field
+            [control]="getFormControl(field.name)"
+            [fieldName]="field.name"
+            [searchFn]="field.searchFn!"
+            [multiple]="field.multiple ?? false"
+            [placeholder]="field.placeholder ?? 'Search ' + field.label"
+            [required]="field.required ?? false"
+            [bindLabel]="field?.bindLabel ?? 'name'"
+          ></app-search-select-field>
+        }
 
-    <!-- Radio -->
-    @else if (field.type === 'radio') {
-    <div style="
-        min-width: 160px;
-        max-width: fit-content;
-        display: flex;
-        align-items: center;
-        gap: 0px;
-      ">
-      @for (option of field.options || []; track option.id) {
-      <div class="form-check form-check-inline">
-        <input type="radio" class="form-check-input" [formControlName]="field.name" [id]="field.name + '_' + option.id"
-          [value]="option.id" [attr.aria-required]="field.required" [class.disabled-field]="field.disabled"
-          [required]="field.required ?? false" />
-        <label class="form-check-label" [for]="field.name + '_' + option.id" style="margin-left: 0.15rem">
-          {{ option.name }}
-        </label>
+        <!-- ✅ Regular Select / Cascading Select - Uses dedicated component -->
+        @else if (field.type === "select") {
+          <app-cascading-select-field
+            [control]="getFormControl(field.name)"
+            [fieldName]="field.name"
+            [selectConfig]="field.slectConfig"
+            [options]="field.options || []"
+            [placeholder]="field.placeholder ?? 'Select ' + field.label"
+            [multiple]="field.multiple ?? false"
+            [required]="field.required ?? false"
+            [isOpen]="field.isOpen"
+            [bindLabel]="field?.bindLabel ?? 'name'"
+            [addTag]="field.addTag ?? false"
+            [addTagText]="field.addTagText || 'Add ' + field.label"
+          ></app-cascading-select-field>
+        } @else if (field.type === "color-select") {
+          <app-color-select-field
+            [control]="getFormControl(field.name)"
+            [fieldName]="field.name"
+            [options]="field.options || []"
+            [placeholder]="field.placeholder ?? 'Select ' + field.label"
+            [required]="field.required ?? false"
+            [colorWidth]="field.colorWidth || '130px'"
+            [optionColorWidth]="field.optionColorWidth || '100%'"
+          ></app-color-select-field>
+        }
+        <!-- Text field -->
+        @else if (field.type === "text") {
+          <input
+            type="text"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [placeholder]="field.placeholder ?? 'Enter ' + field.label"
+            [attr.aria-required]="field.required"
+            [required]="field.required ?? false"
+            [class.disabled-field]="field.disabled"
+            [appInputFormat]="field.inputFormatting ?? null"
+          />
+        }
+
+        <!-- Password field -->
+        @else if (field.type === "password") {
+          <div class="password-input-wrapper position-relative">
+            <input
+              [type]="passwordVisibility()[field.name] ? 'text' : 'password'"
+              class="form-control"
+              [formControlName]="field.name"
+              [id]="field.name"
+              [placeholder]="field.placeholder ?? 'Enter ' + field.label"
+              [attr.aria-required]="field.required"
+              [required]="field.required ?? false"
+              [class.disabled-field]="field.disabled"
+              autocomplete="new-password"
+            />
+            <button
+              type="button"
+              class="btn position-absolute password-toggle-btn"
+              (click)="togglePasswordVisibility(field.name)"
+              style="
+                right: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                border: none;
+                background: none;
+                padding: 4px;
+              "
+            >
+              <i class="material-icons">{{
+                passwordVisibility()[field.name]
+                  ? "visibility"
+                  : "visibility_off"
+              }}</i>
+            </button>
+          </div>
+        }
+
+        <!-- Number field -->
+        @else if (field.type === "number") {
+          <input
+            type="number"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [placeholder]="field.placeholder ?? 'Enter ' + field.label"
+            [attr.aria-required]="field.required"
+            [required]="field.required ?? false"
+            [min]="field.min ?? 0"
+            [class.disabled-field]="field.disabled"
+            style="min-width: 160px"
+          />
+        }
+
+        <!-- Textarea -->
+        @else if (field.type === "textarea") {
+          <textarea
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [placeholder]="field.placeholder ?? 'Enter ' + field.label"
+            [attr.rows]="field.rows ?? 3"
+            [attr.aria-required]="field.required"
+            [class.disabled-field]="field.disabled"
+            [required]="field.required ?? false"
+            style="height: unset !important"
+          ></textarea>
+        }
+
+        <!-- Date field -->
+        @else if (field.type === "date") {
+          <input
+            type="date"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [attr.aria-required]="field.required"
+            [class.disabled-field]="field.disabled"
+            [required]="field.required ?? false"
+            [min]="computeDateConstraint(field.minDate)"
+            [max]="computeDateConstraint(field.maxDate)"
+          />
+        }
+
+        <!-- Time field -->
+        @else if (field.type === "time") {
+          <input
+            type="time"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [attr.aria-required]="field.required"
+            [class.disabled-field]="field.disabled"
+            [required]="field.required ?? false"
+          />
+        } @else if (field.type === "datetime") {
+          <input
+            type="datetime-local"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [placeholder]="field.placeholder ?? 'Select Date & Time'"
+            [attr.aria-required]="field.required"
+            [step]="0"
+            [class.disabled-field]="field.disabled"
+            [required]="field.required ?? false"
+            [min]="computeDateConstraint(field.minDate)"
+            [max]="computeDateConstraint(field.maxDate)"
+          />
+        }
+
+        <!-- SPK Date picker -->
+        @else if (field.type === "date-spk") {
+          <div class="form-group mb-0">
+            <div class="input-group custom-spk-group">
+              <spk-flatpickr
+                #spk
+                [formControlName]="field.name"
+                [id]="field.name"
+                [placeholder]="field.spkOptions?.placeholder || 'Select Date'"
+                [class]="
+                  (field.class || '') +
+                  (field.disabled ? ' disabled-field' : '')
+                "
+                [mode]="field.spkOptions?.mode || 'single'"
+                [type]="field.spkOptions?.type || 'date'"
+                [enableTime]="field.spkOptions?.enableTime || false"
+                [altInput]="field.spkOptions?.altInput !== false"
+                [dateFormat]="field.spkOptions?.dateFormat || 'Y-m-d'"
+                [minDate]="
+                  computeDateConstraint(
+                    field.spkOptions?.minDate,
+                    field.spkOptions?.type || 'date'
+                  )
+                "
+                [maxDate]="
+                  computeDateConstraint(
+                    field.spkOptions?.maxDate,
+                    field.spkOptions?.type || 'date'
+                  )
+                "
+                [attr.aria-required]="field.required"
+                style="background-color: transparent !important; flex: 1"
+              ></spk-flatpickr>
+              <div
+                class="input-group-text text-muted cursor-pointer calender-style"
+                (click)="spk.toggle()"
+              >
+                <i class="fa-regular fa-calendar-days"></i>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Checkbox -->
+        @else if (field.type === "checkbox") {
+          <div
+            class="form-check d-flex align-items-center gap-2"
+            style="max-width: fit-content"
+          >
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [formControlName]="field.name"
+              [id]="field.name"
+              [attr.aria-required]="field.required"
+              [class.disabled-field]="field.disabled"
+              [ngStyle]="field.checkboxstyle || {}"
+              [required]="field.required ?? false"
+            />
+            @if (field.checkboxLabel) {
+              <label
+                class="filter_name"
+                [ngClass]="field.labelClass || ''"
+                [for]="field.name"
+                style="white-space: nowrap"
+                [ngStyle]="field.labelStyle || {}"
+              >
+                {{ field?.checkboxLabel ?? field.label }}
+              </label>
+            }
+          </div>
+        }
+
+        <!-- Radio -->
+        @else if (field.type === "radio") {
+          <div
+            style="
+              min-width: 160px;
+              max-width: fit-content;
+              display: flex;
+              align-items: center;
+              gap: 0px;
+            "
+          >
+            @for (option of field.options || []; track option.id) {
+              <div class="form-check form-check-inline">
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  [formControlName]="field.name"
+                  [id]="field.name + '_' + option.id"
+                  [value]="option.id"
+                  [attr.aria-required]="field.required"
+                  [class.disabled-field]="field.disabled"
+                  [required]="field.required ?? false"
+                />
+                <label
+                  class="form-check-label"
+                  [for]="field.name + '_' + option.id"
+                  style="margin-left: 0.15rem"
+                >
+                  {{ option.name }}
+                </label>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- File upload -->
+        @else if (field.type === "file-upload") {
+          <app-file-upload
+            [accept]="field.accept || 'image/*'"
+            [multiple]="field.multiple ?? false"
+            [uploadText]="field.uploadText || 'Add Photo'"
+            [uploadMode]="field.uploadMode || 'image'"
+            [disabled]="
+              field.disabled || form.get(field.name)?.disabled || false
+            "
+            [value]="initialData() ? initialData()?.[field.name] || '' : ''"
+            (valueChange)="
+              form.get(field.name)?.setValue($event);
+              form.get(field.name)?.markAsDirty()
+            "
+            (uploadError)="
+              form.get(field.name)?.setErrors({ uploadError: $event })
+            "
+          >
+          </app-file-upload>
+        }
+
+        <!-- Email field -->
+        @else if (field.type === "email") {
+          <input
+            type="email"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [placeholder]="field.placeholder ?? ''"
+            [attr.aria-required]="field.required"
+            [required]="field.required ?? false"
+            [class.disabled-field]="field.disabled"
+          />
+        }
+
+        <!-- Validation error space -->
+        <div style="margin-top: 0px">
+          @if (hasError(field)) {
+            <span
+              class="text-danger"
+              style="font-size: 11px; position: absolute !important"
+            >
+              {{ getErrorMessage(field) }}
+            </span>
+          }
+        </div>
+
+        <!-- ✅ Button after field -->
+        @if (
+          field.actionButton && field.actionButton.position === "after-field"
+        ) {
+          <div class="mt-2">
+            <app-action-button
+              [config]="field.actionButton"
+              [fieldName]="field.name"
+              [contextPayload]="getActionContext(field.name)"
+            ></app-action-button>
+          </div>
+        }
       </div>
+
+      <!-- ✅ Button in separate column -->
+      @if (
+        field.actionButton && field.actionButton.position === "separate-col"
+      ) {
+        <div
+          [ngClass]="containerClass"
+          class="d-flex flex-column position-relative mb-3"
+        >
+          <!-- <label class="filter_name" style="visibility: hidden;" [ngStyle]="field.labelStyle || {}">Button</label> -->
+          <app-action-button
+            [config]="field.actionButton"
+            [fieldName]="field.name"
+            [contextPayload]="getActionContext(field.name)"
+          ></app-action-button>
+        </div>
       }
-    </div>
     }
-
-    <!-- File upload -->
-    @else if (field.type === 'file-upload') {
-    <app-file-upload [accept]="field.accept || 'image/*'" [multiple]="field.multiple ?? false"
-      [uploadText]="field.uploadText || 'Add Photo'" [uploadMode]="field.uploadMode || 'image'"
-      [disabled]="field.disabled || form.get(field.name)?.disabled || false"
-      [value]="initialData() ? initialData()?.[field.name] || '' : ''"
-      (valueChange)="form.get(field.name)?.setValue($event); form.get(field.name)?.markAsDirty()"
-      (uploadError)="form.get(field.name)?.setErrors({ uploadError: $event })">
-    </app-file-upload>
-
-
-    }
- 
-    <!-- Email field -->
-    @else if (field.type === 'email') {
-    <input type="email" class="form-control" [formControlName]="field.name" [id]="field.name"
-      [placeholder]="field.placeholder ?? ''" [attr.aria-required]="field.required" [required]="field.required ?? false"
-      [class.disabled-field]="field.disabled" />
-    }
-
-    <!-- Validation error space -->
-    <div style="margin-top: 0px">
-      @if (hasError(field)) {
-      <span class="text-danger" style="font-size: 11px; position: absolute !important">
-        {{ getErrorMessage(field) }}
-      </span>
-      }
-    </div>
-
-
-    <!-- ✅ Button after field -->
-    @if (field.actionButton && field.actionButton.position === 'after-field') {
-    <div class="mt-2">
-      <app-action-button [config]="field.actionButton" [fieldName]="field.name"
-        [contextPayload]="getActionContext(field.name)"></app-action-button>
-    </div>
-    }
-  </div>
-
-  <!-- ✅ Button in separate column -->
-  @if (field.actionButton && field.actionButton.position === 'separate-col') {
-  <div [ngClass]=" containerClass" class="d-flex flex-column position-relative mb-3">
-    <!-- <label class="filter_name" style="visibility: hidden;" [ngStyle]="field.labelStyle || {}">Button</label> -->
-    <app-action-button [config]="field.actionButton" [fieldName]="field.name"
-      [contextPayload]="getActionContext(field.name)"></app-action-button>
-  </div>
-  }
-  }
   }
   <!-- } -->
   <!-- @else {
@@ -251,8 +412,11 @@
   } -->
   <!-- } -->
   <!-- Submit button -->
-  <div class="d-flex flex-column justify-content-start position-relative mb-3" style="width: fit-content"
-    [ngClass]="btnClass ? btnClass : 'mt-4'">
+  <div
+    class="d-flex flex-column justify-content-start position-relative mb-3"
+    style="width: fit-content"
+    [ngClass]="btnClass ? btnClass : 'mt-4'"
+  >
     <button type="submit" class="btn reusable-btn" style="width: fit-content">
       {{ buttonName }}
     </button>

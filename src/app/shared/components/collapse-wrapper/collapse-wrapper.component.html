@@ -4,13 +4,12 @@
     class="toggle-link"
     [attr.aria-expanded]="!collapsed()"
     aria-controls="collapseSection"
-    (click)="toggleCollapse()">
-     <p>
-       <i class="fa-solid fa-filter" aria-hidden="true"></i>
-       FILTER
-     </p>
-   
-    
+    (click)="toggleCollapse()"
+  >
+    <p>
+      <i class="fa-solid fa-filter" aria-hidden="true"></i>
+      FILTER
+    </p>
   </button>
   <ng-content (click)="onIconClick()" select="[custom-icon]"></ng-content>
 </div>

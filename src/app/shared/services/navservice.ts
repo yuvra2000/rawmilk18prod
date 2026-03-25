@@ -95,7 +95,7 @@ export class NavService implements OnDestroy {
 
   MENUITEMS: Menu[] = [
     // Dashboard
-    { headTitle: 'OVERVIEW' },
+    // { headTitle: 'OVERVIEW' },
     {
       title: 'Dashboards',
       icon: `<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M104,216V152h48v64h64V120a8,8,0,0,0-2.34-5.66l-80-80a8,8,0,0,0-11.32,0l-80,80A8,8,0,0,0,40,120v96Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>`,
@@ -104,13 +104,13 @@ export class NavService implements OnDestroy {
       active: false,
       dirchange: false,
       children: [
-        { path: 'dairy/overview/', title: 'Home', type: 'link', dirchange: false },
-        { path: 'dairy/overview/view-indent', title: 'View Indent', type: 'link', dirchange: false },
-        { path: 'dairy/overview/trip-dashboard', title: 'Trip Dashboard', type: 'link', dirchange: false },
-        { path: 'dairy/overview/inventory', title: 'Inventory', type: 'link', dirchange: false },
-        { path: 'dairy/overview/projection', title: 'Projection', type: 'link', dirchange: false },
-        { path: 'dairy/overview/load-planning', title: 'Load Planning', type: 'link', dirchange: false },
-        { path: 'dairy/overview/document-wallet', title: 'Document Wallet', type: 'link', dirchange: false },
+        { path: '', title: 'Home', type: 'link', dirchange: false },
+        { path: 'view-indent', title: 'View Indent', type: 'link', dirchange: false },
+        { path: 'trip-dashboard', title: 'Trip Dashboard', type: 'link', dirchange: false },
+        { path: 'inventory', title: 'Inventory', type: 'link', dirchange: false },
+        { path: 'projection', title: 'Projection', type: 'link', dirchange: false },
+        { path: 'load-planning', title: 'Load Planning', type: 'link', dirchange: false },
+        { path: 'document-wallet', title: 'Document Wallet', type: 'link', dirchange: false },
         { path: 'dairy/cart-dashboard', title: 'Cart Dashboard', type: 'link', dirchange: false },
       ],
     },

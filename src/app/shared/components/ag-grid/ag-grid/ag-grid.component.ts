@@ -60,7 +60,7 @@ import {
 // import { MenuModule } from '@ag-grid-enterprise/menu';
 import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { FleetCellRendererComponent } from '../../../../cv/common/manage/route-fleet-assignment/clickable-chips-renderer';
+// import { FleetCellRendererComponent } from '../../../../cv/common/manage/route-fleet-assignment/clickable-chips-renderer';
 import {
   ExcelExportOptions,
   ExcelExportService,
@@ -836,7 +836,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
   frameworkComponents = {
     actionCellRenderer: ActionCellRendererComponent,
     statusCellRenderer: StatusCellRendererComponent,
-    fleetCellRenderer: FleetCellRendererComponent,
+    // fleetCellRenderer: FleetCellRendererComponent,
   };
 
   paginationPageSizeSelector = [10, 25, 50, 100, 200];

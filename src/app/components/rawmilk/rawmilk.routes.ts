@@ -3,11 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 export const rawMilkRoutes: Routes = [
   {
-    path: 'dairy',
-    children: [
-      {
-        path: 'overview',
-        children: [
+    path: '',
+     children: [
           {
             path: 'trip-dashboard',
             loadComponent: () =>
@@ -25,8 +22,6 @@ export const rawMilkRoutes: Routes = [
             title: 'View Indent',
           }
         ],
-      },
-    ],
   },
 ];
 @NgModule({

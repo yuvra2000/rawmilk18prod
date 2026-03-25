@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,10 @@ export class AuthService {
   public showLoader: boolean = false;
   private _isLoggedIn = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+  ) {}
 
   get isLoggedIn(): boolean {
     return this._isLoggedIn || !!localStorage.getItem('isLoggedIn');
@@ -29,6 +33,15 @@ export class AuthService {
     });
   }
 
+  Access(data: any) {
+    // https://api.secutrak.in/dev-app-secutrak
+    // return this.http.post('https://api-secutrak.secutrak.in/dev-app-secutrak/loginByAccessTokenV2', data);
+    return this.http.post(
+      'https://apinode1.secutrak.in/dev-app-secutrak/loginByAccessTokenV2',
+      data,
+    );
+    // return this.http.post('https://api.secutrak.in/dev-app-secutrak/loginByAccessTokenV2', data);
+  }
   signout(): void {
     this._isLoggedIn = false;
     localStorage.removeItem('isLoggedIn');

@@ -1,1 +1,17 @@
-<p>view-indent works!</p>
+<app-filter>
+    <div class="row">
+        <div class="col-lg-2 col-md-4 col-sm-12">
+            <label for="input-date" class="form-label fw-bolder">From Date</label>
+            <input type="date" class="form-control" id="input-date">
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-12">
+            <label for="input-date" class="form-label fw-bolder">To Date</label>
+            <input type="date" class="form-control" id="input-date">
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-12">
+            <label for="input-date" class="form-label fw-bolder">Supplier</label>
+            <ng-select [items]="cars()" bindLabel="name" bindValue="id" placeholder="--Select--">
+            </ng-select>
+        </div>
+    </div>
+</app-filter>

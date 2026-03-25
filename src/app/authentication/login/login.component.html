@@ -1,117 +1,35 @@
-
 <div class="container">
-    <div class="row justify-content-center align-items-center authentication authentication-basic h-100"
-    >
-      <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
-        <div class="my-4 d-flex justify-content-center">
-          <a  [routerLink]="['/sales']"> 
-            <img src="./assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark"> 
-        </a> 
-        </div>
-        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-          <li ngbNavItem="Firebase" class="me-2">
-            <a ngbNavLink>
-              <img
-                class="firebase"
-                src="./assets/images/firebase.svg"
-                alt=""
-              />
-            </a>
-            <ng-template ngbNavContent>
-              <form [formGroup]="loginForm" (ngSubmit)="login()" >
-                @if(errorMessage.length > 0){
-
+  <div
+    class="row justify-content-center align-items-center authentication authentication-basic h-100"
+  >
+    <!-- test -->
+    <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
+      <div class="my-4 d-flex justify-content-center">
+        <a [routerLink]="['/sales']">
+          <img
+            src="./assets/images/brand-logos/desktop-dark.png"
+            alt="logo"
+            class="desktop-dark"
+          />
+        </a>
+      </div>
+      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+        <li ngbNavItem="Firebase" class="me-2">
+          <a ngbNavLink>
+            <img class="firebase" src="./assets/images/firebase.svg" alt="" />
+          </a>
+          <ng-template ngbNavContent>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+              @if (errorMessage.length > 0) {
                 <p class="text-danger">
                   {{ errorMessage }}
                 </p>
-                } @if(_error.message.length > 0){
-
+              }
+              @if (_error.message.length > 0) {
                 <p class="text-danger">
                   {{ _error.message }}
                 </p>
-                }
-                <div class="col-xl-12">
-                  <label for="signin-username" class="form-label text-default"
-                    >User Name</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control  mb-3"
-                    id="signin-username"
-                    placeholder="user name"
-                    autocomplete
-                    formControlName="username"
-                    [(ngModel)]="email"
-                    required
-                  />
-                </div>
-                <div class="col-xl-12 mb-2">
-                  <label
-                    for="signin-password"
-                    class="form-label text-default d-block"
-                    >Password<a
-                      [routerLink]="['/authentication/reset-password/basic']"
-                      class="float-end text-danger"
-                      >Forget password ?</a
-                    ></label
-                  >
-                  <div class="input-group">
-                    <input
-                      [type]="showPassword ? 'text' : 'password'"
-                      autocomplete
-                      formControlName="password"
-                      [(ngModel)]="password"
-                      required
-                      class="form-control form-control-lg"
-                      id="signin-password"
-                      placeholder="password"
-                    />
-                    <button
-                      class="btn btn-light"
-                      type="button"
-                      (click)="toggleVisibility()"
-                    >
-                      <i class="{{ toggleClass }} align-middle"></i>
-                    </button>
-                  </div>
-                  <div class="mt-2">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="defaultCheck1"
-                      />
-                      <label
-                        class="form-check-label text-muted fw-normal"
-                        for="defaultCheck1"
-                      >
-                        Remember password ?
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-12 d-grid mt-2">
-                  <button
-                    type="submit"
-                    class="btn btn-lg btn-primary{{ disabled }}"
-                    autofocus
-                    [class.loader--text]="authservice.showLoader"
-                    [disabled]="!loginForm.valid || authservice.showLoader"
-                  >
-                    Sign In
-                  </button>
-                </div>
-              </form>
-            </ng-template>
-          </li>
-          <li ngbNavItem="Angular">
-            <a ngbNavLink >
-              <img class="firebase" src="./assets/images/angular.svg" alt="" />
-            </a>
-            <ng-template ngbNavContent class="mt-2">
-              <form [formGroup]="loginForm" (ngSubmit)="Submit()">
-                  <div class="text-danger">{{error}}</div>
+              }
               <div class="col-xl-12">
                 <label for="signin-username" class="form-label text-default"
                   >User Name</label
@@ -121,29 +39,39 @@
                   class="form-control mb-3"
                   id="signin-username"
                   placeholder="user name"
-                  formControlName="username"   autocomplete
+                  autocomplete
+                  formControlName="username"
+                  [(ngModel)]="email"
+                  required
                 />
               </div>
               <div class="col-xl-12 mb-2">
                 <label
                   for="signin-password"
-                  class="form-label text-default d-block" 
-                  >Password
-                  <a
-                      
+                  class="form-label text-default d-block"
+                  >Password<a
+                    [routerLink]="['/authentication/reset-password/basic']"
                     class="float-end text-danger"
                     >Forget password ?</a
                   ></label
                 >
                 <div class="input-group">
                   <input
-                    formControlName="password"  autocomplete [type]="showPassword ? 'text' : 'password'"
-                    class="form-control"
+                    [type]="showPassword ? 'text' : 'password'"
+                    autocomplete
+                    formControlName="password"
+                    [(ngModel)]="password"
+                    required
+                    class="form-control form-control-lg"
                     id="signin-password"
                     placeholder="password"
                   />
-                  <button class="btn btn-light" type="button" (click)="toggleVisibility()">
-                    <i class="{{ toggleClass }} align-middle" ></i>
+                  <button
+                    class="btn btn-light"
+                    type="button"
+                    (click)="toggleVisibility()"
+                  >
+                    <i class="{{ toggleClass }} align-middle"></i>
                   </button>
                 </div>
                 <div class="mt-2">
@@ -164,46 +92,121 @@
                 </div>
               </div>
               <div class="col-xl-12 d-grid mt-2">
-                  <button type="submit" [disabled]=" !loginForm.valid || authservice.showLoader" class="btn btn-lg btn-primary"
-                  >Sign In</button
+                <button
+                  type="submit"
+                  class="btn btn-lg btn-primary{{ disabled }}"
+                  autofocus
+                  [class.loader--text]="authservice.showLoader"
+                  [disabled]="!loginForm.valid || authservice.showLoader"
                 >
+                  Sign In
+                </button>
               </div>
-              </form>
-            </ng-template>
-          </li>
-        </ul>
-        <div class="card custom-card">
-          
-          <div class="card-body p-5">
-            <p class="h4 mb-2 fw-semibold">Sign In</p>
-            <p class="mb-4 text-muted fw-normal">Welcome back Jhon !</p>
-            <div class="login-option">
-            
+            </form>
+          </ng-template>
+        </li>
+        <li ngbNavItem="Angular">
+          <a ngbNavLink>
+            <img class="firebase" src="./assets/images/angular.svg" alt="" />
+          </a>
+          <ng-template ngbNavContent class="mt-2">
+            <form [formGroup]="loginForm" (ngSubmit)="Submit()">
+              <div class="text-danger">{{ error }}</div>
+              <div class="col-xl-12">
+                <label for="signin-username" class="form-label text-default"
+                  >User Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control mb-3"
+                  id="signin-username"
+                  placeholder="user name"
+                  formControlName="username"
+                  autocomplete
+                />
+              </div>
+              <div class="col-xl-12 mb-2">
+                <label
+                  for="signin-password"
+                  class="form-label text-default d-block"
+                  >Password
+                  <a class="float-end text-danger">Forget password ?</a></label
+                >
+                <div class="input-group">
+                  <input
+                    formControlName="password"
+                    autocomplete
+                    [type]="showPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="signin-password"
+                    placeholder="password"
+                  />
+                  <button
+                    class="btn btn-light"
+                    type="button"
+                    (click)="toggleVisibility()"
+                  >
+                    <i class="{{ toggleClass }} align-middle"></i>
+                  </button>
+                </div>
+                <div class="mt-2">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="defaultCheck1"
+                    />
+                    <label
+                      class="form-check-label text-muted fw-normal"
+                      for="defaultCheck1"
+                    >
+                      Remember password ?
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-12 d-grid mt-2">
+                <button
+                  type="submit"
+                  [disabled]="!loginForm.valid || authservice.showLoader"
+                  class="btn btn-lg btn-primary"
+                >
+                  Sign In
+                </button>
+              </div>
+            </form>
+          </ng-template>
+        </li>
+      </ul>
+      <div class="card custom-card">
+        <div class="card-body p-5">
+          <p class="h4 mb-2 fw-semibold">Sign In</p>
+          <p class="mb-4 text-muted fw-normal">Welcome back Jhon !</p>
+          <div class="login-option"></div>
+          <div class="" [ngbNavOutlet]="nav"></div>
+          <div class="text-center">
+            <p class="fs-12 text-muted mt-3">
+              Dont have an account?
+              <a [routerLink]="['/sales']" class="text-primary">Sign Up</a>
+            </p>
           </div>
-            <div class="" [ngbNavOutlet]="nav"></div>
-            <div class="text-center">
-              <p class="fs-12 text-muted mt-3">
-                Dont have an account?
-                <a [routerLink]="['/sales']" class="text-primary">Sign Up</a>
-              </p>
-            </div>
-            <div class="text-center my-3 authentication-barrier">
-              <span>OR</span>
-            </div>
-            <div class="btn-list text-center">
-              <button class="btn btn-icon btn-light">
-                <i class="ri-facebook-line fw-bold text-dark op-7"></i>
-              </button>
-              <button class="btn btn-icon btn-light">
-                <i class="ri-google-line fw-bold text-dark op-7"></i>
-              </button>
-              <button class="btn btn-icon btn-light">
-                <i class="ri-twitter-x-line fw-bold text-dark op-7"></i>
-              </button>
-            </div>
+          <div class="text-center my-3 authentication-barrier">
+            <span>OR</span>
+          </div>
+          <div class="btn-list text-center">
+            <button class="btn btn-icon btn-light">
+              <i class="ri-facebook-line fw-bold text-dark op-7"></i>
+            </button>
+            <button class="btn btn-icon btn-light">
+              <i class="ri-google-line fw-bold text-dark op-7"></i>
+            </button>
+            <button class="btn btn-icon btn-light">
+              <i class="ri-twitter-x-line fw-bold text-dark op-7"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

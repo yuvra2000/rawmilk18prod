@@ -23,7 +23,7 @@ import {
 } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { MapInfoContentComponent } from '../map-info-content/map-info-content.component';
+// import { MapInfoContentComponent } from '../map-info-content/map-info-content.component';
 import { GoogleMapsLoaderService } from '../../services/google-maps-loader.service';
 import { PolylineService } from '../../services/mapServices/polyline.service';
 import { MarkerConfigService } from './shared/MarkerConfig.service';
@@ -75,7 +75,7 @@ export interface GeofenceData {
   imports: [
     CommonModule,
     GoogleMapsModule,
-    MapInfoContentComponent,
+    // MapInfoContentComponent,
     MapPolyline, // ✅ Added for <map-polyline>
     MapCircle, // ✅ Added for <map-circle>
     MapPolygon,

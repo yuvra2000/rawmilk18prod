@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  BASE_URL: "https://apinode1.secutrak.in/mobileApiDairyM"
+  BASE_URL: 'https://apinode1.secutrak.in/mobileApiDairyM',
+  googleMapsApiKey: 'AIzaSyC9n1sXo2j8l3mLh7Zt5vX9y8w6e4r2t1',
 };
 
 /*

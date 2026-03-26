@@ -15,6 +15,6 @@ export interface TabConfig {
   styleUrl: './nav-tab.component.scss',
 })
 export class NavTabComponent {
- tabs = input.required<TabConfig[]>();
- active = model<number>(0);
+  tabs = input.required<TabConfig[]>();
+  active = model<number>(0);
 }

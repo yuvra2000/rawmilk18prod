@@ -1,6 +1,6 @@
 <app-collapse-wrapper>
-  <div class="header" custom-icon>
-    <i class="fa fa-truck"></i>
+  <div class="header h-5 w-5 cursor-pointer" custom-icon>
+    <i class="fa fa-plus-circle icon-add" (click)="openAddIndent()"></i>
   </div>
   <filter-form
     #viewIndentFilter
@@ -13,4 +13,5 @@
   [rowData]="indentRowData()"
   [config]="indentConfig()"
   (selectionChanged)="handleSelectionChange($event)"
-></app-advanced-grid>
+>
+</app-advanced-grid>

@@ -263,12 +263,12 @@ export class MapModalComponent implements OnDestroy {
     });
     // 2. ✅ ISOLATED TIMELINE EFFECT
     // This will now ONLY run if 'timelineData' object changes.
-    effect(() => {
-      const tData = this.timelineConfig();
-      if (tData) {
-        untracked(() => this.fetchTimelineData(tData));
-      }
-    });
+    // effect(() => {
+    //   const tData = this.timelineConfig();
+    //   if (tData) {
+    //     untracked(() => this.fetchTimelineData(tData));
+    //   }
+    // });
 
     // 3. ✅ ISOLATED LIVE TRACKING EFFECT
     effect(() => {
@@ -344,24 +344,24 @@ export class MapModalComponent implements OnDestroy {
     } finally {
     }
   }
-  async fetchTimelineData(requestBody: any) {
-    console.log('response', requestBody);
-    this.isTimelineLoading.set(true);
-    try {
-      const response: any =
-        await this.timelineservice.fetchTimeline(requestBody);
-      // Check if response is valid and has data
-      if (Array.isArray(response) && response.length > 0) {
-        this.timelineEvents.set(response);
-      } else {
-        this.timelineEvents.set([]); // Hide timeline if no data
-      }
-    } catch (error) {
-      console.warn('error', error);
-    } finally {
-      this.isTimelineLoading.set(false);
-    }
-  }
+  // async fetchTimelineData(requestBody: any) {
+  //   console.log('response', requestBody);
+  //   this.isTimelineLoading.set(true);
+  //   try {
+  //     const response: any =
+  //       await this.timelineservice.fetchTimeline(requestBody);
+  //     // Check if response is valid and has data
+  //     if (Array.isArray(response) && response.length > 0) {
+  //       this.timelineEvents.set(response);
+  //     } else {
+  //       this.timelineEvents.set([]); // Hide timeline if no data
+  //     }
+  //   } catch (error) {
+  //     console.warn('error', error);
+  //   } finally {
+  //     this.isTimelineLoading.set(false);
+  //   }
+  // }
   handleTimelineClick(eventItem: any) {
     console.log('Timeline Item Clicked:', eventItem);
     let pos = null;

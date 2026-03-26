@@ -1,4 +1,7 @@
-import { GridColumnConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import {
+  ActionCellRendererComponent,
+  GridColumnConfig,
+} from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { FieldConfig } from '../../../../shared/components/filter-form/filter-form.component';
 export const viewIndentFilterFields: FieldConfig[] = [
   {
@@ -13,6 +16,15 @@ export const viewIndentFilterFields: FieldConfig[] = [
     type: 'date',
     label: 'To Date',
     placeholder: 'Select Date',
+    required: true,
+  },
+];
+export const editFields: FieldConfig[] = [
+  {
+    name: 'quantity',
+    type: 'number',
+    label: 'Quantity',
+    placeholder: 'Enter Quantity',
     required: true,
   },
 ];
@@ -52,9 +64,29 @@ export const viewIndentGridColumns: GridColumnConfig[] = [
     headerName: 'Milk Type',
     field: 'milk_type_name',
   },
-  {
-    headerName: 'Action',
-    field: 'action',
-    cellRenderer: 'actionRenderer',
-  },
 ];
+export const actionColumn: GridColumnConfig = {
+  headerName: 'Action',
+  field: 'action',
+  // cellRenderer: (params: any) => {
+  //   console.log('Cell renderer params:', params);
+  //   // params.data.editStatus == 1 ? ActionCellRendererComponent : undefined;
+  //   return ActionCellRendererComponent;
+  // },
+  cellRenderer: ActionCellRendererComponent,
+  cellRendererParams: {
+    actions: [
+      {
+        icon: 'fa-solid fa-pen-to-square',
+        action: 'edit',
+        tooltip: 'Edit Indent',
+        onClick: (data: any, node: any, params: any) => {
+          debugger;
+          if (params.context?.componentParent) {
+            params.context.componentParent.onEditIndent(params.data);
+          }
+        },
+      },
+    ],
+  },
+};

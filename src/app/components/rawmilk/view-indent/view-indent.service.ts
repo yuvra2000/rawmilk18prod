@@ -10,4 +10,7 @@ export class ViewIndentService {
   getIndentData(params: any) {
     return this.http.post(`${environment.BASE_URL}/pendingIndentProc`, params);
   }
+  updateData(data: any) {
+    return this.http.post(`${environment.BASE_URL}/editIndent`, data);
+  }
 }

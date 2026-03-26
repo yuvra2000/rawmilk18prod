@@ -80,6 +80,7 @@ export interface GridConfig {
   columns: GridColumnConfig[];
   data?: any[];
   serverSideMode?: boolean;
+  isRowSelectable?: (rowNode: any) => boolean;
   getRowStyle?: (params: any) => RowStyle | undefined;
   serverSideDataSource?: (params: IServerSideGetRowsParams) => Promise<any>;
   isRowPinned?: IsRowPinned<any>;
@@ -132,6 +133,7 @@ export interface GridConfig {
   initialState?: any;
   // enableSideBar?: boolean;
   tooltipComponent?: any;
+  context?: any;
 }
 
 export interface GridEvents {
@@ -182,7 +184,7 @@ export interface ActionConfig {
   buttonStyle?: string;
   visible?: (data: any) => boolean;
   disabled?: (data: any) => boolean;
-  onClick?: (data: any, node?: any) => void;
+  onClick?: (data: any, node?: any, params?: any) => void;
   labelStyle?: { [key: string]: string }; // New property for label styling
 }
 
@@ -195,7 +197,7 @@ export interface IActionCellRendererParams extends ICellRendererParams {
 @Component({
   selector: 'app-action-cell-renderer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgbTooltip],
   template: `
     @if (shouldShow()) {
       <div class="action-cell" [style]="cellStyle()">
@@ -204,7 +206,8 @@ export interface IActionCellRendererParams extends ICellRendererParams {
             [class]="action.cssClass || 'btn'"
             [disabled]="action.disabled && action.disabled(rowData())"
             (click)="onActionClick(action)"
-            [title]="action.tooltip || getActionLabel(action)"
+            [ngbTooltip]="action.tooltip"
+            container="body"
             type="button"
             [style]="action.buttonStyle"
           >
@@ -321,7 +324,8 @@ export class ActionCellRendererComponent
 
   onActionClick(action: ActionConfig): void {
     if (action.onClick) {
-      action.onClick(this.rowData(), this.params()?.node);
+      debugger;
+      action.onClick(this.rowData(), this.params()?.node, this.params());
     }
   }
 }
@@ -797,7 +801,9 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
   });
   gridOptions = computed(() => {
     const currentConfig = this.config();
+    console.log('Computing grid options with config:', currentConfig);
     const options: GridOptions = {
+      context: currentConfig.context || {},
       domLayout: currentConfig.autoHeight ? 'autoHeight' : undefined,
       rowBuffer: 30,
       autoSizeStrategy: this.config().autoSizeColumns
@@ -815,7 +821,9 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       masterDetail: this.config().enableMasterDetail || false,
       detailCellRenderer: this.config().detailCellRenderer,
       // ... all other grid options derived from `currentConfig` ...
+      // isRowSelectable: currentConfig.isRowSelectable,
     };
+
     if (currentConfig.enableRowSelection) {
       if (this.config().enableRowSelection === true) {
         const selectionMode =
@@ -827,10 +835,17 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
           mode: selectionMode,
           enableClickSelection: false,
           checkboxes: true,
+          isRowSelectable: (rowNode: IRowNode) => {
+            if (currentConfig.isRowSelectable) {
+              return currentConfig.isRowSelectable(rowNode.data);
+            }
+            return true; // Default: all rows selectable
+          },
         };
       }
       //yeh place thodi doubtful hai
     }
+    console.log('Final grid options:', options);
     return options;
   });
   frameworkComponents = {

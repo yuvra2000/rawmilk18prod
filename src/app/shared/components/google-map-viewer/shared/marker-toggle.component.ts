@@ -11,57 +11,77 @@ import { PlayTrackService } from './play-track.service';
   imports: [CommonModule, FormsModule],
   template: `
     <div class="marker-toggle-container">
-      @if(drawPolyline()){
-      <button
-        class="toggle-button"
-        (click)="togglePolyline()"
-        [class.active]="polylineService.showPolyline()"
-      >
-        <i
-          class="fa-solid fa-s"
-          style="transform: rotate(40deg); display:inline-block; color:blue"
-        ></i>
+      @if (drawPolyline()) {
+        <button
+          class="toggle-button"
+          (click)="togglePolyline()"
+          [class.active]="polylineService.showPolyline()"
+        >
+          <i
+            class="fa-solid fa-s"
+            style="transform: rotate(40deg); display:inline-block; color:blue"
+          ></i>
 
-        <!-- <span>{{ category.name | titlecase }}</span> -->
-      </button>
-   <!-- ✅ PLAY TRACK CONTROLS -->
-         <div class="playback-group d-flex align-items-center gap-1 border-start ps-2 ms-1">
-             <!-- Play/Pause Button -->
-             <button class="toggle-button" 
-                 [class.active]="playTrackService.isPlaybackActive()" 
-                 (click)="togglePlayback()" 
-                 [disabled]="liveTrackingService.isTrackingActive()"
-                 title="Play History">
-                 @if(playTrackService.isLoading()) {
-                     <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
-                 } @else {
-                     <i class="fa-solid" [class.fa-pause]="playTrackService.isPlaybackActive()" [class.fa-play]="!playTrackService.isPlaybackActive()" style="color: blue;"></i>
-                 }
-             </button>
+          <!-- <span>{{ category.name | titlecase }}</span> -->
+        </button>
+        <!-- ✅ PLAY TRACK CONTROLS -->
+        <div
+          class="playback-group d-flex align-items-center gap-1 border-start ps-2 ms-1"
+        >
+          <!-- Play/Pause Button -->
+          <button
+            class="toggle-button"
+            [class.active]="playTrackService.isPlaybackActive()"
+            (click)="togglePlayback()"
+            [disabled]="liveTrackingService.isTrackingActive()"
+            title="Play History"
+          >
+            @if (playTrackService.isLoading()) {
+              <span
+                class="spinner-border spinner-border-sm text-primary"
+                role="status"
+              ></span>
+            } @else {
+              <i
+                class="fa-solid"
+                [class.fa-pause]="playTrackService.isPlaybackActive()"
+                [class.fa-play]="!playTrackService.isPlaybackActive()"
+                style="color: blue;"
+              ></i>
+            }
+          </button>
 
-             <!-- Speed Slider (Only show when playing or paused) -->
-             @if(playTrackService.isPlaybackActive()) {
-                 <div class="d-flex flex-column align-items-center" style="width: 80px;">
-                     <input 
-                        type="range" 
-                        min="0.5" max="8" step="0.5" 
-                        [ngModel]="playTrackService.playbackSpeed()" 
-                        (ngModelChange)="onSpeedChange($event)"
-                        class="form-range" 
-                        style="height: 5px;">
-                     <span style="font-size: 10px;">{{ playTrackService.playbackSpeed() }}x</span>
-                 </div>
-             }
-         </div>
-      <button
-        class="toggle-button"
-        [class.active]="polylineService.showDirectionArrows()"
-        (click)="toggleDirectionArrows()"
-      >
-        <i class="fa-solid fa-location-arrow" style="color:blue"></i>
-      </button>
+          <!-- Speed Slider (Only show when playing or paused) -->
+          @if (playTrackService.isPlaybackActive()) {
+            <div
+              class="d-flex flex-column align-items-center"
+              style="width: 80px;"
+            >
+              <input
+                type="range"
+                min="0.5"
+                max="8"
+                step="0.5"
+                [ngModel]="playTrackService.playbackSpeed()"
+                (ngModelChange)="onSpeedChange($event)"
+                class="form-range"
+                style="height: 5px;"
+              />
+              <span style="font-size: 10px;"
+                >{{ playTrackService.playbackSpeed() }}x</span
+              >
+            </div>
+          }
+        </div>
+        <button
+          class="toggle-button"
+          [class.active]="polylineService.showDirectionArrows()"
+          (click)="toggleDirectionArrows()"
+        >
+          <i class="fa-solid fa-location-arrow" style="color:blue"></i>
+        </button>
 
-       <button
+        <button
           class="toggle-button"
           [class.active]="liveTrackingService.isTrackingActive()"
           (click)="toggleLiveTracking()"
@@ -70,21 +90,20 @@ import { PlayTrackService } from './play-track.service';
           <!-- Using a 'Tower' icon to represent Live Signal -->
           <i class="fa-solid fa-tower-broadcast" style="color:red"></i>
         </button>
-
-      } @for (category of categories; track category.name) {
-      <button
-        class="toggle-button"
-        [class.active]="!isCategoryHidden(category.name)"
-        (click)="toggleVisibility(category.name)"
-      >
-        <img
-          [src]="category.icon"
-          alt="{{ category.name }}"
-          class="toggle-icon"
-        />
-        <!-- <span>{{ category.name | titlecase }}</span> -->
-      </button>
-
+      }
+      @for (category of categories; track category.name) {
+        <button
+          class="toggle-button"
+          [class.active]="!isCategoryHidden(category.name)"
+          (click)="toggleVisibility(category.name)"
+        >
+          <img
+            [src]="category.icon"
+            alt="{{ category.name }}"
+            class="toggle-icon"
+          />
+          <!-- <span>{{ category.name | titlecase }}</span> -->
+        </button>
       }
     </div>
   `,
@@ -93,8 +112,8 @@ import { PlayTrackService } from './play-track.service';
 export class MarkerToggleComponent {
   polylineService = inject(PolylineService);
   drawPolyline = input<boolean>(false);
-   liveTrackingService = inject(LiveTrackingService);
-    playTrackService = inject(PlayTrackService); // ✅
+  liveTrackingService = inject(LiveTrackingService);
+  playTrackService = inject(PlayTrackService); // ✅
   readonly categories = [
     { name: 'green', icon: 'assets/imagesnew/green_Marker1.png' },
     { name: 'yellow', icon: 'assets/imagesnew/yellow_Marker1.png' },
@@ -119,19 +138,19 @@ export class MarkerToggleComponent {
   toggleDirectionArrows(): void {
     this.polylineService.toggleDirectionArrows();
   }
-   // ✅ New Method to Toggle Live Tracking
+  // ✅ New Method to Toggle Live Tracking
   toggleLiveTracking(): void {
     this.liveTrackingService.toggleTracking();
   }
-   togglePlayback() {
-      // Auto-stop live tracking if running
-      if (this.liveTrackingService.isTrackingActive()) {
-          this.liveTrackingService.stopTracking();
-      }
-      this.playTrackService.togglePlayback();
+  togglePlayback() {
+    // Auto-stop live tracking if running
+    if (this.liveTrackingService.isTrackingActive()) {
+      this.liveTrackingService.stopTracking();
+    }
+    this.playTrackService.togglePlayback();
   }
 
   onSpeedChange(speed: number) {
-      this.playTrackService.setSpeed(speed);
+    this.playTrackService.setSpeed(speed);
   }
 }

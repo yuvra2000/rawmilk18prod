@@ -5,9 +5,7 @@ import { rawMilkRoutingModule } from '../../components/rawmilk/rawmilk.routes';
 export const content: Routes = [
   {
     path: '',
-    children: [
-      ...rawMilkRoutingModule.routes
-    ],
+    children: [...rawMilkRoutingModule.routes],
   },
 ];
 @NgModule({
@@ -15,4 +13,3 @@ export const content: Routes = [
   exports: [RouterModule],
 })
 export class SharedRoutingModule {}
- 

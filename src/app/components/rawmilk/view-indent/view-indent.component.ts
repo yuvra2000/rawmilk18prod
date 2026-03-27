@@ -15,20 +15,33 @@ import {
 } from '../../../shared/components/filter-form/filter-form.component';
 import {
   actionColumn,
+  addIntentFields,
+  closeIntentField,
   editFields,
+  uploadIntentFields,
   viewIndentFilterFields,
   viewIndentGridColumns,
 } from './state-service/config';
 import {
+  formData,
+  getMccOptionsForSupplier,
+  masterFormData,
+} from './state-service/utils';
+import {
   AdvancedGridComponent,
   GridConfig,
 } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
 import { ViewIndentService } from './view-indent.service';
-import { createFormData } from '../../../shared/utils/shared-utility.utils';
+import {
+  createFormData,
+  handleApiError,
+  handleApiResponse,
+  updateFieldOptions,
+} from '../../../shared/utils/shared-utility.utils';
 import { AlertService } from '../../../shared/services/alert.service';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
-import { AddIntentModalComponent } from './add-intent-modal/add-intent-modal.component';
+import { TabConfig } from '../../../shared/components/nav-tab/nav-tab.component';
 
 @Component({
   selector: 'app-view-indent',
@@ -49,16 +62,29 @@ export class ViewIndentComponent implements OnInit {
   private toastService = inject(AlertService);
   private modalService = inject(UniversalModalService);
 
+  // Signals for form fields
   filterfields = signal<FieldConfig[]>(viewIndentFilterFields);
   editFields = signal<FieldConfig[]>(editFields);
+  closeIntentField = signal<FieldConfig[]>(closeIntentField);
+  addIntentFields = signal<FieldConfig[]>(addIntentFields);
+  uploadIntentFields = signal<FieldConfig[]>(uploadIntentFields);
+  addIntentFieldsSignal = signal<FieldConfig[]>([]);
+  uploadIntentFieldsSignal = signal<FieldConfig[]>([]);
+
+  // Table data and config
   indentRowData = signal<any[]>([]);
   token = localStorage.getItem('AccessToken') || '';
+
+  selectedRowData = signal<any>(null);
+  state = signal({
+    milkList: [],
+    plantList: [],
+  });
   indentConfig = signal<GridConfig>({
     theme: 'alpine',
     rowSelectionMode: 'multiple',
     enableRowSelection: true,
     isRowSelectable: (params: any) => {
-      // debugger;
       return params?.closeStatus == 1 && this.usertype() === 'Manager';
     },
     context: {
@@ -68,49 +94,69 @@ export class ViewIndentComponent implements OnInit {
   });
   usertype = signal<any>('');
   ngOnInit() {
+    this.token = localStorage.getItem('AccessToken') || '';
     this.usertype.set(localStorage.getItem('usertype') || '');
+    console.log('User Type:', this.usertype());
     this.setupGrid();
     this.loadInitialData();
+    this.initializeFields();
+  }
+  initializeFields() {
+    this.addIntentFieldsSignal.set(addIntentFields);
+    this.uploadIntentFieldsSignal.set(uploadIntentFields);
   }
   setupGrid() {
     this.indentConfig.update((config) => ({
       ...config,
       columns:
-        this.usertype() === 'Manager'
+        this.usertype() === 'Manager' || this.usertype() == '12'
           ? [...viewIndentGridColumns, actionColumn]
           : viewIndentGridColumns,
     }));
   }
   async loadInitialData() {
     try {
-      const toDate = new Date();
-      toDate.setDate(toDate.getDate() + 7); // Set to date 7 days in the future
-      const formData = createFormData(this.token, {
-        from: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
-        to: toDate.toISOString().split('T')[0], // Date 7 days in the future in YYYY-MM-DD format
-        GroupId: localStorage.getItem('GroupId') || '',
-        UserType: '',
-        SubRole: '',
-        ForWeb: '1',
-      });
-      const res: any = await firstValueFrom(
-        this.viewIndentService.getIndentData(formData),
-      );
-
-      this.indentRowData.set(res.Indents || []);
-      if (res.Indents && res.Indents.length > 0) {
-        this.toastService.success(
-          res.message || 'Indent data loaded successfully',
-        );
-      } else {
-        this.toastService.info(
-          res.message || 'No indent data found for the selected date range.',
-        );
-      }
+      forkJoin({
+        indentData: this.viewIndentService.getIndentData(formData),
+        masterData:
+          this.viewIndentService.getCreateIndentDataMilkAndPlantSupplier(
+            masterFormData,
+          ),
+      })
+        .pipe(
+          catchError((error) => {
+            handleApiError(
+              error,
+              this.toastService,
+              'An error occurred while loading indent data',
+            );
+            return of({
+              indentData: { Indents: [] },
+              masterData: { Milk: [], PlantSupplier: [] },
+            });
+          }),
+        )
+        .subscribe((result: any) => {
+          this.state.update((state) => ({
+            ...state,
+            milkList: result?.masterData.Milk || [],
+            plantList: result?.masterData.PlantSupplier || [],
+          }));
+          this.setupFieldOptions();
+          this.indentRowData.set(result?.indentData.Indents || []);
+          handleApiResponse(
+            result?.indentData,
+            this.toastService,
+            undefined,
+            undefined,
+            'Indent data loaded successfully',
+          );
+        });
     } catch (error: any) {
-      this.toastService.error(
-        error?.error?.message ||
-          'Failed to load indent data. Please try again later.',
+      handleApiError(
+        error,
+        this.toastService,
+        'An error occurred while loading indent data',
       );
     }
   }
@@ -118,7 +164,7 @@ export class ViewIndentComponent implements OnInit {
     console.log('Form submitted with data:', data);
   }
   handleSelectionChange(selected: any) {
-    console.log('Selected value:', selected);
+    this.selectedRowData.set(selected);
   }
   onEditIndent(data: any) {
     this.modalService.openForm({
@@ -140,35 +186,218 @@ export class ViewIndentComponent implements OnInit {
           const res: any = await firstValueFrom(
             this.viewIndentService.updateData(formData),
           );
-          console.log('Update response:', res);
-          if (res.success) {
-            this.toastService.success(
-              res.message || 'Indent updated successfully',
-            );
-            this.loadInitialData(); // Refresh data after update
-          } else {
-            this.toastService.error(
-              res.Data || res.message || 'Failed to update indent',
-            );
-          }
+          handleApiResponse(
+            res,
+            this.toastService,
+            () => this.loadInitialData(), // Success callback
+            undefined,
+            'Indent updated successfully',
+          );
         } catch (error: any) {
-          this.toastService.error(
-            error?.error?.message || 'An error occurred while updating indent',
+          handleApiError(
+            error,
+            this.toastService,
+            'An error occurred while updating indent',
+          );
+        }
+      },
+    });
+  }
+  async saveIntent(formData: any, type: 'form' | 'upload') {
+    try {
+      let params: any = {
+        GroupId: localStorage.getItem('GroupId') || '',
+        ForApp: '0',
+      };
+
+      if (type === 'form') {
+        // ✅ Map form fields to API parameters for ADD INTENT
+        params = {
+          ...params,
+          target_date: formData?.targetDate ?? '',
+          plant_id: formData?.toPlant?.id ?? '',
+          plant_code: formData?.toPlant?.code ?? '',
+          plant_name: formData?.toPlant?.name ?? '',
+          quantity: formData?.quantity ?? '',
+          milk_id: formData?.milkType?.id ?? '',
+          milk_type: formData?.milkType?.code ?? '',
+          milk_type_name: formData?.milkType?.name ?? '',
+          supplier_id: formData?.fromSupplierPlant?.id ?? '',
+          supplier_code: formData?.fromSupplierPlant?.code ?? '',
+          supplier_name: formData?.fromSupplierPlant?.name ?? '',
+          mcc_id: formData?.mcc?.mcc_id ?? '',
+          mcc_code: formData?.mcc?.code ?? '',
+          mcc_name: formData?.mcc?.name ?? '',
+          repeat_indent: formData?.repeatIndent ?? '',
+          fat: formData?.fat ?? '',
+          snf: formData?.snf ?? '',
+          mbrt: formData?.mbrt ?? '',
+        };
+      } else if (type === 'upload') {
+        // ✅ Map form fields for UPLOAD INTENT
+        params = {
+          ...params,
+          file: formData?.file ?? null, // Assuming file upload
+          file_name: formData?.fileName ?? '',
+          // Add other upload-specific fields as needed
+        };
+      }
+
+      const apiFormData = createFormData(this.token, params);
+
+      const res: any = await firstValueFrom(
+        this.viewIndentService.createIntent(apiFormData, type),
+      );
+
+      // ✅ Use shared utility function
+      handleApiResponse(
+        res,
+        this.toastService,
+        () => this.loadInitialData(),
+        undefined,
+        `Intent ${type === 'form' ? 'created' : 'uploaded'} successfully`,
+      );
+    } catch (error: any) {
+      handleApiError(
+        error,
+        this.toastService,
+        `An error occurred while ${type === 'form' ? 'creating' : 'uploading'} intent`,
+      );
+    }
+  }
+  closeIntent() {
+    if (!this.selectedRowData()) {
+      this.toastService.warning('Please select at least one indent to close.');
+      return;
+    }
+    this.modalService.openForm({
+      title: 'Close Indent',
+      fields: this.closeIntentField,
+      mode: 'form',
+      buttonName: 'Update',
+      onSave: async (form: any) => {
+        try {
+          const formData = createFormData(this.token, {
+            remark: form.remarks, // Assuming only one field for editing
+            ForApp: '0',
+            id: this.selectedRowData().map((item: any) => item.id),
+          });
+          const res: any = await firstValueFrom(
+            this.viewIndentService.closeIntent(formData),
+          );
+          handleApiResponse(
+            res,
+            this.toastService,
+            () => this.loadInitialData(), // Success callback
+            undefined,
+            'Indent closed successfully',
+          );
+        } catch (error: any) {
+          handleApiError(
+            error,
+            this.toastService,
+            'An error occurred while closing indent',
           );
         }
       },
     });
   }
   openAddIndent() {
-    this.modalService
-      .open(AddIntentModalComponent, {
-        size: 'lg',
+    const tabs: TabConfig[] = [
+      {
         title: 'Add Intent',
+        component: FilterFormComponent,
+        componentInputs: {
+          incomingConfig: {
+            title: 'Add Intent',
+            mode: 'form',
+            fields: this.addIntentFieldsSignal(),
+            onSave: (formData: any) => {
+              this.saveIntent(formData, 'form');
+            },
+            // ✅ Handle value changes for dependent fields
+            onControlValueChange: (
+              controlName: string,
+              value: any,
+              form: any,
+            ) => {
+              if (controlName === 'fromSupplierPlant') {
+                this.handleSupplierPlantChange(value, form);
+              }
+            },
+            showFooter: true,
+            initialData: {},
+          },
+        },
+      },
+      {
+        title: 'Upload',
+        component: FilterFormComponent,
+        componentInputs: {
+          incomingConfig: {
+            title: 'Upload Intent',
+            mode: 'form',
+            fields: this.uploadIntentFieldsSignal(),
+            onSave: (formData: any) => {
+              this.saveIntent(formData, 'upload');
+            },
+            showFooter: true,
+            buttonName: 'Upload',
+            btnClass: 'btn-primary ms-auto me-auto rounded', // Optional: Add custom class for styling the button
+          },
+        },
+      },
+    ];
+
+    this.modalService
+      .openNavTabsModal({
+        size: 'md',
+        tabList: tabs,
+        title: 'Manage Intents',
       })
       .then((result) => {
         if (result === 'success') {
-          this.loadInitialData(); // Refresh data after adding new indent
+          this.loadInitialData();
         }
       });
+  }
+  setupFieldOptions() {
+    // Update "Milk Type" field options
+    updateFieldOptions(
+      this.addIntentFieldsSignal,
+      'milkType',
+      this.state().milkList, // From your master data
+    );
+
+    // Update "To Plant" field options
+    updateFieldOptions(
+      this.addIntentFieldsSignal,
+      'toPlant',
+      this.state().plantList,
+    );
+
+    // Update "From Supplier/Plant" field options
+    updateFieldOptions(
+      this.addIntentFieldsSignal,
+      'fromSupplierPlant',
+      this.state().plantList,
+    );
+  }
+
+  async handleSupplierPlantChange(
+    selectedSupplierPlant: any,
+    form: any,
+  ): Promise<void> {
+    if (!selectedSupplierPlant) {
+      updateFieldOptions(this.addIntentFieldsSignal, 'mcc', []);
+      form.get('mcc')?.setValue(null);
+      return;
+    }
+    const mccOptions = await getMccOptionsForSupplier(
+      selectedSupplierPlant,
+      this.viewIndentService,
+    );
+    updateFieldOptions(this.addIntentFieldsSignal, 'mcc', mccOptions);
+    form.get('mcc')?.setValue(null);
   }
 }

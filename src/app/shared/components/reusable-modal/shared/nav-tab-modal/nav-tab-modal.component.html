@@ -1,0 +1,37 @@
+<app-base-modal [title]="modalTitle()">
+  <!-- <h3 class="modal-title">{{ modalTitle() }}</h3> -->
+  <div class="nav-tab-wrapper pt-1 rounded bg-white mb-3">
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      [(activeId)]="active"
+      class="nav nav-tabs custom-nav-tabs"
+    >
+      @for (tab of tabs(); track tab) {
+        <li [ngbNavItem]="tabs().indexOf(tab)">
+          <button
+            ngbNavLink
+            class="nav-link fw-semibold"
+            [ngClass]="{ 'active-tab': active() === tabs().indexOf(tab) }"
+          >
+            {{ tab.title }}
+          </button>
+          <ng-template ngbNavContent>
+            @if (tab.component) {
+              <ng-container
+                *ngComponentOutlet="
+                  tab.component;
+                  inputs: tab.componentInputs || {}
+                "
+              >
+              </ng-container>
+            } @else {
+              {{ tab.content || "" }}
+            }
+          </ng-template>
+        </li>
+      }
+    </ul>
+    <div [ngbNavOutlet]="nav" class="p-1"></div>
+  </div>
+</app-base-modal>

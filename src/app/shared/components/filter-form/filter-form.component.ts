@@ -164,8 +164,50 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
   private fromDateFieldName?: string;
   private toDateFieldName?: string;
   private activeSubscriptions = new Set<string>();
-
+  @Input() incomingConfig: {
+    title?: string;
+    mode?: string;
+    fields?: FieldConfig[];
+    onSave?: (data: any) => void;
+    onControlValueChange?: (controlName: string, value: any, form: FormGroup) => void;
+    showFooter?: boolean;
+    buttonName?: string;
+    btnClass?: string;
+    initialData?: any;
+  } = {};
   constructor() {
+    effect(
+      () => {
+        const config = this.incomingConfig;
+        if (config) {
+          if (config.fields) {
+            this._dynamicFieldsSignal.set(config.fields);
+            this._fieldsSignal.set(config.fields);
+          }
+          if (config.title) {
+            // Handle title if needed
+          }
+          if (config.buttonName) {
+            this.buttonName = config.buttonName;
+          }
+          if (config.btnClass) {
+            this.btnClass = config.btnClass;
+          }
+          if (config.initialData) {
+            if (
+              config.initialData &&
+              this.form &&
+              Object.keys(this.form.controls).length > 0
+            ) {
+              untracked(() => {
+                this.populateForm(config.initialData);
+              });
+            }
+          }
+        }
+      },
+      { allowSignalWrites: true },
+    );
     /**
      * ✅ OPTIMIZATION: Sync form structure automatically
      */
@@ -292,6 +334,10 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe((value) => {
         if (shouldEmit) {
           this.controlValueChange.emit({ controlName, value, form: this.form });
+        }
+        // ✅ Also invoke the callback if provided in incomingConfig
+        if (this.incomingConfig?.onControlValueChange) {
+          this.incomingConfig.onControlValueChange(controlName, value, this.form);
         }
       });
 
@@ -494,6 +540,11 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
+    }
+    const formData = this.form.getRawValue();
+
+    if (this.incomingConfig?.onSave) {
+      this.incomingConfig.onSave(formData);
     }
     this.formSubmit.emit(this.form.getRawValue());
   }

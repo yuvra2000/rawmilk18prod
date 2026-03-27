@@ -6,6 +6,7 @@ export interface TabConfig {
   title: string;
   content?: string;
   component?: Type<any>; // 'any' ki jagah Type<any>
+  componentInputs?: { [key: string]: any }; // Optional inputs for the component
 }
 @Component({
   selector: 'app-nav-tab',
@@ -15,6 +16,6 @@ export interface TabConfig {
   styleUrl: './nav-tab.component.scss',
 })
 export class NavTabComponent {
-  tabs = input.required<TabConfig[]>();
+  tabs = input<TabConfig[]>();
   active = model<number>(0);
 }

@@ -48,6 +48,7 @@ export interface FieldConfig {
   uploadText?: string;
   allowedExtensions?: string[];
   uploadMode?: 'image' | 'file' | 'any';
+  displayMode?: 'form' | 'modal-form'; // ✅ NEW: To control display mode for file upload
   dateRole?: 'start' | 'end';
   inputFormatting?: InputFormatConfig;
   spkOptions?: SpkOptions;

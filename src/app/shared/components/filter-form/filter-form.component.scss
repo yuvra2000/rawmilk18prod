@@ -1,66 +1,66 @@
-
-
-small{
-    position: absolute !important;
+small {
+  position: absolute !important;
 }
 
 ::ng-deep .ng-select .ng-select-container {
-  
-      border: 1.5px solid #5e9fc8 !important;
+  border: 1.5px solid #5e9fc8 !important;
   min-height: 32px !important;
   height: unset !important;
 }
 
 .form-control {
+  border: 1.5px solid #5e9fc8 !important;
+  min-height: 32px !important;
+  height: 32px !important;
 
-    border: 1.5px solid #5e9fc8 !important;
-    min-height: 32px !important;
-    height: 32px !important;
-
-       border-radius: 4px;
+  border-radius: 4px;
   font-size: 13px !important;
   font-weight: 400 !important;
   // height: 32px !important;
   // border: 1.5px solid #5e9fc8 !important;
 }
-.filter_name{
-  font-family: "Work Sans",sans-serif;
+.filter_name {
+  font-family: "Work Sans", sans-serif;
   font-size: 15px;
   font-weight: 500;
   color: #1d4380;
   text-align: left;
 }
-.reusable-btn{
-    margin-bottom: 0px;
-    background-color: #1d4380;
-    color: white;
-    font-family: Work Sans;
-    font-size: 13px;
-    padding: 5px 22px;
-    border-radius: 5px;
+.reusable-btn {
+  margin-bottom: 0px;
+  // background-color: #1d4380;
+  // background-color: var;
+  color: white;
+  font-family: Work Sans;
+  font-size: 13px;
+  padding: 5px 22px;
+  border-radius: 5px;
 }
 
 ::ng-deep .ng-select .ng-clear-wrapper {
-    cursor: pointer;
- 
-    display: block !important;
-    position: relative;
-    width: 17px;
-    -webkit-user-select: none;
-    user-select: none;
+  cursor: pointer;
+
+  display: block !important;
+  position: relative;
+  width: 17px;
+  -webkit-user-select: none;
+  user-select: none;
 }
-::ng-deep .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-    background-color: #ebf5ff !important;
-    color: #333 !important;
+::ng-deep
+  .ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-marked {
+  background-color: #ebf5ff !important;
+  color: #333 !important;
 }
 /* Style placeholder text in ng-select */
 ::ng-deep .custom-placeholder-style .ng-placeholder {
-    font-size: 13px !important;
-    font-weight: 400 !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
 }
 /* For multi-select ng-select - keep fixed height, scroll if content overflows */
 
-    // overflow-x: scroll;
+// overflow-x: scroll;
 
 // /* Style selected items container to limit height and enable scroll */
 // ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container {
@@ -75,7 +75,7 @@ small{
   background-color: #f8f9fa !important;
   border-color: #e9ecef !important;
   pointer-events: none;
-  
+
   &:hover {
     transform: none !important;
     box-shadow: none !important;
@@ -100,7 +100,7 @@ small{
 // Ng-select disabled styles
 .ng-select.disabled-field {
   pointer-events: none;
-  
+
   .ng-select-container {
     background-color: #f8f9fa;
     border-color: #e9ecef;
@@ -110,12 +110,12 @@ small{
 }
 
 // Password toggle button disabled
-.password-toggle-btn{
+.password-toggle-btn {
   display: flex;
   color: #5f5f83;
- 
-  i{
- font-size: 18px;
+
+  i {
+    font-size: 18px;
   }
 }
 .password-toggle-btn:disabled {
@@ -129,7 +129,7 @@ small{
   opacity: 0.6;
   cursor: not-allowed;
   pointer-events: none;
-  
+
   .form-check-input:disabled {
     opacity: 0.5;
   }
@@ -144,43 +144,43 @@ textarea.disabled-field {
   resize: none;
 }
 
-.file-mb-1{
-  margin-bottom: 4px!important;
+.file-mb-1 {
+  margin-bottom: 4px !important;
 }
 .disabled-field {
-    opacity: 0.6;
-    cursor: not-allowed !important;
-     background-color: #f8f9fa !important; 
-    //  border-color: #e9ecef !important; 
-     border: 1.5px solid #5e9fc8 !important;
-    pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed !important;
+  background-color: #f8f9fa !important;
+  //  border-color: #e9ecef !important;
+  border: 1.5px solid #5e9fc8 !important;
+  pointer-events: none;
 }
 // ✅ Updated Section Header Logic
 .section-header-container {
-    padding-left: 12px;
-    padding-right: 12px;
-    width: 100%;
+  padding-left: 12px;
+  padding-right: 12px;
+  width: 100%;
 }
 
 .section-heading {
-    font-family: "Work Sans", sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: #1d4380;
-    text-align: left;
-    
-    // ✅ Industry Standard: Pure CSS Underline on Heading
-    display: inline-block;          // Isse heading sirf content jitni width legi
-    padding-bottom: 4px;            // Text aur underline ke beech ka space
-    // margin-bottom: 8px;             // Niche wali fields se space
-    border-bottom: 2px solid #1d4380a6; // Heading ke saath hi underline
+  font-family: "Work Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1d4380;
+  text-align: left;
+
+  // ✅ Industry Standard: Pure CSS Underline on Heading
+  display: inline-block; // Isse heading sirf content jitni width legi
+  padding-bottom: 4px; // Text aur underline ke beech ka space
+  // margin-bottom: 8px;             // Niche wali fields se space
+  border-bottom: 2px solid #1d4380a6; // Heading ke saath hi underline
 }
 /* =========================================
    MODERN PROFESSIONAL CHECKBOX STYLING
    ========================================= */
 
 .form-check-input {
-  width: 16px;  /* 20px size (Thoda bada aur clear) */
+  width: 16px; /* 20px size (Thoda bada aur clear) */
   height: 16px; /* 20px size */
   border: 2px solid #9ca3af; /* 🔴 Darker gray border for Unchecked state */
   border-radius: 4px; /* Slight rounded corners (Modern look) */
@@ -192,7 +192,7 @@ textarea.disabled-field {
   &:checked {
     background-color: #1d4380; /* Theme Blue fill */
     border-color: #1d4380;
-    
+
     /* Bootstrap normally handles the white tick mark automatically, 
        but we ensure the background looks solid. */
   }
@@ -202,7 +202,7 @@ textarea.disabled-field {
     border-color: #1d4380;
     outline: 0;
     /* Soft blue glow ring when tabbed or clicked */
-    box-shadow: 0 0 0 3px rgba(29, 67, 128, 0.15); 
+    box-shadow: 0 0 0 3px rgba(29, 67, 128, 0.15);
   }
 
   /* --- 4. DISABLED STATE --- */
@@ -223,8 +223,8 @@ textarea.disabled-field {
   user-select: none; /* Text select na ho double click pe */
   padding-left: 4px;
 }
-.input-group-text{
-      height: 32px!important;
-    border: 1px solid #5e9fc8;
-    padding: 2px 4px!important;
+.input-group-text {
+  height: 32px !important;
+  border: 1px solid #5e9fc8;
+  padding: 2px 4px !important;
 }

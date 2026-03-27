@@ -1,3 +1,7 @@
+import {
+  NavTabComponent,
+  TabConfig,
+} from '../components/nav-tab/nav-tab.component';
 // services/universal-modal.service.ts
 import {
   Injectable,
@@ -15,6 +19,7 @@ import {
   MapModalComponent,
   MapModalData,
 } from '../components/google-map-viewer/map-modal';
+import { NavTabsModalComponent } from '../components/reusable-modal/shared/nav-tab-modal/nav-tab-modal.component';
 
 export interface ModalData {
   title?: string;
@@ -24,6 +29,10 @@ export interface ModalData {
   [key: string]: any; // Allow any additional data
 }
 
+export interface NavTabsModalData extends ModalData {
+  tabList: TabConfig[];
+  activeTab?: number;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -141,6 +150,31 @@ export class UniversalModalService {
 
     // ✅ Set via signal for reactivity (post-instantiation safe)
     (modalRef.componentInstance as MapModalComponent).config.set(config);
+
+    return modalRef.result;
+  }
+
+  public openNavTabsModal<R = any>(
+    data: NavTabsModalData,
+    options?: NgbModalOptions,
+  ): Promise<R> {
+    const modalRef = this.modalService.open(NavTabsModalComponent, {
+      backdrop: data?.backdrop !== false ? 'static' : false,
+      centered: data?.centered !== false,
+      size: data?.size || 'lg',
+      scrollable: true,
+      ...options,
+    });
+
+    const instance = modalRef.componentInstance as any;
+
+    // ✅ Map tabList to tabs signal
+    if (isSignal(instance.tabs)) {
+      (instance.tabs as WritableSignal<any>).set(data.tabList);
+      instance.modalTitle.set(data.title || '');
+    } else {
+      instance.tabs = data.tabList;
+    }
 
     return modalRef.result;
   }

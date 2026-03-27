@@ -16,10 +16,15 @@ import {
   FormModalConfig,
 } from '../components/reusable-modal/shared/form-modal/form-modal.component';
 import {
+  GridModalComponent,
+  GridModalConfig,
+} from '../components/reusable-modal/shared/grid-modal/grid-modal.component';
+import {
   MapModalComponent,
   MapModalData,
 } from '../components/google-map-viewer/map-modal';
 import { NavTabsModalComponent } from '../components/reusable-modal/shared/nav-tab-modal/nav-tab-modal.component';
+import { AdvancedGridComponent } from '../components/ag-grid/ag-grid/ag-grid.component';
 
 export interface ModalData {
   title?: string;
@@ -150,6 +155,22 @@ export class UniversalModalService {
 
     // ✅ Set via signal for reactivity (post-instantiation safe)
     (modalRef.componentInstance as MapModalComponent).config.set(config);
+
+    return modalRef.result;
+  }
+
+  public openGridModal(config: GridModalConfig): Promise<any> {
+    const options: NgbModalOptions = {
+      centered: true,
+      size: config.size || 'lg',
+      backdrop: 'static',
+      keyboard: false,
+    };
+
+    const modalRef = this.modalService.open(GridModalComponent, options);
+
+    // ✅ Set via signal for reactivity (post-instantiation safe)
+    (modalRef.componentInstance as GridModalComponent).config.set(config);
 
     return modalRef.result;
   }

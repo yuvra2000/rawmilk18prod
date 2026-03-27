@@ -19,6 +19,8 @@ export const viewIndentSupplierFilterFields: FieldConfig[] = [
     placeholder: 'Select Date',
     required: true,
   },
+];
+export const viewIndentSupplierGridColumnsIfNotChillingPlant: FieldConfig[] = [
   {
     name: 'status',
     type: 'select',
@@ -52,115 +54,9 @@ export const editFields: FieldConfig[] = [
     required: true,
   },
 ];
-export const closeIntentField: FieldConfig[] = [
-  {
-    name: 'remark',
-    type: 'text',
-    label: 'Remark',
-    placeholder: 'Enter Remark',
-    required: true,
-  },
-];
-export const uploadIntentFields: FieldConfig[] = [
-  {
-    name: 'upload',
-    type: 'file-upload',
-    label: 'Upload',
-    placeholder: 'Choose File',
-    required: true,
-    class: 'col-md-12',
-    uploadMode: 'file',
-    accept: '.xlsx, .xls',
-    uploadText: 'Upload Excel File',
-    displayMode: 'modal-form',
-  },
-];
-export const addIntentFields: FieldConfig[] = [
-  {
-    name: 'targetDate',
-    type: 'date',
-    label: 'Target Date',
-    placeholder: 'dd-mm-yyyy',
-    required: true,
-    class: 'col-md-6',
-  },
-  {
-    name: 'milkType',
-    type: 'select',
-    label: 'Milk Type',
-    placeholder: 'Select Milk Type',
-    // required: true,
-    class: 'col-md-6',
-    options: [], // To be populated dynamically
-  },
-  {
-    name: 'toPlant',
-    type: 'select',
-    label: 'To Plant',
-    placeholder: 'Select Plant',
-    // required: true,
-    class: 'col-md-6',
-    options: [], // To be populated dynamically
-  },
-  {
-    name: 'fat',
-    type: 'text',
-    label: 'Fat',
-    placeholder: 'Enter Fat',
-    required: false,
-    class: 'col-md-6',
-  },
-  {
-    name: 'quantity',
-    type: 'number',
-    label: 'Quantity',
-    placeholder: 'Enter Quantity',
-    // required: true,
-    class: 'col-md-6',
-  },
-  {
-    name: 'snf',
-    type: 'text',
-    label: 'SNF',
-    placeholder: 'Enter SNF',
-    required: false,
-    class: 'col-md-6',
-  },
-  {
-    name: 'fromSupplierPlant',
-    type: 'select',
-    label: 'From Supplier/Plant',
-    placeholder: 'Select Supplier/Plant',
-    // required: true,
-    class: 'col-md-6',
-    emitValueChanges: true,
-    options: [],
-  },
-  {
-    name: 'mbrt',
-    type: 'text',
-    label: 'MBRT',
-    placeholder: 'Enter MBRT',
-    required: false,
-    class: 'col-md-6',
-  },
-  {
-    name: 'mcc',
-    type: 'select',
-    label: 'Mcc (Optional)',
-    placeholder: 'Select Mcc',
-    required: false,
-    class: 'col-md-6',
-  },
-  {
-    name: 'repeatIndent',
-    type: 'number',
-    label: 'Repeat Indent',
-    placeholder: '0',
-    required: false,
-    class: 'col-md-6',
-  },
-];
+const usertype = localStorage.getItem('usertype');
+const isChillingPlant = usertype == 'ChillingPlant';
+const isSupplier = usertype == 'Supplier';
 // ...existing code...
 export const viewIndentSupplierGridColumns: GridColumnConfig[] = [
   {
@@ -185,15 +81,27 @@ export const viewIndentSupplierGridColumns: GridColumnConfig[] = [
     headerName: 'Quantity',
     field: 'quantity',
   },
-  {
-    headerName: 'Unallocated Quantity',
-    field: 'unallocated_quantity',
-    valueGetter: (params: any) => {
-      const quantity = parseInt(params.data.quantity) || 0;
-      const allocated = parseInt(params.data.allocated_quantity) || 0;
-      return quantity - allocated;
-    },
-  },
+  ...(isSupplier
+    ? [
+        {
+          headerName: 'Unallocated Quantity',
+          field: 'unallocated_quantity',
+          valueGetter: (params: any) => {
+            const quantity = parseInt(params.data.quantity) || 0;
+            const allocated = parseInt(params.data.allocated_quantity) || 0;
+            return quantity - allocated;
+          },
+        },
+      ]
+    : []),
+  ...(isChillingPlant
+    ? [
+        {
+          headerName: 'Remaining Quantity',
+          field: 'RemaingQuantity',
+        },
+      ]
+    : []),
   {
     headerName: 'Dispatch Created',
     field: 'dispatchCreated',
@@ -201,6 +109,20 @@ export const viewIndentSupplierGridColumns: GridColumnConfig[] = [
   {
     headerName: 'No. of Dispatches',
     field: 'noOfDispatch',
+    cellRenderer: (params: any) => {
+      const count = params.data.noOfDispatch || 0;
+      const span = document.createElement('span');
+      span.innerText = count;
+      span.style.color = colors.primary;
+      span.style.cursor = 'pointer';
+      span.style.textDecoration = 'underline';
+      span.addEventListener('click', () => {
+        if (params.context?.componentParent) {
+          params.context.componentParent.onViewDispatches(params.data);
+        }
+      });
+      return span;
+    },
   },
   {
     headerName: 'Supplier',
@@ -222,27 +144,108 @@ export const actionColumn: GridColumnConfig = {
   cellRenderer: ActionCellRendererComponent,
   cellRendererParams: {
     actions: [
+      // ✅ View Intent - when action_type == 3
       {
-        icon: 'fa-solid fa-pen-to-square',
-        action: 'edit',
-        tooltip: 'Edit Indent',
-        onClick: (data: any, node: any, params: any) => {
-          if (params.context?.componentParent) {
-            params.context.componentParent.onEditIndent(params.data);
-          }
-        },
-        iconStyle: { color: colors.primary, cursor: 'pointer' },
-      },
-      {
-        icon: 'fa-solid fa-eye',
+        icon: 'fa fa-eye',
         action: 'view',
-        tooltip: 'View Indent',
+        tooltip: 'View',
+        visible: (data: any) => data?.action_type == 3,
         onClick: (data: any, node: any, params: any) => {
           if (params.context?.componentParent) {
-            params.context.componentParent.onViewIndent(params.data);
+            params.context.componentParent.veiwindent(data.id);
           }
         },
-        iconStyle: { color: colors.primary, cursor: 'pointer' },
+        iconStyle: {
+          color: 'grey',
+          cursor: 'pointer',
+          fontSize: '18px',
+          marginRight: '10px',
+        },
+      },
+      // ✅ Edit Intent - when usertype == 'Supplier' && sub_indent == 1
+      {
+        icon: 'fa fa-pencil-square-o',
+        action: 'edit',
+        tooltip: 'Edit',
+        visible: (data: any, params: any) =>
+          params?.context?.componentParent?.usertype() === 'Supplier' &&
+          data?.sub_indent == 1,
+        onClick: (data: any, node: any, params: any) => {
+          if (params.context?.componentParent) {
+            params.context.componentParent.fetchindetvalue(
+              data.id,
+              data.quantity,
+              'Edit',
+            );
+          }
+        },
+        iconStyle: {
+          color: colors.primary,
+          cursor: 'pointer',
+          fontSize: '18px',
+          marginRight: '10px',
+        },
+      },
+      // ✅ Allocate - when action_type == 1
+      {
+        icon: 'fa fa-bars',
+        action: 'allocate',
+        tooltip: 'Allocate',
+        visible: (data: any) => data?.action_type == 1,
+        onClick: (data: any, node: any, params: any) => {
+          if (params.context?.componentParent) {
+            params.context.componentParent.fetchindetvalue(
+              data.id,
+              data.quantity,
+              'New',
+            );
+          }
+        },
+        iconStyle: {
+          color: colors.primary,
+          cursor: 'pointer',
+          fontSize: '18px',
+          marginRight: '10px',
+        },
+      },
+      // ✅ Create Dispatch - when action_type == 2
+      {
+        icon: 'fe fe-truck',
+        action: 'createDispatch',
+        tooltip: 'Create Dispatch',
+        visible: (data: any) => {
+          debugger;
+          return data?.action_type == 2;
+        },
+        onClick: (data: any, node: any, params: any) => {
+          if (params.context?.componentParent) {
+            params.context.componentParent.Create_dis(
+              data.id,
+              data.target_date,
+            );
+          }
+        },
+        iconStyle: {
+          color: 'green',
+          cursor: 'pointer',
+          fontSize: '18px',
+          marginRight: '10px',
+        },
+      },
+      // ✅ Dispatch Already Created - when action_type == 0 (disabled)
+      {
+        icon: 'fe fe-truck',
+        action: 'dispatchCreated',
+        tooltip: 'Dispatch Already created',
+        visible: (data: any) => data?.action_type == 0,
+        onClick: () => {}, // No action - just display
+        iconStyle: {
+          color: 'green',
+          cursor: 'not-allowed',
+          fontSize: '18px',
+          marginRight: '10px',
+          opacity: 0.6,
+        },
       },
     ],
   },

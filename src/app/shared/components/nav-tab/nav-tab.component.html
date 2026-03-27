@@ -6,17 +6,23 @@
     class="nav nav-tabs nav-justified custom-nav-tabs"
   >
     @for (tab of tabs(); track tab) {
-      <li [ngbNavItem]="tabs().indexOf(tab)">
+      <li [ngbNavItem]="tabs()?.indexOf(tab)">
         <button
           ngbNavLink
           class="nav-link fw-semibold"
-          [ngClass]="{ 'active-tab': active() === tabs().indexOf(tab) }"
+          [ngClass]="{ 'active-tab': active() === tabs()?.indexOf(tab) }"
         >
           {{ tab.title }}
         </button>
         <ng-template ngbNavContent>
           @if (tab.component) {
-            <ng-container *ngComponentOutlet="tab.component"></ng-container>
+            <ng-container
+              *ngComponentOutlet="
+                tab.component;
+                inputs: tab.componentInputs || {}
+              "
+            >
+            </ng-container>
           } @else {
             {{ tab.content || "" }}
           }

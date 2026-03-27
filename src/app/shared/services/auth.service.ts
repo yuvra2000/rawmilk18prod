@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +47,8 @@ export class AuthService {
     this._isLoggedIn = false;
     localStorage.removeItem('isLoggedIn');
     this.router.navigate(['/auth/login']);
+  }
+  login(formData: any): any {
+    return this.http.post(`${environment.loginAPI}/loginV2`, formData);
   }
 }

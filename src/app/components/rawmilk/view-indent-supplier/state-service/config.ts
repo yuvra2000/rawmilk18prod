@@ -4,7 +4,7 @@ import {
 } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { FieldConfig } from '../../../../shared/components/filter-form/filter-form.component';
 import { colors } from '../../../../shared/utils/constants';
-export const viewIndentFilterFields: FieldConfig[] = [
+export const viewIndentSupplierFilterFields: FieldConfig[] = [
   {
     name: 'from',
     type: 'date',
@@ -18,6 +18,29 @@ export const viewIndentFilterFields: FieldConfig[] = [
     label: 'To Date',
     placeholder: 'Select Date',
     required: true,
+  },
+  {
+    name: 'status',
+    type: 'select',
+    label: 'Status',
+    placeholder: 'Select Status',
+    options: [
+      { name: 'All', id: '' },
+      { name: 'Unallocated', id: 'Un-Allocated' },
+      { name: 'Allocated', id: 'Allocated' },
+      { name: 'Indent With MCC', id: 'IndentWithMcc' },
+      { name: 'Cancelled', id: 'cancel' },
+    ],
+  },
+  {
+    name: 'reportType',
+    type: 'select',
+    label: 'Report Type',
+    placeholder: 'Select Report Type',
+    options: [
+      { name: 'Standard', id: 'Standard' },
+      { name: 'Detailed', id: 'Detailed' },
+    ],
   },
 ];
 export const editFields: FieldConfig[] = [
@@ -139,7 +162,7 @@ export const addIntentFields: FieldConfig[] = [
   },
 ];
 // ...existing code...
-export const viewIndentGridColumns: GridColumnConfig[] = [
+export const viewIndentSupplierGridColumns: GridColumnConfig[] = [
   {
     headerName: 'S.No.',
     field: 'serialNo',
@@ -161,6 +184,23 @@ export const viewIndentGridColumns: GridColumnConfig[] = [
   {
     headerName: 'Quantity',
     field: 'quantity',
+  },
+  {
+    headerName: 'Unallocated Quantity',
+    field: 'unallocated_quantity',
+    valueGetter: (params: any) => {
+      const quantity = parseInt(params.data.quantity) || 0;
+      const allocated = parseInt(params.data.allocated_quantity) || 0;
+      return quantity - allocated;
+    },
+  },
+  {
+    headerName: 'Dispatch Created',
+    field: 'dispatchCreated',
+  },
+  {
+    headerName: 'No. of Dispatches',
+    field: 'noOfDispatch',
   },
   {
     headerName: 'Supplier',
@@ -189,6 +229,17 @@ export const actionColumn: GridColumnConfig = {
         onClick: (data: any, node: any, params: any) => {
           if (params.context?.componentParent) {
             params.context.componentParent.onEditIndent(params.data);
+          }
+        },
+        iconStyle: { color: colors.primary, cursor: 'pointer' },
+      },
+      {
+        icon: 'fa-solid fa-eye',
+        action: 'view',
+        tooltip: 'View Indent',
+        onClick: (data: any, node: any, params: any) => {
+          if (params.context?.componentParent) {
+            params.context.componentParent.onViewIndent(params.data);
           }
         },
         iconStyle: { color: colors.primary, cursor: 'pointer' },

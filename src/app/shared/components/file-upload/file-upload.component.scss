@@ -12,7 +12,7 @@
   overflow: hidden;
   background: #f8f9fa;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   position: relative;
   margin-bottom: 0.75rem;
@@ -20,7 +20,7 @@
 
 .preview-wrapper:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .preview-image {
@@ -48,7 +48,7 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,8 +90,10 @@
   gap: 10px;
   padding: 4px 10px;
   margin-bottom: 0px;
-  transition: border 0.18s, background 0.18s, color 0.18s;
-  
+  transition:
+    border 0.18s,
+    background 0.18s,
+    color 0.18s;
 }
 
 .file-select-box:hover,
@@ -176,10 +178,133 @@
 .btn-view-file:hover {
   color: #1e40af;
 }
-.file-item {  /* <-- Yahan apni sahi class ka naam likhein */
-    overflow: hidden !important; 
-    display: flex;       /* Content ko center aur fit karne ke liye */
-    align-items: center; /* Vertically center */
-    flex-wrap: nowrap;   /* Wrap hone se rokein */
+.file-item {
+  /* <-- Yahan apni sahi class ka naam likhein */
+  overflow: hidden !important;
+  display: flex; /* Content ko center aur fit karne ke liye */
+  align-items: center; /* Vertically center */
+  flex-wrap: nowrap; /* Wrap hone se rokein */
 }
 
+/* ---------- DRAG & DROP UPLOAD MODE ---------- */
+.drag-drop-area {
+  border: 2px dashed #b8c6db;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f8fbff 0%, #f0f6fb 100%);
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: #5078d0;
+    background: linear-gradient(135deg, #eef4fd 0%, #e8f1fa 100%);
+  }
+
+  &.dragging {
+    border-color: #1a408b;
+    background: linear-gradient(135deg, #dce8f5 0%, #d0e1f2 100%);
+  }
+}
+
+.drag-drop-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.upload-icon {
+  font-size: 48px;
+  color: #7485a3;
+}
+
+.drag-drop-text {
+  font-size: 14px;
+  color: #5078d0;
+  font-weight: 500;
+}
+
+.select-file-btn {
+  background: white;
+  border: 1px solid #c1cae1;
+  color: #1a408b;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f8fbff;
+    border-color: #5078d0;
+    color: #5078d0;
+  }
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 13px;
+  border-left: 3px solid #5078d0;
+
+  .material-icons {
+    font-size: 20px;
+    color: #7485a3;
+    flex-shrink: 0;
+  }
+
+  .file-name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #374151;
+  }
+
+  .file-size {
+    color: #9ca3af;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+
+  .progress-text {
+    font-size: 11px;
+    color: #6b7280;
+    min-width: 35px;
+  }
+}
+
+.upload-actions {
+  display: flex;
+  gap: 1rem;
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    .material-icons {
+      font-size: 18px;
+    }
+  }
+}

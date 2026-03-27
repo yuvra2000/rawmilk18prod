@@ -31,11 +31,10 @@ export interface Menu {
 @Injectable({
   providedIn: 'root',
 })
-
 export class NavService implements OnDestroy {
   private unsubscriber: Subject<any> = new Subject();
   public screenWidth: BehaviorSubject<number> = new BehaviorSubject(
-    window.innerWidth
+    window.innerWidth,
   );
 
   // Search Box
@@ -105,13 +104,54 @@ export class NavService implements OnDestroy {
       dirchange: false,
       children: [
         { path: '', title: 'Home', type: 'link', dirchange: false },
-        { path: 'view-indent', title: 'View Indent', type: 'link', dirchange: false },
-        { path: 'trip-dashboard', title: 'Trip Dashboard', type: 'link', dirchange: false },
-        { path: 'inventory', title: 'Inventory', type: 'link', dirchange: false },
-        { path: 'projection', title: 'Projection', type: 'link', dirchange: false },
-        { path: 'load-planning', title: 'Load Planning', type: 'link', dirchange: false },
-        { path: 'document-wallet', title: 'Document Wallet', type: 'link', dirchange: false },
-        { path: 'dairy/cart-dashboard', title: 'Cart Dashboard', type: 'link', dirchange: false },
+        {
+          path: 'view-indent',
+          title: 'View Indent',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'view-indent-supplier',
+          title: 'View Indent (Supplier)',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'trip-dashboard',
+          title: 'Trip Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'inventory',
+          title: 'Inventory',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'projection',
+          title: 'Projection',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'load-planning',
+          title: 'Load Planning',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'document-wallet',
+          title: 'Document Wallet',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'dairy/cart-dashboard',
+          title: 'Cart Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     { headTitle: 'OPERATIONS' },
@@ -121,12 +161,22 @@ export class NavService implements OnDestroy {
       type: 'sub',
       active: false,
       children: [
-        { path: 'production-planning/dispatch-planning/', title: 'Dispatch Planning', type: 'link', dirchange: false },
-        { path: 'production-planning/eta-report/', title: 'ETA Report', type: 'link', dirchange: false },
+        {
+          path: 'production-planning/dispatch-planning/',
+          title: 'Dispatch Planning',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'production-planning/eta-report/',
+          title: 'ETA Report',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     {
-      headTitle: 'REPORTS'
+      headTitle: 'REPORTS',
     },
     {
       title: 'Trip Report',
@@ -158,10 +208,20 @@ export class NavService implements OnDestroy {
       active: false,
       dirchange: false,
       children: [
-        { path: 'reports/cart/cart-report', title: 'Cart Report', type: 'link', dirchange: false },
-        { path: 'reports/cart/franchise-report', title: 'Franchise Report', type: 'link', dirchange: false }
-      ]
-    }
+        {
+          path: 'reports/cart/cart-report',
+          title: 'Cart Report',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'reports/cart/franchise-report',
+          title: 'Franchise Report',
+          type: 'link',
+          dirchange: false,
+        },
+      ],
+    },
   ];
 
   items = new BehaviorSubject<Menu[]>(this.MENUITEMS);

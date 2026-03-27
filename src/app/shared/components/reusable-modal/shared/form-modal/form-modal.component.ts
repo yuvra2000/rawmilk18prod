@@ -655,7 +655,15 @@ export class FormModalComponent {
       cancelIcon: fCfg?.cancelIcon ?? 'cancel',
     };
   });
+  incomingConfig = input<FormModalConfig | null>(null);
   constructor(public activeModal: NgbActiveModal) {
+    effect(
+      () => {
+        const cfg = this.incomingConfig();
+        if (cfg) this.config.set(cfg);
+      },
+      { allowSignalWrites: true },
+    );
     // ✅ Effect to trigger lazy fetch when config is ready
     effect(
       () => {

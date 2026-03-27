@@ -2,7 +2,7 @@
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
   novalidate
-  class="d-flex align-items-start flex-wrap filter-bar pt-1 rounded row position-relative m-auto"
+  class="d-flex align-items-start flex-wrap filter-bar pt-1 bg-white rounded row position-relative m-auto"
   [ngStyle]="filerFormClass"
 >
   @for (field of effectiveFields; track field.name) {
@@ -342,6 +342,7 @@
             (uploadError)="
               form.get(field.name)?.setErrors({ uploadError: $event })
             "
+            [displayMode]="field.displayMode || 'form'"
           >
           </app-file-upload>
         }
@@ -417,7 +418,7 @@
     style="width: fit-content"
     [ngClass]="btnClass ? btnClass : 'mt-4'"
   >
-    <button type="submit" class="btn reusable-btn" style="width: fit-content">
+    <button type="submit" class="btn btn-primary" style="width: fit-content">
       {{ buttonName }}
     </button>
   </div>

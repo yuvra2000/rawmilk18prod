@@ -14,4 +14,8 @@
   [config]="indentConfig()"
   (selectionChanged)="handleSelectionChange($event)"
 >
+  <div class="header h-5 w-5 cursor-pointer" slot="right">
+    <!-- <i class="fa fa-plus-circle icon-add" (click)="openAddIndent()"></i> -->
+    <i class="fa-solid fa-circle-xmark icon-delete" (click)="closeIntent()"></i>
+  </div>
 </app-advanced-grid>

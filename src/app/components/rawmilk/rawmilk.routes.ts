@@ -4,25 +4,38 @@ import { RouterModule, Routes } from '@angular/router';
 export const rawMilkRoutes: Routes = [
   {
     path: '',
-     children: [
-          {
-            path: 'trip-dashboard',
-            loadComponent: () =>
-              import('./trip-dashboard/trip-dashboard.component').then(
-                (m) => m.TripDashboardComponent,
-              ),
-            title: 'Trip Dashboard',
-          },
-          {
-            path: 'view-indent',
-            loadComponent: () =>
-              import('./view-indent/view-indent.component').then(
-                (m) => m.ViewIndentComponent,
-              ),
-            title: 'View Indent',
-          }
-        ],
+    children: [
+      {
+        path: 'trip-dashboard',
+        loadComponent: () =>
+          import('./trip-dashboard/trip-dashboard.component').then(
+            (m) => m.TripDashboardComponent,
+          ),
+        title: 'Trip Dashboard',
+      },
+      {
+        path: 'view-indent',
+        loadComponent: () =>
+          import('./view-indent/view-indent.component').then(
+            (m) => m.ViewIndentComponent,
+          ),
+        title: 'View Indent',
+      }
+    ],
   },
+  {
+    path: 'reports',
+    children: [
+      {
+        path: 'alert-report',
+        loadComponent: () =>
+          import('./alert-report/alert-report.component').then(
+            (m) => m.AlertReportComponent
+          ),
+        title: 'Alert Report'
+      }
+    ]
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(rawMilkRoutes)],

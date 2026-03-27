@@ -9,7 +9,7 @@ import { environment } from '../../../../src/environments/environment';
 export class MasterRequestService {
     headers: any;
     constructor(private http: HttpClient) { }
-    
+
     getHeader() {
         const token = localStorage.getItem('AccessToken');
         if (token !== '') {

@@ -457,7 +457,7 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
               ngbTooltip="Export CSV"
             >
               <!-- <i class="fas fa-file-csv"></i> -->
-              <img src="assets/grid-icon/csv.png" class="tbl-icon" />
+              <img src="assets/grid-icon/csv.svg" class="tbl-icon" />
             </button>
 
             <button

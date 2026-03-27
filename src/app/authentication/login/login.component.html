@@ -1,4 +1,4 @@
-<div   class="container">
+<div class="container">
   <div
     class="row justify-content-center align-items-center authentication authentication-basic h-100"
   >
@@ -7,139 +7,62 @@
       <div class="my-4 d-flex justify-content-center">
         <a [routerLink]="['/sales']">
           <img
-            src="./assets/images/brand-logos/desktop-dark.png"
+            src="./assets/images/secutrak/white-logo.png"
             alt="logo"
             class="desktop-dark"
           />
         </a>
       </div>
       <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-        <li ngbNavItem="Firebase" class="me-2">
-          <a ngbNavLink>
-            <img class="firebase" src="./assets/images/firebase.svg" alt="" />
-          </a>
-          <ng-template ngbNavContent>
-            <form [formGroup]="loginForm" (ngSubmit)="login()">
-              @if (errorMessage.length > 0) {
-                <p class="text-danger">
-                  {{ errorMessage }}
-                </p>
-              }
-              @if (_error.message.length > 0) {
-                <p class="text-danger">
-                  {{ _error.message }}
-                </p>
-              }
-              <div class="col-xl-12">
-                <label for="signin-username" class="form-label text-default"
-                  >User Name</label
-                >
-                <input
-                  type="text"
-                  class="form-control mb-3"
-                  id="signin-username"
-                  placeholder="user name"
-                  autocomplete
-                  formControlName="username"
-                  [(ngModel)]="email"
-                  required
-                />
-              </div>
-              <div class="col-xl-12 mb-2">
-                <label
-                  for="signin-password"
-                  class="form-label text-default d-block"
-                  >Password<a
-                    [routerLink]="['/authentication/reset-password/basic']"
-                    class="float-end text-danger"
-                    >Forget password ?</a
-                  ></label
-                >
-                <div class="input-group">
-                  <input
-                    [type]="showPassword ? 'text' : 'password'"
-                    autocomplete
-                    formControlName="password"
-                    [(ngModel)]="password"
-                    required
-                    class="form-control form-control-lg"
-                    id="signin-password"
-                    placeholder="password"
-                  />
-                  <button
-                    class="btn btn-light"
-                    type="button"
-                    (click)="toggleVisibility()"
-                  >
-                    <i class="{{ toggleClass }} align-middle"></i>
-                  </button>
-                </div>
-                <div class="mt-2">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="defaultCheck1"
-                    />
-                    <label
-                      class="form-check-label text-muted fw-normal"
-                      for="defaultCheck1"
-                    >
-                      Remember password ?
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xl-12 d-grid mt-2">
-                <button
-                  type="submit"
-                  class="btn btn-lg btn-primary{{ disabled }}"
-                  autofocus
-                  [class.loader--text]="authservice.showLoader"
-                  [disabled]="!loginForm.valid || authservice.showLoader"
-                >
-                  Sign In
-                </button>
-              </div>
-            </form>
-          </ng-template>
-        </li>
         <li ngbNavItem="Angular">
           <a ngbNavLink>
-            <img class="firebase" src="./assets/images/angular.svg" alt="" />
+            <img src="" alt="" />
           </a>
           <ng-template ngbNavContent class="mt-2">
             <form [formGroup]="loginForm" (ngSubmit)="Submit()">
               <div class="text-danger">{{ error }}</div>
               <div class="col-xl-12">
-                <label for="signin-username" class="form-label text-default"
+                <label for="signin-UserId" class="form-label text-default"
+                  >GroupId</label
+                >
+                <input
+                  type="text"
+                  class="form-control mb-3"
+                  id="signin-UserId"
+                  placeholder="GroupId"
+                  autocomplete
+                  formControlName="GroupId"
+                  required
+                />
+              </div>
+              <div class="col-xl-12">
+                <label for="signin-UserId" class="form-label text-default"
                   >User Name</label
                 >
                 <input
                   type="text"
                   class="form-control mb-3"
-                  id="signin-username"
+                  id="signin-UserId"
                   placeholder="user name"
-                  formControlName="username"
+                  formControlName="UserId"
                   autocomplete
                 />
               </div>
               <div class="col-xl-12 mb-2">
                 <label
-                  for="signin-password"
+                  for="signin-Password"
                   class="form-label text-default d-block"
                   >Password
-                  <a class="float-end text-danger">Forget password ?</a></label
+                  <a class="float-end text-danger">Forget Password ?</a></label
                 >
                 <div class="input-group">
                   <input
-                    formControlName="password"
+                    formControlName="Password"
                     autocomplete
-                    [type]="showPassword ? 'text' : 'password'"
+                    [type]="showPassword ? 'text' : 'Password'"
                     class="form-control"
-                    id="signin-password"
-                    placeholder="password"
+                    id="signin-Password"
+                    placeholder="Password"
                   />
                   <button
                     class="btn btn-light"
@@ -161,17 +84,13 @@
                       class="form-check-label text-muted fw-normal"
                       for="defaultCheck1"
                     >
-                      Remember password ?
+                      Remember Password ?
                     </label>
                   </div>
                 </div>
               </div>
               <div class="col-xl-12 d-grid mt-2">
-                <button
-                  type="submit"
-                  [disabled]="!loginForm.valid || authservice.showLoader"
-                  class="btn btn-lg btn-primary"
-                >
+                <button type="submit" class="btn btn-lg btn-primary">
                   Sign In
                 </button>
               </div>

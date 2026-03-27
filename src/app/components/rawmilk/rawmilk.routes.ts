@@ -20,7 +20,15 @@ export const rawMilkRoutes: Routes = [
             (m) => m.ViewIndentComponent,
           ),
         title: 'View Indent',
-      }
+      },
+      {
+        path: 'view-indent-supplier',
+        loadComponent: () =>
+          import('./view-indent-supplier/view-indent-supplier.component').then(
+            (m) => m.ViewIndentSupplierComponent,
+          ),
+        title: 'View Indent (Supplier)',
+      },
     ],
   },
   {

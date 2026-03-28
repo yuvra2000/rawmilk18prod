@@ -465,7 +465,7 @@ export class LoginComponent {
   }
 
   async Submit() {
-    debugger;
+    // debugger;
     try {
       const formData = new FormData();
       formData.append('UserId', this.loginForm.controls['UserId'].value);
@@ -485,7 +485,7 @@ export class LoginComponent {
         localStorage.setItem('AccessMenu', JSON.stringify(res.AccessMenu));
         this.router.navigate(['/trip-dashboard']);
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   toggleVisibility() {

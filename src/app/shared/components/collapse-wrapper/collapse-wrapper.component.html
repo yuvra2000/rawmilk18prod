@@ -1,11 +1,6 @@
 <div class="toggle-container">
-  <button
-    type="button"
-    class="toggle-link"
-    [attr.aria-expanded]="!collapsed()"
-    aria-controls="collapseSection"
-    (click)="toggleCollapse()"
-  >
+  <button type="button selectClass" class="toggle-link" [attr.aria-expanded]="!collapsed()"
+    aria-controls="collapseSection" (click)="toggleCollapse()">
     <p>
       <i class="fa-solid fa-filter" aria-hidden="true"></i>
       FILTER

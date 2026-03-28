@@ -97,12 +97,12 @@
 /* dark mode */
 [data-theme-mode=dark] {
   --body-bg-rgb: 35, 34, 38;
-  --body-bg-rgb2: 25, 24, 26 ;
+  --body-bg-rgb2: 25, 24, 26;
   --menu-bg: rgb(var(--body-bg-rgb));
   --menu-border-color: rgba(255, 255, 255, 0.1);
-  --menu-prime-color: rgba(255,255,255,0.4);
+  --menu-prime-color: rgba(255, 255, 255, 0.4);
   --header-bg: rgb(var(--body-bg-rgb));
-  --header-prime-color: rgba(255,255,255,0.4);
+  --header-prime-color: rgba(255, 255, 255, 0.4);
   --header-border-color: rgba(255, 255, 255, 0.1);
   --custom-white: rgb(var(--body-bg-rgb));
   --custom-black: #fff;

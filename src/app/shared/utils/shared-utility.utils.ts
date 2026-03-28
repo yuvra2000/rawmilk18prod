@@ -40,33 +40,36 @@ export function handleApiResponse(
   errorMessage?: string,
   successMessage?: string,
 ): boolean {
-  // ✅ Check if response is successful
-  if (response.Result === 'Session Expired') {
+  if (!response) return false;
+
+  const status = response.Status || response.status;
+  const isSuccess = status === 'success' || status === 1 || response.success === true;
+  const apiMessage = response.Message || response.message;
+
+  // Check for session expiration
+  if (response.Result === 'Session Expired' || status === 'Session Expired') {
     toastService.error(
-      response.Message || 'Session expired. Please log in again.',
+      apiMessage || 'Session expired. Please log in again.',
     );
     return false;
   }
-  if (response?.Status === 'success' || response?.success) {
-    const message =
-      successMessage || response?.message || 'Operation completed successfully';
-    toastService.success(message);
 
-    // ✅ Execute success callback if provided
+  if (isSuccess) {
+    const message = successMessage || apiMessage || 'Operation completed successfully';
+    // Only show success toast if a custom message is provided or it's a non-data action
+    if (successMessage) {
+      toastService.success(message);
+    }
+
     if (successCallback) {
       const result = successCallback();
-      // Handle async callbacks
       if (result instanceof Promise) {
-        result.catch((err) => {
-          console.error('Error in success callback:', err);
-        });
+        result.catch((err) => console.error('Error in success callback:', err));
       }
     }
     return true;
   } else {
-    // ✅ Show error message
-    const message =
-      errorMessage || response?.Data || response?.message || 'Operation failed';
+    const message = errorMessage || apiMessage || response.Data || 'Operation failed';
     toastService.error(message);
     return false;
   }

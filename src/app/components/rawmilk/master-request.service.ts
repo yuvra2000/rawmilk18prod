@@ -1,98 +1,95 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../src/environments/environment';
+
+export interface HttpOptions {
+  headers?: HttpHeaders | { [header: string]: string | string[] };
+  params?: HttpParams | { [param: string]: string | string[] };
+  reportProgress?: boolean;
+  responseType?: 'json'; // Explicitly set to json for better typing
+  withCredentials?: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class MasterRequestService {
-  headers: any;
   constructor(private http: HttpClient) {}
 
-  getHeader() {
+  private getHttpOptions(): HttpOptions {
     const token = localStorage.getItem('AccessToken');
-    if (token !== '') {
-      const headers = new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      });
-      this.headers = { headers: headers };
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
     }
+
+    return { headers };
   }
 
-  post(endpoint: string, payload: any, defaultUrl: boolean = false) {
+  post<T>(
+    endpoint: string,
+    payload: any,
+    defaultUrl: boolean = false,
+  ): Observable<T> {
     const filteredPayload = Object.fromEntries(
       Object.entries(payload).filter(([_, v]) => v != null),
     );
-    if (defaultUrl === true) {
-      return this.http.post(endpoint, filteredPayload, this.headers);
-    }
-    return this.http.post(
-      environment.BASE_URL + endpoint,
-      filteredPayload,
-      this.headers,
-    );
+    const url = defaultUrl ? endpoint : environment.BASE_URL + endpoint;
+    return this.http.post<T>(url, filteredPayload, this.getHttpOptions());
   }
-  postFormData(endpoint: string, payload: any, defaultUrl: boolean = false) {
-    if (defaultUrl === true) {
-      return this.http.post(endpoint, payload, this.headers);
-    }
-    return this.http.post(
+
+  patch<T>(endpoint: string, payload: any = null): Observable<T> {
+    return this.http.patch<T>(
       environment.BASE_URL + endpoint,
       payload,
-      this.headers,
+      this.getHttpOptions(),
     );
   }
 
-  patch(endpoint: string, payload: any = null) {
-    return this.http.patch(
+  put<T>(endpoint: string, payload: any = null): Observable<T> {
+    return this.http.put<T>(
       environment.BASE_URL + endpoint,
       payload,
-      this.headers,
+      this.getHttpOptions(),
     );
   }
 
-  put(endpoint: string, payload: any = null) {
-    // debugger;
-    return this.http.put(
-      environment.BASE_URL + endpoint,
-      payload,
-      this.headers,
-    );
-  }
-
-  get(endpoint: string, params: any = {}, defaultUrl: boolean = false) {
-    // debugger;
+  get<T>(
+    endpoint: string,
+    params: any = {},
+    defaultUrl: boolean = false,
+  ): Observable<T> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach((key) => {
       if (params[key] !== undefined && params[key] !== null) {
         httpParams = httpParams.set(key, params[key]);
       }
     });
-    if (defaultUrl === true) {
-      return this.http.get(endpoint, { ...this.headers, params: httpParams });
-    }
-    return this.http.get(environment.BASE_URL + endpoint, {
-      ...this.headers,
+    const url = defaultUrl ? endpoint : environment.BASE_URL + endpoint;
+    return this.http.get<T>(url, {
+      ...this.getHttpOptions(),
       params: httpParams,
     });
   }
 
-  delete(endpoint: string, params: any = {}, defaultUrl: boolean = false) {
+  delete<T>(
+    endpoint: string,
+    params: any = {},
+    defaultUrl: boolean = false,
+  ): Observable<T> {
     let httpParams = new HttpParams();
     Object.keys(params).forEach((key) => {
       if (params[key] !== undefined && params[key] !== null) {
         httpParams = httpParams.set(key, params[key]);
       }
     });
-    if (defaultUrl === true) {
-      return this.http.delete(endpoint, {
-        ...this.headers,
-        params: httpParams,
-      });
-    }
-    return this.http.delete(environment.BASE_URL + endpoint, {
-      ...this.headers,
+    const url = defaultUrl ? endpoint : environment.BASE_URL + endpoint;
+    return this.http.delete<T>(url, {
+      ...this.getHttpOptions(),
       params: httpParams,
     });
   }

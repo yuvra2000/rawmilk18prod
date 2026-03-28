@@ -31,6 +31,27 @@ export const rawMilkRoutes: Routes = [
       },
     ],
   },
+  {
+    path: 'reports',
+    children: [
+      {
+        path: 'alert-report',
+        loadComponent: () =>
+          import('./alert-report/alert-report.component').then(
+            (m) => m.AlertReportComponent
+          ),
+        title: 'Alert Report'
+      },
+      {
+        path: 'tanker-wise',
+        loadComponent: () =>
+          import('./tanker-wise-trip-report/tanker-wise-trip-report.component').then(
+            (m) => m.TankerWiseTripReportComponent
+          ),
+        title: 'Tanker Wise Trip Report'
+      }
+    ]
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(rawMilkRoutes)],

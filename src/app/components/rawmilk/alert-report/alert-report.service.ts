@@ -3,7 +3,7 @@ import { MasterRequestService } from '../master-request.service';
 import { Observable } from 'rxjs';
 
 export interface BaseApiResponse {
-  Status: number;
+  Status: string;
   Message: string;
 }
 

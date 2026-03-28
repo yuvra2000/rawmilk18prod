@@ -1,3 +1,4 @@
+import { GridColumnConfig } from "../../../../shared/components/ag-grid/ag-grid/ag-grid.component";
 import { FieldConfig, Option } from "../../../../shared/components/filter-form/shared/types";
 
 const alertTypeOptions: Option[] = [
@@ -33,3 +34,10 @@ export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfi
         options: alertTypeOptions,
     },
 ];
+
+export const alertReportGridColumns: GridColumnConfig[] = [
+    {
+        headerName: 'Indent/Plant',
+        field: 'indent_no',
+    }
+]

@@ -10,22 +10,26 @@
 
 /* Styling for the filter link */
 .toggle-link {
-  all:unset;
+  all: unset;
   display: flex;
   align-items: center;
   font-weight: 500;
-  color: #1d4380;
+  color: rgb(var(--bs-primary-rgb));
   cursor: pointer;
   text-decoration: none;
-      
-  p{
-    color: #1D4380; font-weight: 600; margin-bottom: 4px;
+
+  p {
+    color: rgb(var(--bs-primary-rgb));
+    font-weight: 600;
+    margin-bottom: 4px;
     font-size: 17px;
   }
 }
 
 .toggle-link i {
-  font-size: 20px; color: #1d4380; margin-top: 8px;
+  font-size: 20px;
+  color: rgb(var(--bs-primary-rgb));
+  margin-top: 8px;
 }
 
 /* Styling for the custom icon link */

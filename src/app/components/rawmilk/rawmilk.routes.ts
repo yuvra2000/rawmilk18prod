@@ -41,6 +41,14 @@ export const rawMilkRoutes: Routes = [
             (m) => m.AlertReportComponent
           ),
         title: 'Alert Report'
+      },
+      {
+        path: 'tanker-wise',
+        loadComponent: () =>
+          import('./tanker-wise-trip-report/tanker-wise-trip-report.component').then(
+            (m) => m.TankerWiseTripReportComponent
+          ),
+        title: 'Tanker Wise Trip Report'
       }
     ]
   }

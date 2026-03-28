@@ -37,7 +37,43 @@ export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfi
 
 export const alertReportGridColumns: GridColumnConfig[] = [
     {
-        headerName: 'Indent/Plant',
-        field: 'indent_no',
+        headerName: 'Alert Type',
+        field: 'AlertType',
+    },
+    {
+        headerName: 'Vehicle No.',
+        field: 'VehicleNumber',
+    },
+    {
+        headerName: 'Dispatch No.',
+        field: 'DispatchNo',
+    },
+    {
+        headerName: 'Dispatch Date',
+        field: 'DispatchDate'
+    },
+    {
+        headerName: 'Plant',
+        field: 'PlantName'
+    },
+    {
+        headerName: 'MPC',
+        field: 'MpcName'
+    },
+    {
+        headerName: 'MCC',
+        field: 'MccName'
+    },
+    {
+        headerName: 'Start Time',
+        field: 'StartTime'
+    },
+    {
+        headerName: 'End Time',
+        field: 'EndTime'
+    },
+    {
+        headerName: 'Duration',
+        field: 'Duration'
     }
 ]

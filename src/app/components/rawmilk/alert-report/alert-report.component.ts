@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { FieldConfig, FilterFormComponent, Option } from '../../../shared/components/filter-form/filter-form.component';
 import { alertReportGridColumns, reportAlertReportFilterField } from './state-service/config';
@@ -6,6 +6,7 @@ import { AlertReportService } from './alert-report.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { map } from 'rxjs';
+import { AlertService } from '../../../shared/services/alert.service';
 
 
 @Component({
@@ -19,13 +20,15 @@ export class AlertReportComponent {
   token = localStorage.getItem('AccessToken') || '';
   constructor(private alertReportService: AlertReportService) { }
 
+  private toastService = inject(AlertService);
+
+
   mpcName = signal<Option[]>([]);
   filterfields = computed<FieldConfig[]>(() => reportAlertReportFilterField(this.mpcName()));
   alertRowData = signal<any[]>([]);
   alertConfig = signal<GridConfig>({
     theme: 'alpine',
     rowSelectionMode: 'multiple',
-    enableRowSelection: true,
     context: {
       componentParent: this,
     },
@@ -39,11 +42,16 @@ export class AlertReportComponent {
 
   onFormSubmit(data: any) {
     console.log('Form submitted with data:', data);
+    this.populateTable({
+      FromDate: data.from,
+      ToDate: data.to,
+      AccessToken: this.token,
+      ForWeb: '1',
+      AlertType: data.alertType?.name,
+      MpcId: data.mpcName?.id
+    })
   }
 
-  handleSelectionChange(selected: any) {
-    console.log("handleSelectionChange", selected);
-  }
 
   getMpcName() {
     const payload = {
@@ -66,9 +74,10 @@ export class AlertReportComponent {
   }
 
   populateTable(payload?: any) {
+    const today = new Date().toISOString().split('T')[0];
     const defaultPayload = {
-      FromDate: '',
-      ToDate: '',
+      FromDate: `${today} 00:00:00`,
+      ToDate: `${today} 23:55:55`,
       AccessToken: this.token,
       ForWeb: '1',
       AlertType: '',
@@ -76,10 +85,25 @@ export class AlertReportComponent {
     };
 
     this.alertReportService.getTableData(payload || defaultPayload)
-      .pipe(map(response => response.Data))
-      .subscribe((data) => {
-        if (data) {
-          this.alertRowData.set(data);
+      .subscribe({
+        next: (res: any) => {
+          if (res.Status === 'success') {
+            const data = res.Data || [];
+            if (data.length > 0) {
+              this.alertRowData.set(data);
+            } else {
+              this.alertRowData.set([]);
+              this.toastService.info(res.Message || 'No data found');
+            }
+          } else {
+            console.error('API Error:', res.Message);
+            this.alertRowData.set([]);
+            this.toastService.error(res.Message || 'Error fetching alert data');
+          }
+        },
+        error: (error) => {
+          console.error('Network/Server Error:', error);
+          this.toastService.error('Network or Server error occurred');
         }
       });
   }

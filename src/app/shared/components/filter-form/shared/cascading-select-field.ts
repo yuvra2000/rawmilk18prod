@@ -51,7 +51,7 @@ export class CascadingSelectFieldComponent {
   selectionChange = output<EventEmitter<any>>();
   addTag = input<boolean | ((term: string) => any)>(false);
   addTagText = input<string>('Add item');
-  selectConfig = input<SelectConfig|undefined>({
+  selectConfig = input<SelectConfig | undefined>({
     enableExclusiveAll: false,
     allOptionValue: 'all',
   });
@@ -69,7 +69,7 @@ export class CascadingSelectFieldComponent {
     // 2. If parent passed 'true', use the DEFAULT internal logic
     // Returns: { id: term, name: term, tag: true }
     if (config === true) {
-      return (term: string) => ({ name: term,[bLabel]:term, tag: true });
+      return (term: string) => ({ name: term, [bLabel]: term, tag: true });
     }
 
     // 3. Otherwise disabled
@@ -81,7 +81,7 @@ export class CascadingSelectFieldComponent {
       // ✅ FIX: Options ki value ko constructor ki jagah effect mein check karo
       const optionsArray = this.options();
       // console.log(`[${this.fieldName()}] Options received: ${optionsArray.length} items ${this.bindLabel()}`);
-      
+
       // Agar aapko options array ki length 0 se zyada dikh rahi hai (e.g., 43 items)
       // Toh data sahi hai!
     });
@@ -93,17 +93,16 @@ export class CascadingSelectFieldComponent {
       }
     });
   }
-  
-onSelectChange(selectedItems: any[]) {
+
+  onSelectChange(selectedItems: any[]) {
     const config = this.selectConfig();
     const bLabel = this.bindLabel();
-     console.log("chal rha hai");
     // Feature check
     if (!this.multiple() || !config?.enableExclusiveAll || !Array.isArray(selectedItems) || selectedItems.length <= 1) {
       return;
     }
-   
-    
+
+
     const allLabelName = config.allOptionValue; // E.g., 'All'
 
     // ✅ Helper: Object ke andar label field check karega

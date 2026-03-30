@@ -1,5 +1,5 @@
 import { CommonModule, NgComponentOutlet } from '@angular/common';
-import { Component, signal, model, Type } from '@angular/core';
+import { Component, signal, model, Type, computed } from '@angular/core';
 import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReusableModalComponent } from '../../reusable-modal.component';
 
@@ -24,7 +24,11 @@ export interface TabConfig {
   styleUrl: './nav-tab-modal.component.scss',
 })
 export class NavTabsModalComponent {
-  tabs = signal<TabConfig[]>([]); // ✅ Writable signal (not input)
+  tabs = signal<TabConfig[]>([]);
+  computedTabs = computed(() => {
+    // console.log(this.tabs()?.componentInputs);
+    return this.tabs();
+  });
   active = model<number>(0);
-  modalTitle = signal<string>(''); // ✅ Writable signal for modal title
+  modalTitle = signal<string>('');
 }

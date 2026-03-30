@@ -189,8 +189,12 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
     { onControlValueChange: () => {} },
     { alias: 'incomingConfig' },
   );
+  incomingConfigComp = computed(() => {
+    console.log('comp ic', this.incomingConfig());
+  });
 
   constructor() {
+    this.incomingConfigComp();
     effect(
       () => {
         const config = this.incomingConfig();
@@ -355,11 +359,7 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
         // ✅ Also invoke the callback if provided in incomingConfig
         const config = this.incomingConfig();
         if (config?.onControlValueChange) {
-          config.onControlValueChange(
-            controlName,
-            value,
-            this.form,
-          );
+          config.onControlValueChange(controlName, value, this.form);
         }
       });
 

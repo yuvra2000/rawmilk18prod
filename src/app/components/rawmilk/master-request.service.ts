@@ -41,6 +41,14 @@ export class MasterRequestService {
     const url = defaultUrl ? endpoint : environment.BASE_URL + endpoint;
     return this.http.post<T>(url, filteredPayload, this.getHttpOptions());
   }
+  postFormData<T>(
+    endpoint: string,
+    payload: any,
+    defaultUrl: boolean = false,
+  ): Observable<T> {
+    const url = defaultUrl ? endpoint : environment.BASE_URL + endpoint;
+    return this.http.post<T>(url, payload, this.getHttpOptions());
+  }
 
   patch<T>(endpoint: string, payload: any = null): Observable<T> {
     return this.http.patch<T>(

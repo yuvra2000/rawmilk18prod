@@ -5,6 +5,7 @@ import {
   inject,
   viewChild,
   ViewChild,
+  computed,
 } from '@angular/core';
 import { FilterComponent } from '../../../shared/components/filter/filter.component';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -178,11 +179,12 @@ export class ViewIndentComponent implements OnInit {
       onSave: async (form: any) => {
         try {
           console.log('Form data to update:', form);
-          const formData = createFormData(this.token, {
+          const formData = {
+            AccessToken: this.token,
             id: data.id,
             quantity: form.quantity, // Assuming only one field for editing
             ForApp: '0',
-          });
+          };
           const res: any = await firstValueFrom(
             this.viewIndentService.updateData(formData),
           );
@@ -211,7 +213,6 @@ export class ViewIndentComponent implements OnInit {
       };
 
       if (type === 'form') {
-        // ✅ Map form fields to API parameters for ADD INTENT
         params = {
           ...params,
           target_date: formData?.targetDate ?? '',
@@ -277,11 +278,12 @@ export class ViewIndentComponent implements OnInit {
       buttonName: 'Update',
       onSave: async (form: any) => {
         try {
-          const formData = createFormData(this.token, {
+          const formData = {
+            AccessToken: this.token,
             remark: form.remarks, // Assuming only one field for editing
             ForApp: '0',
             id: this.selectedRowData().map((item: any) => item.id),
-          });
+          };
           const res: any = await firstValueFrom(
             this.viewIndentService.closeIntent(formData),
           );
@@ -302,32 +304,30 @@ export class ViewIndentComponent implements OnInit {
       },
     });
   }
+  private addIntentConfig = computed(() => ({
+    title: 'Add Intent',
+    mode: 'form',
+    fields: this.addIntentFieldsSignal(),
+    onSave: (formData: any) => {
+      this.saveIntent(formData, 'form');
+    },
+    onControlValueChange: (controlName: string, value: any, form: any) => {
+      if (controlName === 'fromSupplierPlant') {
+        this.handleSupplierPlantChange(value, form);
+      }
+    },
+    showFooter: true,
+    initialData: {},
+  }));
   openAddIndent() {
+    // Create a computed config that updates whenever addIntentFieldsSignal changes
+
     const tabs: TabConfig[] = [
       {
         title: 'Add Intent',
         component: FilterFormComponent,
         componentInputs: {
-          incomingConfig: {
-            title: 'Add Intent',
-            mode: 'form',
-            fields: this.addIntentFieldsSignal(),
-            onSave: (formData: any) => {
-              this.saveIntent(formData, 'form');
-            },
-            // ✅ Handle value changes for dependent fields
-            onControlValueChange: (
-              controlName: string,
-              value: any,
-              form: any,
-            ) => {
-              if (controlName === 'fromSupplierPlant') {
-                this.handleSupplierPlantChange(value, form);
-              }
-            },
-            showFooter: true,
-            initialData: {},
-          },
+          incomingConfig: this.addIntentConfig(),
         },
       },
       {
@@ -343,7 +343,7 @@ export class ViewIndentComponent implements OnInit {
             },
             showFooter: true,
             buttonName: 'Upload',
-            btnClass: 'btn-primary ms-auto me-auto rounded', // Optional: Add custom class for styling the button
+            btnClass: 'btn-primary ms-auto me-auto rounded',
           },
         },
       },
@@ -382,6 +382,9 @@ export class ViewIndentComponent implements OnInit {
       'fromSupplierPlant',
       this.state().plantList,
     );
+
+    // Clear MCC options initially (will be populated when supplier/plant is selected)
+    updateFieldOptions(this.addIntentFieldsSignal, 'mcc', []);
   }
 
   async handleSupplierPlantChange(
@@ -397,7 +400,13 @@ export class ViewIndentComponent implements OnInit {
       selectedSupplierPlant,
       this.viewIndentService,
     );
-    updateFieldOptions(this.addIntentFieldsSignal, 'mcc', mccOptions);
-    form.get('mcc')?.setValue(null);
+    const mccOptionsFormatted = mccOptions.map((mcc: any) => ({
+      id: mcc.mcc_id,
+      code: mcc.code,
+      name: mcc.displayName,
+    }));
+
+    // Update the signal
+    updateFieldOptions(this.addIntentFieldsSignal, 'mcc', mccOptionsFormatted);
   }
 }

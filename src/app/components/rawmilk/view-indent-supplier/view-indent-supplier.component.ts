@@ -16,6 +16,7 @@ import {
 import {
   actionColumn,
   editFields,
+  viewDispatchColumns,
   viewIndentSupplierFilterFields,
   viewIndentSupplierGridColumns,
   viewIndentSupplierGridColumnsIfNotChillingPlant,
@@ -69,7 +70,6 @@ export class ViewIndentSupplierComponent implements OnInit {
   userType = '';
   ngOnInit(): void {
     this.userType = localStorage.getItem('usertype')!;
-    // ✅ Set filter fields based on user type
     if (this.userType !== 'ChillingPlant') {
       this.filterfields.set([
         ...viewIndentSupplierFilterFields,
@@ -99,22 +99,12 @@ export class ViewIndentSupplierComponent implements OnInit {
       columns: [...viewIndentSupplierGridColumns, actionColumn],
     }));
   }
-  onFormSubmit(data: any) {
-    console.log('Form Data:', data);
-    // You can perform any action with the form data here, such as making an API call or updating the UI.
-  }
+  onFormSubmit(data: any) {}
   onViewDispatches(indentData: any) {
-    console.log('View Dispatches for:', indentData);
-    // Implement the logic to view dispatches related to the indentData
     this.modalService.openGridModal({
       title: `Dispatches for Indent #${indentData.indent_no}`,
-      columns: [
-        { headerName: 'Dispatch No', field: 'dispatch_no' },
-        { headerName: 'Vehicle', field: 'vehicle_no' },
-        { headerName: 'Quantity', field: 'quantity' },
-        { headerName: 'Dispatch Date', field: 'dispatch_date' },
-      ], // Define columns for dispatches
-      rowData: indentData?.dispatchData, // Fetch and provide dispatch data based on indentData
+      columns: viewDispatchColumns,
+      rowData: indentData?.dispatchData,
     });
   }
 }

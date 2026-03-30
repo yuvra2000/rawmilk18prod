@@ -51,6 +51,25 @@ import { FieldConfig, Option, SpkOptions } from './shared/types';
 import { ColorSelectFieldComponent } from './shared/color-select-field.component';
 
 /**
+ * ✅ Type definition for incoming config
+ */
+export type FilterFormConfig = {
+  title?: string;
+  mode?: string;
+  fields?: FieldConfig[];
+  onSave?: (data: any) => void;
+  onControlValueChange?: (
+    controlName: string,
+    value: any,
+    form: FormGroup,
+  ) => void;
+  showFooter?: boolean;
+  buttonName?: string;
+  btnClass?: string;
+  initialData?: any;
+};
+
+/**
  * ✅ Date range validator
  */
 export function dateRangeValidator(
@@ -164,25 +183,23 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
   private fromDateFieldName?: string;
   private toDateFieldName?: string;
   private activeSubscriptions = new Set<string>();
-  @Input() incomingConfig: {
-    title?: string;
-    mode?: string;
-    fields?: FieldConfig[];
-    onSave?: (data: any) => void;
-    onControlValueChange?: (controlName: string, value: any, form: FormGroup) => void;
-    showFooter?: boolean;
-    buttonName?: string;
-    btnClass?: string;
-    initialData?: any;
-  } = {};
+
+  // Signal Input for incoming config
+  incomingConfig = input<FilterFormConfig>(
+    { onControlValueChange: () => {} },
+    { alias: 'incomingConfig' },
+  );
+
   constructor() {
     effect(
       () => {
-        const config = this.incomingConfig;
-        if (config) {
+        const config = this.incomingConfig();
+        if (config && Object.keys(config).length > 0) {
           if (config.fields) {
             this._dynamicFieldsSignal.set(config.fields);
             this._fieldsSignal.set(config.fields);
+            // Trigger form rebuild when fields change
+            this.syncFormControls(config.fields);
           }
           if (config.title) {
             // Handle title if needed
@@ -336,8 +353,13 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
           this.controlValueChange.emit({ controlName, value, form: this.form });
         }
         // ✅ Also invoke the callback if provided in incomingConfig
-        if (this.incomingConfig?.onControlValueChange) {
-          this.incomingConfig.onControlValueChange(controlName, value, this.form);
+        const config = this.incomingConfig();
+        if (config?.onControlValueChange) {
+          config.onControlValueChange(
+            controlName,
+            value,
+            this.form,
+          );
         }
       });
 
@@ -543,8 +565,9 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
     }
     const formData = this.form.getRawValue();
 
-    if (this.incomingConfig?.onSave) {
-      this.incomingConfig.onSave(formData);
+    const config = this.incomingConfig();
+    if (config?.onSave) {
+      config.onSave(formData);
     }
     this.formSubmit.emit(this.form.getRawValue());
   }

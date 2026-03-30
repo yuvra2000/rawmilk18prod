@@ -250,3 +250,9 @@ export const actionColumn: GridColumnConfig = {
     ],
   },
 };
+export const viewDispatchColumns: GridColumnConfig[] = [
+  { headerName: 'Dispatch No', field: 'dispatch_no' },
+  { headerName: 'Vehicle', field: 'vehicle_no' },
+  { headerName: 'Quantity', field: 'quantity' },
+  { headerName: 'Dispatch Date', field: 'dispatch_date' },
+];

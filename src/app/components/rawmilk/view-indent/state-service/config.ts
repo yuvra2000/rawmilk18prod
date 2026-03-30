@@ -128,6 +128,7 @@ export const addIntentFields: FieldConfig[] = [
     placeholder: 'Select Mcc',
     required: false,
     class: 'col-md-6',
+    options: [], // To be populated based on supplier/plant selection
   },
   {
     name: 'repeatIndent',

@@ -17,6 +17,7 @@ export function updateFieldOptions(
   fieldName: string,
   newOptions: any[],
 ) {
+  debugger;
   signal.update((fields: FieldConfig[]) =>
     fields.map((field) =>
       field.name === fieldName ? { ...field, options: newOptions } : field,
@@ -43,19 +44,19 @@ export function handleApiResponse(
   if (!response) return false;
 
   const status = response.Status || response.status;
-  const isSuccess = status === 'success' || status === 1 || response.success === true;
+  const isSuccess =
+    status === 'success' || status === 1 || response.success === true;
   const apiMessage = response.Message || response.message;
 
   // Check for session expiration
   if (response.Result === 'Session Expired' || status === 'Session Expired') {
-    toastService.error(
-      apiMessage || 'Session expired. Please log in again.',
-    );
+    toastService.error(apiMessage || 'Session expired. Please log in again.');
     return false;
   }
 
   if (isSuccess) {
-    const message = successMessage || apiMessage || 'Operation completed successfully';
+    const message =
+      successMessage || apiMessage || 'Operation completed successfully';
     // Only show success toast if a custom message is provided or it's a non-data action
     if (successMessage) {
       toastService.success(message);
@@ -69,7 +70,8 @@ export function handleApiResponse(
     }
     return true;
   } else {
-    const message = errorMessage || apiMessage || response.Data || 'Operation failed';
+    const message =
+      errorMessage || apiMessage || response.Data || 'Operation failed';
     toastService.error(message);
     return false;
   }

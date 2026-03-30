@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { MasterRequestService } from '../master-request.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ViewIndentSupplierService {
-  constructor(private http: HttpClient) {}
+  constructor(private masterRequestService: MasterRequestService) {}
   getIndentData(params: any) {
-    return this.http.post(`${environment.BASE_URL}/pendingIndentProc`, params);
+    return this.masterRequestService.postFormData(`/pendingIndentProc`, params);
   }
 }

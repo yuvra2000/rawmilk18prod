@@ -1,5 +1,4 @@
 import { firstValueFrom } from 'rxjs';
-import { createFormData } from '../../../../shared/utils/shared-utility.utils';
 
 const token = localStorage.getItem('AccessToken') || '';
 export async function getMccOptionsForSupplier(
@@ -7,25 +6,28 @@ export async function getMccOptionsForSupplier(
   service: any,
 ): Promise<any[]> {
   if (!supplier?.id) return [];
-  const formData = createFormData(token, {
+  const formData = {
+    AccessToken: token,
     supplier_id: supplier.id,
     GroupId: localStorage.getItem('GroupId') || '',
     ForApp: '0',
-  });
-  const response = await firstValueFrom(service.getMCCData(formData));
-  return [];
+  };
+  const response: any = await firstValueFrom(service.getMCCData(formData));
+  return response?.Data || [];
 }
 const toDate = new Date();
 toDate.setDate(toDate.getDate() + 7);
-export const formData = createFormData(token, {
-  from: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
-  to: toDate.toISOString().split('T')[0], // Date 7 days in the future in YYYY-MM-DD format
+export const formData = {
+  AccessToken: token,
+  from: new Date().toISOString().split('T')[0],
+  to: toDate.toISOString().split('T')[0],
   GroupId: localStorage.getItem('GroupId') || '',
   UserType: '',
   SubRole: '',
   ForWeb: '1',
-});
-export const masterFormData = createFormData(token, {
+};
+export const masterFormData = {
+  AccessToken: token,
   GroupId: localStorage.getItem('GroupId') || '',
   ForApp: '0',
-});
+};

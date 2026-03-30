@@ -94,7 +94,6 @@ export class VehicleTrackingService {
       const response: any = await firstValueFrom(
         this.commonService.vehicleTrackingV2New(formData),
       );
-      console.log('Vehicle Tracking Response:', response);
       this.trackingData.set(response?.data || []);
       this.locations.set(response?.data || []);
       return this.trackingMarkers() || [];
@@ -128,7 +127,7 @@ export class VehicleTrackingService {
         this.commonService.triggerHistoryAT(formData),
       );
       //   this.trackingData.set(response?.data || []);
-      console.log(response, 'alerts');
+      //  console.log(response, 'alerts');
       return response || [];
     } catch (error) {
       console.error('Vehicle tracking API failed:', error);

@@ -61,7 +61,7 @@ export class AlertReportComponent {
     };
     console.log("payload", payload);
     this.alertReportService.getMpcName(payload).subscribe((res) => {
-      console.log("res", res);
+      // console.log("res", res);
       if (res && res.PlantSupplier) {
         res.PlantSupplier.forEach((item: any) => {
           if (item.type === 6) {

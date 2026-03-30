@@ -43,6 +43,7 @@ export const viewIndentSupplierGridColumnsIfNotChillingPlant: FieldConfig[] = [
       { name: 'Standard', id: 'Standard' },
       { name: 'Detailed', id: 'Detailed' },
     ],
+    emitValueChanges: true,
   },
 ];
 export const editFields: FieldConfig[] = [
@@ -137,6 +138,68 @@ export const viewIndentSupplierGridColumns: GridColumnConfig[] = [
     field: 'milk_type_name',
   },
 ];
+export const viewIndentSupplierGridColumnsDetailed: GridColumnConfig[] = [
+  {
+    headerName: 'S.No.',
+    field: 'serialNo',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 100,
+  },
+  {
+    headerName: 'Indent/Plant',
+    field: 'indent_no',
+  },
+  {
+    headerName: 'Target Date',
+    field: 'target_date',
+  },
+  {
+    headerName: 'Plant',
+    field: 'plant_name',
+  },
+  {
+    headerName: 'Supplier',
+    field: 'supplier_name',
+  },
+  {
+    headerName: 'Mcc',
+    field: 'mcc_name',
+  },
+  {
+    headerName: 'Milk Type',
+    field: 'milk_type_name',
+  },
+  {
+    headerName: 'Quantity',
+    field: 'quantity',
+  },
+  {
+    headerName: 'Pending Dispatch',
+    field: 'rem_qty',
+  },
+  {
+    headerName: 'Dispatch Created',
+    field: 'dispatchCreated',
+  },
+  {
+    headerName: 'No. of Dispatches',
+    field: 'noOfDispatch',
+    cellRenderer: (params: any) => {
+      const count = params.data.noOfDispatch || 0;
+      const span = document.createElement('span');
+      span.innerText = count;
+      span.style.color = colors.primary;
+      span.style.cursor = 'pointer';
+      span.style.textDecoration = 'underline';
+      span.addEventListener('click', () => {
+        if (params.context?.componentParent) {
+          params.context.componentParent.onViewDispatches(params.data);
+        }
+      });
+      return span;
+    },
+  },
+];
 
 export const actionColumn: GridColumnConfig = {
   headerName: 'Action',
@@ -152,7 +215,7 @@ export const actionColumn: GridColumnConfig = {
         visible: (data: any) => data?.action_type == 3,
         onClick: (data: any, node: any, params: any) => {
           if (params.context?.componentParent) {
-            params.context.componentParent.veiwindent(data.id);
+            params.context.componentParent.viewIndent(data.id);
           }
         },
         iconStyle: {
@@ -251,8 +314,61 @@ export const actionColumn: GridColumnConfig = {
   },
 };
 export const viewDispatchColumns: GridColumnConfig[] = [
-  { headerName: 'Dispatch No', field: 'dispatch_no' },
-  { headerName: 'Vehicle', field: 'vehicle_no' },
-  { headerName: 'Quantity', field: 'quantity' },
-  { headerName: 'Dispatch Date', field: 'dispatch_date' },
+  {
+    headerName: 'S.No.',
+    field: 'serialNo',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 100,
+  },
+  {
+    headerName: 'Indent/Plant',
+    field: 'IndentNo',
+  },
+  {
+    headerName: 'Target Date',
+    field: 'TargetDate',
+  },
+  {
+    headerName: 'Plant',
+    field: 'plant_name',
+  },
+  {
+    headerName: 'Quantity',
+    field: 'Quantity',
+  },
+
+  {
+    headerName: 'Dispatch Created',
+    field: 'dispatchCreated',
+  },
+  {
+    headerName: 'No. of Dispatches',
+    field: 'noOfDispatch',
+    cellRenderer: (params: any) => {
+      const count = params.data.noOfDispatch || 0;
+      const span = document.createElement('span');
+      span.innerText = count;
+      span.style.color = colors.primary;
+      span.style.cursor = 'pointer';
+      span.style.textDecoration = 'underline';
+      span.addEventListener('click', () => {
+        if (params.context?.componentParent) {
+          params.context.componentParent.onViewDispatches(params.data);
+        }
+      });
+      return span;
+    },
+  },
+  {
+    headerName: 'Supplier',
+    field: 'supplier_name',
+  },
+  {
+    headerName: 'Mcc',
+    field: 'MCCName',
+  },
+  {
+    headerName: 'Milk Type',
+    field: 'milk_type_name',
+  },
 ];

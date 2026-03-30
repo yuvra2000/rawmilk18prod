@@ -161,8 +161,23 @@ export class ViewIndentComponent implements OnInit {
       );
     }
   }
-  onFormSubmit(data: any) {
-    console.log('Form submitted with data:', data);
+  async onFormSubmit(data: any) {
+    const params = {
+      AccessToken: this.token,
+      from: data.from,
+      to: data.to,
+      GroupId: localStorage.getItem('GroupId') || '',
+      UserType: this.usertype(),
+      SubRole: '',
+      ForWeb: '1',
+    };
+    try {
+      const res: any = await firstValueFrom(
+        this.viewIndentService.getIndentData(params),
+      );
+      this.indentRowData.set(res?.Indents || []);
+      console.log('row data', this.indentRowData());
+    } catch (error) {}
   }
   handleSelectionChange(selected: any) {
     this.selectedRowData.set(selected);
@@ -275,7 +290,7 @@ export class ViewIndentComponent implements OnInit {
       title: 'Close Indent',
       fields: this.closeIntentField,
       mode: 'form',
-      buttonName: 'Update',
+      buttonName: 'Close',
       onSave: async (form: any) => {
         try {
           const formData = {
@@ -327,7 +342,7 @@ export class ViewIndentComponent implements OnInit {
         title: 'Add Intent',
         component: FilterFormComponent,
         componentInputs: {
-          incomingConfig: this.addIntentConfig(),
+          incomingConfig: this.addIntentConfig,
         },
       },
       {
@@ -408,5 +423,9 @@ export class ViewIndentComponent implements OnInit {
 
     // Update the signal
     updateFieldOptions(this.addIntentFieldsSignal, 'mcc', mccOptionsFormatted);
+    console.log(
+      'MCC options updated based on supplier/plant selection:',
+      this.addIntentFieldsSignal(),
+    );
   }
 }

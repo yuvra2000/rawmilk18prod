@@ -1,0 +1,33 @@
+<header class="page-header">
+  <div class="header-content d-flex align-items-center gap-3">
+    <!-- <button type="button" class="sidebar-toggle-button" >
+    <i class="fa fa-bars"></i> </button> -->
+    <button
+      class="app-sidebar__toggle ms-1"
+      type="button"
+      (click)="toggleSidebar()"
+    ></button>
+
+    <div>
+      <h1 class="page-title">{{ title() }}</h1>
+      <nav class="breadcrumbs" aria-label="breadcrumb">
+        @for (crumb of breadcrumbs(); track crumb.url; let isLast = $last) { @if
+        (!isLast) {
+        <a class="breadcrumb-link" [routerLink]="crumb.url">{{
+          crumb.label
+        }}</a>
+        <span class="breadcrumb-separator">/</span>
+        } @else {
+        <span class="breadcrumb-current" aria-current="page">{{
+          crumb.label
+        }}</span>
+        } }
+      </nav>
+    </div>
+  </div>
+
+  <div class="header-logo">
+    <ng-content></ng-content>
+    <img src="assets/img/logo.png" alt="iTraceit Logo" />
+  </div>
+</header>

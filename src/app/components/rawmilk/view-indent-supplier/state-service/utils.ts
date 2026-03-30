@@ -21,7 +21,7 @@ export const formData = createFormData(token, {
   FromDate: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
   ToDate: toDate.toISOString().split('T')[0], // Date 7 days in the future in YYYY-MM-DD format
   GroupId: localStorage.getItem('GroupId') || '',
-  UserType: 'Supplier',
+  UserType: localStorage.getItem('usertype') || '',
   SubRole: '',
   ForWeb: '1',
 });

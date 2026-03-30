@@ -17048,7 +17048,7 @@ html[dir=rtl] .translate-middle {
   border: 0;
 }
 .btn.btn-danger-gradient {
-  background: linear-gradient(to bottom right, rgb(var(--danger-rgb)) 0%, #DE4980 100%);
+  background: linear-gradient(to bottom right, rgb(var(--danger-rgb)) 0%, #de4980 100%);
   color: #fff !important;
   border: 0;
 }
@@ -17495,14 +17495,14 @@ html[dir=rtl] .translate-middle {
 }
 
 .btn-google {
-  background-color: #CF4E43;
+  background-color: #cf4e43;
   color: #fff;
-  border: 1px solid #CF4E43;
+  border: 1px solid #cf4e43;
 }
 .btn-google:hover, .btn-google:focus, .btn-google:active {
-  background-color: #CF4E43 !important;
+  background-color: #cf4e43 !important;
   color: #fff !important;
-  border: 1px solid #CF4E43 !important;
+  border: 1px solid #cf4e43 !important;
 }
 
 .btn-twitter {
@@ -17528,14 +17528,14 @@ html[dir=rtl] .translate-middle {
 }
 
 .btn-youtube {
-  background-color: #FF0000;
+  background-color: #ff0000;
   color: #fff;
-  border: 1px solid #FF0000;
+  border: 1px solid #ff0000;
 }
 .btn-youtube:hover, .btn-youtube:focus, .btn-youtube:active {
-  background-color: #FF0000 !important;
+  background-color: #ff0000 !important;
   color: #fff !important;
-  border: 1px solid #FF0000 !important;
+  border: 1px solid #ff0000 !important;
 }
 
 .btn-instagram {
@@ -33603,7 +33603,7 @@ input.error {
   border-top: 10px solid var(--black-8);
 }
 .ribbon-2.ribbon-danger {
-  background: linear-gradient(to bottom right, rgb(var(--danger-rgb)) 0%, #DE4980 100%);
+  background: linear-gradient(to bottom right, rgb(var(--danger-rgb)) 0%, #de4980 100%);
 }
 .ribbon-2.ribbon-danger:before {
   border-top: 10px solid var(--black-8);
@@ -40125,7 +40125,7 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 
 .bg-blue {
-  background-color: #0082FF !important;
+  background-color: #0082ff !important;
 }
 
 .bg-indigo {
@@ -40164,7 +40164,7 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 
 .bg-danger-gradient {
-  background: linear-gradient(to bottom right, rgb(var(--danger-rgb)) 0%, #DE4980 100%) !important;
+  background: linear-gradient(to bottom right, rgb(var(--danger-rgb)) 0%, #de4980 100%) !important;
   color: #fff;
 }
 
@@ -40184,12 +40184,12 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 
 .bg-light-gradient {
-  background: linear-gradient(to bottom right, rgb(var(--light-rgb)) 0%, #D7FCFF 100%) !important;
+  background: linear-gradient(to bottom right, rgb(var(--light-rgb)) 0%, #d7fcff 100%) !important;
   color: #000;
 }
 
 .bg-dark-gradient {
-  background: linear-gradient(to bottom right, rgb(var(--dark-rgb)) 0%, #16657A 100%) !important;
+  background: linear-gradient(to bottom right, rgb(var(--dark-rgb)) 0%, #16657a 100%) !important;
   color: #fff;
 }
 
@@ -40420,11 +40420,11 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 
 .bg-blue-transparent {
   background-color: rgba(0, 130, 255, 0.15) !important;
-  color: #0082FF !important;
+  color: #0082ff !important;
 }
 .bg-blue-transparent:hover {
   background-color: rgba(0, 130, 255, 0.15) !important;
-  color: #0082FF !important;
+  color: #0082ff !important;
 }
 
 .bg-white-transparent {
@@ -40606,7 +40606,7 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 
 .bd-blue {
-  background-color: #0082FF;
+  background-color: #0082ff;
   color: #fff;
 }
 
@@ -41074,7 +41074,7 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 
 .bd-cyan {
-  background-color: #00D1D1;
+  background-color: #00d1d1;
   color: #fff;
 }
 
@@ -41126,7 +41126,7 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 
 .bd-gray {
-  background-color: #8699A3;
+  background-color: #8699a3;
   color: #fff;
 }
 
@@ -41935,7 +41935,7 @@ ul.files-main-nav li div.filemanager-upgrade-storage img {
 }
 
 .text-blue {
-  color: #0082FF !important;
+  color: #0082ff !important;
 }
 
 .text-green {

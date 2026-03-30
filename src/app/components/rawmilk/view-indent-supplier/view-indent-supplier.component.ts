@@ -19,6 +19,7 @@ import {
   viewDispatchColumns,
   viewIndentSupplierFilterFields,
   viewIndentSupplierGridColumns,
+  viewIndentSupplierGridColumnsDetailed,
   viewIndentSupplierGridColumnsIfNotChillingPlant,
 } from './state-service/config';
 import {
@@ -41,6 +42,7 @@ import { AlertService } from '../../../shared/services/alert.service';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { ViewIndentSupplierService } from './view-indent-supplier.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonHeaderComponent } from '../../../shared/components/common-header/common-header.component';
 @Component({
   selector: 'app-view-indent-supplier',
   standalone: true,
@@ -50,6 +52,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
+    // CommonHeaderComponent,
   ],
   templateUrl: './view-indent-supplier.component.html',
   styleUrl: './view-indent-supplier.component.scss',
@@ -60,6 +63,12 @@ export class ViewIndentSupplierComponent implements OnInit {
   private loader = inject(NgxSpinnerService);
   filterfields = signal<FieldConfig[]>(viewIndentSupplierFilterFields);
   indentRowData = signal<any[]>([]);
+  pageTitle = 'View Indents';
+  breadcrumbs = [
+    { label: 'Home', link: '/' },
+    { label: 'Raw Milk', link: '/rawmilk' },
+    { label: 'View Indents', link: '/rawmilk/view-indents' },
+  ];
   indentConfig = signal<GridConfig>({
     theme: 'alpine',
     context: {
@@ -68,7 +77,9 @@ export class ViewIndentSupplierComponent implements OnInit {
     columns: [],
   });
   userType = '';
+  token: any;
   ngOnInit(): void {
+    this.token = localStorage.getItem('AccessToken') || '';
     this.userType = localStorage.getItem('usertype')!;
     if (this.userType !== 'ChillingPlant') {
       this.filterfields.set([
@@ -106,5 +117,37 @@ export class ViewIndentSupplierComponent implements OnInit {
       columns: viewDispatchColumns,
       rowData: indentData?.dispatchData,
     });
+  }
+  onFilterChange(event: any) {
+    if (event.field === 'reportType') {
+      const isStandard = event.value === 'Standard';
+      this.indentConfig.update((config) => ({
+        ...config,
+        columns: isStandard
+          ? [...viewIndentSupplierGridColumns]
+          : [...viewIndentSupplierGridColumnsDetailed],
+      }));
+    }
+  }
+  async viewIndent(indentId: any) {
+    try {
+      const params = {
+        AccessToken: this.token,
+        GroupId: localStorage.getItem('GroupId') || '',
+        UserType: localStorage.getItem('usertype') || '',
+        SubRole: '',
+        IndentId: indentId,
+        ForWeb: 1,
+      };
+      const res: any = await firstValueFrom(
+        this.viewIndentSupplierService.viewAllocationProc(params),
+      );
+      this.modalService.openGridModal({
+        title: `Indent Details - ID: ${indentId}`,
+        columns: viewDispatchColumns,
+        rowData: res?.Allocation || [],
+      });
+    } catch (error) {}
+    // Implement the logic to view indent details, e.g., open a modal with details
   }
 }

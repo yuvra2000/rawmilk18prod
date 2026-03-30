@@ -1,12 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-
-
 //flatepicker
 @import url("../node_modules/flatpickr/dist/flatpickr.css");
 
 @import "../node_modules/@ng-select/ng-select/themes/default.theme.css";
-
 
 @import "../node_modules/@angular/cdk/overlay-prebuilt.css";
 
@@ -14,7 +11,7 @@
 
 @import "../node_modules/ngx-toastr/toastr.css";
 
-@import 'overlayscrollbars/overlayscrollbars.css';
+@import "overlayscrollbars/overlayscrollbars.css";
 
 // font awesome
 @import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
@@ -23,24 +20,27 @@
 // angular material
 @import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
 
-@import 'overlayscrollbars/overlayscrollbars.css';
+@import "overlayscrollbars/overlayscrollbars.css";
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
-
+body {
+  font-family: "Work Sans", sans-serif;
+}
 .swiper-view-details {
-    height: 400px; /* Adjust thumbnail swiper height */
-  }
-  
-  .swiper-preview-details img {
-    width: 100%; /* Ensure images are responsive */
-    // height: auto;
-  }
-  
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: #007bff; /* Customize the navigation button colors */
-  }
+  height: 400px; /* Adjust thumbnail swiper height */
+}
 
-  .swiper-horizontal {
+.swiper-preview-details img {
+  width: 100%; /* Ensure images are responsive */
+  // height: auto;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #007bff; /* Customize the navigation button colors */
+}
+
+.swiper-horizontal {
   height: 400px; /* Adjust based on the size of your cards */
 }
 
@@ -52,10 +52,11 @@
 spk-flatpickr {
   padding: 0 !important;
 }
-.mdc-icon-button.mat-mdc-icon-button.mat-unthemed.mat-mdc-button-base{
+.mdc-icon-button.mat-mdc-icon-button.mat-unthemed.mat-mdc-button-base {
   color: var(--primary-color);
 }
-.mat-tree-node, .mat-nested-tree-node{
+.mat-tree-node,
+.mat-nested-tree-node {
   color: var(--default-text-color) !important;
 }
 .mat-mdc-icon-button .mat-mdc-button-touch-target {
@@ -64,10 +65,9 @@ spk-flatpickr {
   background: var(--primary-01);
   border-radius: 3px;
 }
-.mat-tree-node{
+.mat-tree-node {
   min-height: 10 !important;
 }
-.mdc-text-field--filled:not(.mdc-text-field--disabled){
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: var(--light) !important;
 }
-

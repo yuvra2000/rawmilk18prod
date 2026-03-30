@@ -196,6 +196,7 @@ export class NavService implements OnDestroy {
         { path: 'reports/halt-report', title: 'Halt Report', type: 'link', dirchange: false },
         { path: 'reports/e-lock-report', title: 'E-lock Report', type: 'link', dirchange: false },
         { path: 'reports/lid-report', title: 'Lid Report', type: 'link', dirchange: false },
+        { path: 'reports/leci-report', title: 'LECI Report', type: 'link', dirchange: false },
         { path: 'reports/trip-summary', title: 'Trip Summary', type: 'link', dirchange: false },
         { path: 'reports/cart-report', title: 'Cart Report', type: 'link', dirchange: false }
       ]

@@ -5,6 +5,7 @@ import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag
 import { tankerWiseTripReportFilterField, tankerWiseTripReportGridColumn } from './state-service/config';
 import { TankerWiseTripReportService } from './tanker-wise-trip-report.service';
 import { AlertService } from '../../../shared/services/alert.service';
+import { createFormData } from '../../../shared/utils/shared-utility.utils';
 
 @Component({
   selector: 'app-tanker-wise-trip-report',
@@ -40,50 +41,17 @@ export class TankerWiseTripReportComponent {
     this.getTankerName();
     this.getPlantName();
     this.getMccName();
+    this.getTableData();
   }
 
   onFormSubmit(data: any) {
     console.log('Form submitted with data:', data);
-    const payload = {
-      "AccessToken": this.token,
-      "FromDate": data.from || new Date().toISOString().split('T')[0],
-      "ToDate": new Date(new Date(data.to || new Date()).setDate(new Date(data.to || new Date()).getDate() + 1)).toISOString().split('T')[0],
-      "ForWeb": 1,
-      "Tanker": data.tanker?.VehicleId,
-      "Mpc": data.mpcName?.id,
-      "Plant": data.plant?.id,
-      "MCC": data.mccName?.entity_id,
-      "IndentNo": data.identNumber,
-      "DispatchNo": data.dispatchNumber,
-      "Status": data.status?.id,
-      "Trigger": data.trigger?.id,
-      "Remark": data.remark?.id,
-      "Transporter": data.transporter?.id,
-      "ReportType": data.reportType?.id
+    // if report type is "detailed"
+    if (data.reportType.id === 2) {
+      this.getTableData(data, true);
+    } else {
+      this.getTableData(data, false);
     }
-
-    this.tankerWiseTripReportService.getTableData(payload)
-      .subscribe({
-        next: (res: any) => {
-          if (res.Status === 'success') {
-            const data = res.Data || [];
-            if (data.length > 0) {
-              this.tankerWiseTripReportData.set(data);
-            } else {
-              this.tankerWiseTripReportData.set([]);
-              this.toastService.info(res.Message || 'No data found');
-            }
-          } else {
-            console.error('API Error:', res.Message);
-            this.tankerWiseTripReportData.set([]);
-            this.toastService.error(res.Message || 'Error fetching alert data');
-          }
-        },
-        error: (error: any) => {
-          console.error(error);
-          this.toastService.error(error.message || 'Error fetching alert data');
-        }
-      })
   }
 
   getTankerName() {
@@ -143,6 +111,48 @@ export class TankerWiseTripReportComponent {
         },
         error: (error) => {
           console.error(error);
+        }
+      })
+  }
+
+  getTableData(data?: any, detailedReport: boolean = false) {
+    const formData = createFormData(this.token, {
+      "FromDate": data?.from || new Date().toISOString().split('T')[0] + ' 00:00:00',
+      "ToDate": new Date(new Date(data?.to || new Date()).setDate(new Date(data?.to || new Date()).getDate() + 1)).toISOString().split('T')[0] + ' 23:55:55',
+      "ForWeb": '1',
+      "Tanker": data?.tanker?.VehicleId,
+      "Mpc": data?.mpcName?.id,
+      "Plant": data?.plant?.id,
+      "MCC": data?.mccName?.entity_id,
+      "IndentNo": data?.identNumber,
+      "DispatchNo": data?.dispatchNumber,
+      "Status": data?.status?.id,
+      "Trigger": data?.trigger?.id,
+      "Remark": data?.remark?.id,
+      "Transporter": data?.transporter?.id,
+      "ReportType": data?.reportType?.id
+    });
+
+    this.tankerWiseTripReportService.getTableData(formData, detailedReport)
+      .subscribe({
+        next: (res: any) => {
+          if (res.Status === 'success') {
+            const data = res.Data || [];
+            if (data.length > 0) {
+              this.tankerWiseTripReportData.set(data);
+            } else {
+              this.tankerWiseTripReportData.set([]);
+              this.toastService.info(res.Message || 'No data found');
+            }
+          } else {
+            console.error('API Error:', res.Message);
+            this.tankerWiseTripReportData.set([]);
+            this.toastService.error(res.Message || 'Error fetching alert data');
+          }
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.toastService.error(error.message || 'Error fetching alert data');
         }
       })
   }

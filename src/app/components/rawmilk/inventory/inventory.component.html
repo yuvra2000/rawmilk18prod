@@ -1,11 +1,18 @@
 <app-collapse-wrapper>
-  <div class="header h-5 w-5 cursor-pointer" custom-icon>
-    <i class="fa fa-plus-circle icon-add" (click)="openAddInventory()"></i>
-  </div>
+  @if (
+    userType == "Supplier" ||
+    userType === "ChillingPlant" ||
+    isEditable("2024-12-12 00:00:00", "2024-12-12 13:59:59")
+  ) {
+    <div class="header h-5 w-5 cursor-pointer" custom-icon>
+      <i class="fa fa-plus-circle icon-add" (click)="openAddInventory()"></i>
+    </div>
+  }
   <filter-form
     #viewinventoryFilter
     [dynamicFields]="filterfields()"
     (formSubmit)="onFormSubmit($event)"
+    [initialData]="initialData()"
   >
   </filter-form>
 </app-collapse-wrapper>

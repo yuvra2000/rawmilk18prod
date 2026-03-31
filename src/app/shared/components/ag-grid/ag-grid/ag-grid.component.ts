@@ -96,9 +96,9 @@ export interface GridConfig {
   enableColumnReordering?: boolean;
   enableColumnResizing?: boolean;
   rowSelection?:
-  | RowSelectionOptions<TextDataTypeDefinition>
-  | 'single'
-  | 'multiple';
+    | RowSelectionOptions<TextDataTypeDefinition>
+    | 'single'
+    | 'multiple';
   enableRowSelection?: boolean;
   rowSelectionMode?: 'single' | 'multiple';
   enableCellEditing?: boolean;
@@ -186,6 +186,7 @@ export interface ActionConfig {
   visible?: (data: any) => boolean;
   disabled?: (data: any) => boolean;
   onClick?: (data: any, node?: any, params?: any) => void;
+  onHover?: (data: any, node?: any, params?: any) => void;
   labelStyle?: { [key: string]: string }; // New property for label styling
 }
 
@@ -211,6 +212,7 @@ export interface IActionCellRendererParams extends ICellRendererParams {
             container="body"
             type="button"
             [style]="action.buttonStyle"
+            (mouseenter)="onActionHover(action)"
           >
             @if (action.icon && isIconVisible(action)) {
               @if (action.isImg) {
@@ -275,7 +277,8 @@ export interface IActionCellRendererParams extends ICellRendererParams {
   ],
 })
 export class ActionCellRendererComponent
-  implements ICellRendererAngularComp, OnDestroy {
+  implements ICellRendererAngularComp, OnDestroy
+{
   private params = signal<IActionCellRendererParams | null>(null);
 
   readonly rowData = computed(() => this.params()?.data);
@@ -326,6 +329,12 @@ export class ActionCellRendererComponent
     if (action.onClick) {
       debugger;
       action.onClick(this.rowData(), this.params()?.node, this.params());
+    }
+  }
+  onActionHover(action: ActionConfig): void {
+    if (action.onHover) {
+      debugger;
+      action.onHover(this.rowData(), this.params()?.node, this.params());
     }
   }
 }
@@ -734,11 +743,21 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
     if (isGroup) {
       // ── Column Group ──────────────────────────────────────────────────────────
       // ColGroupDef props we care about; strip leaf-only keys to keep AG-Grid happy
-      const { field: _field, customRenderer: _cr, customEditor: _ce,
-        validation: _v, exportable: _ex, searchable: _se,
-        filter: _f, floatingFilter: _ff, editable: _ed,
-        valueSetter: _vs, cellRenderer: _cellR, cellEditor: _cellE,
-        ...groupRest } = col as any;
+      const {
+        field: _field,
+        customRenderer: _cr,
+        customEditor: _ce,
+        validation: _v,
+        exportable: _ex,
+        searchable: _se,
+        filter: _f,
+        floatingFilter: _ff,
+        editable: _ed,
+        valueSetter: _vs,
+        cellRenderer: _cellR,
+        cellEditor: _cellE,
+        ...groupRest
+      } = col as any;
 
       return {
         ...groupRest,
@@ -752,13 +771,9 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
     const processedCol: ColDef = {
       ...col,
       sortable:
-        this.config().enableSorting !== false
-          ? col.sortable !== false
-          : false,
+        this.config().enableSorting !== false ? col.sortable !== false : false,
       filter:
-        this.config().enableFiltering !== false
-          ? col.filter !== false
-          : false,
+        this.config().enableFiltering !== false ? col.filter !== false : false,
       resizable:
         this.config().enableColumnResizing !== false
           ? col.resizable !== false
@@ -787,7 +802,9 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
         const validationResult = col.validation!(params.newValue);
         if (validationResult !== true) {
           alert(
-            typeof validationResult === 'string' ? validationResult : 'Invalid value',
+            typeof validationResult === 'string'
+              ? validationResult
+              : 'Invalid value',
           );
           return false;
         }

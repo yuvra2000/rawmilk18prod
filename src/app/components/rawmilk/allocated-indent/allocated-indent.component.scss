@@ -1,0 +1,256 @@
+// this css demand and remaininhg quantity
+.custom-box {
+  background-color: #fff;
+  padding: 20px;
+  margin: 10px auto;
+  max-width: 70%;
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
+}
+
+// Button Action Styles
+.btn-action {
+  padding: 6px 12px;
+  color: white;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  i {
+    font-size: 16px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-add {
+  background: #1d4380;
+
+  &:hover {
+    background: #162d5e;
+  }
+}
+
+.btn-remove {
+  background: #8f3838;
+
+  &:hover {
+    background: #6f2d2d;
+  }
+}
+
+.btn-delete {
+  background: #ff0000;
+
+  &:hover {
+    background: #cc0000;
+  }
+}
+
+.custom-box h4 {
+  color: #2f4050;
+  font-weight: 500;
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.custom-box label {
+  color: #1d4380;
+  font-weight: 700;
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+.text-center {
+  text-align: center; /* Ensure content stays centered */
+}
+
+// ibox-title styling
+.ibox-title {
+  position: relative;
+}
+
+.full-width-select {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #1d4380;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(29, 67, 128, 0.1);
+  }
+
+  ::ng-deep .ng-select-container {
+    border-color: #ccc;
+    border-radius: 4px;
+
+    &:hover {
+      border-color: #1d4380;
+    }
+  }
+
+  ::ng-deep.ng-select-focused .ng-select-container {
+    border-color: #1d4380;
+    box-shadow: 0 0 0 3px rgba(29, 67, 128, 0.1);
+  }
+}
+
+/* Make the input fill the entire width of the table cell */
+.full-width-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #1d4380;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(29, 67, 128, 0.1);
+  }
+}
+
+/* Optional: Styling for the table to make it look better */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  padding: 15px 12px;
+  text-align: center;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+  color: #333;
+  border-radius: 1px;
+}
+
+.table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+}
+
+// Action Buttons Container
+.action-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  // flex-wrap: wrap;
+  min-height: 40px;
+}
+
+// Row Center Alignment
+tr.text-center {
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+textarea:focus,
+input:focus {
+  border-color: #1d4380 !important;
+  outline: none;
+}
+
+/* Button styling for the submit button */
+.submit-btn {
+  background-color: #1d4380;
+  color: white;
+  padding: 8px 20px;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #162d5e;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* ========== Responsive Styles ========== */
+
+@media (max-width: 1200px) {
+  .custom-box {
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-box {
+    padding: 15px;
+    margin: 10px 5px;
+    max-width: 95%;
+  }
+
+  .custom-box h4 {
+    font-size: 14px;
+    margin: 8px 0;
+  }
+
+  .custom-box label {
+    font-size: 16px;
+  }
+
+  .table th {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+
+  .table td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+
+  .full-width-input {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  .btn-action {
+    padding: 5px 10px;
+    font-size: 12px;
+
+    i {
+      font-size: 14px;
+    }
+  }
+
+  .submit-btn {
+    padding: 6px 16px;
+    font-size: 14px;
+  }
+}

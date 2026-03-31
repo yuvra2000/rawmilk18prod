@@ -185,6 +185,7 @@ export interface ActionConfig {
   visible?: (data: any) => boolean;
   disabled?: (data: any) => boolean;
   onClick?: (data: any, node?: any, params?: any) => void;
+  onHover?: (data: any, node?: any, params?: any) => void;
   labelStyle?: { [key: string]: string }; // New property for label styling
 }
 
@@ -210,6 +211,7 @@ export interface IActionCellRendererParams extends ICellRendererParams {
             container="body"
             type="button"
             [style]="action.buttonStyle"
+            (mouseenter)="onActionHover(action)"
           >
             @if (action.icon && isIconVisible(action)) {
               @if (action.isImg) {
@@ -326,6 +328,12 @@ export class ActionCellRendererComponent
     if (action.onClick) {
       debugger;
       action.onClick(this.rowData(), this.params()?.node, this.params());
+    }
+  }
+  onActionHover(action: ActionConfig): void {
+    if (action.onHover) {
+      debugger;
+      action.onHover(this.rowData(), this.params()?.node, this.params());
     }
   }
 }
@@ -723,6 +731,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
   // };
   processedColumnDefs = computed(() => {
     const currentConfig = this.config();
+    console.log('Processing column definitions with config:', currentConfig);
     if (!currentConfig.columns) return [];
 
     return currentConfig.columns.map((col) => {

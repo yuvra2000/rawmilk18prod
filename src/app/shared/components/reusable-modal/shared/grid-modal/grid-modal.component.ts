@@ -38,6 +38,7 @@ export interface GridModalConfig {
   enableGridFilter?: boolean;
   gridFilterMapping?: Record<string, string>;
   height?: string;
+  context?: any;
 }
 
 @Component({
@@ -123,6 +124,7 @@ export class GridModalComponent {
       rowSelection: cfg.selectionMode === 'single' ? 'single' : 'multiple',
       suppressRowClickSelection: false,
       height: cfg.height || '60vh',
+      context: cfg.context,
     } as GridConfig;
   });
 

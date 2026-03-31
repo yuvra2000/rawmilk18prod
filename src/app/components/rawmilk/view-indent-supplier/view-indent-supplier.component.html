@@ -6,6 +6,7 @@
     [dynamicFields]="filterfields()"
     (formSubmit)="onFormSubmit($event)"
     (controlValueChange)="onFilterChange($event)"
+    [initialData]="initialData()"
   >
   </filter-form>
 </app-collapse-wrapper>

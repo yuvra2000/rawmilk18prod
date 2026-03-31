@@ -231,11 +231,14 @@ updateFieldOptions(this.myFieldsSignal, 'milkType', this.state().milkList);
 | `placeholder`      | `string`                  | Placeholder text                                        |
 | `multiple`         | `boolean`                 | Allow multi-select                                      |
 | `disabled`         | `boolean`                 | Disable the field                                       |
-| `class`            | `string`                  | CSS width class (e.g., `'col-md-6'`, `'col-md-12'`)    |
+| `class`            | `string`                  | **Bootstrap layout-width only** (e.g., `'col-md-6'`, `'col-md-12'`). ⚠️ **DO NOT** use this to add style-changing classes (colors, fonts, borders, visibility, etc.). Appearance is controlled exclusively by the shared `FilterFormComponent` styles — never override them via `class`. |
 | `emitValueChanges` | `boolean`                 | Emit via `controlValueChange` output on change          |
 | `sectionTitle`     | `string`                  | Full-width section heading before the field              |
 | `forceNewLine`     | `boolean`                 | Forces field to start on new row                         |
 | `actionButton`     | `object`                  | Button config with `position` and `action` callback      |
+
+> **⚠️ IMPORTANT — `class` is for layout width ONLY**
+> The `class` property in `FieldConfig` must **only** be used to set Bootstrap grid width (e.g., `'col-md-6'`). Never add classes to change colors, fonts, visibility, spacing, borders, or any other visual styling. All field appearance is governed by the shared `FilterFormComponent` stylesheet. Adding custom style classes here will cause inconsistency and is considered a pattern violation.
 
 ---
 
@@ -292,3 +295,4 @@ initialData = input<any | null>(null);
 - [ ] Use `[dynamicFields]` binding (not `[fields]`)
 - [ ] Handle `(formSubmit)` event
 - [ ] For select fields, remember `data.fieldName` is the full option object — access `.id`, `.name`, etc.
+- [ ] **Do NOT use `class` for styling** — only use it for Bootstrap width (e.g., `'col-md-6'`). Never add style-changing classes to `FieldConfig`.

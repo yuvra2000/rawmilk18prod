@@ -37,6 +37,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Allocated Indent',
       },
+      {
+        path: 'Inventory',
+        loadComponent: () =>
+          import('./inventory/inventory.component').then(
+            (m) => m.InventoryComponent,
+          ),
+        title: 'Inventory',
+      },
     ],
   },
   {

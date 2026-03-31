@@ -388,14 +388,16 @@ export class ViewIndentComponent implements OnInit {
     updateFieldOptions(
       this.addIntentFieldsSignal,
       'toPlant',
-      this.state().plantList,
+      this.state().plantList.filter((item: any) => item.type == 3),
     );
 
     // Update "From Supplier/Plant" field options
     updateFieldOptions(
       this.addIntentFieldsSignal,
       'fromSupplierPlant',
-      this.state().plantList,
+      this.state().plantList.filter(
+        (item: any) => item.type == 3 || item.type == 6,
+      ),
     );
 
     // Clear MCC options initially (will be populated when supplier/plant is selected)

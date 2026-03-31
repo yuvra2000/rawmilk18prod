@@ -76,11 +76,14 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { filter } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AppStateService } from './shared/services/app-state.service';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { CommonModule } from '@angular/common';
 
+ModuleRegistry.registerModules([AllCommunityModule]);
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgxSpinnerComponent, NgxSpinnerModule],
+  imports: [RouterOutlet, NgxSpinnerComponent, NgxSpinnerModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

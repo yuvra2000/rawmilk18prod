@@ -18,9 +18,9 @@
         </tr>
       </thead>
       <tbody formArrayName="rows">
-        @for (row of rows.controls; track i; let i = $index) {
-          <tr [formGroupName]="i" class="text-center">
+        <tr [formGroupName]="i" class="text-center" *ngFor="let row of rows.controls; let i = index">
             <td width="40%">
+              <!-- {{ row.get("mcc")?.value | json }}/ -->
               <ng-select
                 formControlName="mcc"
                 class="full-width-select"
@@ -38,7 +38,7 @@
                 type="number"
                 formControlName="quantity"
                 class="full-width-input"
-                min="1"
+                min="0"
                 (input)="updateRemainingQuantity()"
               />
               @if (
@@ -91,7 +91,6 @@
               </div>
             </td>
           </tr>
-        }
       </tbody>
     </table>
     <div class="col-lg-2 mt-2 ms-auto me-auto">

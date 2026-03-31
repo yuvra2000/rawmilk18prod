@@ -37,7 +37,7 @@
 }
 
 .btn-add {
-  background: #1d4380;
+  background: var(--primary-color);
 
   &:hover {
     background: #162d5e;
@@ -53,7 +53,7 @@
 }
 
 .btn-delete {
-  background: #ff0000;
+  background: var(--warning-rgb);
 
   &:hover {
     background: #cc0000;
@@ -174,7 +174,7 @@ input:focus {
 
 /* Button styling for the submit button */
 .submit-btn {
-  background-color: #1d4380;
+  background-color: var(--primary-color);
   color: white;
   padding: 8px 20px;
   font-weight: 500;

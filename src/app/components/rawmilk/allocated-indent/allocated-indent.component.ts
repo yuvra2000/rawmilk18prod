@@ -14,6 +14,7 @@ import { AllocatedIndentService } from './allocated-indent.service';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 declare var pako: any;
 
@@ -53,6 +54,7 @@ export class AllocatedIndentComponent implements OnInit {
     private fb: FormBuilder,
     private location: Location,
     private toast: ToastrService,
+    private spinner: NgxSpinnerService,
   ) {
     this.form = this.fb.group({
       rows: this.fb.array([this.createRow()]),
@@ -98,7 +100,7 @@ export class AllocatedIndentComponent implements OnInit {
       IndentId: id,
       ForWeb: '1',
     });
-
+    this.spinner.show();
     this.allocatedIntentService.viewAllocate(formdata).subscribe((res: any) => {
       if (res.Status === 'success') {
         this.clearRows();
@@ -117,7 +119,7 @@ export class AllocatedIndentComponent implements OnInit {
             const matchedItem = this.master.find(
               (item: any) => item.code === allocation.MCCCode,
             );
-
+            console.log('matchedItem', matchedItem);
             if (matchedItem) {
               const newRow = this.fb.group({
                 mcc: [matchedItem], // Prefilled mcc value
@@ -129,13 +131,14 @@ export class AllocatedIndentComponent implements OnInit {
 
               newRow.get('mcc')?.disable();
               (this.form.get('rows') as FormArray).push(newRow);
-              console.log('Rows', this.form.get('rows')?.value);
               this.updateRemainingQuantity();
             }
           });
         }
+        this.spinner.hide();
       } else {
         this.sessionCheck(res);
+        this.spinner.hide();
       }
     });
   }
@@ -152,6 +155,7 @@ export class AllocatedIndentComponent implements OnInit {
       supplier_id: this.supp_id,
       ForApp: '0',
     });
+    this.spinner.show();
 
     this.allocatedIntentService.getMCCData(formData).subscribe((res: any) => {
       this.sessionCheck(res);
@@ -159,6 +163,7 @@ export class AllocatedIndentComponent implements OnInit {
       if (this.allocationdata?.structuredata?.status == 'Edit')
         this.fetchmccdetails();
     });
+    this.spinner.hide();
   }
 
   createRow(): FormGroup {
@@ -172,6 +177,9 @@ export class AllocatedIndentComponent implements OnInit {
           Validators.pattern('^[0-9]*$'),
         ],
       ],
+      index: [null],
+      id: [null],
+      isPrefilled: [false],
     });
   }
   addRow(): FormGroup {
@@ -350,7 +358,7 @@ export class AllocatedIndentComponent implements OnInit {
     ) {
       this.toast.error(res?.Message || 'Session expired. Please login again.');
       localStorage.clear();
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
     }
   }
 }

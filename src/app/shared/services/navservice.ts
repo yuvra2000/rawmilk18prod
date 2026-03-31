@@ -123,6 +123,12 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
+          path: 'Inventory',
+          title: 'Inventory',
+          type: 'link',
+          dirchange: false,
+        },
+        {
           path: 'trip-dashboard',
           title: 'Trip Dashboard',
           type: 'link',

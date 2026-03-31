@@ -4,11 +4,11 @@
 }
 .icon-add {
   font-size: 22px;
-  color: #1d4380;
+  color: var(--primary-color);
   cursor: pointer;
 }
 .icon-delete {
   font-size: 20px;
-  color: #b53d34;
+  color: var(--danger-color);
   cursor: pointer;
 }

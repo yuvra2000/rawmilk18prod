@@ -20,6 +20,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { getTodayDate, handleError, sessionCheck } from './state-service/utils';
 import { Router } from '@angular/router';
+import { UniversalModalService } from '../../../shared/services/universal-modal.service';
+import { milkTestingFormConfig } from '../../../shared/components/filter-form/formarray-example';
 
 @Component({
   selector: 'app-inventory',
@@ -36,6 +38,7 @@ import { Router } from '@angular/router';
 })
 export class InventoryComponent implements OnInit {
   private router = inject(Router);
+  private modalService = inject(UniversalModalService);
   // User and session data
   token: string = '';
   groupId: string = '';
@@ -163,7 +166,20 @@ export class InventoryComponent implements OnInit {
       data: data,
     }));
   }
-  openAddInventory() {}
+  openAddInventory() {
+    this.modalService.openForm({
+      title: 'Add Inventory',
+      fields: milkTestingFormConfig, // Define fields for adding inventory
+      mode: 'form',
+      size: 'lg',
+    });
+    // this.modalService.open(FilterFormComponent, {
+    //   title: 'Add Inventory',
+    //   fields: milkTestingFormConfig, // Define fields for adding inventory
+    //   mode: 'form',
+    //   size: 'lg',
+    // });
+  }
   /**
    * Handle form submission for filtering data
    */

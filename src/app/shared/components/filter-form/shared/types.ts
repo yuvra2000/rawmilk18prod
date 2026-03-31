@@ -21,7 +21,8 @@ export type FieldType =
   | 'date-spk'
   | 'time'
   | 'color-select'
-  | 'datetime';
+  | 'datetime'
+  | 'formarray';
 
 export interface FieldConfig {
   name: string;
@@ -60,6 +61,12 @@ export interface FieldConfig {
   min?: number;
   max?: number;
   slectConfig?: SelectConfig;
+  // ✅ FormArray specific properties
+  formArrayFields?: FieldConfig[]; // Sub-fields for formarray
+  minItems?: number; // Minimum number of items in array
+  maxItems?: number; // Maximum number of items in array
+  addButtonText?: string; // Text for add button
+  removeButtonText?: string; // Text for remove button
   // ✅ NEW: Button configuration
   actionButton?: {
     text?: string; // Button text

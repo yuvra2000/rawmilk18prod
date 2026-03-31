@@ -20,7 +20,19 @@ export class TankerWiseTripReportService {
     return this.masterRequestService.post('/get_mcc', payload);
   }
 
-  getTableData(payload: any) {
-    return this.masterRequestService.post('/rm_tankDetailRepo', payload);
+  getTableData(payload: any, detailedReport: boolean = false) {
+    if (detailedReport) {
+      return this.masterRequestService.postFormData('/rm_tankDetailRepo', payload);
+    } else {
+      return this.masterRequestService.postFormData('/rm_tankerIReport', payload);
+    }
+  }
+
+  getChamberDetailsByDispatchId(payload: any) {
+    return this.masterRequestService.post('/rm_tankerChambers', payload);
+  }
+
+  getAlertDetailsByDispatchId(payload: any) {
+    return this.masterRequestService.post('/rm_searchAlertReport', payload);
   }
 }

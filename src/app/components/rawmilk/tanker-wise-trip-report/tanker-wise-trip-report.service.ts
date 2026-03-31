@@ -27,4 +27,12 @@ export class TankerWiseTripReportService {
       return this.masterRequestService.postFormData('/rm_tankerIReport', payload);
     }
   }
+
+  getChamberDetailsByDispatchId(payload: any) {
+    return this.masterRequestService.post('/rm_tankerChambers', payload);
+  }
+
+  getAlertDetailsByDispatchId(payload: any) {
+    return this.masterRequestService.post('/rm_searchAlertReport', payload);
+  }
 }

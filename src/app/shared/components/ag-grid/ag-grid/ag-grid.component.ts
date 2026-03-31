@@ -74,6 +74,7 @@ export interface GridColumnConfig extends ColDef {
   customRenderer?: string;
   customEditor?: string;
   validation?: (value: any) => boolean | string;
+  children?: GridColumnConfig[];
 }
 
 export interface GridConfig {
@@ -95,9 +96,9 @@ export interface GridConfig {
   enableColumnReordering?: boolean;
   enableColumnResizing?: boolean;
   rowSelection?:
-    | RowSelectionOptions<TextDataTypeDefinition>
-    | 'single'
-    | 'multiple';
+  | RowSelectionOptions<TextDataTypeDefinition>
+  | 'single'
+  | 'multiple';
   enableRowSelection?: boolean;
   rowSelectionMode?: 'single' | 'multiple';
   enableCellEditing?: boolean;
@@ -274,8 +275,7 @@ export interface IActionCellRendererParams extends ICellRendererParams {
   ],
 })
 export class ActionCellRendererComponent
-  implements ICellRendererAngularComp, OnDestroy
-{
+  implements ICellRendererAngularComp, OnDestroy {
   private params = signal<IActionCellRendererParams | null>(null);
 
   readonly rowData = computed(() => this.params()?.data);
@@ -721,71 +721,90 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
   //   resizable: true,
   //   floatingFilter: false,
   // };
+  /**
+   * Recursively maps a GridColumnConfig tree into AG-Grid ColDef / ColGroupDef nodes.
+   * Group nodes (those with `children`) are treated as ColGroupDef:
+   *  - leaf-only transforms (editable, validation, customRenderer, customEditor) are skipped
+   *  - `field` is removed so AG-Grid doesn't confuse the group with a value column
+   * Leaf nodes receive the full normalisation that existed before.
+   */
+  private mapColumn = (col: GridColumnConfig): ColDef => {
+    const isGroup = Array.isArray(col.children) && col.children.length > 0;
+
+    if (isGroup) {
+      // ── Column Group ──────────────────────────────────────────────────────────
+      // ColGroupDef props we care about; strip leaf-only keys to keep AG-Grid happy
+      const { field: _field, customRenderer: _cr, customEditor: _ce,
+        validation: _v, exportable: _ex, searchable: _se,
+        filter: _f, floatingFilter: _ff, editable: _ed,
+        valueSetter: _vs, cellRenderer: _cellR, cellEditor: _cellE,
+        ...groupRest } = col as any;
+
+      return {
+        ...groupRest,
+        // marryChildren keeps group header intact when columns are moved
+        marryChildren: (col as any).marryChildren ?? true,
+        children: col.children!.map(this.mapColumn),
+      } as any;
+    }
+
+    // ── Leaf Column ─────────────────────────────────────────────────────────────
+    const processedCol: ColDef = {
+      ...col,
+      sortable:
+        this.config().enableSorting !== false
+          ? col.sortable !== false
+          : false,
+      filter:
+        this.config().enableFiltering !== false
+          ? col.filter !== false
+          : false,
+      resizable:
+        this.config().enableColumnResizing !== false
+          ? col.resizable !== false
+          : false,
+      editable: this.config().enableCellEditing && col.editable,
+      pinned: col.pinned || null,
+      lockPosition: col.lockPosition || false,
+      suppressMovable: !this.config().enableColumnReordering,
+    };
+
+    // Custom cell renderer
+    if (col.customRenderer) {
+      processedCol.cellRenderer = col.customRenderer;
+    }
+
+    // Custom cell editor
+    if (col.customEditor) {
+      processedCol.cellEditor = col.customEditor;
+    }
+
+    // Validation wrapper around valueSetter
+    if (col.validation && this.config().enableCellEditing) {
+      const originalValueSetter = col.valueSetter;
+
+      processedCol.valueSetter = (params: NewValueParams) => {
+        const validationResult = col.validation!(params.newValue);
+        if (validationResult !== true) {
+          alert(
+            typeof validationResult === 'string' ? validationResult : 'Invalid value',
+          );
+          return false;
+        }
+        if (typeof originalValueSetter === 'function') {
+          return originalValueSetter(params);
+        }
+        return true;
+      };
+    }
+
+    return processedCol;
+  };
+
   processedColumnDefs = computed(() => {
     const currentConfig = this.config();
     if (!currentConfig.columns) return [];
-
-    return currentConfig.columns.map((col) => {
-      // ... your entire column processing logic from `processConfiguration` goes here ...
-      const processedCol: ColDef = {
-        ...col,
-        sortable:
-          this.config().enableSorting !== false
-            ? col.sortable !== false
-            : false,
-        filter:
-          this.config().enableFiltering !== false
-            ? col.filter !== false
-            : false,
-        // filter:false,
-        resizable:
-          this.config().enableColumnResizing !== false
-            ? col.resizable !== false
-            : false,
-        editable: this.config().enableCellEditing && col.editable,
-        pinned: col.pinned || null,
-        lockPosition: col.lockPosition || false,
-        suppressMovable: !this.config().enableColumnReordering,
-      };
-      // Add custom cell renderers
-      if (col.customRenderer) {
-        processedCol.cellRenderer = col.customRenderer;
-      }
-
-      // Add custom editors
-      if (col.customEditor) {
-        processedCol.cellEditor = col.customEditor;
-      }
-
-      // Add validation
-      if (col.validation && this.config().enableCellEditing) {
-        const originalValueSetter = col.valueSetter; // Get from the original column config
-
-        processedCol.valueSetter = (params: NewValueParams) => {
-          // First, run the validation
-          const validationResult = col.validation!(params.newValue);
-          if (validationResult !== true) {
-            alert(
-              typeof validationResult === 'string'
-                ? validationResult
-                : 'Invalid value',
-            );
-            return false; // Validation failed, so we stop the edit.
-          }
-
-          // If validation passes, check if the original setter was a function
-          if (typeof originalValueSetter === 'function') {
-            return originalValueSetter(params); // Call the original function
-          }
-
-          // If the original setter was a string or undefined, we can't execute it.
-          // Returning 'true' tells the grid the operation was successful, and it
-          // should perform its default data update (data.field = newValue).
-          return true;
-        };
-      }
-      return processedCol;
-    });
+    return currentConfig.columns.map(this.mapColumn);
   });
 
   defaultColDef = computed(() => {

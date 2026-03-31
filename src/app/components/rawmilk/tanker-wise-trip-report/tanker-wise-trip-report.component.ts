@@ -2,10 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { FieldConfig, FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
 import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { tankerWiseTripReportFilterField, tankerWiseTripReportGridColumn } from './state-service/config';
+import { alertDetailColumns, chamberDetailColumns, tankerWiseTripReportFilterField, tankerWiseTripReportGridColumn } from './state-service/config';
 import { TankerWiseTripReportService } from './tanker-wise-trip-report.service';
 import { AlertService } from '../../../shared/services/alert.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
+import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 
 @Component({
   selector: 'app-tanker-wise-trip-report',
@@ -20,6 +21,7 @@ export class TankerWiseTripReportComponent {
   token = localStorage.getItem('AccessToken') || '';
   groupId = localStorage.getItem('GroupId') || '';
   private toastService = inject(AlertService);
+  private modalService = inject(UniversalModalService);
 
   // signals
   filterfields = computed<FieldConfig[]>(() => tankerWiseTripReportFilterField(this.tankerNameList(), this.plantNameList(), this.mpcNameList(), this.mccNameList()));
@@ -27,6 +29,7 @@ export class TankerWiseTripReportComponent {
   plantNameList = signal<any[]>([]);
   mpcNameList = signal<any[]>([]);
   mccNameList = signal<any[]>([]);
+  chamberDetailRows = signal<any[]>([]);
   tankerWiseTripReportConfig = signal<GridConfig>({
     theme: 'alpine',
     rowSelectionMode: 'multiple',
@@ -36,6 +39,7 @@ export class TankerWiseTripReportComponent {
     columns: tankerWiseTripReportGridColumn
   });
   tankerWiseTripReportData = signal<any[]>([]);
+  alertDetailRows = signal<any[]>([]);
 
   ngOnInit() {
     this.getTankerName();
@@ -155,5 +159,84 @@ export class TankerWiseTripReportComponent {
           this.toastService.error(error.message || 'Error fetching alert data');
         }
       })
+  }
+
+  showChamberDetails(dispatchId: any) {
+
+    const payload = {
+      AccessToken: this.token,
+      DispatchId: dispatchId,
+      ForWeb: 1
+    }
+
+    this.chamberDetailRows.set([]);
+
+    this.tankerWiseTripReportService.getChamberDetailsByDispatchId(payload).subscribe({
+      next: (res: any) => {
+        if (res.Status === 'success') {
+          const data = res.Data || [];
+          if (data.length > 0) {
+            this.chamberDetailRows.set(data);
+            this.modalService.openGridModal({
+              title: `Chamber details`,
+              columns: chamberDetailColumns,
+              rowData: this.chamberDetailRows(),
+            });
+          } else {
+            this.chamberDetailRows.set([]);
+            this.toastService.info(res.Message || 'No data found');
+          }
+        } else {
+          console.error('API Error:', res.Message);
+          this.chamberDetailRows.set([]);
+          this.toastService.error(res.Message || 'Error fetching alert data');
+        }
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.toastService.error(error.message || 'Error fetching alert data');
+      }
+    })
+
+
+
+  }
+
+  showAlertDetails(dispatchId: any) {
+
+    const payload = {
+      AccessToken: this.token,
+      DispatchId: dispatchId,
+      ForWeb: 1
+    }
+
+    this.alertDetailRows.set([]);
+
+    this.tankerWiseTripReportService.getAlertDetailsByDispatchId(payload).subscribe({
+      next: (res: any) => {
+        if (res.Status === 'success') {
+          const data = res.Data || [];
+          if (data.length > 0) {
+            this.alertDetailRows.set(data);
+            this.modalService.openGridModal({
+              title: `Alert details`,
+              columns: alertDetailColumns,
+              rowData: this.alertDetailRows(),
+            });
+          } else {
+            this.alertDetailRows.set([]);
+            this.toastService.info(res.Message || 'No data found');
+          }
+        } else {
+          console.error('API Error:', res.Message);
+          this.alertDetailRows.set([]);
+          this.toastService.error(res.Message || 'Error fetching alert data');
+        }
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.toastService.error(error.message || 'Error fetching alert data');
+      }
+    })
   }
 }

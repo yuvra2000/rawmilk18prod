@@ -259,6 +259,12 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
+          path: 'reports/leci-report',
+          title: 'LECI Report',
+          type: 'link',
+          dirchange: false,
+        },
+        {
           path: 'reports/trip-summary',
           title: 'Trip Summary',
           type: 'link',

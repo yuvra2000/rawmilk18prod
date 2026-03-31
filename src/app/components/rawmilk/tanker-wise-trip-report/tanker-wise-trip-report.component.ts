@@ -2,9 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { FieldConfig, FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
 import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { tankerWiseTripReportFilterField, tankerWiseTripReportGridColumn } from './state-service/config';
+import { alertDetailColumns, chamberDetailColumns, tankerWiseTripReportFilterField, tankerWiseTripReportGridColumn } from './state-service/config';
 import { TankerWiseTripReportService } from './tanker-wise-trip-report.service';
 import { AlertService } from '../../../shared/services/alert.service';
+import { createFormData } from '../../../shared/utils/shared-utility.utils';
+import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 
 @Component({
   selector: 'app-tanker-wise-trip-report',
@@ -19,6 +21,7 @@ export class TankerWiseTripReportComponent {
   token = localStorage.getItem('AccessToken') || '';
   groupId = localStorage.getItem('GroupId') || '';
   private toastService = inject(AlertService);
+  private modalService = inject(UniversalModalService);
 
   // signals
   filterfields = computed<FieldConfig[]>(() => tankerWiseTripReportFilterField(this.tankerNameList(), this.plantNameList(), this.mpcNameList(), this.mccNameList()));
@@ -26,6 +29,7 @@ export class TankerWiseTripReportComponent {
   plantNameList = signal<any[]>([]);
   mpcNameList = signal<any[]>([]);
   mccNameList = signal<any[]>([]);
+  chamberDetailRows = signal<any[]>([]);
   tankerWiseTripReportConfig = signal<GridConfig>({
     theme: 'alpine',
     rowSelectionMode: 'multiple',
@@ -35,55 +39,23 @@ export class TankerWiseTripReportComponent {
     columns: tankerWiseTripReportGridColumn
   });
   tankerWiseTripReportData = signal<any[]>([]);
+  alertDetailRows = signal<any[]>([]);
 
   ngOnInit() {
     this.getTankerName();
     this.getPlantName();
     this.getMccName();
+    this.getTableData();
   }
 
   onFormSubmit(data: any) {
     console.log('Form submitted with data:', data);
-    const payload = {
-      "AccessToken": this.token,
-      "FromDate": data.from || new Date().toISOString().split('T')[0],
-      "ToDate": new Date(new Date(data.to || new Date()).setDate(new Date(data.to || new Date()).getDate() + 1)).toISOString().split('T')[0],
-      "ForWeb": 1,
-      "Tanker": data.tanker?.VehicleId,
-      "Mpc": data.mpcName?.id,
-      "Plant": data.plant?.id,
-      "MCC": data.mccName?.entity_id,
-      "IndentNo": data.identNumber,
-      "DispatchNo": data.dispatchNumber,
-      "Status": data.status?.id,
-      "Trigger": data.trigger?.id,
-      "Remark": data.remark?.id,
-      "Transporter": data.transporter?.id,
-      "ReportType": data.reportType?.id
+    // if report type is "detailed"
+    if (data.reportType.id === 2) {
+      this.getTableData(data, true);
+    } else {
+      this.getTableData(data, false);
     }
-
-    this.tankerWiseTripReportService.getTableData(payload)
-      .subscribe({
-        next: (res: any) => {
-          if (res.Status === 'success') {
-            const data = res.Data || [];
-            if (data.length > 0) {
-              this.tankerWiseTripReportData.set(data);
-            } else {
-              this.tankerWiseTripReportData.set([]);
-              this.toastService.info(res.Message || 'No data found');
-            }
-          } else {
-            console.error('API Error:', res.Message);
-            this.tankerWiseTripReportData.set([]);
-            this.toastService.error(res.Message || 'Error fetching alert data');
-          }
-        },
-        error: (error: any) => {
-          console.error(error);
-          this.toastService.error(error.message || 'Error fetching alert data');
-        }
-      })
   }
 
   getTankerName() {
@@ -145,5 +117,126 @@ export class TankerWiseTripReportComponent {
           console.error(error);
         }
       })
+  }
+
+  getTableData(data?: any, detailedReport: boolean = false) {
+    const formData = createFormData(this.token, {
+      "FromDate": data?.from || new Date().toISOString().split('T')[0] + ' 00:00:00',
+      "ToDate": new Date(new Date(data?.to || new Date()).setDate(new Date(data?.to || new Date()).getDate() + 1)).toISOString().split('T')[0] + ' 23:55:55',
+      "ForWeb": '1',
+      "Tanker": data?.tanker?.VehicleId,
+      "Mpc": data?.mpcName?.id,
+      "Plant": data?.plant?.id,
+      "MCC": data?.mccName?.entity_id,
+      "IndentNo": data?.identNumber,
+      "DispatchNo": data?.dispatchNumber,
+      "Status": data?.status?.id,
+      "Trigger": data?.trigger?.id,
+      "Remark": data?.remark?.id,
+      "Transporter": data?.transporter?.id,
+      "ReportType": data?.reportType?.id
+    });
+
+    this.tankerWiseTripReportService.getTableData(formData, detailedReport)
+      .subscribe({
+        next: (res: any) => {
+          if (res.Status === 'success') {
+            const data = res.Data || [];
+            if (data.length > 0) {
+              this.tankerWiseTripReportData.set(data);
+            } else {
+              this.tankerWiseTripReportData.set([]);
+              this.toastService.info(res.Message || 'No data found');
+            }
+          } else {
+            console.error('API Error:', res.Message);
+            this.tankerWiseTripReportData.set([]);
+            this.toastService.error(res.Message || 'Error fetching alert data');
+          }
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.toastService.error(error.message || 'Error fetching alert data');
+        }
+      })
+  }
+
+  showChamberDetails(dispatchId: any) {
+
+    const payload = {
+      AccessToken: this.token,
+      DispatchId: dispatchId,
+      ForWeb: 1
+    }
+
+    this.chamberDetailRows.set([]);
+
+    this.tankerWiseTripReportService.getChamberDetailsByDispatchId(payload).subscribe({
+      next: (res: any) => {
+        if (res.Status === 'success') {
+          const data = res.Data || [];
+          if (data.length > 0) {
+            this.chamberDetailRows.set(data);
+            this.modalService.openGridModal({
+              title: `Chamber details`,
+              columns: chamberDetailColumns,
+              rowData: this.chamberDetailRows(),
+            });
+          } else {
+            this.chamberDetailRows.set([]);
+            this.toastService.info(res.Message || 'No data found');
+          }
+        } else {
+          console.error('API Error:', res.Message);
+          this.chamberDetailRows.set([]);
+          this.toastService.error(res.Message || 'Error fetching alert data');
+        }
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.toastService.error(error.message || 'Error fetching alert data');
+      }
+    })
+
+
+
+  }
+
+  showAlertDetails(dispatchId: any) {
+
+    const payload = {
+      AccessToken: this.token,
+      DispatchId: dispatchId,
+      ForWeb: 1
+    }
+
+    this.alertDetailRows.set([]);
+
+    this.tankerWiseTripReportService.getAlertDetailsByDispatchId(payload).subscribe({
+      next: (res: any) => {
+        if (res.Status === 'success') {
+          const data = res.Data || [];
+          if (data.length > 0) {
+            this.alertDetailRows.set(data);
+            this.modalService.openGridModal({
+              title: `Alert details`,
+              columns: alertDetailColumns,
+              rowData: this.alertDetailRows(),
+            });
+          } else {
+            this.alertDetailRows.set([]);
+            this.toastService.info(res.Message || 'No data found');
+          }
+        } else {
+          console.error('API Error:', res.Message);
+          this.alertDetailRows.set([]);
+          this.toastService.error(res.Message || 'Error fetching alert data');
+        }
+      },
+      error: (error: any) => {
+        console.error(error);
+        this.toastService.error(error.message || 'Error fetching alert data');
+      }
+    })
   }
 }

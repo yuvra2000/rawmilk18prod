@@ -66,6 +66,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Tanker Wise Trip Report',
       },
+      {
+        path: 'leci-report',
+        loadComponent: () =>
+          import('./leci-report/leci-report.component').then(
+            (m) => m.LeciReportComponent,
+          ),
+        title: 'Leci Report',
+      },
     ],
   },
 ];

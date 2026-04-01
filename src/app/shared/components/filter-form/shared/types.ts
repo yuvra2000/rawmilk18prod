@@ -22,7 +22,9 @@ export type FieldType =
   | 'time'
   | 'color-select'
   | 'datetime'
-  | 'formarray';
+  | 'formarray'
+  | 'month'
+  | 'year';
 
 export interface FieldConfig {
   name: string;

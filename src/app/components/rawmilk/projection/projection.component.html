@@ -1,0 +1,24 @@
+<!-- <app-common-header title="Asset Management" [breadcrumbs]="breadcrumbs">
+</app-common-header> -->
+<app-collapse-wrapper>
+  <div class="header h-5 w-5 cursor-pointer" custom-icon>
+    <i class="fa fa-plus-circle icon-add" (click)="openAddProjection()"></i>
+  </div>
+  <filter-form
+    #viewinventoryFilter
+    [dynamicFields]="store.filterfields()"
+    (formSubmit)="onFormSubmit($event)"
+    [initialData]="store.initialDataf"
+    (controlValueChange)="onFilterChange($event)"
+  >
+  </filter-form>
+</app-collapse-wrapper>
+<!-- <app-advanced-grid [rowData]="store.projectionRowData()" [config]="projectionConfig()">
+</app-advanced-grid> -->
+
+<app-nav-tab
+  [tabs]="store.tabsComp()"
+  [tabStyle]="{ width: '40%' }"
+  [wrapperStyle]="{ 'margin-top': '10px', 'border-radius': '0.5rem' }"
+>
+</app-nav-tab>

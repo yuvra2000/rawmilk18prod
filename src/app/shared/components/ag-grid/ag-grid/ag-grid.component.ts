@@ -327,13 +327,11 @@ export class ActionCellRendererComponent
 
   onActionClick(action: ActionConfig): void {
     if (action.onClick) {
-      debugger;
       action.onClick(this.rowData(), this.params()?.node, this.params());
     }
   }
   onActionHover(action: ActionConfig): void {
     if (action.onHover) {
-      debugger;
       action.onHover(this.rowData(), this.params()?.node, this.params());
     }
   }

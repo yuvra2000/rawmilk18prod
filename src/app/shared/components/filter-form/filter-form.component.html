@@ -188,6 +188,20 @@
             [max]="computeDateConstraint(field.maxDate)"
           />
         }
+        <!-- Month field -->
+        @else if (field.type === "month") {
+          <input
+            type="month"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [attr.aria-required]="field.required"
+            [class.disabled-field]="field.disabled"
+            [required]="field.required ?? false"
+            [min]="computeDateConstraint(field.minDate)"
+            [max]="computeDateConstraint(field.maxDate)"
+          />
+        }
 
         <!-- Time field -->
         @else if (field.type === "time") {

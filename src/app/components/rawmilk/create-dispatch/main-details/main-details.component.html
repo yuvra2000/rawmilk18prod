@@ -1,0 +1,84 @@
+<!-- <p>main-details works!</p> -->
+<div class="p-3 mb-3" [formGroup]="form">
+  <!-- <h5>Main Details</h5> -->
+
+  <div class="row">
+    <div class="col">
+      <label class="form-label">Indent No</label>
+      <input type="text" class="form-control" formControlName="indent" />
+    </div>
+
+    <div class="col">
+      <label class="form-label">LR No</label>
+      <input type="text" class="form-control" formControlName="Lr_nu" />
+    </div>
+
+    <div class="col">
+      <label class="form-label">Plant</label>
+      <input type="text" class="form-control" formControlName="plant" />
+    </div>
+
+    <div class="col">
+      <label class="form-label">MCC/BMC</label>
+      <!-- <input type="text" class="form-control" formControlName="MCC" /> -->
+      <ng-select
+        [items]="state().plantList"
+        bindLabel="displayName"
+        bindValue="id"
+        formControlName="MCC"
+        placeholder="Select MCC/BMC"
+        [searchable]="true"
+        [clearable]="true"
+      ></ng-select>
+    </div>
+
+    <div class="col">
+      <label class="form-label">Vehicle</label>
+      <ng-select
+        [items]="state().vehicleOptions"
+        bindLabel="VehicleNo"
+        bindValue="VehicleId"
+        formControlName="vehicle"
+        placeholder="Select Vehicle"
+        [searchable]="true"
+        [clearable]="true"
+        (change)="onVehicleChange($event)"
+      ></ng-select>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col">
+      <label class="form-label">Driver Name</label>
+      <input type="text" class="form-control" formControlName="DriverName" />
+    </div>
+
+    <div class="col">
+      <label class="form-label">Driver Number</label>
+      <input type="text" class="form-control" formControlName="Driver_no" />
+    </div>
+
+    <div class="col">
+      <label class="form-label">Dispatch Date</label>
+      <input type="date" class="form-control" formControlName="dispatchDate" />
+    </div>
+
+    <div class="col">
+      <label class="form-label">Transporter</label>
+      <ng-select
+        [items]="state().selectedVehicleTransporters"
+        bindLabel="TransporterName"
+        bindValue="TransporterId"
+        formControlName="transporter"
+        placeholder="Select Transporter"
+        [searchable]="true"
+        [clearable]="true"
+      ></ng-select>
+    </div>
+
+    <div class="col">
+      <label class="form-label">Remarks</label>
+      <input type="text" class="form-control" formControlName="remarks" />
+    </div>
+  </div>
+</div>

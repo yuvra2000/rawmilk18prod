@@ -1,0 +1,12 @@
+<div class="col-lg-2 p-3 mb-3" [formGroup]="form">
+  <!-- <h5>MCC Selection</h5> -->
+
+  <ng-select
+    [items]="mccOptions"
+    bindLabel="label"
+    bindValue="value"
+    formControlName="noOfMcc"
+    placeholder="No.Of mcc"
+  >
+  </ng-select>
+</div>

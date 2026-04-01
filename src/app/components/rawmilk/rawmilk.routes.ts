@@ -29,6 +29,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'View Indent (Supplier)',
       },
+      {
+        path: 'create-dispatch',
+        loadComponent: () =>
+          import('./create-dispatch/create-dispatch.component').then(
+            (m) => m.CreateDispatchComponent,
+          ),
+        title: 'Create Dispatch',
+      },
     ],
   },
   {
@@ -38,20 +46,20 @@ export const rawMilkRoutes: Routes = [
         path: 'alert-report',
         loadComponent: () =>
           import('./alert-report/alert-report.component').then(
-            (m) => m.AlertReportComponent
+            (m) => m.AlertReportComponent,
           ),
-        title: 'Alert Report'
+        title: 'Alert Report',
       },
       {
         path: 'tanker-wise',
         loadComponent: () =>
           import('./tanker-wise-trip-report/tanker-wise-trip-report.component').then(
-            (m) => m.TankerWiseTripReportComponent
+            (m) => m.TankerWiseTripReportComponent,
           ),
-        title: 'Tanker Wise Trip Report'
-      }
-    ]
-  }
+        title: 'Tanker Wise Trip Report',
+      },
+    ],
+  },
 ];
 @NgModule({
   imports: [RouterModule.forChild(rawMilkRoutes)],

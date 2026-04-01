@@ -9,4 +9,10 @@ export class ViewIndentSupplierService {
   getIndentData(params: any) {
     return this.masterRequestService.postFormData(`/pendingIndentProc`, params);
   }
+  viewAllocationProc(params: any) {
+    return this.masterRequestService.postFormData(
+      `/viewAllocationProc`,
+      params,
+    );
+  }
 }

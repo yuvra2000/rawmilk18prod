@@ -17,7 +17,6 @@ export function updateFieldOptions(
   fieldName: string,
   newOptions: any[],
 ) {
-  debugger;
   signal.update((fields: FieldConfig[]) =>
     fields.map((field) =>
       field.name === fieldName ? { ...field, options: newOptions } : field,

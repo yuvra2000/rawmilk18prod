@@ -30,6 +30,22 @@ export const rawMilkRoutes: Routes = [
         title: 'View Indent (Supplier)',
       },
       {
+        path: 'Allocate',
+        loadComponent: () =>
+          import('./allocated-indent/allocated-indent.component').then(
+            (m) => m.AllocatedIndentComponent,
+          ),
+        title: 'Allocated Indent',
+      },
+      {
+        path: 'Inventory',
+        loadComponent: () =>
+          import('./inventory/inventory.component').then(
+            (m) => m.InventoryComponent,
+          ),
+        title: 'Inventory',
+      },
+      {
         path: 'create-dispatch',
         loadComponent: () =>
           import('./create-dispatch/create-dispatch.component').then(
@@ -57,6 +73,14 @@ export const rawMilkRoutes: Routes = [
             (m) => m.TankerWiseTripReportComponent,
           ),
         title: 'Tanker Wise Trip Report',
+      },
+      {
+        path: 'leci-report',
+        loadComponent: () =>
+          import('./leci-report/leci-report.component').then(
+            (m) => m.LeciReportComponent,
+          ),
+        title: 'Leci Report',
       },
     ],
   },

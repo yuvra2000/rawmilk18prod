@@ -161,8 +161,23 @@ export class ViewIndentComponent implements OnInit {
       );
     }
   }
-  onFormSubmit(data: any) {
-    console.log('Form submitted with data:', data);
+  async onFormSubmit(data: any) {
+    const params = {
+      AccessToken: this.token,
+      from: data.from,
+      to: data.to,
+      GroupId: localStorage.getItem('GroupId') || '',
+      UserType: this.usertype(),
+      SubRole: '',
+      ForWeb: '1',
+    };
+    try {
+      const res: any = await firstValueFrom(
+        this.viewIndentService.getIndentData(params),
+      );
+      this.indentRowData.set(res?.Indents || []);
+      console.log('row data', this.indentRowData());
+    } catch (error) {}
   }
   handleSelectionChange(selected: any) {
     this.selectedRowData.set(selected);
@@ -275,7 +290,7 @@ export class ViewIndentComponent implements OnInit {
       title: 'Close Indent',
       fields: this.closeIntentField,
       mode: 'form',
-      buttonName: 'Update',
+      buttonName: 'Close',
       onSave: async (form: any) => {
         try {
           const formData = {
@@ -327,7 +342,25 @@ export class ViewIndentComponent implements OnInit {
         title: 'Add Intent',
         component: FilterFormComponent,
         componentInputs: {
-          incomingConfig: this.addIntentConfig(),
+          incomingConfig: {
+            title: 'Add Intent',
+            mode: 'form',
+            fields: this.addIntentFieldsSignal(),
+            onSave: (formData: any) => {
+              this.saveIntent(formData, 'form');
+            },
+            onControlValueChange: (
+              controlName: string,
+              value: any,
+              form: any,
+            ) => {
+              if (controlName === 'fromSupplierPlant') {
+                this.handleSupplierPlantChange(value, form);
+              }
+            },
+            showFooter: true,
+            initialData: {},
+          },
         },
       },
       {
@@ -373,14 +406,16 @@ export class ViewIndentComponent implements OnInit {
     updateFieldOptions(
       this.addIntentFieldsSignal,
       'toPlant',
-      this.state().plantList,
+      this.state().plantList.filter((item: any) => item.type == 3),
     );
 
     // Update "From Supplier/Plant" field options
     updateFieldOptions(
       this.addIntentFieldsSignal,
       'fromSupplierPlant',
-      this.state().plantList,
+      this.state().plantList.filter(
+        (item: any) => item.type == 3 || item.type == 6,
+      ),
     );
 
     // Clear MCC options initially (will be populated when supplier/plant is selected)
@@ -408,5 +443,9 @@ export class ViewIndentComponent implements OnInit {
 
     // Update the signal
     updateFieldOptions(this.addIntentFieldsSignal, 'mcc', mccOptionsFormatted);
+    console.log(
+      'MCC options updated based on supplier/plant selection:',
+      this.addIntentFieldsSignal(),
+    );
   }
 }

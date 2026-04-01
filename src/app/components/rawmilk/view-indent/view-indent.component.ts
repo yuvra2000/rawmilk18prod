@@ -342,7 +342,25 @@ export class ViewIndentComponent implements OnInit {
         title: 'Add Intent',
         component: FilterFormComponent,
         componentInputs: {
-          incomingConfig: this.addIntentConfig,
+          incomingConfig: {
+            title: 'Add Intent',
+            mode: 'form',
+            fields: this.addIntentFieldsSignal(),
+            onSave: (formData: any) => {
+              this.saveIntent(formData, 'form');
+            },
+            onControlValueChange: (
+              controlName: string,
+              value: any,
+              form: any,
+            ) => {
+              if (controlName === 'fromSupplierPlant') {
+                this.handleSupplierPlantChange(value, form);
+              }
+            },
+            showFooter: true,
+            initialData: {},
+          },
         },
       },
       {

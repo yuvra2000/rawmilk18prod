@@ -26,6 +26,7 @@ import {
   ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
+  FormArray,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -313,14 +314,27 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
       let control = this.form.get(field.name);
 
       if (!control) {
-        this.form.addControl(
-          field.name,
-          new FormControl(
-            { value: null, disabled: field.disabled ?? false },
-            validators,
-          ),
-          { emitEvent: false },
-        );
+        // Create appropriate control based on field type
+        if (field.type === 'formarray') {
+          // Create FormArray with initial empty structure
+          const formArray = new FormArray([], validators);
+          this.form.addControl(field.name, formArray, { emitEvent: false });
+          // Add initial items if minItems is specified
+          if (field.minItems && field.minItems > 0) {
+            for (let i = 0; i < field.minItems; i++) {
+              this.addFormArrayItem(field.name, field.formArrayFields || []);
+            }
+          }
+        } else {
+          this.form.addControl(
+            field.name,
+            new FormControl(
+              { value: null, disabled: field.disabled ?? false },
+              validators,
+            ),
+            { emitEvent: false },
+          );
+        }
         this.setupValueChangeListener(field.name, field.emitValueChanges);
         changed = true;
       } else {
@@ -476,6 +490,66 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
     return (control || new FormControl()) as FormControl;
   }
 
+  /**
+   * ✅ Get FormArray control
+   */
+  getFormArray(fieldName: string): FormArray {
+    this.formVersion();
+    const control = this.form.get(fieldName);
+    return (control || new FormArray([])) as FormArray;
+  }
+
+  /**
+   * ✅ Add item to FormArray
+   */
+  addFormArrayItem(fieldName: string, subFields: FieldConfig[]): void {
+    const formArray = this.getFormArray(fieldName);
+    const group = this.fb.group({});
+    
+    // Build form group for array item
+    subFields.forEach((subField) => {
+      const validators = this.getValidators(subField);
+      group.addControl(
+        subField.name,
+        new FormControl(
+          { value: null, disabled: subField.disabled ?? false },
+          validators,
+        ),
+      );
+    });
+    
+    formArray.push(group);
+    this.formVersion.update((v) => v + 1);
+  }
+
+  /**
+   * ✅ Remove item from FormArray
+   */
+  removeFormArrayItem(fieldName: string, index: number): void {
+    const formArray = this.getFormArray(fieldName);
+    
+    // Find the field configuration to check minItems
+    const field = this.effectiveFields.find(f => f.name === fieldName);
+    const minItems = field?.minItems || 1; // Default to 1 if not specified
+    
+    // Check if removing this item would violate minItems constraint
+    if (formArray.length <= minItems) {
+      console.warn(`Cannot remove item: Minimum ${minItems} items required for ${fieldName}`);
+      return;
+    }
+    
+    formArray.removeAt(index);
+    this.formVersion.update((v) => v + 1);
+  }
+
+  /**
+   * ✅ Get FormGroup at specific index in FormArray
+   */
+  getFormArrayGroup(fieldName: string, index: number): FormGroup {
+    const formArray = this.getFormArray(fieldName);
+    return formArray.at(index) as FormGroup;
+  }
+
   getValidators(field: FieldConfig): ValidatorFn[] {
     const validators = [];
     if (field.required) validators.push(Validators.required);
@@ -488,6 +562,15 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
     }
     if (field.max !== undefined && field.max !== null) {
       validators.push(Validators.max(field.max));
+    }
+    // ✅ FormArray specific validators
+    if (field.type === 'formarray') {
+      if (field.minItems !== undefined && field.minItems !== null) {
+        validators.push(Validators.minLength(field.minItems));
+      }
+      if (field.maxItems !== undefined && field.maxItems !== null) {
+        validators.push(Validators.maxLength(field.maxItems));
+      }
     }
     return validators;
   }
@@ -505,7 +588,21 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
   hasError(field: FieldConfig): boolean {
     const ctrl = this.form.get(field.name);
     if (!ctrl) return false;
+    
     const hasControlError = ctrl.invalid && (ctrl.touched || this.submitted);
+
+    // Special handling for FormArray
+    if (field.type === 'formarray') {
+      const formArray = ctrl as FormArray;
+      const hasArrayError = formArray.invalid && (formArray.touched || this.submitted);
+      
+      // Check if any child controls have errors
+      const hasChildErrors = formArray.controls.some(control => 
+        control.invalid && (control.touched || this.submitted)
+      );
+      
+      return hasArrayError || hasChildErrors;
+    }
 
     if (this.toDateFieldName && field.name === this.toDateFieldName) {
       const hasFormError =
@@ -534,7 +631,18 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
     const ctrl = this.form.get(field.name);
     if (ctrl?.errors) {
       if (ctrl.errors['required']) return `${field.label} is required.`;
-      if (ctrl.errors['minlength']) return `Min length: ${field.minLength}.`;
+      if (ctrl.errors['minlength']) {
+        if (field.type === 'formarray') {
+          return `At least ${field.minItems} ${field.label.toLowerCase()} required.`;
+        }
+        return `Min length: ${field.minLength}.`;
+      }
+      if (ctrl.errors['maxlength']) {
+        if (field.type === 'formarray') {
+          return `Maximum ${field.maxItems} ${field.label.toLowerCase()} allowed.`;
+        }
+        return `Max length: ${field.maxLength}.`;
+      }
       if (ctrl.errors['pattern']) return `Invalid format.`;
       // ✅ NEW: Min Error Message Add karein
       if (ctrl.errors['min']) {

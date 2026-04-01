@@ -11,6 +11,7 @@ import {
   GridConfig,
 } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import {
+  addInventory,
   inventoryFilterFields,
   inventoryTableColumns,
 } from './state-service/config';
@@ -20,6 +21,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { getTodayDate, handleError, sessionCheck } from './state-service/utils';
 import { Router } from '@angular/router';
+import { UniversalModalService } from '../../../shared/services/universal-modal.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-inventory',
@@ -36,6 +39,7 @@ import { Router } from '@angular/router';
 })
 export class InventoryComponent implements OnInit {
   private router = inject(Router);
+  private modalService = inject(UniversalModalService);
   // User and session data
   token: string = '';
   groupId: string = '';
@@ -45,11 +49,17 @@ export class InventoryComponent implements OnInit {
   // Filter data signals
   mccList = signal<any[]>([]);
   milkTypeList = signal<any[]>([]);
+  supplierList = signal<any[]>([]);
 
   // Dynamic filter fields computed from API data
   filterfields = computed<FieldConfig[]>(() =>
-    inventoryFilterFields(this.mccList(), this.milkTypeList()),
+    inventoryFilterFields(
+      this.mccList(),
+      this.milkTypeList(),
+      this.supplierList(),
+    ),
   );
+  addInventoryFields = computed<FieldConfig[]>(() => addInventory);
 
   initialData = signal({
     from: new Date().toISOString().split('T')[0],
@@ -137,12 +147,29 @@ export class InventoryComponent implements OnInit {
       // Handle MCC data
       if (result.filterOptions.mccData?.Status === 'success') {
         this.mccList.set(result.filterOptions.mccData.Data || []);
+        addInventory.forEach((field) => {
+          if (field.name === 'mcc') {
+            field.options = result.filterOptions.mccData.Data || [];
+          }
+        });
       }
 
       // Handle master data (milk types, plants, etc.)
       if (result.filterOptions.masterData?.Status === 'success') {
         const masterData = result.filterOptions.masterData;
         this.milkTypeList.set(masterData.Milk || []);
+        this.supplierList.set(
+          masterData.PlantSupplier?.filter((s: any) => s.type == 6) || [],
+        );
+        addInventory.forEach((field) => {
+          if (field.name === 'milkSamples') {
+            field.formArrayFields?.forEach((subField) => {
+              if (subField.name === 'milkType') {
+                subField.options = masterData.Milk || [];
+              }
+            });
+          }
+        });
       }
     }
 
@@ -163,7 +190,20 @@ export class InventoryComponent implements OnInit {
       data: data,
     }));
   }
-  openAddInventory() {}
+  openAddInventory() {
+    this.modalService.openForm({
+      title: 'Add Inventory',
+      fields: this.addInventoryFields, // Define fields for adding inventory
+      mode: 'form',
+      size: 'lg',
+      onSave: async (formData, fetchedData) => {
+        console.log('Form data to save:', formData);
+      },
+      initialData: {
+        date: new Date().toISOString().split('T')[0],
+      },
+    });
+  }
   /**
    * Handle form submission for filtering data
    */
@@ -225,5 +265,21 @@ export class InventoryComponent implements OnInit {
     const endDate = new Date(endEditDateTime.replace(' ', 'T'));
 
     return currentDate >= startDate && currentDate <= endDate;
+  }
+  async onFilterChange(event: any) {
+    if (event.name === 'supplier') {
+      const params = {
+        AccessToken: this.token,
+        GroupId: this.groupId,
+        supplier_id: event.value?.id || '',
+        ForApp: '0',
+      };
+      try {
+        const res: any = await firstValueFrom(
+          this.inventoryService.getMCCData(params),
+        );
+        this.mccList.set(res.Data || []);
+      } catch (error) {}
+    }
   }
 }

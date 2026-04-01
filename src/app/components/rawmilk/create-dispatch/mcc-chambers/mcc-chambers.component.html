@@ -1,0 +1,161 @@
+<div class="p-3">
+  <!-- LOOP MCC -->
+  @if (mccs.controls.length > 0) {
+    <div>
+      @for (mcc of mccs.controls; track trackByIndex($index); let i = $index) {
+        <div class="">
+          <div [formGroup]="asFormGroup(mcc)" class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="mb-0">MCC {{ i + 1 }}</h6>
+              <button
+                type="button"
+                class="btn btn-sm btn-danger"
+                (click)="removeMcc(i)"
+              >
+                Remove
+              </button>
+            </div>
+
+            <!-- MCC SELECT -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="col-lg-2">
+                <label class="form-label">Select MCC</label>
+                <input
+                  formControlName="mccSelect"
+                  class="form-control"
+                  placeholder="Enter MCC number"
+                />
+              </div>
+              <div class="d-flex justify-content-end gap-2 mb-2">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-success"
+                  (click)="addChamber(i)"
+                >
+                  <i class="fa fa-plus"></i>
+                </button>
+
+                @if (getChambers(i).controls.length > 1) {
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    (click)="removeChamber(i)"
+                  >
+                    <i class="fa fa-trash"></i>
+                  </button>
+                }
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-2">
+              <label class="form-label">Select MCC</label>
+              <input
+                formControlName="mccSelect"
+                class="form-control"
+                placeholder="Enter MCC number"
+              />
+            </div> -->
+
+            <!-- CHAMBERS -->
+            <!-- CHAMBERS -->
+            @if (getChambers(i).controls.length) {
+              <div class="mb-2">
+                <!-- ACTION BUTTONS (TOP RIGHT) -->
+
+                <!-- HEADER -->
+                <div class="row fw-bold">
+                  <div class="col">
+                    <label class="form-label">Chamber No</label>
+                  </div>
+                  <div class="col">
+                    <label class="form-label">Milk Type</label>
+                  </div>
+                  <div class="col"><label class="form-label">Temp</label></div>
+                  <div class="col"><label class="form-label">Qty</label></div>
+                  <div class="col"><label class="form-label">Fat</label></div>
+                  <div class="col"><label class="form-label">SNF</label></div>
+                  <div class="col"><label class="form-label">MBRT</label></div>
+                  <!-- <div class="col"><label class="form-label">Upload</label></div> -->
+                </div>
+
+                <!-- CHAMBER ROWS -->
+                @for (
+                  ch of getChambers(i).controls;
+                  track trackByIndex($index);
+                  let j = $index
+                ) {
+                  <div
+                    [formGroup]="asFormGroup(ch)"
+                    class="row mb-3 align-items-center"
+                  >
+                    <div class="col">
+                      <input
+                        formControlName="chamber_no"
+                        class="form-control form-control-sm"
+                        placeholder="No"
+                      />
+                    </div>
+
+                    <div class="col">
+                      <input
+                        formControlName="milkType"
+                        class="form-control form-control-sm"
+                        placeholder="Type"
+                      />
+                    </div>
+
+                    <div class="col">
+                      <input
+                        formControlName="temperature"
+                        class="form-control form-control-sm"
+                        placeholder="Temp"
+                      />
+                    </div>
+
+                    <div class="col">
+                      <input
+                        formControlName="quantity"
+                        class="form-control form-control-sm"
+                        placeholder="Qty"
+                      />
+                    </div>
+
+                    <div class="col">
+                      <input
+                        formControlName="fat"
+                        class="form-control form-control-sm"
+                        placeholder="FAT"
+                      />
+                    </div>
+
+                    <div class="col">
+                      <input
+                        formControlName="snf"
+                        class="form-control form-control-sm"
+                        placeholder="SNF"
+                      />
+                    </div>
+                    <div class="col">
+                      <input
+                        formControlName="mbrt"
+                        class="form-control form-control-sm"
+                        placeholder="MBRT"
+                      />
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="text-muted">No chambers added</p>
+            }
+
+            <!-- ADD/REMOVE CHAMBER BUTTONS -->
+          </div>
+        </div>
+      }
+    </div>
+  }
+  <!-- } @else {
+    <p class="text-muted">Select number of MCCs to get started</p>
+  } -->
+</div>

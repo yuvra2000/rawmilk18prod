@@ -1,0 +1,99 @@
+<div class="p-3 mb-3">
+  <!-- <h5>Chamber Details</h5> -->
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-end gap-3 mb-2">
+    <button type="button" (click)="addRow()" class="btn btn-sm btn-success">
+      <i class="fa fa-plus"></i>
+    </button>
+
+    @if (rows.length > 1) {
+      <button
+        type="button"
+        (click)="removeRow(rows.length - 1)"
+        class="btn btn-sm btn-danger"
+      >
+        <i class="fa fa-trash"></i>
+      </button>
+    }
+  </div>
+
+  <!-- Header -->
+  <div class="row fw-bold">
+    <div class="col"><label class="form-label">Chamber No</label></div>
+    <div class="col"><label class="form-label">Milk Type</label></div>
+    <div class="col"><label class="form-label">Temp</label></div>
+    <div class="col"><label class="form-label">Qty</label></div>
+    <div class="col"><label class="form-label">Fat</label></div>
+    <div class="col"><label class="form-label">SNF</label></div>
+    <div class="col"><label class="form-label">MBRT</label></div>
+    <div class="col"><label class="form-label">Upload</label></div>
+  </div>
+
+  <!-- ✅ NO formArrayName -->
+  @for (row of rows.controls; track $index) {
+    <div [formGroup]="getFormGroup(row)" class="row mb-3 align-items-center">
+      <div class="col">
+        <input type="text" class="form-control" formControlName="chamber_no" />
+      </div>
+
+      <div class="col">
+        <ng-select
+          [items]="state().milkList"
+          bindLabel="displayName"
+          bindValue="id"
+          placeholder="Select Milk Type"
+          formControlName="milkType"
+        ></ng-select>
+      </div>
+
+      <div class="col">
+        <input type="text" class="form-control" formControlName="temperature" />
+      </div>
+
+      <div class="col">
+        <input type="text" class="form-control" formControlName="quantity" />
+      </div>
+
+      <div class="col">
+        <input type="text" class="form-control" formControlName="fat" />
+      </div>
+
+      <div class="col">
+        <input type="text" class="form-control" formControlName="snf" />
+      </div>
+
+      <div class="col">
+        <input type="text" class="form-control" formControlName="mbrt" />
+      </div>
+      <!-- <div class="col"></div> -->
+      <div class="col">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="fileInput.click()"
+        >
+          <i class="fa fa-upload"></i>
+        </button>
+        <input
+          type="file"
+          #fileInput
+          hidden
+          (change)="onFileChange($event, $index)"
+        />
+      </div>
+    </div>
+  }
+</div>
+
+<!-- <style>
+  .form-label {
+    font-weight: bold;
+    color: #1d4380;
+    margin: 0 3px;
+    display: block;
+    height: 38px;
+    padding: 6px 12px;
+    line-height: 1.5;
+  }
+</style> -->

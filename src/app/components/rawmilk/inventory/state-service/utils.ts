@@ -34,3 +34,8 @@ export function handleError(error: any, toast: ToastrService): void {
   console.error('API Error:', error);
   toast.error('An error occurred while loading data');
 }
+export function getTomorrowDate(): string {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  return date.toISOString().split('T')[0];
+}

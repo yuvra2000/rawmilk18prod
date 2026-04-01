@@ -46,6 +46,21 @@ export class InventoryService {
   }
 
   /**
+   * Delete inventory item
+   */
+  deleteInventory(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      `/rm_deleteInventoryy`, // Adjust endpoint as per your API
+      params,
+    );
+  }
+  updateInventory(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      `/rm_editInventory`, // Adjust endpoint as per your API
+      params,
+    );
+  }
+  /**
    * Initialize page data - fetches all required data in parallel
    * Use this when component loads to get both filter options and initial inventory data
    */

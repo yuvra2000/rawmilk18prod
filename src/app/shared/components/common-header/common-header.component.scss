@@ -50,9 +50,8 @@
 
 .header-logo {
   display: flex;
-  img {
-    height: 65px;
-  } // Adjust as needed
+  gap: 10px;
+  align-items: center;
 }
 .app-sidebar__toggle {
   all: unset;
@@ -63,4 +62,8 @@
     font-size: 21px;
     font-family: feather;
   }
+}
+.header-link.dropdown-toggle {
+  display: flex;
+  align-items: center;
 }

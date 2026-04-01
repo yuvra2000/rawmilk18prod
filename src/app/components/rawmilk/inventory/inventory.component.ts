@@ -12,6 +12,7 @@ import {
 } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import {
   addInventory,
+  editInventoryFields,
   inventoryFilterFields,
   inventoryTableColumns,
 } from './state-service/config';
@@ -19,10 +20,20 @@ import { InventoryService } from './inventory.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { getTodayDate, handleError, sessionCheck } from './state-service/utils';
+import {
+  getTodayDate,
+  getTomorrowDate,
+  handleError,
+  sessionCheck,
+} from './state-service/utils';
 import { Router } from '@angular/router';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
+import { AlertService } from '../../../shared/services/alert.service';
 import { firstValueFrom } from 'rxjs';
+import {
+  Breadcrumb,
+  CommonHeaderComponent,
+} from '../../../shared/components/common-header/common-header.component';
 
 @Component({
   selector: 'app-inventory',
@@ -33,6 +44,7 @@ import { firstValueFrom } from 'rxjs';
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
+    CommonHeaderComponent,
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss',
@@ -40,6 +52,7 @@ import { firstValueFrom } from 'rxjs';
 export class InventoryComponent implements OnInit {
   private router = inject(Router);
   private modalService = inject(UniversalModalService);
+  private alertService = inject(AlertService);
   // User and session data
   token: string = '';
   groupId: string = '';
@@ -49,8 +62,12 @@ export class InventoryComponent implements OnInit {
   // Filter data signals
   mccList = signal<any[]>([]);
   milkTypeList = signal<any[]>([]);
+  milkTypeListModal = signal<any[]>([]);
   supplierList = signal<any[]>([]);
-
+  breadcrumbs: Breadcrumb[] = [
+    { label: 'Home', url: '/home' },
+    { label: 'Inventory', url: '' },
+  ];
   // Dynamic filter fields computed from API data
   filterfields = computed<FieldConfig[]>(() =>
     inventoryFilterFields(
@@ -59,11 +76,14 @@ export class InventoryComponent implements OnInit {
       this.supplierList(),
     ),
   );
+  editInventoryFields = computed<FieldConfig[]>(() =>
+    editInventoryFields(this.milkTypeListModal()),
+  );
   addInventoryFields = computed<FieldConfig[]>(() => addInventory);
 
   initialData = signal({
     from: new Date().toISOString().split('T')[0],
-    to: new Date().toISOString().split('T')[0],
+    to: getTomorrowDate(),
   });
   // Grid data and configuration
   inventoryRowData = signal<any[]>([]);
@@ -78,6 +98,7 @@ export class InventoryComponent implements OnInit {
     paginationPageSize: 50,
     enableExport: true,
     enableSearch: true,
+    autoSizeColumns: true,
   });
 
   constructor(
@@ -158,6 +179,7 @@ export class InventoryComponent implements OnInit {
       if (result.filterOptions.masterData?.Status === 'success') {
         const masterData = result.filterOptions.masterData;
         this.milkTypeList.set(masterData.Milk || []);
+        this.milkTypeListModal.set(masterData.Milk || []);
         this.supplierList.set(
           masterData.PlantSupplier?.filter((s: any) => s.type == 6) || [],
         );
@@ -252,9 +274,136 @@ export class InventoryComponent implements OnInit {
    */
   onEditInventory(data: any): void {
     console.log('Edit inventory item:', data);
-    // Implement edit logic
+    this.modalService.openForm({
+      title: 'Edit Inventory',
+      fields: this.editInventoryFields, // Reuse add inventory fields for editing
+      mode: 'form',
+      size: 'xl',
+      onSave: async (formData, fetchedData) => {
+        this.editInventoryData(formData, data);
+      },
+      initialData: {
+        milkType: data.MilkType,
+        quantity: data.Qty || 0,
+        fat: data.Fat || 0,
+        snf: data.Snf || 0,
+        mbrt: data.Mbrt || '',
+      },
+      filterButtonClass: 'mt-4',
+      buttonName: 'Update ',
+    });
   }
+  /**
+   * Handle delete inventory action from grid
+   */
+  async onDeleteInventory(data: any): Promise<void> {
+    try {
+      // Show confirmation dialog with specific inventory details
+      const isConfirmed = await this.alertService.confirmDelete(
+        'Delete Inventory?',
+        `Are you sure you want to delete inventory for ${data.MccName}?`,
+        'Yes, delete it!',
+        'Cancel',
+      );
 
+      if (!isConfirmed) {
+        return;
+      }
+
+      // Show loading spinner
+      this.spinner.show();
+
+      // Prepare delete parameters
+      const deleteParams = createFormData(this.token, {
+        GroupId: this.groupId,
+        InventoryId: data.InventoryId, // Adjust field name based on your data structure
+        SupplierId: this.supplierId,
+      });
+
+      // Call delete API
+      const response = await firstValueFrom(
+        this.inventoryService.deleteInventory(deleteParams),
+      );
+
+      this.spinner.hide();
+
+      if (response.Status === 'success') {
+        // Show success message
+        await this.alertService.showSuccess(
+          'Deleted!',
+          `Inventory for ${data.MccName} has been successfully deleted.`,
+        );
+
+        // Refresh the inventory data
+        this.refreshInventoryData();
+      } else {
+        // Handle API error response
+        sessionCheck(response, this.toast, this.router);
+      }
+    } catch (error) {
+      this.spinner.hide();
+      // console.error('Delete inventory error:', error);
+
+      await this.alertService.showError(
+        'Delete Failed',
+        'Failed to delete inventory. Please try again later.',
+      );
+
+      // handleError(error, this.toast);
+    }
+  }
+  async editInventoryData(formData: any, data: any): Promise<void> {
+    const invedata = {
+      Qty: formData.quantity ?? data.quantity ?? 0,
+      Fat: formData.fat ?? data.Fat ?? 0,
+      Snf: formData.snf ?? data.Snf ?? 0,
+      Mbrt: formData.mbrt ?? data.mbrt ?? '',
+    };
+
+    const payloads = createFormData(this.token, {
+      ForWeb: '1',
+      InventoryId: String(data.InventoryId ?? ''),
+      MccId: String(data.MccId ?? ''),
+      InventoryData: JSON.stringify(invedata),
+    });
+    const response: any = await firstValueFrom(
+      this.inventoryService.updateInventory(payloads),
+    );
+    if (response.Status === 'success') {
+      this.toast.success('Inventory updated successfully');
+      this.refreshInventoryData();
+    } else {
+      sessionCheck(response, this.toast, this.router);
+    }
+  }
+  /**
+   * Refresh inventory data after operations
+   */
+  private refreshInventoryData(): void {
+    const reportParams = createFormData(this.token, {
+      GroupId: this.groupId,
+      SupplierId: this.supplierId,
+      FromDate: getTodayDate(),
+      ToDate: getTodayDate(),
+      ForWeb: '1',
+      Category: '',
+      MilkId: '',
+      MccId: '',
+    });
+
+    this.inventoryService.getInventoryReport(reportParams).subscribe({
+      next: (response) => {
+        if (response.Status === 'success') {
+          const data = response.Data || [];
+          this.inventoryRowData.set(data);
+          this.updateGridData(data);
+        }
+      },
+      error: (error) => {
+        handleError(error, this.toast);
+      },
+    });
+  }
   /**
    * Handle general errors
    */

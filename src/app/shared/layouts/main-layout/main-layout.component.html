@@ -1,16 +1,15 @@
-
 <div class="page">
-    <app-header></app-header>
-    <app-sidebar appHoverEffectSidebar></app-sidebar>
-    <!-- Start::app-content -->
-    <div class="main-content app-content" (click)="clickOnBody()">
-        <div [ngClass]="layoutClass">
-            <app-page-header></app-page-header>
-            <router-outlet></router-outlet>
-        </div>
+  <app-header></app-header>
+  <app-sidebar appHoverEffectSidebar></app-sidebar>
+  <!-- Start::app-content -->
+  <div class="main-content app-content" (click)="clickOnBody()">
+    <div [ngClass]="layoutClass">
+      <app-page-header></app-page-header>
+      <router-outlet></router-outlet>
     </div>
-    <app-footer></app-footer>
-      <!-- End::app-content -->
+  </div>
+  <app-footer></app-footer>
+  <!-- End::app-content -->
 </div>
 <app-tap-to-top></app-tap-to-top>
-<div id="responsive-overlay" ></div>
+<div id="responsive-overlay"></div>

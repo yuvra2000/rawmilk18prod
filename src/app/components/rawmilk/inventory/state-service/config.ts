@@ -246,7 +246,7 @@ export const editInventoryFields = (
     type: 'text',
     label: 'Milk Type',
     placeholder: 'Select Milk Type',
-    class: 'col-md-2',
+    class: 'col-md-2 w-50',
     disabled: true,
   },
   {

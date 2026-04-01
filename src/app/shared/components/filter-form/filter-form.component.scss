@@ -294,12 +294,12 @@ textarea.disabled-field {
 .formarray-item .btn-outline-primary {
   border-color: rgb(var(--primary-rgb));
   color: rgb(var(--primary-rgb));
-  
+
   &:hover {
     background-color: rgb(var(--primary-rgb));
     color: white;
   }
-  
+
   &:focus {
     box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
   }
@@ -313,10 +313,35 @@ textarea.disabled-field {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
   }
+}
+
+// trial
+.formarray-item .d-flex.align-items-start.gap-2 {
+  min-width: 0;
+}
+
+.formarray-item .flex-grow-1 {
+  min-width: 0;
+  width: 100%;
+}
+
+::ng-deep .formarray-item ng-select {
+  display: block;
+  width: 100%;
+}
+
+::ng-deep .formarray-item .ng-select .ng-select-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+::ng-deep .formarray-item .ng-select .ng-value-container {
+  min-width: 0;
 }

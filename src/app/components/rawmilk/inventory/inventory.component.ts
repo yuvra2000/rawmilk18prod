@@ -21,6 +21,7 @@ import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {
+  buildCreateInventoryPayload,
   getTodayDate,
   getTomorrowDate,
   handleError,
@@ -219,12 +220,31 @@ export class InventoryComponent implements OnInit {
       mode: 'form',
       size: 'lg',
       onSave: async (formData, fetchedData) => {
-        console.log('Form data to save:', formData);
+        await this.createInventoryData(formData);
       },
       initialData: {
         date: new Date().toISOString().split('T')[0],
       },
     });
+  }
+  async createInventoryData(value: any): Promise<void> {
+    this.spinner.show();
+    try {
+      const payload = buildCreateInventoryPayload(value);
+      const response: any = await firstValueFrom(
+        this.inventoryService.createInventory(payload),
+      );
+      if (response?.Status === 'success') {
+        this.toast.success('Inventory created successfully');
+        // this.refreshInventoryData();
+      } else {
+        sessionCheck(response, this.toast, this.router);
+      }
+    } catch (error) {
+      handleError(error, this.toast);
+    } finally {
+      this.spinner.hide();
+    }
   }
   /**
    * Handle form submission for filtering data

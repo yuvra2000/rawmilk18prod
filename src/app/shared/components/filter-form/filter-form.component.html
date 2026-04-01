@@ -370,10 +370,7 @@
                 track $index;
                 let i = $index
               ) {
-                <div
-                  class="formarray-item rounded p-2 mb-2"
-                  [formGroupName]="i"
-                >
+                <div class="formarray-item rounded p-2" [formGroupName]="i">
                   <div class="row">
                     @for (
                       subField of field.formArrayFields || [];

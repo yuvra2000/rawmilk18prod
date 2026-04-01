@@ -22,7 +22,7 @@
       <label class="form-label">MCC/BMC</label>
       <!-- <input type="text" class="form-control" formControlName="MCC" /> -->
       <ng-select
-        [items]="state().plantList"
+        [items]="store.state().plantList"
         bindLabel="displayName"
         bindValue="id"
         formControlName="MCC"
@@ -35,7 +35,7 @@
     <div class="col">
       <label class="form-label">Vehicle</label>
       <ng-select
-        [items]="state().vehicleOptions"
+        [items]="store.state().vehicleOptions"
         bindLabel="VehicleNo"
         bindValue="VehicleId"
         formControlName="vehicle"
@@ -66,7 +66,7 @@
     <div class="col">
       <label class="form-label">Transporter</label>
       <ng-select
-        [items]="state().selectedVehicleTransporters"
+        [items]="store.state().selectedVehicleTransporters"
         bindLabel="TransporterName"
         bindValue="TransporterId"
         formControlName="transporter"

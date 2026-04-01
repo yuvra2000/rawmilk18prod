@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { DispatchStore } from '../state-service/masterdatastore.service';
 
 @Component({
   selector: 'app-mcc-chambers',
@@ -17,7 +18,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 })
 export class MccChambersComponent {
   @Input() mccs!: FormArray;
-
+  public store = inject(DispatchStore);
   constructor(private fb: FormBuilder) {}
 
   // 👉 create chamber
@@ -70,5 +71,9 @@ export class MccChambersComponent {
   // 👉 trackBy function
   trackByIndex(index: number): number {
     return index;
+  }
+  onFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    this.mccs.at(index).patchValue({ file });
   }
 }

@@ -27,6 +27,7 @@ import {
 import { AlertService } from '../../../../shared/services/alert.service';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
+import { DispatchStore } from '../state-service/masterdatastore.service';
 
 @Component({
   selector: 'app-chamber-details',
@@ -37,12 +38,13 @@ import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 })
 export class ChamberDetailsComponent {
   @Input() rows!: FormArray;
-  private masterservice = inject(DispatchService);
-  private toastService = inject(AlertService);
-  state = signal({
-    milkList: [],
-    plantList: [],
-  });
+  public store = inject(DispatchStore);
+  // private masterservice = inject(DispatchService);
+  // private toastService = inject(AlertService);
+  // state = signal({
+  //   milkList: [],
+  //   plantList: [],
+  // });
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
@@ -50,7 +52,7 @@ export class ChamberDetailsComponent {
     if (this.rows.length === 0) {
       this.addRow();
     }
-    this.loadinitialData();
+    // this.loadinitialData();
   }
   addRow() {
     this.rows.push(this.createRow());
@@ -85,48 +87,48 @@ export class ChamberDetailsComponent {
     return control as FormGroup;
   }
 
-  async loadinitialData() {
-    try {
-      forkJoin({
-        masterData:
-          this.masterservice.getCreateIndentDataMilkAndPlantSupplier(
-            masterFormData,
-          ),
-        // vehicledata: this.masterservice.getVehicleData(VehicleFormData),
-      })
-        .pipe(
-          catchError((error) => {
-            handleApiError(
-              error,
-              this.toastService,
-              'An error occurred while loading indent data',
-            );
-            return of({
-              masterData: { Milk: [], PlantSupplier: [] },
-              vehicledata: { Data: [], TransporterList: [] },
-            });
-          }),
-        )
-        .subscribe((result: any) => {
-          const filteredPlantList =
-            result?.masterData?.PlantSupplier?.filter(
-              (plant: any) => plant.type === 3,
-            ) || [];
+  // async loadinitialData() {
+  //   try {
+  //     forkJoin({
+  //       masterData:
+  //         this.masterservice.getCreateIndentDataMilkAndPlantSupplier(
+  //           masterFormData,
+  //         ),
+  //       // vehicledata: this.masterservice.getVehicleData(VehicleFormData),
+  //     })
+  //       .pipe(
+  //         catchError((error) => {
+  //           handleApiError(
+  //             error,
+  //             this.toastService,
+  //             'An error occurred while loading indent data',
+  //           );
+  //           return of({
+  //             masterData: { Milk: [], PlantSupplier: [] },
+  //             vehicledata: { Data: [], TransporterList: [] },
+  //           });
+  //         }),
+  //       )
+  //       .subscribe((result: any) => {
+  //         const filteredPlantList =
+  //           result?.masterData?.PlantSupplier?.filter(
+  //             (plant: any) => plant.type === 3,
+  //           ) || [];
 
-          this.state.update((state) => ({
-            ...state,
-            milkList: result?.masterData?.Milk || [],
-            plantList: filteredPlantList,
-          }));
-          console.log('Milk List:', this.state().milkList);
-          console.log('Plant List:', this.state().plantList);
-        });
-    } catch (error: any) {
-      handleApiError(
-        error,
-        this.toastService,
-        'An error occurred while loading indent data',
-      );
-    }
-  }
+  //         this.state.update((state) => ({
+  //           ...state,
+  //           milkList: result?.masterData?.Milk || [],
+  //           plantList: filteredPlantList,
+  //         }));
+  //         console.log('Milk List:', this.state().milkList);
+  //         console.log('Plant List:', this.state().plantList);
+  //       });
+  //   } catch (error: any) {
+  //     handleApiError(
+  //       error,
+  //       this.toastService,
+  //       'An error occurred while loading indent data',
+  //     );
+  //   }
+  // }
 }

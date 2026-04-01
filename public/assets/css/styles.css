@@ -68,7 +68,7 @@ typography
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 :root {
   --body-bg-rgb: 245, 246, 250;
-  --primary-rgb: 47, 64, 80;
+  --primary-rgb: 29, 67, 128;
   --secondary-rgb: 255, 90, 41;
   --warning-rgb: 255, 154, 19;
   --info-rgb: 12, 156, 252;
@@ -81,7 +81,7 @@ typography
   --teal-rgb: 0, 216, 216;
   --purple-rgb: 123, 118, 254;
   --green-rgb: 1, 239, 140;
-  --text-primary-white-rgb: 255, 255, 255;
+  --text-primary-white: 255, 255, 255;
   --default-body-bg-color: rgb(var(--body-bg-rgb));
   --primary-color: rgb(var(--primary-rgb));
   --primary-border: rgb(var(--primary-rgb));
@@ -112,9 +112,9 @@ typography
   --list-hover-focus-bg: #f5f6f7;
   --text-muted: #98a5c3;
   --input-border: #e2e6f1;
-  --form-control-bg: #ffffff;
+  --form-control-bg: rgb(255, 255, 255);
   --bs-link-color-rgb: var(--default-text-color);
-  --bs-link-hover-color-rgb: var(--text-primary-white-rgb);
+  --bs-link-hover-color-rgb: var(--text-primary-white);
   /* Gray set */
   --gray-1: #f9fafb;
   --gray-2: #f2f4f5;
@@ -36035,7 +36035,7 @@ input.error {
   position: absolute;
   width: 2px;
   height: calc(100% - 38px);
-  background-color: rgba(255, 255, 255, 0.7647058824);
+  background-color: #e6eff1;
   inset-inline-start: 18px;
   inset-block-start: 21px;
 }

@@ -115,7 +115,102 @@
           </div>
         </div>
       </ng-template>
-
+      <li class="header-element header-fullscreen" appFullscreen>
+        <!-- Start::header-link -->
+        <a
+          (click)="toggleFullscreen()"
+          href="javascript:void(0);"
+          class="header-link"
+        >
+          <svg
+            [ngClass]="{ 'd-none': isFullscreen }"
+            xmlns="http://www.w3.org/2000/svg"
+            class="full-screen-open header-link-icon"
+            viewBox="0 0 256 256"
+          >
+            <rect width="256" height="256" fill="none" />
+            <polyline
+              points="168 48 208 48 208 88"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+            <polyline
+              points="88 208 48 208 48 168"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+            <polyline
+              points="208 168 208 208 168 208"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+            <polyline
+              points="48 88 48 48 88 48"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+          </svg>
+          <svg
+            [ngClass]="{ 'd-none': !isFullscreen }"
+            xmlns="http://www.w3.org/2000/svg"
+            class="full-screen-close header-link-icon d-none"
+            viewBox="0 0 256 256"
+          >
+            <rect width="256" height="256" fill="none" />
+            <polyline
+              points="160 48 208 48 208 96"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+            <line
+              x1="144"
+              y1="112"
+              x2="208"
+              y2="48"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+            <polyline
+              points="96 208 48 208 48 160"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+            <line
+              x1="112"
+              y1="144"
+              x2="48"
+              y2="208"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="16"
+            />
+          </svg>
+        </a>
+        <!-- End::header-link -->
+      </li>
       <!-- Start::header-element -->
       <li class="header-element header-theme-mode">
         <!-- Start::header-link|layout-setting -->

@@ -82,40 +82,50 @@ export const inventoryTableColumns: GridColumnConfig[] = [
   },
   {
     headerName: 'MCC/BMC Name',
-    field: 'mcc_name',
+    field: 'MccName',
   },
   {
-    headerName: 'Date',
-    field: 'date',
+    headerName: 'Inventory Date',
+    field: 'InventoryDate',
   },
   {
     headerName: 'Milk Type',
-    field: 'milk_type',
+    field: 'MilkType',
   },
   {
-    headerName: 'Quantity',
-    field: 'quantity',
+    headerName: 'Quantity (L)',
+    field: 'Qty',
 
     type: 'numericColumn',
   },
   {
-    headerName: 'FAT',
-    field: 'fat',
+    headerName: 'FAT %',
+    field: 'Fat',
     minWidth: 100,
     type: 'numericColumn',
   },
   {
-    headerName: 'SNF',
-    field: 'snf',
+    headerName: 'SNF %',
+    field: 'Snf',
     minWidth: 100,
     type: 'numericColumn',
   },
   {
     headerName: 'MBRT',
-    field: 'mbrt',
+    field: 'Mbrt',
     minWidth: 100,
     type: 'numericColumn',
   },
+  // {
+  //   headerName: 'Edit Start',
+  //   field: 'StartEditDateTime',
+  //   minWidth: 150,
+  // },
+  // {
+  //   headerName: 'Edit End',
+  //   field: 'EndEditDateTime',
+  //   minWidth: 150,
+  // },
   {
     headerName: 'Action',
     field: 'action',
@@ -123,27 +133,27 @@ export const inventoryTableColumns: GridColumnConfig[] = [
     cellRendererParams: {
       actions: [
         {
-          icon: 'fa-solid fa-eye',
-          action: 'view',
-          tooltip: 'View Details',
+          icon: 'fa-solid fa-pen-to-square',
+          action: 'edit',
+          tooltip: 'Edit Inventory',
           onClick: (data: any, node: any, params: any) => {
             if (params.context?.componentParent) {
-              params.context.componentParent.onViewInventory(params.data);
+              params.context.componentParent.onEditInventory(params.data);
             }
           },
-          iconStyle: { color: colors.primary, cursor: 'pointer' },
+          iconStyle: { color: '#1D4380', cursor: 'pointer' },
         },
-        // {
-        //   icon: 'fa-solid fa-pen-to-square',
-        //   action: 'edit',
-        //   tooltip: 'Edit Inventory',
-        //   onClick: (data: any, node: any, params: any) => {
-        //     if (params.context?.componentParent) {
-        //       params.context.componentParent.onEditInventory(params.data);
-        //     }
-        //   },
-        //   iconStyle: { color: colors.warning, cursor: 'pointer' },
-        // },
+        {
+          icon: 'fa-solid fa-trash',
+          action: 'delete',
+          tooltip: 'Delete Inventory',
+          onClick: (data: any, node: any, params: any) => {
+            if (params.context?.componentParent) {
+              params.context.componentParent.onDeleteInventory(params.data);
+            }
+          },
+          iconStyle: { color: colors.danger, cursor: 'pointer' },
+        },
       ],
     },
   },
@@ -226,5 +236,54 @@ export const addInventory: FieldConfig[] = [
         placeholder: 'Enter MBRT',
       },
     ],
+  },
+];
+export const editInventoryFields = (
+  milkTypeList: Option[] = [],
+): FieldConfig[] => [
+  {
+    name: 'milkType',
+    type: 'text',
+    label: 'Milk Type',
+    placeholder: 'Select Milk Type',
+    class: 'col-md-2',
+    disabled: true,
+  },
+  {
+    name: 'quantity',
+    label: 'Quantity (L)',
+    type: 'number',
+    required: true,
+    min: 0.1,
+    class: 'col-md-2',
+    placeholder: 'Enter Quantity',
+  },
+  {
+    name: 'fat',
+    label: 'Fat %',
+    type: 'number',
+    required: true,
+    min: 0,
+    max: 100,
+    class: 'col-md-2',
+    placeholder: 'Enter Fat %',
+  },
+  {
+    name: 'snf',
+    label: 'SNF %',
+    type: 'number',
+    required: true,
+    min: 0,
+    max: 100,
+    class: 'col-md-2',
+    placeholder: 'Enter SNF %',
+  },
+  {
+    name: 'mbrt',
+    label: 'MBRT',
+    type: 'text',
+    required: false,
+    class: 'col-md-2',
+    placeholder: 'Enter MBRT',
   },
 ];

@@ -11,23 +11,164 @@
     <div>
       <h1 class="page-title">{{ title() }}</h1>
       <nav class="breadcrumbs" aria-label="breadcrumb">
-        @for (crumb of breadcrumbs(); track crumb.url; let isLast = $last) { @if
-        (!isLast) {
-        <a class="breadcrumb-link" [routerLink]="crumb.url">{{
-          crumb.label
-        }}</a>
-        <span class="breadcrumb-separator">/</span>
-        } @else {
-        <span class="breadcrumb-current" aria-current="page">{{
-          crumb.label
-        }}</span>
-        } }
+        @for (crumb of breadcrumbs(); track crumb.url; let isLast = $last) {
+          @if (!isLast) {
+            <a class="breadcrumb-link" [routerLink]="crumb.url">{{
+              crumb.label
+            }}</a>
+            <span class="breadcrumb-separator">/</span>
+          } @else {
+            <span class="breadcrumb-current" aria-current="page">{{
+              crumb.label
+            }}</span>
+          }
+        }
       </nav>
     </div>
   </div>
 
   <div class="header-logo">
     <ng-content></ng-content>
-    <img src="assets/img/logo.png" alt="iTraceit Logo" />
+    <!-- <img src="assets/img/logo.png" alt="iTraceit Logo" /> -->
+    <li class="header-element header-fullscreen" appFullscreen>
+      <!-- Start::header-link -->
+      <a
+        (click)="toggleFullscreen()"
+        href="javascript:void(0);"
+        class="header-link"
+      >
+        <svg
+          [ngClass]="{ 'd-none': isFullscreen }"
+          xmlns="http://www.w3.org/2000/svg"
+          class="full-screen-open header-link-icon"
+          viewBox="0 0 256 256"
+        >
+          <rect width="256" height="256" fill="none" />
+          <polyline
+            points="168 48 208 48 208 88"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+          <polyline
+            points="88 208 48 208 48 168"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+          <polyline
+            points="208 168 208 208 168 208"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+          <polyline
+            points="48 88 48 48 88 48"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+        </svg>
+        <svg
+          [ngClass]="{ 'd-none': !isFullscreen }"
+          xmlns="http://www.w3.org/2000/svg"
+          class="full-screen-close header-link-icon d-none"
+          viewBox="0 0 256 256"
+        >
+          <rect width="256" height="256" fill="none" />
+          <polyline
+            points="160 48 208 48 208 96"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+          <line
+            x1="144"
+            y1="112"
+            x2="208"
+            y2="48"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+          <polyline
+            points="96 208 48 208 48 160"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+          <line
+            x1="112"
+            y1="144"
+            x2="48"
+            y2="208"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="16"
+          />
+        </svg>
+      </a>
+      <!-- End::header-link -->
+    </li>
+    <li ngbDropdown class="header-element dropdown">
+      <!-- Start::header-link|dropdown-toggle -->
+      <a
+        ngbDropdownToggle
+        href="javascript:void(0);"
+        class="header-link dropdown-toggle"
+        id="mainHeaderProfile"
+        data-bs-toggle="dropdown"
+        data-bs-auto-close="outside"
+        aria-expanded="false"
+      >
+        <div class="d-flex align-items-center">
+          <div class="me-xl-2 me-0">
+            <img
+              src="./assets/images/faces/2.jpg"
+              alt="img"
+              class="avatar avatar-sm avatar-rounded"
+            />
+          </div>
+          <div class="d-xl-block d-none lh-1">
+            <span class="fw-medium lh-1">{{ userName }}</span>
+          </div>
+        </div>
+      </a>
+      <!-- End::header-link|dropdown-toggle -->
+      <ul
+        ngbDropdownMenu
+        class="main-header-dropdown dropdown-menu pt-0 overflow-hidden header-profile-dropdown dropdown-menu-end"
+        aria-labelledby="mainHeaderProfile"
+      >
+        <li>
+          <div class="py-2 px-3 text-center">
+            <span class="fw-semibold"> {{ groupType }} </span>
+            <span class="d-block fs-12 text-muted">{{ usertype }}</span>
+          </div>
+        </li>
+
+        <li class="py-2 px-3">
+          <a class="btn btn-primary btn-sm w-100" [routerLink]="['/auth/login']"
+            >Log Out</a
+          >
+        </li>
+      </ul>
+    </li>
   </div>
 </header>

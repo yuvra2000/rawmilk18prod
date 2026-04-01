@@ -13,9 +13,11 @@ export const categoryList: Option[] = [
   { name: 'BMC', id: 'bmc' },
 ];
 
+const userType = localStorage.getItem('usertype') || '';
 export const inventoryFilterFields = (
   mccList: Option[] = [],
   milkTypeList: Option[] = [],
+  supplierList: Option[] = [],
 ): FieldConfig[] => [
   {
     name: 'from',
@@ -32,12 +34,26 @@ export const inventoryFilterFields = (
     required: true,
   },
   {
+    name: 'supplier',
+    type: 'select',
+    label: 'Supplier Name',
+    placeholder: 'Select Supplier Name',
+    options: supplierList,
+    bindLabel: 'displayName',
+    class:
+      userType == 'Supplier' || userType == 'ChillingPlant'
+        ? 'd-none'
+        : 'col-md-2', // Hide for suppliers, show for others
+    emitValueChanges: true,
+  },
+  {
     name: 'mcc',
     type: 'select',
     label: 'Mcc Name',
     placeholder: 'Select Mcc Name',
     options: mccList,
     bindLabel: 'name',
+    class: userType == 'ChillingPlant' ? 'd-none' : 'col-md-2', // Hide for MCC users, show for others
   },
   {
     name: 'milkType',
@@ -130,5 +146,85 @@ export const inventoryTableColumns: GridColumnConfig[] = [
         // },
       ],
     },
+  },
+];
+export const addInventory: FieldConfig[] = [
+  {
+    name: 'date',
+    label: 'Date',
+    type: 'date',
+    required: true,
+    class: 'col-md-6',
+    disabled: true,
+  },
+  {
+    name: 'mcc',
+    label: 'MCC/BMC Name',
+    type: 'select',
+    required: true,
+    class: 'col-md-6',
+    options: [],
+  },
+  {
+    name: 'milkSamples',
+    label: 'Milk Sample',
+    type: 'formarray',
+    required: true,
+    class: 'col-12',
+    minItems: 1, // Minimum 1 item must be present
+
+    addButtonText: 'Add Milk Sample',
+    removeButtonText: 'Remove Sample',
+    formArrayFields: [
+      {
+        name: 'milkType',
+        label: 'Milk Type',
+        type: 'select',
+        required: true,
+        class: 'col-md-3',
+        options: [
+          { id: 'cow', name: 'Cow Milk' },
+          { id: 'buffalo', name: 'Buffalo Milk' },
+          { id: 'mixed', name: 'Mixed Milk' },
+        ],
+      },
+      {
+        name: 'quantity',
+        label: 'Quantity (L)',
+        type: 'number',
+        required: true,
+        min: 0.1,
+        class: 'col-md-2',
+        placeholder: 'Enter Quantity',
+      },
+      {
+        name: 'fat',
+        label: 'Fat %',
+        type: 'number',
+        required: true,
+        min: 0,
+        max: 100,
+        class: 'col-md-2',
+        placeholder: 'Enter Fat %',
+      },
+      {
+        name: 'snf',
+        label: 'SNF %',
+        type: 'number',
+        required: true,
+        min: 0,
+        max: 100,
+        class: 'col-md-2',
+        placeholder: 'Enter SNF %',
+      },
+      {
+        name: 'mbrt',
+        label: 'MBRT',
+        type: 'text',
+        required: false,
+        class: 'col-md-3',
+        placeholder: 'Enter MBRT',
+      },
+    ],
   },
 ];

@@ -34,7 +34,6 @@ export class InventoryService {
       params,
     );
   }
-
   /**
    * Get all filter options using forkJoin for parallel API calls
    * This fetches MCC data and master data simultaneously for better performance

@@ -34,7 +34,7 @@ export const milkTestingFormConfig: FieldConfig[] = [
         label: 'Milk Type',
         type: 'select',
         required: true,
-        class: 'col-md-4',
+        class: 'col-md-3',
         options: [
           { id: 'cow', name: 'Cow Milk' },
           { id: 'buffalo', name: 'Buffalo Milk' },
@@ -75,7 +75,7 @@ export const milkTestingFormConfig: FieldConfig[] = [
         label: 'MBRT',
         type: 'text',
         required: false,
-        class: 'col-md-2',
+        class: 'col-md-3',
         placeholder: 'Enter MBRT',
       },
     ],

@@ -27,7 +27,7 @@ const reportTypeList: Option[] = [
     { id: 2, name: 'Detailed' }
 ]
 
-export const tankerWiseTripReportFilterField = (tankerName: Option[] = [], plantName: Option[] = [], mpcName: Option[] = [], mccName: Option[] = []): FieldConfig[] => [
+export const tankerWiseTripReportFilterField = (tankerName: Option[] = [], plantName: Option[] = [], mpcName: Option[] = [], mccName: Option[] = [], stoppageLocation: Option[] = []): FieldConfig[] => [
     {
         name: 'from',
         label: 'From Date',
@@ -115,6 +115,14 @@ export const tankerWiseTripReportFilterField = (tankerName: Option[] = [], plant
         placeholder: '--Select--',
         options: remarkList,
         bindLabel: 'name'
+    },
+    {
+        name: 'stoppageAddress',
+        label: 'Stoppage Location',
+        type: 'select',
+        placeholder: '--Select--',
+        options: stoppageLocation,
+        bindLabel: 'address'
     },
     {
         name: 'reportType',

@@ -61,6 +61,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Projection',
       },
+      {
+        path: 'leci-dashboard',
+        loadComponent: () =>
+          import('./leci-dashboard/leci-dashboard.component').then(
+            (m) => m.LeciDashboardComponent,
+          ),
+        title: 'Leci Dashboard',
+      }
     ],
   },
   {

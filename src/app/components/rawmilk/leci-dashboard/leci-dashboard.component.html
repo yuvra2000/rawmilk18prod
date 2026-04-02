@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-12">
+    <app-collapse-wrapper>
+      <filter-form [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"></filter-form>
+    </app-collapse-wrapper>
+  </div>
+</div>
+
+<!-- Summary Stats -->
+<!-- <div class="row mb-3" *ngIf="totalVehicle() > 0">
+  <div class="col-12">
+    <div class="leci-stats-bar">
+      <div class="stat-card stat-total">
+        <span class="stat-value">{{ totalVehicle() }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat-card stat-running">
+        <span class="stat-value">{{ running() }}</span>
+        <span class="stat-label">Running</span>
+      </div>
+      <div class="stat-card stat-inactive">
+        <span class="stat-value">{{ inActive() }}</span>
+        <span class="stat-label">Inactive</span>
+      </div>
+      <div class="stat-card stat-stopped">
+        <span class="stat-value">{{ stopped() }}</span>
+        <span class="stat-label">Stopped</span>
+      </div>
+      <div class="stat-card stat-source">
+        <span class="stat-value">{{ atSource() }}</span>
+        <span class="stat-label">At Source</span>
+      </div>
+      <div class="stat-card stat-destination">
+        <span class="stat-value">{{ atDestination() }}</span>
+        <span class="stat-label">At Destination</span>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Data Table -->
+<div class="row">
+  <div class="col-12">
+    <app-advanced-grid [rowData]="tableData()" [config]="gridConfig()"
+      [loadingRowData]="isLoading()"></app-advanced-grid>
+  </div>
+</div>

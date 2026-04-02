@@ -22,7 +22,9 @@ export type FieldType =
   | 'time'
   | 'color-select'
   | 'datetime'
-  | 'formarray';
+  | 'formarray'
+  | 'month'
+  | 'year';
 
 export interface FieldConfig {
   name: string;
@@ -65,6 +67,8 @@ export interface FieldConfig {
   formArrayFields?: FieldConfig[]; // Sub-fields for formarray
   minItems?: number; // Minimum number of items in array
   maxItems?: number; // Maximum number of items in array
+  defaultItems?: number; // Number of default items to create when form array is initialized
+  showLabelOnlyFirst?: boolean; // Show sub-field labels only on first item, hide on rest
   addButtonText?: string; // Text for add button
   removeButtonText?: string; // Text for remove button
   // ✅ NEW: Button configuration
@@ -91,6 +95,7 @@ export interface FieldConfig {
   checkboxstyle?: Record<string, string | number>;
   colorWidth?: string; // Custom width for color select (e.g. '100%', '50px')
   optionColorWidth?: string;
+  showButtons?: boolean;
 }
 
 export interface SpkOptions {

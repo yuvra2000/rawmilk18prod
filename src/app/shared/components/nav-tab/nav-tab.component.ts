@@ -18,4 +18,6 @@ export interface TabConfig {
 export class NavTabComponent {
   tabs = input<TabConfig[]>();
   active = model<number>(0);
+  tabStyle = input<{ [key: string]: string }>();
+  wrapperStyle = input<{ [key: string]: string }>();
 }

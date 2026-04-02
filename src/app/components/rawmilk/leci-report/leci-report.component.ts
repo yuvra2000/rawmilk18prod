@@ -98,4 +98,33 @@ export class LeciReportComponent implements OnInit {
       }
     });
   }
+
+  sendEmail() {
+    // take email from browser alert
+    const email = prompt('Enter email address:');
+    if (email) {
+      const payload = createFormData(this.token, {
+        ForWeb: '1',
+        ToEmailId: email,
+        MCC: '',
+        MPC: '',
+        FromDate: '',
+        ToDate: '',
+      });
+      this.service.sendEmail(payload).subscribe({
+        next: (res: any) => {
+          if (res.Status === 'success') {
+            this.toast.success(res.Message || 'Email sent successfully');
+          } else {
+            this.toast.error(res.Message || 'Failed to send email');
+          }
+        },
+        error: (err: any) => {
+          console.error('Error sending email:', err);
+          this.toast.error('Something went wrong. Please try again.');
+        }
+      });
+    }
+
+  }
 }

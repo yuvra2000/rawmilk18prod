@@ -9,7 +9,7 @@
 <div class="row mt-3">
     <div class="col-md-12">
         <app-advanced-grid [rowData]="tableData()" [config]="gridConfig()">
-            <span slot="right">test</span>
+            <span slot="right"><i class="bi bi-envelope-arrow-up cursor-pointer" (click)="sendEmail()"></i></span>
         </app-advanced-grid>
     </div>
 </div>

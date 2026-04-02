@@ -10,10 +10,14 @@ export class LeciReportService {
   constructor(private masterRequest: MasterRequestService) { }
 
   getIndentMasterData(payload: FormData): Observable<any> {
-    return this.masterRequest.post('/createIndentMaster', payload);
+    return this.masterRequest.postFormData('/createIndentMaster', payload);
   }
 
   getLeciReport(payload: FormData): Observable<any> {
-    return this.masterRequest.postFormData('https://apinode1.secutrak.in/mobileApiDairyM/rm_leciReport', payload, true);
+    return this.masterRequest.postFormData('/rm_leciReport', payload);
+  }
+
+  sendEmail(payload: FormData): Observable<any> {
+    return this.masterRequest.postFormData('/rm_sendMail', payload);
   }
 }

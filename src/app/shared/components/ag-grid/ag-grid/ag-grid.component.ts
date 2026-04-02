@@ -327,13 +327,11 @@ export class ActionCellRendererComponent
 
   onActionClick(action: ActionConfig): void {
     if (action.onClick) {
-      debugger;
       action.onClick(this.rowData(), this.params()?.node, this.params());
     }
   }
   onActionHover(action: ActionConfig): void {
     if (action.onHover) {
-      debugger;
       action.onHover(this.rowData(), this.params()?.node, this.params());
     }
   }
@@ -837,7 +835,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
   });
   gridOptions = computed(() => {
     const currentConfig = this.config();
-    console.log('Computing grid options with config:', currentConfig);
+    // console.log('Computing grid options with config:', currentConfig);
     const options: GridOptions = {
       context: currentConfig.context || {},
       domLayout: currentConfig.autoHeight ? 'autoHeight' : undefined,
@@ -881,7 +879,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       }
       //yeh place thodi doubtful hai
     }
-    console.log('Final grid options:', options);
+    // console.log('Final grid options:', options);
     return options;
   });
   frameworkComponents = {

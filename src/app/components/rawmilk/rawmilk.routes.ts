@@ -45,6 +45,22 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Inventory',
       },
+      {
+        path: 'create-dispatch',
+        loadComponent: () =>
+          import('./create-dispatch/create-dispatch.component').then(
+            (m) => m.CreateDispatchComponent,
+          ),
+        title: 'Create Dispatch',
+      },
+      {
+        path: 'projection',
+        loadComponent: () =>
+          import('./projection/projection.component').then(
+            (m) => m.ProjectionComponent,
+          ),
+        title: 'Projection',
+      },
     ],
   },
   {

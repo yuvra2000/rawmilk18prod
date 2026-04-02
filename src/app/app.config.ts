@@ -10,14 +10,16 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { MaterialModuleModule } from './material-module/material-module.module';
 import { ToastrModule } from 'ngx-toastr';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './shared/interceptors/auth.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(routes),
+    
     RouterOutlet,
     provideCharts(withDefaultRegisterables()),
     MaterialModuleModule,
@@ -25,7 +27,7 @@ export const appConfig: ApplicationConfig = {
       BrowserAnimationsModule,
       FlatpickrModule.forRoot(),
       ToastrModule.forRoot({
-        timeOut: 15000, // 15 seconds
+        timeOut: 5000, // 5 seconds
         closeButton: true,
         progressBar: true,
       }),

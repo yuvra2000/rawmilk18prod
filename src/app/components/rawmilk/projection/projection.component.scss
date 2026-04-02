@@ -1,0 +1,10 @@
+::ng-deep {
+  .tab-pane {
+    padding: 0rem !important;
+  }
+}
+.icon-add {
+  font-size: 22px;
+  color: var(--primary-color);
+  cursor: pointer;
+}

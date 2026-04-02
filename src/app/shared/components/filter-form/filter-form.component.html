@@ -2,7 +2,7 @@
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
   novalidate
-  class="d-flex align-items-start flex-wrap filter-bar pt-1 bg-white rounded row position-relative m-auto"
+  class="d-flex align-items-start flex-wrap filter-bar bg-white rounded row position-relative m-auto p-1"
   [ngStyle]="filerFormClass"
 >
   @for (field of effectiveFields; track field.name) {
@@ -188,6 +188,20 @@
             [max]="computeDateConstraint(field.maxDate)"
           />
         }
+        <!-- Month field -->
+        @else if (field.type === "month") {
+          <input
+            type="month"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [attr.aria-required]="field.required"
+            [class.disabled-field]="field.disabled"
+            [required]="field.required ?? false"
+            [min]="computeDateConstraint(field.minDate)"
+            [max]="computeDateConstraint(field.maxDate)"
+          />
+        }
 
         <!-- Time field -->
         @else if (field.type === "time") {
@@ -359,6 +373,190 @@
             [required]="field.required ?? false"
             [class.disabled-field]="field.disabled"
           />
+        }
+
+        <!-- FormArray field -->
+        @else if (field.type === "formarray") {
+          <div class="formarray-container">
+            <div [formArrayName]="field.name">
+              @for (
+                item of getFormArray(field.name).controls;
+                track $index;
+                let i = $index
+              ) {
+                <div class="formarray-item rounded" [formGroupName]="i">
+                  <div class="row">
+                    @for (
+                      subField of field.formArrayFields || [];
+                      track subField.name;
+                      let isLast = $last
+                    ) {
+                      <div
+                        [ngClass]="subField?.class || 'col-md-6'"
+                        class="mb-2"
+                      >
+                        <!-- Show label only on first item if showLabelOnlyFirst is true -->
+                        @if (!field.showLabelOnlyFirst || i === 0) {
+                          <label
+                            [for]="field.name + '_' + i + '_' + subField.name"
+                            class="form-label"
+                            [ngClass]="subField.labelClass || ''"
+                          >
+                            {{ subField.label }}
+                            @if (subField.required) {
+                              <span class="text-danger ms-1">*</span>
+                            }
+                          </label>
+                        }
+
+                        <div class="d-flex align-items-start gap-2">
+                          <div class="flex-grow-1">
+                            <!-- Render different input types for sub-fields -->
+                            @if (subField.type === "text") {
+                              <input
+                                type="text"
+                                class="form-control"
+                                [formControlName]="subField.name"
+                                [id]="
+                                  field.name + '_' + i + '_' + subField.name
+                                "
+                                [placeholder]="
+                                  subField.placeholder ??
+                                  'Enter ' + subField.label
+                                "
+                                [required]="subField.required ?? false"
+                                [class.disabled-field]="subField.disabled"
+                              />
+                            } @else if (subField.type === "number") {
+                              <input
+                                type="number"
+                                class="form-control"
+                                [formControlName]="subField.name"
+                                [id]="
+                                  field.name + '_' + i + '_' + subField.name
+                                "
+                                [placeholder]="
+                                  subField.placeholder ??
+                                  'Enter ' + subField.label
+                                "
+                                [required]="subField.required ?? false"
+                                [min]="subField.min ?? 0"
+                                [class.disabled-field]="subField.disabled"
+                              />
+                            } @else if (subField.type === "select") {
+                              <ng-select
+                                [formControlName]="subField.name"
+                                [items]="subField.options || []"
+                                bindLabel="name"
+                                bindValue="id"
+                                [placeholder]="
+                                  subField.placeholder ??
+                                  'Select ' + subField.label
+                                "
+                                [clearable]="!subField.required"
+                                [multiple]="subField.multiple ?? false"
+                              >
+                              </ng-select>
+                            } @else if (subField.type === "date") {
+                              <input
+                                type="date"
+                                class="form-control"
+                                [formControlName]="subField.name"
+                                [id]="
+                                  field.name + '_' + i + '_' + subField.name
+                                "
+                                [required]="subField.required ?? false"
+                                [class.disabled-field]="subField.disabled"
+                              />
+                            }
+                          </div>
+
+                          <!-- Remove button next to last field (MBRT) -->
+                          @if (isLast && showButtons) {
+                            <div class="d-flex gap-1">
+                              <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger mt-0 formarray-action-btn"
+                                (click)="removeFormArrayItem(field.name, i)"
+                                [disabled]="
+                                  field.disabled ||
+                                  getFormArray(field.name).length <=
+                                    (field.minItems || 1)
+                                "
+                                title="{{
+                                  field.removeButtonText || 'Remove Item'
+                                }}"
+                              >
+                                <i
+                                  class="material-icons"
+                                  style="font-size: 16px"
+                                  >remove</i
+                                >
+                              </button>
+
+                              <!-- Add button next to first item's remove button -->
+                              @if (i === 0) {
+                                <button
+                                  type="button"
+                                  class="btn btn-sm btn-outline-primary mt-0 formarray-action-btn"
+                                  (click)="
+                                    addFormArrayItem(
+                                      field.name,
+                                      field.formArrayFields || []
+                                    )
+                                  "
+                                  [disabled]="
+                                    field.disabled ||
+                                    (field.maxItems &&
+                                      getFormArray(field.name).length >=
+                                        field.maxItems)
+                                  "
+                                  title="{{
+                                    field.addButtonText || 'Add ' + field.label
+                                  }}"
+                                >
+                                  <i
+                                    class="material-icons"
+                                    style="font-size: 16px"
+                                    >add</i
+                                  >
+                                </button>
+                              }
+                            </div>
+                          }
+                        </div>
+
+                        <!-- Error display for sub-fields -->
+                        @if (
+                          getFormArrayGroup(field.name, i).get(subField.name)
+                            ?.invalid &&
+                          getFormArrayGroup(field.name, i).get(subField.name)
+                            ?.touched
+                        ) {
+                          <div class="text-danger mt-1" style="font-size: 11px">
+                            @if (
+                              getFormArrayGroup(field.name, i).get(
+                                subField.name
+                              )?.errors?.["required"]
+                            ) {
+                              {{ subField.label }} is required.
+                            } @else if (
+                              getFormArrayGroup(field.name, i).get(
+                                subField.name
+                              )?.errors?.["min"]
+                            ) {
+                              {{ subField.label }} must be at least
+                              {{ subField.min }}.
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
         }
 
         <!-- Validation error space -->

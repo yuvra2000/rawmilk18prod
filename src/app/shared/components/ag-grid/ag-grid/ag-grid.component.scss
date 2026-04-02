@@ -4,6 +4,11 @@
   flex-direction: column;
   gap: 10px;
   position: relative;
+  background: #fff;
+  margin-top: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--primary-color);
+  padding: 0.5rem;
 }
 
 .grid-toolbar {
@@ -40,7 +45,9 @@
   padding-right: 36px; // Space for the clear button on the right.
 
   // Add a smooth transition for the focus effect.
-  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition:
+    border-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
 
   // Modern browsers show a clear 'x' by default. This hides it so we can use our own.
   &::-ms-clear,
@@ -51,7 +58,9 @@
   // ✨ The most important visual feedback for the user.
   &:focus {
     outline: none; // Remove the default browser outline.
-    border-color: rgb(var(--primary-rgb)); // Use a primary color for the border.
+    border-color: rgb(
+      var(--primary-rgb)
+    ); // Use a primary color for the border.
     box-shadow: 0 0 0 3px var(--primary02); // Add a soft "glow" effect.
   }
 }
@@ -101,7 +110,9 @@
   i {
     font-size: 18px;
     // ✨ REMOVED: Default color is no longer needed here
-    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+    transition:
+      transform 0.2s ease-in-out,
+      filter 0.2s ease-in-out;
   }
 
   // ✨ MODIFIED: The hover effect is now a generic brightness enhancement
@@ -255,7 +266,10 @@ Status Cell Styling
   }
 
   .status-pending .ag-cell-value {
-    background-color: rgba(var(--primary-rgb), 0.15); // ✨ New light blue background
+    background-color: rgba(
+      var(--primary-rgb),
+      0.15
+    ); // ✨ New light blue background
     color: rgb(var(--primary-rgb)); // ✨ New primary blue text
     box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.1); // ✨ Optional blue glow
   }
@@ -271,7 +285,7 @@ Status Cell Styling
     color: var(--gray-6);
     box-shadow: 0 0 10px rgba(84, 110, 122, 0.1);
   }
-   .status-cancelled .ag-cell-value {
+  .status-cancelled .ag-cell-value {
     background-color: #eaddca;
     color: #895129;
     box-shadow: 0 0 10px #fef2f2;

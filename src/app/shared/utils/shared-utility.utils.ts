@@ -92,3 +92,16 @@ export function handleApiError(
   console.error('API Error:', error);
   toastService.error(errorMessage);
 }
+export function handleSessionExpiry(res: any, toastService: any) {
+  debugger;
+  if (
+    res?.Result == 'Session Expired due to new login.' ||
+    res?.Status == 'failed' ||
+    res?.Message == 'Invalid or expired accesstoken.' ||
+    res?.Message == 'Sorry! Session expired, Please login again ..!'
+  ) {
+    toastService.error(res?.Message || 'Session expired. Please log in again.');
+    return true;
+  }
+  return false;
+}

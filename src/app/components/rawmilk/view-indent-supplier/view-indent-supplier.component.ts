@@ -182,8 +182,8 @@ export class ViewIndentSupplierComponent implements OnInit {
   fetchIndentValue(indentId: any, quantity: any, actionType: any) {
     this.router.navigate(['/Allocate'], {
       state: {
-        // structuredata: { Id: indentId, quan: quantity, status: actionType },
-        structuredata: { Id: indentId, quan: quantity, status: 'Edit' },
+        structuredata: { Id: indentId, quan: quantity, status: actionType },
+        // structuredata: { Id: indentId, quan: quantity, status: 'Edit' },
         array: 'worldgyan',
       },
     });

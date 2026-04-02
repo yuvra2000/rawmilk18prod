@@ -32,6 +32,14 @@ export class ProjectionService {
       params,
     );
   }
+
+  addProjectionSingle(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(`/rm_addProjection`, params);
+  }
+
+  updateProjection(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(`/rm_editProjection`, params);
+  }
   initializePageData(
     mccParams: any,
     masterParams: any,

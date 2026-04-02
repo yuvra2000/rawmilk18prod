@@ -1,9 +1,22 @@
 <!-- <app-common-header title="Asset Management" [breadcrumbs]="breadcrumbs">
 </app-common-header> -->
 <app-collapse-wrapper>
+  <!-- @if (
+    (store.isEditable(
+      store.initialData().PrjAddStartDate,
+      store.initialData().PrjAddEndDate
+    ) &&
+      store.usertype == "Supplier") ||
+    store.usertype == "ChillingPlant"
+  ) { -->
   <div class="header h-5 w-5 cursor-pointer" custom-icon>
-    <i class="fa fa-plus-circle icon-add" (click)="openAddProjection()"></i>
+    <i
+      class="fa fa-plus-circle icon-add"
+      (click)="openAddProjectionMulti()"
+      ngbTooltip="Add New Projection"
+    ></i>
   </div>
+  <!-- } -->
   <filter-form
     #viewinventoryFilter
     [dynamicFields]="store.filterfields()"
@@ -13,12 +26,10 @@
   >
   </filter-form>
 </app-collapse-wrapper>
-<!-- <app-advanced-grid [rowData]="store.projectionRowData()" [config]="projectionConfig()">
-</app-advanced-grid> -->
 
 <app-nav-tab
   [tabs]="store.tabsComp()"
-  [tabStyle]="{ width: '40%' }"
+  [tabStyle]="{ width: '30%' }"
   [wrapperStyle]="{ 'margin-top': '10px', 'border-radius': '0.5rem' }"
 >
 </app-nav-tab>

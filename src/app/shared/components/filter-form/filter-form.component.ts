@@ -136,6 +136,7 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() btnClass: string = '';
   @Input() allowAutofill: boolean = false;
+  @Input() showButtons: boolean = true;
   @Input() containerClass: string = 'col-lg-2';
   @Input() dependentDataMap: Record<
     string,
@@ -319,9 +320,10 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
           // Create FormArray with initial empty structure
           const formArray = new FormArray([], validators);
           this.form.addControl(field.name, formArray, { emitEvent: false });
-          // Add initial items if minItems is specified
-          if (field.minItems && field.minItems > 0) {
-            for (let i = 0; i < field.minItems; i++) {
+          // Add initial items: prioritize defaultItems, then minItems
+          const itemsToCreate = field.defaultItems || field.minItems || 0;
+          if (itemsToCreate > 0) {
+            for (let i = 0; i < itemsToCreate; i++) {
               this.addFormArrayItem(field.name, field.formArrayFields || []);
             }
           }
@@ -505,7 +507,7 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
   addFormArrayItem(fieldName: string, subFields: FieldConfig[]): void {
     const formArray = this.getFormArray(fieldName);
     const group = this.fb.group({});
-    
+
     // Build form group for array item
     subFields.forEach((subField) => {
       const validators = this.getValidators(subField);
@@ -517,7 +519,7 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
         ),
       );
     });
-    
+
     formArray.push(group);
     this.formVersion.update((v) => v + 1);
   }
@@ -527,17 +529,19 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
    */
   removeFormArrayItem(fieldName: string, index: number): void {
     const formArray = this.getFormArray(fieldName);
-    
+
     // Find the field configuration to check minItems
-    const field = this.effectiveFields.find(f => f.name === fieldName);
+    const field = this.effectiveFields.find((f) => f.name === fieldName);
     const minItems = field?.minItems || 1; // Default to 1 if not specified
-    
+
     // Check if removing this item would violate minItems constraint
     if (formArray.length <= minItems) {
-      console.warn(`Cannot remove item: Minimum ${minItems} items required for ${fieldName}`);
+      console.warn(
+        `Cannot remove item: Minimum ${minItems} items required for ${fieldName}`,
+      );
       return;
     }
-    
+
     formArray.removeAt(index);
     this.formVersion.update((v) => v + 1);
   }
@@ -588,19 +592,20 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
   hasError(field: FieldConfig): boolean {
     const ctrl = this.form.get(field.name);
     if (!ctrl) return false;
-    
+
     const hasControlError = ctrl.invalid && (ctrl.touched || this.submitted);
 
     // Special handling for FormArray
     if (field.type === 'formarray') {
       const formArray = ctrl as FormArray;
-      const hasArrayError = formArray.invalid && (formArray.touched || this.submitted);
-      
+      const hasArrayError =
+        formArray.invalid && (formArray.touched || this.submitted);
+
       // Check if any child controls have errors
-      const hasChildErrors = formArray.controls.some(control => 
-        control.invalid && (control.touched || this.submitted)
+      const hasChildErrors = formArray.controls.some(
+        (control) => control.invalid && (control.touched || this.submitted),
       );
-      
+
       return hasArrayError || hasChildErrors;
     }
 

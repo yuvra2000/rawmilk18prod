@@ -68,6 +68,14 @@ export const rawMilkRoutes: Routes = [
             (m) => m.LeciDashboardComponent,
           ),
         title: 'Leci Dashboard',
+      },
+      {
+        path: 'leci-add-form',
+        loadComponent: () =>
+          import('./leci-add-form/leci-add-form.component').then(
+            (m) => m.LeciAddFormComponent,
+          ),
+        title: 'Leci Add Form',
       }
     ],
   },

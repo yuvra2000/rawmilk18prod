@@ -473,12 +473,13 @@ export const viewDispatchColumns: GridColumnConfig[] = [
           tooltip: 'Create Dispatch',
           visible: (data: any) => data?.action_type == 2,
           onClick: (data: any, node: any, params: any) => {
-            if (params.context?.componentParent) {
-              params.context.componentParent.Create_dis(
-                data.id,
-                data.TargetDate,
-              );
-            }
+            // if (params.context?.componentParent) {
+            //   params.context.componentParent.Create_dis(
+            //     data.id,
+            //     data.TargetDate,
+            //   );
+            // }
+            params.context?.handleActionClick?.('Create_dis', params.data);
           },
           iconStyle: {
             color: 'green',

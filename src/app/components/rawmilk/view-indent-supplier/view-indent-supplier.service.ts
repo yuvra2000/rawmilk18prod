@@ -15,4 +15,7 @@ export class ViewIndentSupplierService {
       params,
     );
   }
+  deleteIndent(params: any) {
+    return this.masterRequestService.postFormData(`/deleteSubIndent`, params);
+  }
 }

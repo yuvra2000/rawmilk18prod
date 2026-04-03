@@ -76,7 +76,7 @@ export const rawMilkRoutes: Routes = [
             (m) => m.LeciAddFormComponent,
           ),
         title: 'Leci Add Form',
-      }
+      },
       {
         path: 'dispatch-planning-report',
         loadComponent: () =>

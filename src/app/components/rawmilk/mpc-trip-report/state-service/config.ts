@@ -3,93 +3,70 @@ import { GridColumnConfig } from "../../../../shared/components/ag-grid/ag-grid/
 
 export const mpcGridColumns: GridColumnConfig[] = [
   {
+    headerName: '',
+    field: '__toggle',
+    width: 70,
+    pinned: 'left',
+    lockPinned: true,
+    suppressMovable: true,
+    sortable: false,
+    filter: false,
+    cellStyle: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
+    cellRenderer: (params: any) => {
+      if (params.data?.__rowType !== 'summary') {
+        return '';
+      }
+      return `<button type="button" class="btn btn-sm btn-outline-primary">${params.data?.__expanded ? '-' : '+'}</button>`;
+    },
+    onCellClicked: (params: any) => {
+      if (params.data?.__rowType === 'summary') {
+        params.context?.componentParent?.toggleRow(params.data.__rowId);
+      }
+    },
+  },
+  {
     headerName: 'MPC Name',
     field: 'mpcName',
-    width: 150,
+    minWidth: 220,
+    pinned: 'left',
   },
   {
     headerName: 'MCC Name',
     field: 'mccName',
-    width: 150,
+    width: 160,
+    pinned: 'left',
   },
   {
     headerName: 'Milk Type',
     field: 'milkType',
     width: 120,
+    pinned: 'left',
   },
   {
     headerName: 'Milk Projection (Indent)',
     children: [
-      {
-        headerName: 'Qty',
-        field: 'milkProjection_qty',
-        width: 100,
-      },
-      {
-        headerName: 'FAT%',
-        field: 'milkProjection_fat',
-        width: 100,
-      },
-      {
-        headerName: 'SNF%',
-        field: 'milkProjection_snf',
-        width: 100,
-      },
-      {
-        headerName: 'MBRT',
-        field: 'milkProjection_mbrt',
-        width: 100,
-      },
+      { headerName: 'Qty', field: 'milkProjection_qty', width: 100 },
+      { headerName: 'FAT%', field: 'milkProjection_fat', width: 100 },
+      { headerName: 'SNF%', field: 'milkProjection_snf', width: 100 },
+      { headerName: 'MBRT', field: 'milkProjection_mbrt', width: 100 },
     ],
   },
   {
     headerName: 'Milk Dispatch Details',
     children: [
-      {
-        headerName: 'Qty',
-        field: 'milkDispatch_qty',
-        width: 100,
-      },
-      {
-        headerName: 'FAT%',
-        field: 'milkDispatch_fat',
-        width: 100,
-      },
-      {
-        headerName: 'SNF%',
-        field: 'milkDispatch_snf',
-        width: 100,
-      },
-      {
-        headerName: 'MBRT',
-        field: 'milkDispatch_mbrt',
-        width: 100,
-      },
+      { headerName: 'Qty', field: 'milkDispatch_qty', width: 100 },
+      { headerName: 'FAT%', field: 'milkDispatch_fat', width: 100 },
+      { headerName: 'SNF%', field: 'milkDispatch_snf', width: 100 },
+      { headerName: 'MBRT', field: 'milkDispatch_mbrt', width: 100 },
     ],
   },
   {
-    headerName: 'Actual Milk Received',
+    headerName: 'Actual Milk Received Details',
     children: [
-      {
-        headerName: 'Qty',
-        field: 'actualMilk_qty',
-        width: 100,
-      },
-      {
-        headerName: 'FAT%',
-        field: 'actualMilk_fat',
-        width: 100,
-      },
-      {
-        headerName: 'SNF%',
-        field: 'actualMilk_snf',
-        width: 100,
-      },
-      {
-        headerName: 'MBRT',
-        field: 'actualMilk_mbrt',
-        width: 100,
-      },
+      { headerName: 'Qty', field: 'actualMilk_qty', width: 100 },
+      { headerName: 'FAT%', field: 'actualMilk_fat', width: 100 },
+      { headerName: 'SNF%', field: 'actualMilk_snf', width: 100 },
+      { headerName: 'MBRT', field: 'actualMilk_mbrt', width: 100 },
     ],
   },
   {
@@ -98,32 +75,20 @@ export const mpcGridColumns: GridColumnConfig[] = [
       {
         headerName: 'Indent Qty vs Dispatch Qty',
         field: 'deviation_indentVsDispatch',
-        width: 150,
+        width: 180,
       },
       {
-        headerName: 'Actual-Dispatch',
+        headerName: 'Actual- Dispatch',
         children: [
-          {
-            headerName: 'Qty',
-            field: 'deviation_actual_qty',
-            width: 100,
-          },
-          {
-            headerName: 'FAT%',
-            field: 'deviation_actual_fat',
-            width: 100,
-          },
-          {
-            headerName: 'SNF%',
-            field: 'deviation_actual_snf',
-            width: 100,
-          },
+          { headerName: 'Qty.', field: 'deviation_actual_qty', width: 100 },
+          { headerName: 'FAT%', field: 'deviation_actual_fat', width: 100 },
+          { headerName: 'SNF%', field: 'deviation_actual_snf', width: 100 },
         ],
       },
       {
         headerName: 'Remarks',
         field: 'deviation_remarks',
-        width: 150,
+        minWidth: 180,
       },
     ],
   },
@@ -178,4 +143,3 @@ export const mpcFilterFields = (dispatchLocations: any[] = [], plants: any[] = [
     required: false,
   }
 ];
-

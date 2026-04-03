@@ -12,4 +12,12 @@ export class MpcTripReportService {
   getIndentMasterDetails(payload: FormData): Observable<any> {
     return this.masterRequest.postFormData('/createIndentMaster', payload);
   }
+
+  getMpcTripReport(payload: FormData): Observable<any> {
+    return this.masterRequest.postFormData(
+      'https://apinode1.secutrak.in/mobileApiDairyM/rm_mpcTReport',
+      payload,
+      true,
+    );
+  }
 }

@@ -106,6 +106,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Leci Report',
       },
+      {
+        path: 'mpc-wise',
+        loadComponent: () =>
+          import('./mpc-trip-report/mpc-trip-report.component').then(
+            (m) => m.MpcTripReportComponent,
+          ),
+        title: 'Mpc Wise Report',
+      },
     ],
   },
 ];

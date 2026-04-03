@@ -58,7 +58,6 @@ export const editFields: FieldConfig[] = [
 const usertype = localStorage.getItem('usertype');
 const isChillingPlant = usertype == 'ChillingPlant';
 const isSupplier = usertype == 'Supplier';
-// ...existing code...
 export const viewIndentSupplierGridColumns: GridColumnConfig[] = [
   {
     headerName: 'S.No.',

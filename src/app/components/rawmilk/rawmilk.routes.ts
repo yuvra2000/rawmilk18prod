@@ -61,6 +61,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Projection',
       },
+      {
+        path: 'dispatch-planning-report',
+        loadComponent: () =>
+          import('./dispatch-planning/dispatch-planning.component').then(
+            (m) => m.DispatchPlanningComponent,
+          ),
+        title: 'Dispatch Planning',
+      },
     ],
   },
   {

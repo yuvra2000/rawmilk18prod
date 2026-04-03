@@ -188,4 +188,13 @@ export class ViewIndentSupplierComponent implements OnInit {
       },
     });
   }
+  Create_dispatch(indentId: any, quantity: any) {
+    this.router.navigate(['/CreateDispatch'], {
+      state: {
+        structuredata: { Id: indentId, quan: quantity },
+        // structuredata: { Id: indentId, quan: quantity, status: 'Edit' },
+        array: 'worldgyan',
+      },
+    });
+  }
 }

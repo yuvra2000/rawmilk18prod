@@ -1,0 +1,19 @@
+::ng-deep #noOfMcc .ng-select-container {
+  background-color: hsl(
+    217,
+    63%,
+    31%
+  ) !important; /* Desired background color */
+  //   color: white !important; /* Desired text color */
+}
+
+::ng-deep ng-select#noOfMcc .ng-select-container .ng-value,
+::ng-deep ng-select#noOfMcc .ng-select-container .ng-placeholder {
+  color: white !important;
+}
+
+.form-input ::ng-deep .ng-select .ng-select-container {
+  border: 1px solid var(--primary-color) !important;
+  // border-radius: 6px;
+  // min-height: 38px; /* match bootstrap input height */
+}

@@ -7,6 +7,7 @@ import {
   viewChild,
   ViewChild,
   computed,
+  effect,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
@@ -51,10 +52,22 @@ interface Vehicle {
 })
 export class MainDetailsComponent implements OnInit {
   @Input() form!: FormGroup;
+  targetDateSignal = signal<string>('');
+
+  // ✅ Input (same name जो HTML में है)
+  @Input()
+  set targetDate(value: any) {
+    if (value) {
+      this.targetDateSignal.set(value);
+      // this.applyDateLogic();
+    }
+  }
   // @Input() state!: any;
   private masterservice = inject(DispatchService);
   private toastService = inject(AlertService);
   public store = inject(DispatchStore);
+  minDate = signal<string>('');
+  maxDate = signal<string>('');
   // state = signal({
   //   milkList: [],
   //   plantList: [],
@@ -67,6 +80,38 @@ export class MainDetailsComponent implements OnInit {
     // this.loadinitialData();
   }
 
+  constructor() {
+    effect(
+      () => {
+        const date = this.targetDateSignal();
+        // const user = this.userTypeSignal();
+
+        if (!date) return;
+
+        // if (user === 1) {
+        this.setDateRange1(date);
+        // } else {
+        // this.setDateRange(date);
+        // }
+      },
+      { allowSignalWrites: true }, // ⭐ IMPORTANT
+    );
+  }
+
+  // constructor() {
+  //   console.log(
+  //     'MainDetailsComponent initialized with targetDate:',
+  //     this.targetDateSignal(),
+  //   );
+  //   effect(() => {
+  //     const date = this.targetDateSignal();
+
+  //     if (date) {
+  //       debugger;
+  //       this.setDateRange(date);
+  //     }
+  //   });
+  // }
   // async loadinitialData() {
   //   try {
   //     forkJoin({
@@ -139,5 +184,68 @@ export class MainDetailsComponent implements OnInit {
     //   // this.form.patchValue({ transporter: null });
     // }
     this.store.setSelectedVehicle(vehicle);
+  }
+
+  // 🔵 USER 1 (LIVE USER)
+  setDateRange1(targetDateStr: string): void {
+    const targetDate = new Date(targetDateStr + 'T23:59:59');
+
+    const now = new Date();
+    now.setSeconds(0, 0);
+
+    const min = new Date(now);
+    min.setHours(min.getHours() - 1); // ⏪ 1 hour back
+
+    const max = new Date(now);
+    max.setMinutes(now.getMinutes() + 5); // ⏩ +5 min
+
+    const finalMax = max > targetDate ? targetDate : max;
+
+    this.minDate.set(this.formatDateTime(min));
+    this.maxDate.set(this.formatDateTime(finalMax));
+
+    this.form.patchValue({
+      dispatchDate: this.formatDateTime(now),
+    });
+
+    console.log('USER 1 RANGE', this.minDate(), this.maxDate());
+  }
+
+  // 🟢 USER 2 (BACKDATE USER)
+  setDateRange(targetDateStr: string): void {
+    const targetDate = new Date(targetDateStr + 'T23:59:59');
+
+    const min = new Date(targetDateStr + 'T00:00:00');
+    min.setDate(min.getDate() - 2); // ⏪ 2 days back
+
+    const now = new Date();
+    now.setSeconds(0, 0);
+
+    const max = new Date(now);
+    max.setMinutes(now.getMinutes() + 5);
+
+    const finalMax = max > targetDate ? targetDate : max;
+
+    this.minDate.set(this.formatDateTime(min));
+    this.maxDate.set(this.formatDateTime(finalMax));
+
+    this.form.patchValue({
+      dispatchDate: this.formatDateTime(now),
+    });
+
+    console.log('USER 2 RANGE', this.minDate(), this.maxDate());
+  }
+
+  // ✅ FORMAT
+  formatDateTime(date: Date): string {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      '0',
+    )}-${String(date.getDate()).padStart(
+      2,
+      '0',
+    )}T${String(date.getHours()).padStart(2, '0')}:${String(
+      date.getMinutes(),
+    ).padStart(2, '0')}`;
   }
 }

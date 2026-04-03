@@ -154,6 +154,7 @@ export class ViewIndentSupplierComponent implements OnInit {
       }));
     }
   }
+  modal: any;
   async viewIndent(indentId: any) {
     try {
       const params = {
@@ -167,7 +168,7 @@ export class ViewIndentSupplierComponent implements OnInit {
       const res: any = await firstValueFrom(
         this.viewIndentSupplierService.viewAllocationProc(params),
       );
-      this.modalService.openGridModal({
+      this.modal = this.modalService.openGridModal({
         title: `Indent Details - ID: ${indentId}`,
         columns: viewDispatchColumns,
         rowData: res?.Allocation || [],
@@ -185,6 +186,19 @@ export class ViewIndentSupplierComponent implements OnInit {
         structuredata: { Id: indentId, quan: quantity, status: actionType },
         // structuredata: { Id: indentId, quan: quantity, status: 'Edit' },
         array: 'worldgyan',
+      },
+    });
+  }
+
+  Create_dis(indentId: any, targetdate: any) {
+    this.modal?.close();
+    this.router.navigate(['/create-dispatch'], {
+      state: {
+        structuredata: {
+          Id: indentId,
+          targetdate: targetdate,
+          status: 'Create',
+        },
       },
     });
   }

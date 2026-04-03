@@ -40,13 +40,15 @@ export class DispatchStore {
     mcclist: [],
     loading: false,
   });
-
+  userType = localStorage.getItem('usertype') || 'supplier';
   private toastService = inject(AlertService);
   private dispatchService = inject(DispatchService);
 
-  constructor() {}
+  constructor() {
+    console.log('DispatchStore initialized with userType:', this.userType);
+  }
 
-  loadInitialData(masterFormData: any, vehicleFormData: any) {
+  loadInitialData(masterFormData: any, vehicleFormData: any, mccformdata: any) {
     this.state.update((s) => ({ ...s, loading: true }));
 
     forkJoin({
@@ -55,6 +57,12 @@ export class DispatchStore {
           masterFormData,
         ),
       vehicledata: this.dispatchService.getVehicleData(vehicleFormData),
+
+      // 👉 CONDITIONAL MCC API
+      mccData:
+        this.userType === 'Supplier'
+          ? this.dispatchService.getMccData(mccformdata)
+          : of(null),
     })
       .pipe(
         catchError((error) => {
@@ -67,10 +75,13 @@ export class DispatchStore {
           return of({
             masterData: { Milk: [], PlantSupplier: [] },
             vehicledata: { Data: [], TransporterList: [] },
+            mccData: null,
           });
         }),
       )
       .subscribe((result: any) => {
+        // debugger;
+        console.log('API RESULT ✅', result);
         // 👉 process data FIRST
         const vehicleOptions = (result?.vehicledata?.Data || []).filter(
           (item: Vehicle) => item.BlacklistStatus !== 1,
@@ -82,12 +93,21 @@ export class DispatchStore {
           result?.masterData?.PlantSupplier?.filter(
             (plant: any) => plant.type === 3,
           ) || [];
-        const mcc =
-          result?.masterData?.PlantSupplier?.filter(
-            (plant: any) => plant.type == 4 && plant.type == '4',
-          ) || [];
+        // const mcc =
+        //   result?.masterData?.PlantSupplier?.filter(
+        //     (plant: any) => plant.type == 4 && plant.type == '4',
+        //   ) || [];
 
         const milkList = result?.masterData?.Milk || [];
+        let mcclist: any[] = [];
+        if (this.userType === 'Supplier') {
+          mcclist = result?.mccData?.Data || [];
+        } else {
+          mcclist =
+            result?.masterData?.PlantSupplier?.filter(
+              (plant: any) => plant.type == 4,
+            ) || [];
+        }
 
         // ✅ SINGLE UPDATE (IMPORTANT)
         this.state.set({
@@ -95,7 +115,7 @@ export class DispatchStore {
           plantList: filteredPlantList,
           vehicleOptions,
           transporterOptions,
-          mcclist: result?.masterData?.MCC || [],
+          mcclist,
           loading: false,
         });
 

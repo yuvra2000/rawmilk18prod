@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
         <h4 class="mb-3">Add New</h4>
-        <filter-form [dynamicFields]="formFields()" [initialData]="formData()" (formSubmit)="onFormSubmit($event)"></filter-form>
+        <filter-form [dynamicFields]="formFields()" [initialData]="formData()" (formSubmit)="onFormSubmit($event)" (controlValueChange)="onControlValueChange($event)"></filter-form>
     </div>
 </div>

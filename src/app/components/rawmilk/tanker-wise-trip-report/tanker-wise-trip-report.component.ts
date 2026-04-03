@@ -24,12 +24,13 @@ export class TankerWiseTripReportComponent {
   private modalService = inject(UniversalModalService);
 
   // signals
-  filterfields = computed<FieldConfig[]>(() => tankerWiseTripReportFilterField(this.tankerNameList(), this.plantNameList(), this.mpcNameList(), this.mccNameList()));
+  filterfields = computed<FieldConfig[]>(() => tankerWiseTripReportFilterField(this.tankerNameList(), this.plantNameList(), this.mpcNameList(), this.mccNameList(), this.stopaggesList()));
   tankerNameList = signal<any[]>([]);
   plantNameList = signal<any[]>([]);
   mpcNameList = signal<any[]>([]);
   mccNameList = signal<any[]>([]);
   chamberDetailRows = signal<any[]>([]);
+  stopaggesList = signal<any[]>([]);
   tankerWiseTripReportConfig = signal<GridConfig>({
     theme: 'alpine',
     rowSelectionMode: 'multiple',
@@ -51,7 +52,7 @@ export class TankerWiseTripReportComponent {
   onFormSubmit(data: any) {
     console.log('Form submitted with data:', data);
     // if report type is "detailed"
-    if (data.reportType.id === 2) {
+    if (data?.reportType?.id === 2) {
       this.getTableData(data, true);
     } else {
       this.getTableData(data, false);
@@ -93,6 +94,7 @@ export class TankerWiseTripReportComponent {
               this.mpcNameList.set([...this.mpcNameList(), item])
             }
           })
+          this.stopaggesList.set(res?.stoppages || []);
         },
         error: (error) => {
           console.error(error);
@@ -120,11 +122,12 @@ export class TankerWiseTripReportComponent {
   }
 
   getTableData(data?: any, detailedReport: boolean = false) {
+    console.log('data', data);
     const formData = createFormData(this.token, {
       "FromDate": data?.from || new Date().toISOString().split('T')[0] + ' 00:00:00',
       "ToDate": new Date(new Date(data?.to || new Date()).setDate(new Date(data?.to || new Date()).getDate() + 1)).toISOString().split('T')[0] + ' 23:55:55',
       "ForWeb": '1',
-      "Tanker": data?.tanker?.VehicleId,
+      "Tanker": data?.stoppageAddress?.vehicle ? data?.tanker?.VehicleNo + ',' + data?.stoppageAddress?.vehicle : data?.tanker?.VehicleNo,
       "Mpc": data?.mpcName?.id,
       "Plant": data?.plant?.id,
       "MCC": data?.mccName?.entity_id,

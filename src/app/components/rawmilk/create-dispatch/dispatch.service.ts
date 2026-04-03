@@ -18,4 +18,7 @@ export class DispatchService {
   getVehicleData(params: any) {
     return this.masterRequestService.postFormData(`/rm_tankerFilter`, params);
   }
+  getMccData(params: any) {
+    return this.masterRequestService.postFormData(`/get_mcc`, params);
+  }
 }

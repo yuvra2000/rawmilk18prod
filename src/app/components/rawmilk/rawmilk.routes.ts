@@ -62,6 +62,22 @@ export const rawMilkRoutes: Routes = [
         title: 'Projection',
       },
       {
+        path: 'leci-dashboard',
+        loadComponent: () =>
+          import('./leci-dashboard/leci-dashboard.component').then(
+            (m) => m.LeciDashboardComponent,
+          ),
+        title: 'Leci Dashboard',
+      },
+      {
+        path: 'leci-add-form',
+        loadComponent: () =>
+          import('./leci-add-form/leci-add-form.component').then(
+            (m) => m.LeciAddFormComponent,
+          ),
+        title: 'Leci Add Form',
+      }
+      {
         path: 'dispatch-planning-report',
         loadComponent: () =>
           import('./dispatch-planning/dispatch-planning.component').then(

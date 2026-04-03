@@ -6,7 +6,8 @@
         <div class="">
           <div [formGroup]="asFormGroup(mcc)" class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h6 class="mb-0">MCC {{ i + 1 }}</h6>
+              <!-- <h5 class="mb-0">MCC {{ i + 1 }}</h5> -->
+              <label class="form-label">MCC {{ i + 1 }}</label>
               <button
                 type="button"
                 class="btn btn-sm btn-danger"
@@ -18,23 +19,35 @@
 
             <!-- MCC SELECT -->
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <div class="col-lg-2">
-                <label class="form-label">Select MCC</label>
-                <input
+              <div class="col-lg-2 form-input-select">
+                <!-- <label class="form-label">Select MCC</label> -->
+                <ng-select
+                  [items]="store.state().mcclist"
+                  bindLabel="displayName"
+                  bindValue="id"
+                  placeholder="Select MCC"
                   formControlName="mccSelect"
-                  class="form-control"
-                  placeholder="Enter MCC number"
-                />
+                ></ng-select>
               </div>
               <div class="d-flex justify-content-end gap-2 mb-2">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-success"
-                  (click)="addChamber(i)"
+                <span
+                  style="display: inline-block"
+                  [ngbTooltip]="
+                    getChambers(i).controls.length >= rows.length
+                      ? 'Cannot add more chambers than MCCs'
+                      : 'Add Chamber'
+                  "
+                  container="body"
                 >
-                  <i class="fa fa-plus"></i>
-                </button>
-
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-success"
+                    (click)="addChamber(i)"
+                    [disabled]="getChambers(i).controls.length >= rows.length"
+                  >
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </span>
                 @if (getChambers(i).controls.length > 1) {
                   <button
                     type="button"
@@ -75,7 +88,9 @@
                   <div class="col"><label class="form-label">Fat</label></div>
                   <div class="col"><label class="form-label">SNF</label></div>
                   <div class="col"><label class="form-label">MBRT</label></div>
-                  <!-- <div class="col"><label class="form-label">Upload</label></div> -->
+                  <div class="col">
+                    <label class="form-label">Upload</label>
+                  </div>
                 </div>
 
                 <!-- CHAMBER ROWS -->
@@ -88,58 +103,90 @@
                     [formGroup]="asFormGroup(ch)"
                     class="row mb-3 align-items-center"
                   >
-                    <div class="col">
+                    <div class="col form-input">
                       <input
                         formControlName="chamber_no"
                         class="form-control form-control-sm"
-                        placeholder="No"
+                        placeholder="Chamber No"
                       />
                     </div>
 
-                    <div class="col">
-                      <input
+                    <div class="col form-input">
+                      <ng-select
+                        [items]="store.state().milkList"
+                        bindLabel="displayName"
+                        placeholder="Select Milk Type"
                         formControlName="milkType"
-                        class="form-control form-control-sm"
-                        placeholder="Type"
-                      />
+                      ></ng-select>
                     </div>
 
-                    <div class="col">
+                    <div class="col form-input">
                       <input
                         formControlName="temperature"
                         class="form-control form-control-sm"
                         placeholder="Temp"
+                        (keydown)="preventInvalidChars($event, 'temperature')"
+                        (paste)="sanitizePaste($event)"
                       />
                     </div>
 
-                    <div class="col">
+                    <div class="col form-input">
                       <input
                         formControlName="quantity"
                         class="form-control form-control-sm"
                         placeholder="Qty"
+                        (keydown)="preventInvalidChars($event, 'quantity')"
+                        (paste)="sanitizePaste($event)"
                       />
+                      <div class="text-danger small mt-1">
+                        <span *ngIf="isMccExceeded(j)">
+                          Total MCC quantity exceeds parent chamber
+                        </span>
+                      </div>
                     </div>
 
-                    <div class="col">
+                    <div class="col form-input">
                       <input
                         formControlName="fat"
                         class="form-control form-control-sm"
                         placeholder="FAT"
+                        (keydown)="preventInvalidChars($event, 'fat')"
+                        (paste)="sanitizePaste($event)"
                       />
                     </div>
 
-                    <div class="col">
+                    <div class="col form-input">
                       <input
                         formControlName="snf"
                         class="form-control form-control-sm"
                         placeholder="SNF"
+                        (keydown)="preventInvalidChars($event, 'snf')"
+                        (paste)="sanitizePaste($event)"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col form-input">
                       <input
                         formControlName="mbrt"
                         class="form-control form-control-sm"
                         placeholder="MBRT"
+                        (keydown)="preventInvalidChars($event, 'mbrt')"
+                        (paste)="sanitizePaste($event)"
+                      />
+                    </div>
+                    <div class="col form-input">
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        (click)="fileInput.click()"
+                      >
+                        <i class="fa fa-upload"></i>
+                      </button>
+                      <input
+                        type="file"
+                        #fileInput
+                        hidden
+                        formControlName="upload"
+                        (change)="onFileChange($event, $index)"
                       />
                     </div>
                   </div>

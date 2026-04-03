@@ -1,0 +1,39 @@
+.leci-stats-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: 10px;
+    min-width: 100px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    font-family: inherit;
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+      opacity: 0.8;
+    }
+
+    &.stat-total      { background: #e8eaf6; color: #283593; }
+    &.stat-running    { background: #e8f5e9; color: #1b5e20; }
+    &.stat-inactive   { background: #fafafa; color: #424242; border: 1px solid #e0e0e0; }
+    &.stat-stopped    { background: #fce4ec; color: #880e4f; }
+    &.stat-source     { background: #fff8e1; color: #f57f17; }
+    &.stat-destination{ background: #e0f2f1; color: #004d40; }
+  }
+}

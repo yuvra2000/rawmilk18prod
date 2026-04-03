@@ -1,5 +1,34 @@
 .form-label {
   font-weight: bold;
-  color: #1d4380;
+  color: var(--primary-color);
   margin: 0 3px;
+}
+
+.form-input {
+  width: 20%;
+}
+
+.form-input input {
+  border: 1px solid var(--primary-color) !important;
+  // border-radius: 6px;
+}
+
+/* ng-select */
+.form-input ::ng-deep .ng-select .ng-select-container {
+  border: 1px solid var(--primary-color) !important;
+  // border-radius: 6px;
+  // min-height: 38px; /* match bootstrap input height */
+}
+
+.form-input input:disabled,
+.form-input textarea:disabled,
+.form-input select:disabled {
+  background-color: #e9ecef !important; /* Bootstrap-like grey */
+  cursor: not-allowed;
+}
+
+.ng-select.ng-select-disabled .ng-select-container {
+  background-color: #898d91 !important;
+  cursor: not-allowed;
+  opacity: 1; /* prevent faded look */
 }

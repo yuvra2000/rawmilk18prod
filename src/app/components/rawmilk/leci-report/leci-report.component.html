@@ -1,1 +1,15 @@
-<p>leci-report works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <app-collapse-wrapper>
+            <filter-form [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"></filter-form>
+        </app-collapse-wrapper>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <app-advanced-grid [rowData]="tableData()" [config]="gridConfig()">
+            <span slot="right"><i class="bi bi-envelope-arrow-up cursor-pointer" (click)="sendEmail()"></i></span>
+        </app-advanced-grid>
+    </div>
+</div>

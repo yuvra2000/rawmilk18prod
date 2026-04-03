@@ -3,9 +3,21 @@
 
   <!-- Buttons -->
   <div class="d-flex justify-content-end gap-3 mb-2">
-    <button type="button" (click)="addRow()" class="btn btn-sm btn-success">
-      <i class="fa fa-plus"></i>
-    </button>
+    <span
+      [ngbTooltip]="
+        rows.length >= maxRows ? 'More than 3 not allowed' : 'Add more'
+      "
+      container="body"
+    >
+      <button
+        type="button"
+        (click)="addRow()"
+        class="btn btn-sm btn-success"
+        [disabled]="rows.length >= maxRows"
+      >
+        <i class="fa fa-plus"></i>
+      </button>
+    </span>
 
     @if (rows.length > 1) {
       <button
@@ -33,41 +45,139 @@
   <!-- ✅ NO formArrayName -->
   @for (row of rows.controls; track $index) {
     <div [formGroup]="getFormGroup(row)" class="row mb-3 align-items-center">
-      <div class="col">
-        <input type="text" class="form-control" formControlName="chamber_no" />
+      <div class="col form-input">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="chamber_no"
+          placeholder="Chamber No"
+        />
       </div>
 
-      <div class="col">
+      <div class="col form-input">
         <ng-select
-          [items]="state().milkList"
+          [items]="store.state().milkList"
           bindLabel="displayName"
-          bindValue="id"
           placeholder="Select Milk Type"
           formControlName="milkType"
+          placeholder="Select Milk Type"
+          [searchable]="true"
+          [clearable]="true"
+          [virtualScroll]="true"
+          [appendTo]="'body'"
+          [ngbTooltip]="
+            getFormGroup(row).get('milkType')?.value.displayName ||
+            'Select Milk Type'
+          "
         ></ng-select>
       </div>
 
-      <div class="col">
-        <input type="text" class="form-control" formControlName="temperature" />
+      <div class="col form-input">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="temperature"
+          placeholder="Temp"
+          (keydown)="preventInvalidChars($event, 'temperature')"
+          (paste)="sanitizePaste($event)"
+        />
+
+        <div
+          class="text-danger small mt-1"
+          *ngIf="isFieldInvalid(row, 'temperature')"
+        >
+          <span *ngIf="getError(row, 'temperature', 'required')">
+            Temperature is required
+          </span>
+
+          <span *ngIf="getError(row, 'temperature', 'pattern')">
+            Enter valid temp (-99.99 to 99.99)
+          </span>
+        </div>
       </div>
 
-      <div class="col">
-        <input type="text" class="form-control" formControlName="quantity" />
+      <div class="col form-input">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="quantity"
+          placeholder="Qty"
+          (keydown)="preventInvalidChars($event, 'quantity')"
+          (paste)="sanitizePaste($event)"
+        />
+
+        <div class="text-danger small mt-1">
+          <!-- <span *ngIf="getError(row, 'quantity', 'childExceedsParent')">
+            Total quantity cannot exceed 10% of main quantity
+          </span> -->
+          <span *ngIf="getError(row, 'quantity', 'totalExceeded')">
+            Total quantity cannot exceed 10% of main quantity
+          </span>
+        </div>
+      </div>
+      <div class="col form-input">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="fat"
+          placeholder="FAT"
+          (keydown)="preventInvalidChars($event, 'fat')"
+          (paste)="sanitizePaste($event)"
+        />
+
+        <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'fat')">
+          <span *ngIf="getError(row, 'fat', 'required')">
+            Fat is required
+          </span>
+
+          <span *ngIf="getError(row, 'fat', 'pattern')">
+            Enter valid fat (e.g. 6.5)
+          </span>
+        </div>
       </div>
 
-      <div class="col">
-        <input type="text" class="form-control" formControlName="fat" />
-      </div>
+      <div class="col form-input">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="snf"
+          placeholder="SNF"
+          (keydown)="preventInvalidChars($event, 'snf')"
+          (paste)="sanitizePaste($event)"
+        />
 
-      <div class="col">
-        <input type="text" class="form-control" formControlName="snf" />
-      </div>
+        <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'snf')">
+          <span *ngIf="getError(row, 'snf', 'required')">
+            SNF is required
+          </span>
 
-      <div class="col">
-        <input type="text" class="form-control" formControlName="mbrt" />
+          <span *ngIf="getError(row, 'snf', 'pattern')">
+            Enter valid SNF (e.g. 8.5)
+          </span>
+        </div>
+      </div>
+      <div class="col form-input">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="mbrt"
+          placeholder="MBRT"
+          (keydown)="preventInvalidChars($event, 'mbrt')"
+          (paste)="sanitizePaste($event)"
+        />
+
+        <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'mbrt')">
+          <span *ngIf="getError(row, 'mbrt', 'required')">
+            MBRT is required
+          </span>
+
+          <span *ngIf="getError(row, 'mbrt', 'pattern')">
+            Max 3 digit number allowed
+          </span>
+        </div>
       </div>
       <!-- <div class="col"></div> -->
-      <div class="col">
+      <div class="col form-input">
         <button
           type="button"
           class="btn btn-primary"
@@ -78,6 +188,7 @@
         <input
           type="file"
           #fileInput
+          formControlName="upload"
           hidden
           (change)="onFileChange($event, $index)"
         />

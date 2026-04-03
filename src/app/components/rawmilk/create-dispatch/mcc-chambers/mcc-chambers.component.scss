@@ -1,51 +1,43 @@
-// .form-label {
-//   font-weight: 600;
-//   color: #1d4380;
-//   margin-bottom: 6px;
-//   display: block;
-//   font-size: 0.875rem;
-//   letter-spacing: 0.3px;
-//   //   text-transform: uppercase;
-//   transition: color 0.3s ease;
-
-//   &::after {
-//     content: "*";
-//     color: #dc3545;
-//     margin-left: 4px;
-//     font-weight: bold;
-//   }
-// }
-
-// /* Optional: Hover effect */
-// .form-control:focus ~ .form-label,
-// .form-label:hover {
-//   color: #0f2847;
-// }
-
-// /* Optional: Required field styling */
-// .form-label.required {
-//   color: #dc3545;
-// }
-
-// /* Optional: Optional field styling */
-// .form-label.optional {
-//   font-weight: 500;
-//   color: #6c757d;
-
-//   &::after {
-//     content: "(optional)";
-//     margin-left: 4px;
-//     font-size: 0.75rem;
-//     color: #6c757d;
-//   }
-// }
-
 .form-label {
   font-weight: bold;
-  color: #1d4380;
+  color: var(--primary-color);
   margin: 0 3px;
   display: block;
   //   height: 38px;
   //   padding: 6px 12px;
   //   line-height: 1.5;
+}
+
+.form-input {
+  width: 12.5%;
+}
+
+.form-input input {
+  border: 1px solid var(--primary-color) !important;
+  // border-radius: 6px;
+}
+
+/* ng-select */
+.form-input ::ng-deep .ng-select .ng-select-container {
+  border: 1px solid var(--primary-color) !important;
+  // border-radius: 6px;
+  // min-height: 38px; /* match bootstrap input height */
+}
+.form-input-select ::ng-deep .ng-select .ng-select-container {
+  border: 1px solid var(--primary-color) !important;
+  // border-radius: 6px;
+  // min-height: 38px; /* match bootstrap input height */
+}
+
+.form-input input:disabled,
+.form-input textarea:disabled,
+.form-input select:disabled {
+  background-color: #e9ecef !important; /* Bootstrap-like grey */
+  cursor: not-allowed;
+}
+
+.ng-select.ng-select-disabled .ng-select-container {
+  background-color: #898d91 !important;
+  cursor: not-allowed;
+  opacity: 1; /* prevent faded look */
 }

@@ -76,7 +76,15 @@ export const rawMilkRoutes: Routes = [
             (m) => m.LeciAddFormComponent,
           ),
         title: 'Leci Add Form',
-      }
+      },
+      {
+        path: 'dispatch-planning-report',
+        loadComponent: () =>
+          import('./dispatch-planning/dispatch-planning.component').then(
+            (m) => m.DispatchPlanningComponent,
+          ),
+        title: 'Dispatch Planning',
+      },
     ],
   },
   {

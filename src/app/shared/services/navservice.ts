@@ -174,7 +174,7 @@ export class NavService implements OnDestroy {
       active: false,
       children: [
         {
-          path: 'production-planning/dispatch-planning/',
+          path: 'dispatch-planning-report',
           title: 'Dispatch Planning',
           type: 'link',
           dirchange: false,

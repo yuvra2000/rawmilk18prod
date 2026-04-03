@@ -976,7 +976,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
     this.isExternalFilterPresent = () => false;
 
     // 4. 🚨 THE MOST IMPORTANT STEP FOR SNAPSHOTS 🚨
-    // 'Debugger' leak ko khatam karne ke liye console saaf karein
+    // '' leak ko khatam karne ke liye console saaf karein
     console.clear();
 
     // Note: Turn OFF "Preserve Log" in Chrome Console settings

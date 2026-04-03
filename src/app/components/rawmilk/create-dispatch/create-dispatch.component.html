@@ -1,12 +1,18 @@
-<div class="container-fluid">
-  <h3>Create Dispatch</h3>
+<div class="card-dispatch container-fluid">
+  <h4 class="heading">Create Dispatch</h4>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <!-- Step 1 -->
-    <app-main-details [form]="form"></app-main-details>
+    <app-main-details
+      [form]="form"
+      [targetDate]="prefetchdata.Data[0].target_date"
+    ></app-main-details>
 
     <!-- Step 2 -->
-    <app-chamber-details [rows]="rows"></app-chamber-details>
+    <app-chamber-details
+      [rows]="rows"
+      [prefetchQuantity]="prefetchdata.Data[0].quantity"
+    ></app-chamber-details>
 
     <!-- Step 3 -->
     <app-mcc-selection [form]="form"></app-mcc-selection>
@@ -18,9 +24,14 @@
 
     <!-- Show MCC Chambers only if MCCs exist -->
     <div *ngIf="mccs.controls.length > 0">
-      <app-mcc-chambers [mccs]="mccs"></app-mcc-chambers>
+      <app-mcc-chambers
+        [mccs]="mccs"
+        [rows]="rows"
+        [form]="form"
+      ></app-mcc-chambers>
     </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    <div class="p-3">
+      <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </div>
   </form>
 </div>

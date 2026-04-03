@@ -1,4 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { FieldConfig, FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
@@ -21,6 +22,7 @@ import { UniversalModalService } from '../../../shared/services/universal-modal.
 export class LeciDashboardComponent implements OnInit {
   private service = inject(LeciDashboardService);
   private modalService = inject(UniversalModalService);
+  private router = inject(Router);
 
   supplierList = signal<any[]>([]);
   plantList = signal<any[]>([]);
@@ -28,6 +30,7 @@ export class LeciDashboardComponent implements OnInit {
   mccList = signal<any[]>([]);
 
   tableData = signal<any[]>([]);
+  selectedRow = signal<any>(null);
   isLoading = signal(false);
 
   // Summary stats from API
@@ -55,6 +58,8 @@ export class LeciDashboardComponent implements OnInit {
     paginationPageSize: 20,
     paginationPageSizeSelector: [10, 20, 50, 100],
     rowHeight: 42,
+    enableRowSelection: true,
+    rowSelectionMode: 'single'
   });
 
   ngOnInit() {
@@ -153,5 +158,35 @@ export class LeciDashboardComponent implements OnInit {
       cancelText: 'Close',
       height: '55vh',
     }).catch(() => { /* dismissed */ });
+  }
+  onSelectionChanged(rows: any[]) {
+    this.selectedRow.set(rows.length > 0 ? rows[0] : null);
+  }
+
+  addNewLeci() {
+    const row = this.selectedRow();
+    console.log('selected row', row);
+    if (!row) {
+      alert('Please select a row first.');
+      return;
+    }
+    const isConfirmed = window.confirm('Are you sure you want to add new LECI?');
+    if (isConfirmed) {
+      this.router.navigate(['/leci-add-form'], {
+        state: {
+          dispatchid: row.dispatchid || row.DispatchId || row.ChallanNo,
+          chamber_no: row.chamber_no || row.ChamberNo || row.chamber
+        }
+      });
+    }
+  }
+
+  deleteLeci() {
+    const isConfirmed = window.confirm('Are you sure you want to delete LECI?');
+    if (isConfirmed) {
+      console.log('User selected: YES');
+    } else {
+      console.log('User selected: NO');
+    }
   }
 }

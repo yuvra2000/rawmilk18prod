@@ -112,7 +112,6 @@ export const leciDashboardColumns: GridColumnConfig[] = [
         field: 'serialNo',
         valueGetter: (params: any) => (params.node.rowIndex ?? 0) + 1,
         width: 70,
-        pinned: 'left',
         sortable: false,
         filter: false,
     },

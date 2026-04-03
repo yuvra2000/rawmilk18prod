@@ -101,6 +101,35 @@ export class LeciAddFormComponent implements OnInit {
     });
   }
 
+  onControlValueChange(event: any) {
+    const { controlName, form } = event;
+    if (['fatPercent', 'snfPercent', 'proteinPercent'].includes(controlName)) {
+      this.calculateCalculatedFields(form);
+    }
+  }
+
+  calculateCalculatedFields(form: any) {
+    const fatVal = form.get('fatPercent')?.value;
+    const snfVal = form.get('snfPercent')?.value;
+    const proteinVal = form.get('proteinPercent')?.value;
+
+    const fat = parseFloat(fatVal) || 0;
+    const snf = parseFloat(snfVal) || 0;
+    const protein = parseFloat(proteinVal) || 0;
+
+    // 1. Calculate Total Solids % = Fat % + SNF %
+    const totalSolids = fat + snf;
+    form.get('totalSolidsPercent')?.setValue(totalSolids > 0 ? totalSolids.toFixed(2) : '', { emitEvent: false });
+
+    // 2. Calculate Protein % on SNF basis = (Protein % / SNF %) * 100
+    if (snf !== 0) {
+      const proteinOnSnf = (protein / snf) * 100;
+      form.get('proteinOnSnfBasis')?.setValue(proteinOnSnf.toFixed(2), { emitEvent: false });
+    } else {
+      form.get('proteinOnSnfBasis')?.setValue('', { emitEvent: false });
+    }
+  }
+
   onFormSubmit(data: any) {
     const leciDataObj = {
       truck_no: data.truckNo,

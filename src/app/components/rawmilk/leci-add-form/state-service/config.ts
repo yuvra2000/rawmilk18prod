@@ -7,7 +7,8 @@ const negPosOptions: Option[] = [
 
 const okOptions: Option[] = [
     { id: 'OK', name: 'OK' },
-    { id: 'NOK', name: 'NOK' }
+    { id: 'NOT', name: 'NOT' },
+    { id: 'NS', name: 'NS' }
 ];
 
 const cleanlinessOptions: Option[] = [
@@ -31,7 +32,14 @@ const usageDecisionOptions: Option[] = [
 
 const appearanceOptions: Option[] = [
     { id: 'OK', name: 'OK' },
-    { id: 'NOT OK', name: 'NOT OK' }
+    { id: 'NOK', name: 'NOK' },
+    { id: 'NS', name: 'NS' }
+];
+
+const elisaOptions: Option[] = [
+    { id: 'APS', name: 'APS' },
+    { id: 'NA', name: 'NA' },
+    { id: 'NAPS', name: 'NAPS' }
 ];
 
 export const leciAddFormFields = (): FieldConfig[] => [
@@ -406,7 +414,7 @@ export const leciAddFormFields = (): FieldConfig[] => [
         type: 'select',
         label: 'ELISA Test',
         placeholder: 'Select NEG/POS',
-        options: negPosOptions,
+        options: elisaOptions,
     },
     {
         name: 'remarks',

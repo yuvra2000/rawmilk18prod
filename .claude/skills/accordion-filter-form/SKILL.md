@@ -273,6 +273,7 @@ initialData = input<any | null>(null);
 
 ## 10. Checklist for New Filter Forms
 
+- [ ] **Ask the user: does this API accept `FormData` or JSON body?** — this determines which service method and `onFormSubmit` pattern to use (see Section 10a below)
 - [ ] Create `state-service/config.ts` with `FieldConfig[]` export
 - [ ] Use function export if options are dynamic (fetched from API)
 - [ ] Define `filterfields` as `signal` (static) or `computed` (dynamic)
@@ -281,6 +282,59 @@ initialData = input<any | null>(null);
 - [ ] Handle `(formSubmit)` event
 - [ ] For select fields, remember `data.fieldName` is the full option object — access `.id`, `.name`, etc.
 - [ ] **Do NOT use `class` for styling** — only use it for Bootstrap width (e.g., `'col-md-6'`). Never add style-changing classes to `FieldConfig`.
+
+---
+
+## 10a. FormData vs JSON — Which Format Does the API Accept?
+
+**Always ask the user** which payload format the API expects before writing `onFormSubmit` or service methods. The two patterns differ significantly:
+
+### FormData Pattern (`postFormData`)
+
+Use when the API expects `multipart/form-data` (common in this project for most raw milk APIs).
+
+```typescript
+// Service
+getMyReport(payload: FormData): Observable<any> {
+  return this.masterRequest.postFormData('/my_endpoint', payload);
+}
+
+// Component — build FormData in onFormSubmit
+onFormSubmit(data: any) {
+  const formData = createFormData(this.token, {
+    FromDate: data?.fromDate || '',
+    ToDate: data?.toDate || '',
+    SupplierId: data?.supplier?.id || '',
+    PlantId: data?.plant?.id || '',
+  });
+  this.service.getMyReport(formData).subscribe({ ... });
+}
+```
+
+### JSON Body Pattern (`post`)
+
+Use when the API expects `application/json`.
+
+```typescript
+// Service
+getMyReport(payload: any): Observable<any> {
+  return this.masterRequest.post('/my_endpoint', payload);
+}
+
+// Component — build plain object in onFormSubmit
+onFormSubmit(data: any) {
+  const payload = {
+    AccessToken: this.token,
+    FromDate: data?.fromDate || '',
+    ToDate: data?.toDate || '',
+    SupplierId: data?.supplier?.id || '',
+    PlantId: data?.plant?.id || '',
+  };
+  this.service.getMyReport(payload).subscribe({ ... });
+}
+```
+
+> **Rule of thumb:** If in doubt, check how similar APIs in the same module are called (e.g., `leci-report.service.ts`). Most APIs in this project use `FormData`.
 
 ---
 

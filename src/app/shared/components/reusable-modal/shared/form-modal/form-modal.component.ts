@@ -108,6 +108,7 @@ export interface FormModalConfig {
   // ✅ NEW: Form control name aur Grid column name ki mapping ke liye
   gridFilterMapping?: Record<string, string>;
   footerConfig?: FooterConfig; //footer config
+  showFormArrayButtons?: boolean; // For showing add/remove buttons in form arrays
 }
 @Component({
   selector: 'app-form-modal',
@@ -190,6 +191,7 @@ export interface FormModalConfig {
                       [dependentDataMap]="config()?.dependentDataMap"
                       [dependentPairs]="config()?.dependentDataPair"
                       [btnClass]="config()?.filterButtonClass ?? 'mt-2'"
+                      [showButtons]="config()?.showFormArrayButtons ?? true"
                     >
                     </filter-form>
                   </div>

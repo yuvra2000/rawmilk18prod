@@ -188,6 +188,20 @@
             [max]="computeDateConstraint(field.maxDate)"
           />
         }
+        <!-- Month field -->
+        @else if (field.type === "month") {
+          <input
+            type="month"
+            class="form-control"
+            [formControlName]="field.name"
+            [id]="field.name"
+            [attr.aria-required]="field.required"
+            [class.disabled-field]="field.disabled"
+            [required]="field.required ?? false"
+            [min]="computeDateConstraint(field.minDate)"
+            [max]="computeDateConstraint(field.maxDate)"
+          />
+        }
 
         <!-- Time field -->
         @else if (field.type === "time") {
@@ -370,10 +384,7 @@
                 track $index;
                 let i = $index
               ) {
-                <div
-                  class="formarray-item rounded p-2 mb-2"
-                  [formGroupName]="i"
-                >
+                <div class="formarray-item rounded" [formGroupName]="i">
                   <div class="row">
                     @for (
                       subField of field.formArrayFields || [];
@@ -384,16 +395,19 @@
                         [ngClass]="subField?.class || 'col-md-6'"
                         class="mb-2"
                       >
-                        <label
-                          [for]="field.name + '_' + i + '_' + subField.name"
-                          class="form-label"
-                          [ngClass]="subField.labelClass || ''"
-                        >
-                          {{ subField.label }}
-                          @if (subField.required) {
-                            <span class="text-danger ms-1">*</span>
-                          }
-                        </label>
+                        <!-- Show label only on first item if showLabelOnlyFirst is true -->
+                        @if (!field.showLabelOnlyFirst || i === 0) {
+                          <label
+                            [for]="field.name + '_' + i + '_' + subField.name"
+                            class="form-label"
+                            [ngClass]="subField.labelClass || ''"
+                          >
+                            {{ subField.label }}
+                            @if (subField.required) {
+                              <span class="text-danger ms-1">*</span>
+                            }
+                          </label>
+                        }
 
                         <div class="d-flex align-items-start gap-2">
                           <div class="flex-grow-1">
@@ -458,7 +472,7 @@
                           </div>
 
                           <!-- Remove button next to last field (MBRT) -->
-                          @if (isLast) {
+                          @if (isLast && showButtons) {
                             <div class="d-flex gap-1">
                               <button
                                 type="button"

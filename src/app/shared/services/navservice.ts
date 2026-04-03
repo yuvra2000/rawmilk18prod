@@ -129,6 +129,12 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
+          path: 'leci-dashboard',
+          title: 'LECI Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
+        {
           path: 'trip-dashboard',
           title: 'Trip Dashboard',
           type: 'link',

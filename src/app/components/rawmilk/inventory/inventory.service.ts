@@ -34,6 +34,12 @@ export class InventoryService {
       params,
     );
   }
+  createInventory(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      '/rm_createInventory',
+      params,
+    );
+  }
   /**
    * Get all filter options using forkJoin for parallel API calls
    * This fetches MCC data and master data simultaneously for better performance
@@ -50,7 +56,7 @@ export class InventoryService {
    */
   deleteInventory(params: any): Observable<any> {
     return this.masterRequestService.postFormData(
-      `/rm_deleteInventoryy`, // Adjust endpoint as per your API
+      `/rm_deleteInventory`, // Adjust endpoint as per your API
       params,
     );
   }

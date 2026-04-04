@@ -108,6 +108,17 @@ export class MpcTripReportComponent implements OnInit {
     return total ? Number(total.toFixed(2)) : null;
   }
 
+  private avgSubIndentValue(subIndents: any[], getter: (detail: any) => any): number | null {
+    const values = subIndents
+      .map((detail: any) => Number(getter(detail) || 0))
+      .filter((value: number) => Number.isFinite(value) && value !== 0);
+
+    if (values.length === 0) return null;
+
+    const average = values.reduce((sum, val) => sum + val, 0) / values.length;
+    return Number(average.toFixed(2));
+  }
+
   private createSummaryRow(rowData: any, rowId: string) {
     const subIndents = Array.isArray(rowData?.SubIndent) ? rowData.SubIndent : [];
     const firstDetail = subIndents[0] || {};
@@ -120,21 +131,21 @@ export class MpcTripReportComponent implements OnInit {
       mccName: firstDetail?.MccName || '',
       milkType: rowData?.MilkType || '',
       milkProjection_qty: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkProjection?.Qty),
-      milkProjection_fat: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkProjection?.Fat),
-      milkProjection_snf: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkProjection?.Snf),
-      milkProjection_mbrt: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkProjection?.Mbrt),
+      milkProjection_fat: this.avgSubIndentValue(subIndents, (detail) => detail?.MilkProjection?.Fat),
+      milkProjection_snf: this.avgSubIndentValue(subIndents, (detail) => detail?.MilkProjection?.Snf),
+      milkProjection_mbrt: this.avgSubIndentValue(subIndents, (detail) => detail?.MilkProjection?.Mbrt),
       milkDispatch_qty: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkDispatchDetails?.Qty),
-      milkDispatch_fat: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkDispatchDetails?.Fat),
-      milkDispatch_snf: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkDispatchDetails?.Snf),
-      milkDispatch_mbrt: this.sumSubIndentValue(subIndents, (detail) => detail?.MilkDispatchDetails?.Mbrt),
+      milkDispatch_fat: this.avgSubIndentValue(subIndents, (detail) => detail?.MilkDispatchDetails?.Fat),
+      milkDispatch_snf: this.avgSubIndentValue(subIndents, (detail) => detail?.MilkDispatchDetails?.Snf),
+      milkDispatch_mbrt: this.avgSubIndentValue(subIndents, (detail) => detail?.MilkDispatchDetails?.Mbrt),
       actualMilk_qty: this.sumSubIndentValue(subIndents, (detail) => detail?.ActualMilkReceived?.Qty),
-      actualMilk_fat: this.sumSubIndentValue(subIndents, (detail) => detail?.ActualMilkReceived?.Fat),
-      actualMilk_snf: this.sumSubIndentValue(subIndents, (detail) => detail?.ActualMilkReceived?.Snf),
-      actualMilk_mbrt: this.sumSubIndentValue(subIndents, (detail) => detail?.ActualMilkReceived?.Mbrt),
+      actualMilk_fat: this.avgSubIndentValue(subIndents, (detail) => detail?.ActualMilkReceived?.Fat),
+      actualMilk_snf: this.avgSubIndentValue(subIndents, (detail) => detail?.ActualMilkReceived?.Snf),
+      actualMilk_mbrt: this.avgSubIndentValue(subIndents, (detail) => detail?.ActualMilkReceived?.Mbrt),
       deviation_indentVsDispatch: this.sumSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.IndQty_DisQty),
       deviation_actual_qty: this.sumSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.ActualDispatch?.Qty),
-      deviation_actual_fat: this.sumSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.ActualDispatch?.Fat),
-      deviation_actual_snf: this.sumSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.ActualDispatch?.Snf),
+      deviation_actual_fat: this.avgSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.ActualDispatch?.Fat),
+      deviation_actual_snf: this.avgSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.ActualDispatch?.Snf),
       deviation_remarks: subIndents.map((detail: any) => detail?.Remark).filter(Boolean).join(', '),
     };
   }

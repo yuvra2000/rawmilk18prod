@@ -30,6 +30,8 @@ export class MpcTripReportComponent implements OnInit {
   gridConfig = signal<GridConfig>({
     theme: 'alpine',
     columns: mpcGridColumns,
+    pagination: true,
+    paginationPageSize: 50,
     context: {
       componentParent: this,
     },

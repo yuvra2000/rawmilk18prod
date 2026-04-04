@@ -15,9 +15,8 @@ export class MpcTripReportService {
 
   getMpcTripReport(payload: FormData): Observable<any> {
     return this.masterRequest.postFormData(
-      'https://apinode1.secutrak.in/mobileApiDairyM/rm_mpcTReport',
+      '/rm_mpcTReport',
       payload,
-      true,
     );
   }
 }

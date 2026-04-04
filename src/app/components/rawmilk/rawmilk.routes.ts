@@ -122,6 +122,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Mpc Wise Report',
       },
+      {
+        path: 'indent-wise',
+        loadComponent: () =>
+          import('./indent-trip-report/indent-trip-report.component').then(
+            (m) => m.IndentTripReportComponent,
+          ),
+        title: 'Indent Wise Report',
+      }
     ],
   },
 ];

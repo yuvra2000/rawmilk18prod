@@ -123,12 +123,20 @@ export const rawMilkRoutes: Routes = [
         title: 'Indent Wise Report',
       },
       {
-        path: 'lid',
+        path: 'lid-report',
         loadComponent: () => 
           import('./lid-trip-report/lid-trip-report.component').then(
             (m) => m.LidTripReportComponent,
           ),
         title: 'LID Report',
+      },
+      {
+        path: 'e-lock-report',
+        loadComponent: () => 
+          import('./elock-trip-report/elock-trip-report.component').then(
+            (m) => m.ElockTripReportComponent,
+          ),
+        title: 'E-Lock Report',
       }
     ],
   },

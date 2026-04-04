@@ -253,7 +253,7 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
-          path: 'reports/lid-report',
+          path: 'reports/lid',
           title: 'Lid Report',
           type: 'link',
           dirchange: false,

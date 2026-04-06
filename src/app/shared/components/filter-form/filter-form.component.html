@@ -445,6 +445,38 @@
                                 [min]="subField.min ?? 0"
                                 [class.disabled-field]="subField.disabled"
                               />
+                            } @else if (subField.type === "time") {
+                              <input
+                                type="time"
+                                class="form-control"
+                                [formControlName]="subField.name"
+                                [id]="
+                                  field.name + '_' + i + '_' + subField.name
+                                "
+                                [placeholder]="
+                                  subField.placeholder ??
+                                  'Enter ' + subField.label
+                                "
+                                [required]="subField.required ?? false"
+                                [min]="subField.min ?? 0"
+                                [class.disabled-field]="subField.disabled"
+                              />
+                            } @else if (subField.type === "datetime") {
+                              <input
+                                type="datetime-local"
+                                class="form-control"
+                                [formControlName]="subField.name"
+                                [id]="subField.name"
+                                [placeholder]="
+                                  subField.placeholder ?? 'Select Date & Time'
+                                "
+                                [attr.aria-required]="subField.required"
+                                [step]="0"
+                                [class.disabled-field]="subField.disabled"
+                                [required]="subField.required ?? false"
+                                [min]="computeDateConstraint(subField.minDate)"
+                                [max]="computeDateConstraint(subField.maxDate)"
+                              />
                             } @else if (subField.type === "select") {
                               <ng-select
                                 [formControlName]="subField.name"

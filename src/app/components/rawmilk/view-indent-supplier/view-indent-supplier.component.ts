@@ -46,6 +46,8 @@ import { ViewIndentSupplierService } from './view-indent-supplier.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonHeaderComponent } from '../../../shared/components/common-header/common-header.component';
 import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { GridModalComponent } from '../../../shared/components/reusable-modal/shared/grid-modal/grid-modal.component';
 interface formResponse {
   Indents: any[];
   Message: string;
@@ -62,12 +64,14 @@ interface formResponse {
     AdvancedGridComponent,
     // CommonHeaderComponent,
   ],
+  providers: [NgbActiveModal],
   templateUrl: './view-indent-supplier.component.html',
   styleUrl: './view-indent-supplier.component.scss',
 })
 export class ViewIndentSupplierComponent implements OnInit {
   private viewIndentSupplierService = inject(ViewIndentSupplierService);
   private modalService = inject(UniversalModalService);
+  private alertService = inject(AlertService);
   private loader = inject(NgxSpinnerService);
   private router = inject(Router);
   private toast = inject(AlertService);
@@ -94,6 +98,7 @@ export class ViewIndentSupplierComponent implements OnInit {
   });
   userType = '';
   token: any;
+  constructor() {}
   ngOnInit(): void {
     this.token = localStorage.getItem('AccessToken') || '';
     this.userType = localStorage.getItem('usertype')!;
@@ -178,6 +183,11 @@ export class ViewIndentSupplierComponent implements OnInit {
         columns: viewDispatchColumns,
         rowData: res?.Allocation || [],
         size: 'xl',
+        onActionClick: (actionType: string, rowData: any) => {
+          if (actionType === 'Create_dis') {
+            this.Create_dis(rowData.IndentId, rowData.TargetDate);
+          }
+        },
         context: {
           componentParent: this,
         },
@@ -208,4 +218,60 @@ export class ViewIndentSupplierComponent implements OnInit {
       },
     });
   }
+  async deleteindent(indentId: any) {
+    this.alertService
+      .confirmDelete(
+        'Confirm Deletion',
+        'Are you sure you want to delete this indent? This action cannot be undone.',
+        'Yes, delete it!',
+        'Cancel',
+      )
+      .then(async (confirmed) => {
+        if (confirmed) {
+          // User confirmed deletion, proceed with API call
+          var formdata = new FormData();
+          formdata.append('AccessToken', this.token);
+          formdata.append('id', indentId);
+          try {
+            const res: any = await firstValueFrom(
+              this.viewIndentSupplierService.deleteIndent(formdata),
+            );
+            if (res.Status == 'success') {
+              this.alertService.showSuccess('Deleted!', res.Data);
+              this.onFormSubmit({
+                from: this.initialData().from,
+                to: this.initialData().to,
+              });
+            } else {
+              this.alertService.showError('Error', res.Data);
+            }
+          } catch (error) {
+            this.alertService.showError('Error', 'Failed to delete indent.');
+          }
+        } else {
+        }
+      });
+  }
+  //  deleteindent(id: any) {
+  //   console.log('id', id);
+  //   const confirmed = window.confirm(
+  //     'Are you sure you want to delete this inventory item?',
+  //   );
+  //   if (confirmed) {
+  //     var formdata = new FormData();
+  //     formdata.append('AccessToken', this.token);
+  //     formdata.append('id', id);
+  //     this.service.indentdelete(formdata).subscribe((res: any) => {
+  //       if (res.Status == 'success') {
+  //         alert(res.Data);
+  //         $('#uploadDoc').modal('hide');
+  //         this.submit('null');
+  //       } else {
+  //         alert(res.Data);
+  //       }
+  //       console.log('re', res);
+  //     });
+  //     // alert('deleted')
+  //   }
+  // }
 }

@@ -31,7 +31,7 @@ export const filterfields = (
     options: supplierList,
     bindLabel: 'displayName',
     class:
-      userType == 'Supplier' || userType == 'ChillingPlant'
+      userType !== 'Supplier' && userType !== 'ChillingPlant'
         ? 'd-none'
         : 'col-md-2', // Hide for suppliers, show for others
     emitValueChanges: true,

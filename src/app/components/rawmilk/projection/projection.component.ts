@@ -37,9 +37,9 @@ export class ProjectionComponent implements OnInit {
     this.store.onFormSubmit(filterValues);
   }
   onFilterChange(changedValues: any) {
-    console.log('Filter values changed:', changedValues);
-    // Here you can call a method in your store to fetch data based on the changed filter values
-    // For example: this.store.fetchProjectionData(changedValues);
+    console.log('Filter changed:', changedValues);
+    if (changedValues?.controlName === 'supplier') {
+    }
   }
 
   /**

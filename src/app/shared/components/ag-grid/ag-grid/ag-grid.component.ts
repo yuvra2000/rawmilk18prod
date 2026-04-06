@@ -125,7 +125,9 @@ export interface GridConfig {
   enableTreeData?: boolean;
   treeDataChildrenField?: string;
   enableMasterDetail?: boolean;
+  isRowMaster?: (dataItem: any) => boolean;
   detailCellRenderer?: string;
+  detailCellRendererParams?: any;
   excelTitle?: string;
   Title?: string;
   pdfTitle?: string;
@@ -626,7 +628,9 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
           [getDataPath]="getDataPath"
           [groupDefaultExpanded]="groupDefaultExpanded"
           [masterDetail]="config().enableMasterDetail || false"
+          [isRowMaster]="config().isRowMaster"
           [detailCellRenderer]="config().detailCellRenderer"
+          [detailCellRendererParams]="config().detailCellRendererParams"
           [undoRedoCellEditing]="config().enableUndoRedoEdit || false"
           [enableCellTextSelection]="true"
           [scrollbarWidth]="15"

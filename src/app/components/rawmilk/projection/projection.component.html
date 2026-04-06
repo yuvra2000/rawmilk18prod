@@ -1,22 +1,22 @@
 <!-- <app-common-header title="Asset Management" [breadcrumbs]="breadcrumbs">
 </app-common-header> -->
 <app-collapse-wrapper>
-  <!-- @if (
+  @if (
     (store.isEditable(
       store.initialData().PrjAddStartDate,
       store.initialData().PrjAddEndDate
     ) &&
       store.usertype == "Supplier") ||
     store.usertype == "ChillingPlant"
-  ) { -->
-  <div class="header h-5 w-5 cursor-pointer" custom-icon>
-    <i
-      class="fa fa-plus-circle icon-add"
-      (click)="openAddProjectionMulti()"
-      ngbTooltip="Add New Projection"
-    ></i>
-  </div>
-  <!-- } -->
+  ) {
+    <div class="header h-5 w-5 cursor-pointer" custom-icon>
+      <i
+        class="fa fa-plus-circle icon-add"
+        (click)="openAddProjectionMulti()"
+        ngbTooltip="Add New Projection"
+      ></i>
+    </div>
+  }
   <filter-form
     #viewinventoryFilter
     [dynamicFields]="store.filterfields()"

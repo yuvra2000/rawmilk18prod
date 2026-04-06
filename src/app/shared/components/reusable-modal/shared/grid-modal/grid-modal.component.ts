@@ -39,6 +39,7 @@ export interface GridModalConfig {
   gridFilterMapping?: Record<string, string>;
   height?: string;
   context?: any;
+  onActionClick?: (actionType: string, rowData: any) => void;
 }
 
 @Component({
@@ -48,6 +49,7 @@ export interface GridModalConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-base-modal
+      #gridModal
       [title]="config()?.title || 'Data Table'"
       [subtitle]="config()?.subtitle || ''"
       [showSaveButton]="config()?.showFooter ? true : false"
@@ -124,10 +126,26 @@ export class GridModalComponent {
       rowSelection: cfg.selectionMode === 'single' ? 'single' : 'multiple',
       suppressRowClickSelection: false,
       height: cfg.height || '60vh',
-      context: cfg.context,
+      context: {
+        ...cfg.context,
+        handleActionClick: (actionType: string, rowData: any) => {
+          this.handleGridAction(actionType, rowData);
+        },
+      },
     } as GridConfig;
   });
+  private handleGridAction(actionType: string, rowData: any): void {
+    const cfg = this.config();
 
+    if (cfg?.onActionClick) {
+      cfg.onActionClick(actionType, rowData);
+    }
+
+    // Modal closes itself
+    setTimeout(() => {
+      this.activeModal.close({ action: actionType, data: rowData });
+    }, 100);
+  }
   readonly resolvedRowData = computed(() => {
     const cfg = this.config();
     if (!cfg) return [];
@@ -154,7 +172,11 @@ export class GridModalComponent {
 
     this.activeModal.close(selected);
   }
-
+  close() {
+    debugger;
+    console.log('Modal closed');
+    this.activeModal.close();
+  }
   onGridReady(event: any): void {
     this.gridApi = event;
     const cfg = this.config();

@@ -76,7 +76,15 @@ export const rawMilkRoutes: Routes = [
             (m) => m.LeciAddFormComponent,
           ),
         title: 'Leci Add Form',
-      }
+      },
+      {
+        path: 'dispatch-planning-report',
+        loadComponent: () =>
+          import('./dispatch-planning/dispatch-planning.component').then(
+            (m) => m.DispatchPlanningComponent,
+          ),
+        title: 'Dispatch Planning',
+      },
     ],
   },
   {
@@ -106,6 +114,38 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Leci Report',
       },
+      {
+        path: 'mpc-wise',
+        loadComponent: () =>
+          import('./mpc-trip-report/mpc-trip-report.component').then(
+            (m) => m.MpcTripReportComponent,
+          ),
+        title: 'Mpc Wise Report',
+      },
+      {
+        path: 'indent-wise',
+        loadComponent: () =>
+          import('./indent-trip-report/indent-trip-report.component').then(
+            (m) => m.IndentTripReportComponent,
+          ),
+        title: 'Indent Wise Report',
+      },
+      {
+        path: 'lid-report',
+        loadComponent: () => 
+          import('./lid-trip-report/lid-trip-report.component').then(
+            (m) => m.LidTripReportComponent,
+          ),
+        title: 'LID Report',
+      },
+      {
+        path: 'e-lock-report',
+        loadComponent: () => 
+          import('./elock-trip-report/elock-trip-report.component').then(
+            (m) => m.ElockTripReportComponent,
+          ),
+        title: 'E-Lock Report',
+      }
     ],
   },
 ];

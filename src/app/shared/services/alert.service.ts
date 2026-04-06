@@ -22,8 +22,14 @@ export class AlertService {
    * @param message The main message to display.
    * @param title An optional title for the toast.
    */
-  error(message: string, title: string = 'Error'): void {
+  // error(message: string, title: string = 'Error'): void {
+  //   this.toastr.error(message, title);
+  // }
+  async error(message: string, title: string = 'Error'): Promise<void> {
+    const delay = 2000; // 3 seconds
     this.toastr.error(message, title);
+
+    await new Promise((resolve) => setTimeout(resolve, delay));
   }
 
   /**
@@ -55,7 +61,7 @@ export class AlertService {
     title: string = 'Are you sure?',
     text: string = 'This action cannot be undone.',
     confirmButtonText: string = 'Yes, delete it!',
-    cancelButtonText: string = 'Cancel'
+    cancelButtonText: string = 'Cancel',
   ): Promise<boolean> {
     const result = await Swal.fire({
       title: title,
@@ -66,7 +72,7 @@ export class AlertService {
       cancelButtonColor: '#3085d6',
       confirmButtonText: confirmButtonText,
       cancelButtonText: cancelButtonText,
-      reverseButtons: true
+      reverseButtons: true,
     });
 
     return result.isConfirmed;
@@ -77,12 +83,15 @@ export class AlertService {
    * @param title The title of the success message
    * @param text The descriptive text for the success
    */
-  async showSuccess(title: string = 'Success!', text: string = 'Operation completed successfully.'): Promise<void> {
+  async showSuccess(
+    title: string = 'Success!',
+    text: string = 'Operation completed successfully.',
+  ): Promise<void> {
     await Swal.fire({
       title: title,
       text: text,
       icon: 'success',
-      confirmButtonColor: '#3085d6'
+      confirmButtonColor: '#3085d6',
     });
   }
 
@@ -91,12 +100,15 @@ export class AlertService {
    * @param title The title of the error message
    * @param text The descriptive text for the error
    */
-  async showError(title: string = 'Error!', text: string = 'Something went wrong.'): Promise<void> {
+  async showError(
+    title: string = 'Error!',
+    text: string = 'Something went wrong.',
+  ): Promise<void> {
     await Swal.fire({
       title: title,
       text: text,
       icon: 'error',
-      confirmButtonColor: '#d33'
+      confirmButtonColor: '#d33',
     });
   }
 

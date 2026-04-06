@@ -8,6 +8,7 @@ import {
   ViewChild,
   computed,
   effect,
+  input,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
@@ -53,7 +54,7 @@ interface Vehicle {
 export class MainDetailsComponent implements OnInit {
   @Input() form!: FormGroup;
   targetDateSignal = signal<string>('');
-
+  isEditMode = input<boolean>();
   // ✅ Input (same name जो HTML में है)
   @Input()
   set targetDate(value: any) {

@@ -12,3 +12,20 @@
   //   border-left: 3px solid var(--primary-color);
   padding-left: 5px;
 }
+
+.required::after {
+  content: " *";
+  color: red;
+}
+
+/* Invalid field red border */
+.is-invalid {
+  border: 1px solid red !important;
+}
+
+/* Error text */
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}

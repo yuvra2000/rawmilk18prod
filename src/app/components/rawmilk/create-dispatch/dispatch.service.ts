@@ -21,4 +21,16 @@ export class DispatchService {
   getMccData(params: any) {
     return this.masterRequestService.postFormData(`/get_mcc`, params);
   }
+  getDispatchPrefetch(params: any) {
+    return this.masterRequestService.postFormData(`/createDispatchPre`, params);
+  }
+  createDispatch(params: any) {
+    return this.masterRequestService.postFormData(`/createDispatch1`, params);
+  }
+  createDirectDispatch(params: any) {
+    return this.masterRequestService.postFormData(
+      `/createDirectDispatch1`,
+      params,
+    );
+  }
 }

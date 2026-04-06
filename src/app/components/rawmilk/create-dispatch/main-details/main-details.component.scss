@@ -32,3 +32,20 @@
   cursor: not-allowed;
   opacity: 1; /* prevent faded look */
 }
+
+.required::after {
+  content: " *";
+  color: red;
+}
+
+/* Invalid field red border */
+.is-invalid {
+  border: 1px solid red !important;
+}
+
+/* Error text */
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}

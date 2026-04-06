@@ -42,7 +42,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --force
         # Condition check kiya ki agar cache hit nahi hua, tabhi install karo.
         if: steps.cache-node.outputs.cache-hit != 'true'
 

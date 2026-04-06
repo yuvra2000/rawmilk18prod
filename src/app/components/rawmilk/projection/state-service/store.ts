@@ -5,10 +5,12 @@ import { filterfields } from './config';
 import {
   createFormData,
   handleSessionExpiry,
+  supplier_id,
 } from '../../../../shared/utils/shared-utility.utils';
 import { TabConfig } from '../../../../shared/components/nav-tab/nav-tab.component';
 import { GridProjectionComponent } from '../grid-projection/grid-projection.component';
 import { AlertService } from '../../../../shared/services/alert.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 export interface InitialData {
   mccList: any[];
   milkList: any[];
@@ -73,6 +75,7 @@ export class ProjectionStore {
     },
   ]);
   private projectionService = inject(ProjectionService);
+  private spinner = inject(NgxSpinnerService);
   private toast = inject(AlertService);
   filterfields = computed<any[]>(() =>
     filterfields(
@@ -98,12 +101,12 @@ export class ProjectionStore {
       AccessToken: this.token,
       GroupId: this.GroupId,
       ForApp: '0',
-      supplier_id: this.supplier_id,
+      supplier_id: this.supplier_id == undefined ? this.supplier_id : '',
     };
     const masterFilterParams = createFormData(this.token, {
       GroupId: this.GroupId,
       ForApp: '0',
-      supplier_id: this.supplier_id,
+      supplier_id: this.supplier_id != undefined ? this.supplier_id : '',
     });
     const reportParams = createFormData(this.token, {
       MonthMM: '',
@@ -114,14 +117,25 @@ export class ProjectionStore {
       Role: '',
       DispatchLoc: '',
     });
+    this.spinner.show();
     try {
-      const res: any = await firstValueFrom(
-        this.projectionService.initializePageData(
-          filterParams,
-          masterFilterParams,
-          reportParams,
-        ),
-      );
+      let res: any;
+      if (this.usertype != 'Supplier' && this.usertype !== 'ChillingPlant') {
+        res = await firstValueFrom(
+          this.projectionService.initializePageDataNoSupp(
+            masterFilterParams,
+            reportParams,
+          ),
+        );
+      } else {
+        res = await firstValueFrom(
+          this.projectionService.initializePageData(
+            filterParams,
+            masterFilterParams,
+            reportParams,
+          ),
+        );
+      }
       handleSessionExpiry(res?.inventoryData, this.toast);
       this.projectionRowData.set(res?.inventoryData?.Data || []);
       this.initialData.set({
@@ -131,19 +145,23 @@ export class ProjectionStore {
         PrjAddStartDate: res?.inventoryData?.PrjAddStartDate || '',
         PrjAddEndDate: res?.inventoryData?.PrjAddEndDate || '',
       });
+      console.log('Initial data loaded:', this.initialData());
     } catch (error) {
       console.error('Error loading initial data:', error);
+    } finally {
+      this.spinner.hide();
     }
   }
   async onFormSubmit(filterValues: any) {
     const monthMM = filterValues?.month
       ? new Date(filterValues.month).getMonth() + 1
       : '';
+    console.log('Form submitted with values:', filterValues);
     const filterFormData = createFormData(this.token, {
       MonthMM: monthMM.toString() || '',
       MilkId: filterValues.milkType?.id || '',
       MccId: filterValues.mcc?.mcc_id || '',
-      SupplierId: filterValues.Supplier?.id || '',
+      SupplierId: supplier_id || '',
       Role: filterValues.role?.id || '',
       ForWeb: '1',
       DispatchLoc: filterValues?.dispatchLoc?.id || '',
@@ -168,5 +186,11 @@ export class ProjectionStore {
     const endDate = new Date(endEditDateTime.replace(' ', 'T'));
 
     return currentDate >= startDate && currentDate <= endDate;
+  }
+  updateMCCList(mccList: any[]) {
+    this.initialData.update((data) => ({
+      ...data,
+      mccList: mccList,
+    }));
   }
 }

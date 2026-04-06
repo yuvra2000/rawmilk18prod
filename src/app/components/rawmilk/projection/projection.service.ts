@@ -36,6 +36,9 @@ export class ProjectionService {
   addProjectionSingle(params: any): Observable<any> {
     return this.masterRequestService.postFormData(`/rm_addProjection`, params);
   }
+  addProjectionMultiple(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(`/rm_addMultiplePrj`, params);
+  }
 
   updateProjection(params: any): Observable<any> {
     return this.masterRequestService.postFormData(`/rm_editProjection`, params);
@@ -47,6 +50,15 @@ export class ProjectionService {
   ): Observable<any> {
     return forkJoin({
       mccOptions: this.getMCCData(mccParams),
+      masterOptions: this.getCreateIndentMaster(masterParams),
+      inventoryData: this.getProjectionReport(reportParams),
+    });
+  }
+  initializePageDataNoSupp(
+    masterParams: any,
+    reportParams: any,
+  ): Observable<any> {
+    return forkJoin({
       masterOptions: this.getCreateIndentMaster(masterParams),
       inventoryData: this.getProjectionReport(reportParams),
     });

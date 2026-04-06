@@ -31,7 +31,7 @@ export const filterfields = (
     options: supplierList,
     bindLabel: 'displayName',
     class:
-      userType !== 'Supplier' && userType !== 'ChillingPlant'
+      userType == 'Supplier' || userType == 'ChillingPlant'
         ? 'd-none'
         : 'col-md-2', // Hide for suppliers, show for others
     emitValueChanges: true,
@@ -43,7 +43,7 @@ export const filterfields = (
     placeholder: 'Select Mcc Name',
     options: mccList,
     bindLabel: 'name',
-    class: userType == 'ChillingPlant' ? 'd-none' : 'col-md-2', // Hide for MCC users, show for others
+    class: userType == 'ChillingPlant' ? 'd-none' : 'col-md-2',
   },
   {
     name: 'milkType',

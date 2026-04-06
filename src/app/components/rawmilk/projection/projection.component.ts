@@ -6,9 +6,16 @@ import { ProjectionStore } from './state-service/store';
 import { NavTabComponent } from '../../../shared/components/nav-tab/nav-tab.component';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { addProjectionFields } from './state-service/config';
-import { createFormData } from '../../../shared/utils/shared-utility.utils';
+import {
+  createFormData,
+  GroupId,
+  handleApiResponse,
+  supplier_id,
+} from '../../../shared/utils/shared-utility.utils';
 import { firstValueFrom } from 'rxjs';
 import { ProjectionService } from './projection.service';
+import { AlertService } from '../../../shared/services/alert.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-projection',
@@ -26,6 +33,8 @@ export class ProjectionComponent implements OnInit {
   store: ProjectionStore = new ProjectionStore();
   private modalService = inject(UniversalModalService);
   private projectionService = inject(ProjectionService);
+  private toast = inject(AlertService);
+  private spinner = inject(NgxSpinnerService);
   initialData$ = this.store.initialDataf;
   token = localStorage.getItem('AccessToken') || '';
   constructor() {}
@@ -36,9 +45,26 @@ export class ProjectionComponent implements OnInit {
   async onFormSubmit(filterValues: any) {
     this.store.onFormSubmit(filterValues);
   }
-  onFilterChange(changedValues: any) {
+  async onFilterChange(changedValues: any) {
     console.log('Filter changed:', changedValues);
     if (changedValues?.controlName === 'supplier') {
+      this.spinner.show();
+      try {
+        const res: any = await firstValueFrom(
+          this.projectionService.getMCCData(
+            createFormData(this.token, {
+              supplier_id: changedValues.value?.id || '',
+              GroupId: GroupId,
+              ForApp: '0',
+            }),
+          ),
+        );
+        this.store.updateMCCList(res.Data || []);
+      } catch (error) {
+        console.error('Error fetching MCC data:', error);
+      } finally {
+        this.spinner.hide();
+      }
     }
   }
 
@@ -50,27 +76,18 @@ export class ProjectionComponent implements OnInit {
 
     // Validate and parse the projectEndDate
     let startDate: Date;
-    debugger;
     if (
       !projectEndDate ||
       typeof projectEndDate !== 'string' ||
       projectEndDate.trim() === ''
     ) {
-      console.warn(
-        "Invalid projectEndDate provided, using today's date as fallback",
-        projectEndDate,
-      );
       startDate = new Date();
     } else {
       startDate = new Date(projectEndDate.trim());
 
       // Check if the date is valid
       if (isNaN(startDate.getTime())) {
-        console.warn(
-          'Could not parse projectEndDate:',
-          projectEndDate,
-          "using today's date as fallback",
-        );
+        this.toast.warning('Could not parse projectEndDate:', projectEndDate);
         startDate = new Date();
       }
     }
@@ -95,15 +112,8 @@ export class ProjectionComponent implements OnInit {
   });
 
   openAddProjectionMulti() {
-    // Get projectEndDate from store
-    debugger;
-
-    console.log('Initial Data from Store:', this.store.initialData());
     const projectEndDate = this.store.initialData().PrjAddEndDate;
-
-    // Generate 8 projection dates
     const generatedProjections = this.generateProjectionDates(projectEndDate);
-    console.log('Generated Projection Dates:', generatedProjections);
     this.modalService.openForm({
       title: 'Add Projection',
       fields: addProjectionFields(
@@ -117,6 +127,33 @@ export class ProjectionComponent implements OnInit {
       },
       onSave: async (form: any) => {
         console.log('Form submitted:', form);
+        let formData = createFormData(this.token, {
+          MilkId: form.milkType.id || '',
+          SupplierId: form.Supplier?.id || '',
+          MccId: form.mcc.mcc_id || '',
+          ProjectionData: JSON.stringify(form.projections || []),
+          ForWeb: '1',
+        });
+        try {
+          const res: any = await firstValueFrom(
+            this.projectionService.addProjectionMultiple(formData),
+          );
+          handleApiResponse(
+            res,
+            this.toast,
+            undefined,
+            'Projection added successfully',
+            'Failed to add projection',
+          );
+          this.store.loadInitialData(); // Refresh data after adding
+        } catch (error) {
+          handleApiResponse(
+            null,
+            this.toast,
+            undefined,
+            'Error adding projection',
+          );
+        }
       },
     });
   }

@@ -72,5 +72,10 @@ spk-flatpickr {
   background-color: var(--light) !important;
 }
 .table-heading {
+  color: var(--primary-color) !important;
+}
+.icon-add {
+  font-size: 22px;
   color: var(--primary-color);
+  cursor: pointer;
 }

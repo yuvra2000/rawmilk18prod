@@ -15,16 +15,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-// import { forkJoin } from 'rxjs';
-import { catchError, firstValueFrom, forkJoin, of } from 'rxjs';
-import { DispatchService } from '../dispatch.service';
-import { masterFormData, VehicleFormData } from '../state-service/utils';
-import {
-  createFormData,
-  handleApiError,
-  handleApiResponse,
-} from '../../../../shared/utils/shared-utility.utils';
-import { AlertService } from '../../../../shared/services/alert.service';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { DispatchStore } from '../state-service/masterdatastore.service';

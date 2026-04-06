@@ -94,7 +94,6 @@ export class GridProjectionComponent {
       .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
 
     const weekOffset = (Math.max(week, 1) - 1) * 8;
-    debugger;
     let currentMonth = this.currentMonthForm() || this.currentMonth;
     if (this.currentMonthForm()) {
       const monthPart = this.currentMonthForm().split('-')[1]; // Gets "01" from "2026-01"

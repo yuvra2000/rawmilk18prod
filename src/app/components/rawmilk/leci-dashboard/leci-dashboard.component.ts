@@ -174,8 +174,8 @@ export class LeciDashboardComponent implements OnInit {
     if (isConfirmed) {
       this.router.navigate(['/leci-add-form'], {
         state: {
-          dispatchid: row.dispatchid || row.DispatchId || row.ChallanNo,
-          chamber_no: row.chamber_no || row.ChamberNo || row.chamber
+          dispatchid: row.id,
+          chamber_no: row.chamber
         }
       });
     }

@@ -8,6 +8,7 @@ import {
   ViewChild,
   computed,
   effect,
+  Signal,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -24,6 +25,12 @@ import {
   QuantityValidators,
   VehicleFormData,
 } from './state-service/utils';
+import {
+  createFormData,
+  handleApiError,
+  handleApiResponse,
+  handleSessionExpiry,
+} from './../../../shared/utils/shared-utility.utils';
 import { AlertService } from './../../../shared/services/alert.service';
 import { CommonModule } from '@angular/common';
 import { MainDetailsComponent } from './main-details/main-details.component';
@@ -33,6 +40,7 @@ import { MccChambersComponent } from './mcc-chambers/mcc-chambers.component';
 import { DispatchStore } from './state-service/masterdatastore.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { DispatchPayloadBuilder } from './state-service/dispatch-payload.utils';
 
 // interface Transporter {
 //   TransporterId: number;
@@ -90,46 +98,7 @@ export class CreateDispatchComponent implements OnInit {
   });
   isPatched = false;
   isEdit = true;
-  prefetchdata = {
-    Data: [
-      {
-        _id: {
-          $oid: '69cbb8168f086d26cf0a44f3',
-        },
-        indent_no: 'I1000358068',
-        target_date: '2026-04-02',
-        plant_id: '70',
-        plant_code: '1488',
-        plant_name: 'Sharda Mines,Haryana  ',
-        quantity: 6010,
-        milk_id: '10',
-        milk_type: '66000502',
-        milk_type_name: 'Cow Raw Milk',
-        supplier_id: '1',
-        supplier_code: '4024107',
-        supplier_name: 'NDS-Paayas MPC',
-        mcc_id: '23',
-        mcc_code: '20308',
-        mcc_name: 'Jaitpura Paayas Milk Pro.',
-        sub_indent: 0,
-        fat: '',
-        snf: '',
-        mbrt: '',
-        m_parent_indent_id: {
-          $oid: '69c107e0a9a7a20c160ca1a4',
-        },
-        group_id: '5731',
-        create_id: 182476,
-        create_date: '2026-03-31',
-        edit_id: '',
-        edit_date: '',
-        status: 3,
-        remark: 'App',
-        request_ip: '172.31.7.139',
-        rem_qty: 6010,
-      },
-    ],
-  };
+  prefetchdata = signal<any>({});
   rowsSignal = toSignal(this.rows.valueChanges, {
     initialValue: this.rows.value,
   });
@@ -144,28 +113,61 @@ export class CreateDispatchComponent implements OnInit {
   // targetDate = signal<string>('');
   private router = inject(Router);
 
-  structureData: any;
+  structureData = signal<any>(null);
+  pagename: any = '';
+  isdirectdispatch = signal<boolean>(false);
 
-  ngOnInit() {
+  async ngOnInit() {
     // Subscribe to mccs changes to debug
-
-    this.structureData = history.state?.structuredata;
-
-    console.log(this.structureData);
 
     this.dispatchStore.loadInitialData(
       masterFormData,
       VehicleFormData,
       mccformdata,
     );
+    // this.structureData().set(history.state?.structuredata);
+    this.structureData.set(history.state?.structuredata);
 
+    console.log(this.structureData);
+
+    if ((this.structureData().status = 'Create')) {
+      this.pagename = 'Create Dispatch';
+    } else if ((this.structureData().status = 'Edit')) {
+      this.pagename = 'Edit Dispatch';
+    }
+    // this.isdirectdispatch()=(this.structureData.DirectDispatch)
+    this.isdirectdispatch.set(this.structureData()?.DirectDispatch ?? false);
+    if (!this.isdirectdispatch()) {
+      // debugger;
+      await this.loadPrefetchData();
+    }
+
+    // this.rows.setValidators([
+    //   QuantityValidators.totalNotExceed(() =>
+    //     this.isdirectdispatch()
+    //       ? Infinity
+    //       : this.prefetchdata().Data?.[0].quantity,
+    //   ),
+    //   QuantityValidators.mccNotExceedParentSignal(this.mccValidationState),
+    // ]);
+    console.log('direct dis', this.isdirectdispatch());
     this.rows.setValidators([
-      QuantityValidators.totalNotExceed(
-        () => this.prefetchdata.Data[0].quantity,
+      QuantityValidators.totalNotExceed(() =>
+        this.isdirectdispatch()
+          ? 99999
+          : this.prefetchdata().Data?.[0].quantity,
       ),
-
       QuantityValidators.mccNotExceedParentSignal(this.mccValidationState),
     ]);
+    // shouldLoadPrefetch(): boolean {
+
+    // this.rows.setValidators([
+    //   QuantityValidators.totalNotExceed(
+    //     () => this.prefetchdata().Data?.[0].quantity,
+    //   ),
+
+    //   QuantityValidators.mccNotExceedParentSignal(this.mccValidationState),
+    // ]);
 
     // effect(() => {
     //   const plantList = this.dispatchStore.state().plantList;
@@ -216,6 +218,25 @@ export class CreateDispatchComponent implements OnInit {
     //   this.rows.updateValueAndValidity();
     // });
   }
+  formControlEffect = effect(() => {
+    const isEdit = this.isdirectdispatch(); // signal
+
+    const indent = this.form.get('indent');
+    const mcc = this.form.get('MCC');
+
+    if (!indent || !mcc) return;
+
+    if (isEdit) {
+      indent.disable();
+      mcc.disable();
+    } else {
+      indent.enable();
+      mcc.enable();
+    }
+  });
+  // isEditMode = computed(() => {
+  //   return !!(this.structureData()?.id && this.structureData()?.target_date);
+  // });
 
   effectRef = effect(() => {
     const plantList = this.dispatchStore.state().plantList;
@@ -225,10 +246,44 @@ export class CreateDispatchComponent implements OnInit {
 
       console.log('PlantList Loaded ✅');
 
-      this.patchPrefetchData(this.prefetchdata, true);
-      this.patchRows(this.prefetchdata.Data[0]);
+      // this.patchPrefetchData(this.prefetchdata, true);
+      // this.patchRows(this.prefetchdata.Data[0]);
     }
   });
+
+  // shouldLoadPrefetch(): boolean {
+  //   return !!(
+  //     this.structureData &&
+  //     this.structureData().id &&
+  //     this.structureData().target_date
+  //   );
+  // }
+
+  async loadPrefetchData() {
+    // if (!this.shouldLoadPrefetch()) return;
+    try {
+      const formData = DispatchPayloadBuilder.buildDispatchPrefetchPayload(
+        this.structureData(),
+      );
+
+      const res = await firstValueFrom(
+        this.masterservice.getDispatchPrefetch(formData),
+      );
+
+      console.log('Prefetch API Response:', res);
+      if (handleSessionExpiry(res, this.toastService)) {
+        return;
+      }
+      // ✅ store response
+      this.prefetchdata.set(res);
+
+      // ✅ patch form
+      this.patchPrefetchData(this.prefetchdata(), true);
+      this.patchRows(this.prefetchdata().Data?.[0]);
+    } catch (error) {
+      handleApiError(error, this.toastService);
+    }
+  }
 
   patchPrefetchData(data: any, isEdit: boolean) {
     const item = data?.Data?.[0];
@@ -250,6 +305,7 @@ export class CreateDispatchComponent implements OnInit {
   }
 
   patchRows(item: any) {
+    console.log('Patching rows with item:', item); // debug
     // this.rows.clear();
     const state = this.dispatchStore.state();
     const selectedmilk = state.milkList.find(
@@ -272,9 +328,9 @@ export class CreateDispatchComponent implements OnInit {
   }
 
   disableMainFields() {
-    this.form.get('indent')?.disable();
-    this.form.get('plant')?.disable();
-    this.form.get('MCC')?.disable();
+    // this.form.get('indent')?.disable();
+    // this.form.get('plant')?.disable();
+    // this.form.get('MCC')?.disable();
   }
   disableFirstRowMilkType() {
     if (this.rows.length > 0) {
@@ -292,7 +348,84 @@ export class CreateDispatchComponent implements OnInit {
     return this.form.get('mccs') as FormArray;
   }
 
-  onSubmit() {
-    console.log('Form Value:', this.form.value);
+  async onSubmit() {
+    // ✅ 1. Validation
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.toastService.warning('Please fill all required (*) fields');
+      console.log('formvalue', this.form);
+
+      return;
+      // return;
+    }
+
+    try {
+      // ✅ 2. Get form value (IMPORTANT)
+      const formValue = this.form.getRawValue();
+
+      // ✅ 3. Build FINAL payload (your complex mapping)
+      const formData = DispatchPayloadBuilder.buildFinalDispatchPayload(
+        formValue,
+        this.prefetchdata(), // API prefetch data
+        this.structureData, // router data
+      );
+      const formDataDirectDispatch =
+        DispatchPayloadBuilder.buildFinalDispatchPayload(
+          formValue,
+          this.prefetchdata(), // API prefetch data
+          this.structureData, // router data
+        );
+
+      console.log('FINAL FORM DATA', formData);
+
+      // ✅ 4. Decide API (Create / Edit)
+      // return;
+      if (this.structureData()?.status === 'Create') {
+        if (this.isdirectdispatch()) {
+          await this.createDirectDispatch(formDataDirectDispatch);
+        } else {
+          await this.createDispatch(formData);
+        }
+      } else {
+        // this.updateDispatch(formData);
+      }
+    } catch (error) {
+      console.error('Submit Error:', error);
+    }
+  }
+
+  createDispatch(formData: FormData) {
+    this.masterservice.createDispatch(formData).subscribe({
+      next: (res: any) => {
+        console.log('Create Success:', res);
+        const sessionExp = handleSessionExpiry(res, this.toastService);
+        if (sessionExp) return;
+        handleApiResponse(res, this.toastService);
+
+        // ✅ redirect after success
+        // this.router.navigate(['/dispatch-list']);
+      },
+      error: (err) => {
+        console.error('Create Error:', err);
+        handleApiError(err, this.toastService);
+      },
+    });
+  }
+  createDirectDispatch(formData: FormData) {
+    this.masterservice.createDirectDispatch(formData).subscribe({
+      next: (res: any) => {
+        console.log('Create Success:', res);
+        const sessionExp = handleSessionExpiry(res, this.toastService);
+        if (sessionExp) return;
+        handleApiResponse(res, this.toastService);
+
+        // ✅ redirect after success
+        // this.router.navigate(['/dispatch-list']);
+      },
+      error: (err) => {
+        console.error('Create Error:', err);
+        handleApiError(err, this.toastService);
+      },
+    });
   }
 }

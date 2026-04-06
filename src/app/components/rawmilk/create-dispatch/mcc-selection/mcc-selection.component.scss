@@ -17,3 +17,20 @@
   // border-radius: 6px;
   // min-height: 38px; /* match bootstrap input height */
 }
+
+.required::after {
+  content: " *";
+  color: red;
+}
+
+/* Invalid field red border */
+.is-invalid {
+  border: 1px solid red !important;
+}
+
+/* Error text */
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}

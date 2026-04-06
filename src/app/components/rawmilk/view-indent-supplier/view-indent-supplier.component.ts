@@ -37,6 +37,7 @@ import {
   createFormData,
   handleApiError,
   handleApiResponse,
+  handleSessionExpiry,
   updateFieldOptions,
 } from '../../../shared/utils/shared-utility.utils';
 import { AlertService } from '../../../shared/services/alert.service';
@@ -73,8 +74,7 @@ export class ViewIndentSupplierComponent implements OnInit {
   private alertService = inject(AlertService);
   private loader = inject(NgxSpinnerService);
   private router = inject(Router);
-  readonly activeModal = inject(NgbActiveModal);
-  @ViewChild('gridModal') gridModal!: GridModalComponent;
+  private toast = inject(AlertService);
   filterfields = signal<FieldConfig[]>(viewIndentSupplierFilterFields);
   indentRowData = signal<any[]>([]);
   pageTitle = 'View Indents';
@@ -119,6 +119,9 @@ export class ViewIndentSupplierComponent implements OnInit {
       const res: any = await firstValueFrom(
         this.viewIndentSupplierService.getIndentData(formData),
       );
+      if (handleSessionExpiry(res, this.toast)) {
+        return;
+      }
       this.indentRowData.set(res?.Indents || []);
     } catch (error) {
       console.error('Error occurred while fetching indent data:', error);
@@ -203,12 +206,14 @@ export class ViewIndentSupplierComponent implements OnInit {
   }
 
   Create_dis(indentId: any, targetdate: any) {
+    // this.modal?.close();
     this.router.navigate(['/create-dispatch'], {
       state: {
         structuredata: {
           Id: indentId,
           targetdate: targetdate,
           status: 'Create',
+          DirectDispatch: false,
         },
       },
     });

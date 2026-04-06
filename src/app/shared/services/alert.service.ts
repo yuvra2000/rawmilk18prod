@@ -22,8 +22,14 @@ export class AlertService {
    * @param message The main message to display.
    * @param title An optional title for the toast.
    */
-  error(message: string, title: string = 'Error'): void {
+  // error(message: string, title: string = 'Error'): void {
+  //   this.toastr.error(message, title);
+  // }
+  async error(message: string, title: string = 'Error'): Promise<void> {
+    const delay = 2000; // 3 seconds
     this.toastr.error(message, title);
+
+    await new Promise((resolve) => setTimeout(resolve, delay));
   }
 
   /**

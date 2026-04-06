@@ -108,6 +108,10 @@ function lockStatusRenderer(locks: Array<Record<string, string>>): string {
 
 export const leciDashboardColumns: GridColumnConfig[] = [
     {
+        field: 'id',
+        hide: true
+    },
+    {
         headerName: 'S.No.',
         field: 'serialNo',
         valueGetter: (params: any) => (params.node.rowIndex ?? 0) + 1,

@@ -1,0 +1,8 @@
+<app-collapse-wrapper>
+    <filter-form [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"></filter-form>
+</app-collapse-wrapper>
+
+<app-advanced-grid
+  [rowData]="tableData()"
+  [config]="gridConfig()"
+></app-advanced-grid>

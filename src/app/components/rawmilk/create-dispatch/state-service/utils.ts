@@ -116,11 +116,13 @@ export class QuantityValidators {
   // ✅ 1. TOTAL SUM VALIDATION (unchanged but clean)
   static totalNotExceed(getMaxValue: () => number, percent = 1.1): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
+      // debugger;
       if (!(control instanceof FormArray)) return null;
 
       const maxAllowed = Math.floor((getMaxValue() || 0) * percent);
 
       const total = control.controls.reduce((sum, row) => {
+        // debugger;
         return sum + Number(row.get('quantity')?.value || 0);
       }, 0);
 

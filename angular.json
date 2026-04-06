@@ -10,7 +10,7 @@
           "style": "scss",
           "skipTests": true
         },
-         "@schematics/angular:class": {
+        "@schematics/angular:class": {
           "skipTests": true
         },
         "@schematics/angular:standalone": {
@@ -27,7 +27,7 @@
         },
         "@schematics/angularipe": {
           "skipTests": true
-        }, 
+        },
         "@schematics/angular:resolver": {
           "skipTests": true
         },
@@ -37,20 +37,23 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",  
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-             "apexcharts","sweetalert","sweetalert2","filepond","moment","can-use-dom"
-              ],
+              "apexcharts",
+              "sweetalert",
+              "sweetalert2",
+              "filepond",
+              "moment",
+              "can-use-dom"
+            ],
             "outputPath": "preview",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js","@angular/localize/init"
-            ],
+            "polyfills": ["zone.js", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -67,7 +70,8 @@
               "./node_modules/filepond/dist/filepond.min.css"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {
@@ -101,7 +105,7 @@
               "buildTarget": "zynix:build:production"
             },
             "development": {
-              "buildTarget": "zynix:build:development"  
+              "buildTarget": "zynix:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -112,10 +116,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -124,9 +125,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         }

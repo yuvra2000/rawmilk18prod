@@ -7,7 +7,7 @@
           <div [formGroup]="asFormGroup(mcc)" class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <!-- <h5 class="mb-0">MCC {{ i + 1 }}</h5> -->
-              <label class="form-label">MCC {{ i + 1 }}</label>
+              <label class="form-label required">MCC {{ i + 1 }}</label>
               <button
                 type="button"
                 class="btn btn-sm btn-danger"
@@ -24,7 +24,6 @@
                 <ng-select
                   [items]="store.state().mcclist"
                   bindLabel="displayName"
-                  bindValue="id"
                   placeholder="Select MCC"
                   formControlName="mccSelect"
                 ></ng-select>
@@ -78,16 +77,26 @@
                 <!-- HEADER -->
                 <div class="row fw-bold">
                   <div class="col">
-                    <label class="form-label">Chamber No</label>
+                    <label class="form-label required">Chamber No</label>
                   </div>
                   <div class="col">
-                    <label class="form-label">Milk Type</label>
+                    <label class="form-label required">Milk Type</label>
                   </div>
-                  <div class="col"><label class="form-label">Temp</label></div>
-                  <div class="col"><label class="form-label">Qty</label></div>
-                  <div class="col"><label class="form-label">Fat</label></div>
-                  <div class="col"><label class="form-label">SNF</label></div>
-                  <div class="col"><label class="form-label">MBRT</label></div>
+                  <div class="col">
+                    <label class="form-label required">Temp</label>
+                  </div>
+                  <div class="col">
+                    <label class="form-label required">Qty</label>
+                  </div>
+                  <div class="col">
+                    <label class="form-label required">Fat</label>
+                  </div>
+                  <div class="col">
+                    <label class="form-label required">SNF</label>
+                  </div>
+                  <div class="col">
+                    <label class="form-label required">MBRT</label>
+                  </div>
                   <div class="col">
                     <label class="form-label">Upload</label>
                   </div>

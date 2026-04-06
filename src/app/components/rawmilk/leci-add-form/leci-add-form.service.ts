@@ -13,4 +13,8 @@ export class LeciAddFormService {
   getLeciPreData(payload: FormData): Observable<any> {
     return this.http.post('https://apinode1.secutrak.in/mobileApiDairyM/leciPreData', payload);
   }
+
+  saveLeciData(payload: FormData): Observable<any> {
+    return this.http.post('https://apinode1.secutrak.in/mobileApiDairyM/saveLeciData', payload);
+  }
 }

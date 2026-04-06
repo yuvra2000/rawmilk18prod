@@ -3,9 +3,30 @@
   [dynamicFields]="store.filterfields()"
   (formSubmit)="store.onFormSubmit($event)"
   [filerFormClass]="{ 'row-gap': '1rem' }"
->
-  <div class="header h-5 w-5 cursor-pointer" custom-icon>
-    <i class="fa fa-download excel-icon" ngbTooltip="Add New Dispatch"></i>
-    <i class="fa fa-upload excel-icon" ngbTooltip="Add New Dispatch"></i>
+  [btnClass]="'mt-0'"
+  ><div class="w-100 d-flex justify-content-end mt-2" custom-icon>
+    <div class="cursor-pointer d-flex align-items-center gap-1">
+      <a
+        href="assets/files/Production_Planning_Dispatch.xlsx"
+        download
+        ngbTooltip="Download Sample File"
+        container="body"
+        class="btn p-0"
+      >
+        <i class="fa fa-download excel-icon"></i>
+      </a>
+      <!-- Hidden file input -->
+      <input
+        type="file"
+        id="excelUpload"
+        hidden
+        (change)="onExcelUpload($event)"
+        accept=".xlsx,.xls"
+        class="cursor-pointer"
+      />
+      <label for="excelUpload" ngbTooltip="Upload File" class="cursor-pointer">
+        <i class="fa fa-upload excel-icon"></i>
+      </label>
+    </div>
   </div>
 </filter-form>

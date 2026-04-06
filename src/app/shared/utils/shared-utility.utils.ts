@@ -4,7 +4,7 @@ export const token = localStorage.getItem('AccessToken') || '';
 export const GroupId = localStorage.getItem('GroupId') || '';
 export function createFormData(
   token: string = localStorage.getItem('AccessToken') || '',
-  params: Record<string, string> = {},
+  params: Record<string, any> = {},
 ): FormData {
   const formData = new FormData();
   formData.append('AccessToken', token);

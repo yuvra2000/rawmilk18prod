@@ -18,9 +18,8 @@ export const filterfields = (
 ): FieldConfig[] => [
   {
     name: 'dispatchDetails',
-    label: 'Dispatch Details',
+    label: '',
     type: 'formarray',
-    required: true,
     class: 'col-12',
     minItems: 1,
     showLabelOnlyFirst: true,
@@ -31,6 +30,7 @@ export const filterfields = (
         label: 'Tanker No.',
         options: tankerList,
         class: 'col equal-col',
+        required: true,
       },
       {
         type: 'select',
@@ -38,24 +38,28 @@ export const filterfields = (
         label: 'Milk Type',
         options: milkList,
         class: 'col equal-col',
+        required: true,
       },
       {
         type: 'date',
         name: 'arrival_date',
         label: 'Arrival Date',
         class: 'col equal-col',
+        required: true,
       },
       {
         type: 'time',
         name: 'arrival_time',
         label: 'Arrival Time',
         class: 'col equal-col',
+        required: true,
       },
       {
         type: 'number',
         name: 'quantity',
         label: 'Quantity',
         class: 'col equal-col',
+        required: true,
       },
       {
         type: 'select',
@@ -63,6 +67,7 @@ export const filterfields = (
         label: 'Status',
         options: statusList,
         class: 'col equal-col',
+        required: true,
       },
       {
         type: 'select',
@@ -70,6 +75,7 @@ export const filterfields = (
         label: 'Destination',
         options: destinationList,
         class: 'col equal-col-lastt',
+        required: true,
       },
     ],
   },
@@ -79,6 +85,5 @@ export const masterFilterParams = createFormData(token, {
   ForApp: '0',
 });
 export const tankerFilterParams = createFormData(token, {
-  GroupId: GroupId,
-  ForApp: '0',
+  ForWeb: '1',
 });

@@ -16,7 +16,18 @@ export class DispatchPlanningService {
   getTankerFilter(params: any): Observable<any> {
     return this.masterRequestService.postFormData('/rm_tankerFilter', params);
   }
-
+  submitDispatchPlan(formdata: FormData): Observable<any> {
+    return this.masterRequestService.postFormData(
+      '/saveProductionDataa',
+      formdata,
+    );
+  }
+  uploadDispatchExcel(formdata: FormData): Observable<any> {
+    return this.masterRequestService.postFormData(
+      '/productionExcelRead',
+      formdata,
+    );
+  }
   // Combined method using forkJoin for parallel API calls
   initializePageData(masterParams: any, tankerParams: any): Observable<any> {
     return forkJoin({

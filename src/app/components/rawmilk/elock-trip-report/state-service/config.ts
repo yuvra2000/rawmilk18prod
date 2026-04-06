@@ -37,6 +37,11 @@ export const gridColumns: GridColumnConfig[] = [
     field: 'location'
   },
   {
+    headerName: 'Image URL',
+    field: 'image',
+    hide: true
+  },
+  {
     headerName: 'View Images',
     field: 'action',
     cellRenderer: ActionCellRendererComponent,
@@ -46,6 +51,7 @@ export const gridColumns: GridColumnConfig[] = [
           label: 'View',
           tooltip: 'View Images',
           onClick: (data: any, node: any, params: any) => {
+            console.log('View button clicked for row data:', data);
             if (params.context?.componentParent) {
               params.context.componentParent.onView(data);
             }

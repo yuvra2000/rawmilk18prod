@@ -109,9 +109,78 @@ export class ElockTripReportComponent implements OnInit {
 
   onView(data: any) {
     this.selectedRowData = data;
-    this.modalService.openTemplate(this.imageModalTemplate, {
-      size: 'lg',
-      centered: true,
+    
+    // Calculate a 15-minute window from the actionTym
+    let fromDateStr = data.actionTym;
+    let toDateStr = data.actionTym;
+
+    if (data.actionTym) {
+      const actionDate = new Date(data.actionTym.replace(/-/g, '/'));
+      if (!isNaN(actionDate.getTime())) {
+        const fromDate = new Date(actionDate.getTime() - 15 * 60000); // 15 mins before
+        const toDate = new Date(actionDate.getTime() + 15 * 60000);   // 15 mins after
+
+        const formatStr = (d: Date) => {
+          return d.getFullYear() + '-' +
+            String(d.getMonth() + 1).padStart(2, '0') + '-' +
+            String(d.getDate()).padStart(2, '0') + ' ' +
+            String(d.getHours()).padStart(2, '0') + ':' +
+            String(d.getMinutes()).padStart(2, '0') + ':' +
+            String(d.getSeconds()).padStart(2, '0');
+        };
+
+        fromDateStr = formatStr(fromDate);
+        toDateStr = formatStr(toDate);
+      }
+    }
+
+    const payload = createFormData(this.token, {
+      imei: data.imei || data.MobileIMENo,
+      from: fromDateStr,
+      to: toDateStr,
+      type: '0',
+      angular: '1'
+    });
+
+    this.elockService.getImages(payload).subscribe({
+      next: (res: any) => {
+        if (res && res.Status === 'success' && res.Data && res.Data.length > 0) {
+          const imgData = res.Data[0];
+          data.image = imgData.photo;
+          data.imgDateTime = imgData.imgDateTime;
+          data.imglatlng = imgData.imglatlng;
+        } else if (res && res.Data && res.Data.length > 0) {
+          data.image = res.Data[0].photo || res.Data[0].url || res.Data[0].ImageURL || res.Data[0].image || res.Data[0].imgUrl;
+        } else if (res && res.data && res.data.length > 0) {
+          data.image = res.data[0].photo || res.data[0].url || res.data[0].ImageURL || res.data[0].image || res.data[0].imgUrl;
+        } else if (res && res.images && res.images.length > 0) {
+          data.image = res.images[0];
+        } else if (res && Array.isArray(res) && res.length > 0) {
+          data.image = res[0].photo || res[0].url || res[0].ImageURL || res[0].image || res[0].imgUrl;
+        } else if (res && res.ImageURL) {
+          data.image = res.ImageURL;
+        } else if (res && res.url) {
+          data.image = res.url;
+        } else if (res && res.photo) {
+          data.image = res.photo;
+        }
+        
+        // Update selectedRowData with the new image URL reference
+        this.selectedRowData = { ...data };
+        
+        this.modalService.openTemplate(this.imageModalTemplate, {
+          size: 'lg',
+          centered: true,
+        });
+      },
+      error: (err: any) => {
+        console.error('Failed to load images', err);
+        // Open modal anyway, will fallback to no-image state
+        this.modalService.openTemplate(this.imageModalTemplate, {
+          size: 'lg',
+          centered: true,
+        });
+      }
     });
   }
 }

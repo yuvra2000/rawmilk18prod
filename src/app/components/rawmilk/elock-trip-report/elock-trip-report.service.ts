@@ -15,6 +15,10 @@ export class ElockTripReportService {
   }
 
   getTableData(payload: any): Observable<any> {
-    return this.masterRequest.postFormData('https://dairybeta.secutrak.in/elock/report_angular', payload, true);
+    return this.masterRequest.postFormData('https://apinode1.secutrak.in/dev-app-secutrak/report_angular', payload, true);
+  }
+
+  getImages(payload: any): Observable<any> {
+    return this.masterRequest.postFormData('https://apinode1.secutrak.in/dev-app-secutrak/get_images', payload, true);
   }
 }

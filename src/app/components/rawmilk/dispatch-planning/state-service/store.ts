@@ -151,12 +151,15 @@ export class DispatchPlanningStore {
       ForApp: '0',
       file: file,
     });
-
+    this.spinnerService.show();
     try {
       const res: any = await firstValueFrom(
         this.dispatchPlanningService.uploadDispatchExcel(formData),
       );
-
+      handleSessionExpiry(res, this.alertService);
+      if (!handleApiResponse(res, this.toastService)) {
+        return [];
+      }
       const mappedRows = (res.Data || res.data || []).map((item: any) => ({
         tanker: this.resolveTankerId(item['Tanker No.']) || null,
         milk: this.resolveMilkId(item['Milk Code'] || ''),
@@ -173,11 +176,12 @@ export class DispatchPlanningStore {
       this.formData.set({
         dispatchDetails: mappedRows,
       });
-      console.log('Mapped Excel rows:', mappedRows);
       return mappedRows;
     } catch (error) {
       console.error(error);
       return [];
+    } finally {
+      this.spinnerService.hide();
     }
   }
 }

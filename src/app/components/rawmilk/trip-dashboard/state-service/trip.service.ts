@@ -1,0 +1,14 @@
+import { Injectable } from '@angular/core';
+import { forkJoin, Observable } from 'rxjs';
+import { MasterRequestService } from '../../master-request.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class TripService {
+  constructor(private masterRequestService: MasterRequestService) {}
+
+  getMccData(params: any) {
+    return this.masterRequestService.postFormData(`/get_mcc`, params);
+  }
+}

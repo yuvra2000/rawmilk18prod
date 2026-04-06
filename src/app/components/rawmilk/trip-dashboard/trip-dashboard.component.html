@@ -1,11 +1,23 @@
-<app-filter>
-  <div class="row">
-    <!-- Example Filter Field 1 -->
-    <div class="col-md-4">
+<!-- <app-filter>
+  <div class="row"> -->
+<!-- Example Filter Field 1 -->
+<!-- <div class="col-md-4">
       <ng-select [items]="cars()" bindLabel="name" bindValue="id"> </ng-select>
     </div>
   </div>
-</app-filter>
+</app-filter> -->
+
+<app-collapse-wrapper>
+  <filter-form
+    #viewIndentFilter
+    [dynamicFields]="filterfields()"
+    (formSubmit)="onFormSubmit($event)"
+    (controlValueChange)="onFilterChange($event)"
+  >
+  </filter-form>
+  <!-- (controlValueChange)="onFilterChange($event)"
+    [initialData]="initialData()" -->
+</app-collapse-wrapper>
 
 <div align="right">
   <button class="btn btn-primary" (click)="directdispatch()">

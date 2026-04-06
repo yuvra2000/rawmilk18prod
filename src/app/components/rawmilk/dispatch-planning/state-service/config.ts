@@ -2,6 +2,11 @@ import {
   FieldConfig,
   Option,
 } from '../../../../shared/components/filter-form/filter-form.component';
+import {
+  createFormData,
+  GroupId,
+  token,
+} from '../../../../shared/utils/shared-utility.utils';
 export const statusList: Option[] = [
   { name: 'In Transit', id: 'INTRANSIT' },
   { name: 'To be dispatched', id: 'TOBEDISPH' },
@@ -69,3 +74,11 @@ export const filterfields = (
     ],
   },
 ];
+export const masterFilterParams = createFormData(token, {
+  GroupId: GroupId,
+  ForApp: '0',
+});
+export const tankerFilterParams = createFormData(token, {
+  GroupId: GroupId,
+  ForApp: '0',
+});

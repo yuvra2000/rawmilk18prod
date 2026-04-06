@@ -1,4 +1,61 @@
 import { FieldConfig, Option } from "../../../../shared/components/filter-form/filter-form.component";
+import { GridColumnConfig, ActionCellRendererComponent } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import { colors } from '../../../../shared/utils/constants';
+
+export const gridColumns: GridColumnConfig[] = [
+  {
+    headerName: 'SL',
+    valueGetter: (params: any) => params.node ? params.node.rowIndex + 1 : null,
+    width: 60,
+  },
+  {
+    headerName: 'Vehicle',
+    field: 'Vehicle'
+  },
+  {
+    headerName: 'OTP for',
+    field: 'OTPfor'
+  },
+  {
+    headerName: 'OTP Type',
+    field: 'otpType'
+  },
+  {
+    headerName: 'User',
+    field: 'user'
+  },
+  {
+    headerName: 'MobileIMENo',
+    field: 'MobileIMENo'
+  },
+  {
+    headerName: 'Action Time',
+    field: 'actionTym'
+  },
+  {
+    headerName: 'Location Action',
+    field: 'location'
+  },
+  {
+    headerName: 'View Images',
+    field: 'action',
+    cellRenderer: ActionCellRendererComponent,
+    cellRendererParams: {
+      actions: [
+        {
+          label: 'View',
+          tooltip: 'View Images',
+          onClick: (data: any, node: any, params: any) => {
+            if (params.context?.componentParent) {
+              params.context.componentParent.onView(data);
+            }
+          },
+          buttonStyle: 'cursor: pointer; text-decoration: underline; color: ' + colors.primary,
+        }
+      ]
+    }
+  }
+];
 
 export const elockFilterFields = (vehicleList: Option[] = []): FieldConfig[] => [
   {
@@ -24,7 +81,7 @@ export const elockFilterFields = (vehicleList: Option[] = []): FieldConfig[] => 
     label: 'OTP For',
     type: 'select',
     options: [
-      { id: 'All', name: 'All' },
+      { id: '', name: 'All' },
       { id: 'Lock', name: 'Lock' },
       { id: 'Unlock', name: 'Unlock' },
     ],
@@ -36,7 +93,7 @@ export const elockFilterFields = (vehicleList: Option[] = []): FieldConfig[] => 
     label: 'Status',
     type: 'select',
     options: [
-      { id: 'All', name: 'All' },
+      { id: '', name: 'All' },
       { id: 'Success', name: 'Success' },
       { id: 'Fail', name: 'Fail' },
     ],

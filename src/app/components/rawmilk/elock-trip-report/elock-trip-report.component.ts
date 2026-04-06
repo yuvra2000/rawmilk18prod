@@ -1,17 +1,20 @@
 ﻿
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { elockFilterFields } from './state-service/config';
+import { elockFilterFields, gridColumns } from './state-service/config';
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { FieldConfig, FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
+import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { ElockTripReportService } from './elock-trip-report.service';
 import { AlertService } from '../../../shared/services/alert.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
+import { UniversalModalService } from '../../../shared/services/universal-modal.service';
+import { ViewChild, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-elock-trip-report',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
   templateUrl: './elock-trip-report.component.html',
   styleUrl: './elock-trip-report.component.scss'
 })
@@ -21,18 +24,28 @@ export class ElockTripReportComponent implements OnInit {
   vehicleList = signal<any[]>([]);
   filterfields = computed<FieldConfig[]>(() => elockFilterFields(this.vehicleList()));
 
-  initialData = {
-    fromDate: '2026-04-01T00:00',
-    toDate: '2026-04-01T00:00',
-    otpFor: { id: 'All', name: 'All' },
-    status: { id: 'All', name: 'All' }
-  };
+  tableData = signal<any[]>([]);
 
-  reportData: any[] = [];
+  gridConfig = signal<GridConfig>({
+    theme: 'alpine',
+    columns: gridColumns,
+    pagination: true,
+    paginationPageSize: 10,
+    enableExport: true,
+    enableSearch: true,
+    height: '500px',
+    context: {
+      componentParent: this
+    }
+  });
+
+  @ViewChild('imageModal') imageModalTemplate!: TemplateRef<any>;
+  selectedRowData: any = null;
 
   constructor(
     private elockService: ElockTripReportService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private modalService: UniversalModalService
   ) {}
 
   ngOnInit() {
@@ -60,18 +73,45 @@ export class ElockTripReportComponent implements OnInit {
   }
 
   onFormSubmit(formData: any) {
+    console.log('Form Data:', formData);
     const payload = createFormData(this.token, {
-      FromDate: formData.fromDate,
-      ToDate: formData.toDate,
-      VehicleNo: String(formData?.vehicleNumber?.VehicleNo || formData?.vehicleNumber?.id || ''),
-      OtpFor: formData?.otpFor?.id || 'All',
-      Status: formData?.status?.id || 'All',
-      ForWeb: '1'
+      from_date: formData.fromDate || '2026-04-06 00:00:00',
+      to_date: formData.toDate || '2026-04-06 23:55:55',
+      vehicle: formData?.vehicleNumber?.ImeiNo + '$' + formData?.vehicleNumber?.VehicleId,
+      otp_for: formData?.otpFor?.id,
+      status: formData?.status?.id
     });
 
-    // TODO: implement report API call
-    console.log('Filters submitted', formData);
+    this.elockService.getTableData(payload).subscribe({
+      next: (res: any) => {
+        if (res && res.Report) {
+          this.tableData.set(res.Report || []);
+          if (res.Report.length === 0) {
+            this.alertService.info(res.Message || 'No data found');
+          }
+        } else if (res && res.Data) {
+          this.tableData.set(res.Data || []);
+          if (res.Data.length === 0) {
+            this.alertService.info(res.Message || 'No data found');
+          }
+        } else if (res && Array.isArray(res)) {
+          this.tableData.set(res);
+        } else {
+          this.tableData.set([]);
+          this.alertService.error('Error fetching data');
+        }
+      },
+      error: (error: any) => {
+        this.alertService.error(error?.message || 'Error fetching data');
+      }
+    });
+  }
+
+  onView(data: any) {
+    this.selectedRowData = data;
+    this.modalService.openTemplate(this.imageModalTemplate, {
+      size: 'lg',
+      centered: true,
+    });
   }
 }
-
-

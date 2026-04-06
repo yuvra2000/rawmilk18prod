@@ -1,0 +1,109 @@
+name: Build, Test & Deploy Rdairy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  NODE_VERSION: "22.15.1" # Use a modern LTS Node version
+  ANGULAR_OUTPUT_PATH: "preview/browser" # Angular 17+ default output
+
+jobs:
+  #-----------------------------------------
+  # Job 1: Build and Test
+  #-----------------------------------------
+  build-and-test:
+    name: 🏗️ Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          # ✅ BEST PRACTICE: Cache npm dependencies for faster builds
+          # cache: 'npm'
+          # cache-dependency-path: package-lock.json
+
+        # 2. Caching node_modules (The true speed-up)
+      - name: 💾 Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node
+        with:
+          # A BHI PATH HOGA 'node_modules' (folder)
+          path: node_modules
+          # Key mein package-lock.json ko hash kiya
+          key: ${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: 📦 Install dependencies
+        run: npm ci
+        # Condition check kiya ki agar cache hit nahi hua, tabhi install karo.
+        if: steps.cache-node.outputs.cache-hit != 'true'
+
+      #- name: 🎨 Lint code
+      #  run: npm run lint
+
+      # Uncomment this if you have tests
+      # - name: 🧪 Run tests
+      #   run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+      - name: 🔨 Build for production
+        run: npm run build -- --configuration=production --source-map=false
+
+      - name: 🕵️‍♂️ Debug - List large files in output
+        run: |
+          echo "Listing assets in output folder:"
+          find preview/browser/assets -type f -size +1M -ls # 1MB se bade files dekhega
+          echo "Listing total files in output folder:"
+          ls -R preview/browser | head -n 50 # Top 50 files/folders dikhayega
+
+      - name: 📦 Upload build artifacts
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dairy-build-artifact
+          path: ${{ env.ANGULAR_OUTPUT_PATH }}
+          retention-days: 2
+
+  #-----------------------------------------
+  # Job 2: Deploy to Production
+  #-----------------------------------------
+  deploy:
+    name: 🚀 Deploy to Production
+    needs: build-and-test # Wait for build job to complete successfully
+    runs-on: ubuntu-latest
+
+    # ✅ BEST PRACTICE: Use GitHub Environments for security and approvals
+    environment:
+      name: production
+
+    # Condition: Only run this job on a push to the main branch
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: 📥 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dairy-build-artifact
+          path: build/ # Download to a 'build' directory
+
+      - name: 🚀 Deploy to server via rsync
+        uses: burnett01/rsync-deployments@7.0.2
+        with:
+          switches: -avzr --delete --progress
+          path: build/ # Path of the downloaded artifact
+          remote_path: /var/www/html/Rdairy/browser
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: ✅ Notify deployment success
+        run: |
+          echo "🚀 Dairy Management App deployed successfully!"
+          echo "⏰ Deployed at: $(date)"

@@ -11,4 +11,7 @@ export class TripService {
   getMccData(params: any) {
     return this.masterRequestService.postFormData(`/get_mcc`, params);
   }
+  tripdata(params: any) {
+    return this.masterRequestService.post(`/tripDashboard`, params);
+  }
 }

@@ -36,3 +36,32 @@ export const mccformdata = createFormData(token, {
   supplier_id: localStorage.getItem('supplier_id') || '',
   ForApp: '0',
 });
+const toDate = new Date();
+toDate.setDate(toDate.getDate() + 7);
+export const formData = {
+  AccessToken: token,
+  // from: new Date().toISOString().split('T')[0],
+  // to: toDate.toISOString().split('T')[0],
+  // GroupId: localStorage.getItem('GroupId') || '',
+  // UserType: '',
+  // SubRole: '',
+  // ForWeb: '1',
+  ForApp: 0,
+  FromDate: '',
+  ToDate: '',
+  Supplier: '',
+  Plant: '',
+  Transporter: '',
+  Mcc: '',
+  report_data: '',
+};
+
+// AccessToken:60fjExHldr00Z204DsvK2475i07F2e40
+// ForApp:0
+// FromDate:''
+// ToDate:''
+// Supplier:''
+// Plant:''
+// Transporter:''
+// Mcc:''
+// report_data:''

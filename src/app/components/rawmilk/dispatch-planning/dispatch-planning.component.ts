@@ -1,23 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
-import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import { Component } from '@angular/core';
 import { FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
-import { DispatchStore } from './state-service/store';
+import { DispatchPlanningStore } from './state-service/store';
 
 @Component({
   selector: 'app-dispatch-planning',
   standalone: true,
-  imports: [
-    CollapseWrapperComponent,
-    AdvancedGridComponent,
-    FilterFormComponent,
-  ],
+  imports: [FilterFormComponent],
   templateUrl: './dispatch-planning.component.html',
   styleUrl: './dispatch-planning.component.scss',
 })
-export class DispatchPlanningComponent implements OnInit {
-  store: DispatchStore = new DispatchStore();
-  ngOnInit(): void {
-    this.store.loadInitialData();
-  }
+export class DispatchPlanningComponent {
+  store: DispatchPlanningStore = new DispatchPlanningStore();
 }

@@ -1,5 +1,7 @@
 import { FieldConfig } from '../components/filter-form/filter-form.component';
-
+export const supplier_id = localStorage.getItem('supplier_id') || '';
+export const token = localStorage.getItem('AccessToken') || '';
+export const GroupId = localStorage.getItem('GroupId') || '';
 export function createFormData(
   token: string = localStorage.getItem('AccessToken') || '',
   params: Record<string, string> = {},

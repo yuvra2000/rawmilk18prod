@@ -61,6 +61,7 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     emitValueChanges: true,
   },
 ];
+
 export const viewIndentSupplierGridColumnsIfNotChillingPlant: FieldConfig[] = [
   {
     name: 'status',
@@ -566,21 +567,357 @@ export const viewDispatchColumns: GridColumnConfig[] = [
     },
   },
 ];
-export const viewNoOfDispatchColumns: GridColumnConfig[] = [
+
+export const tripDashboardGird: GridColumnConfig[] = [
+  {
+    headerName: 'S.No.',
+    valueGetter: 'node.rowIndex + 1',
+    width: 90,
+  },
+  {
+    headerName: 'Milk Type',
+    field: 'MilkType',
+  },
+  {
+    headerName: 'Dispatch Date',
+    field: 'DispatchDate',
+  },
   {
     headerName: 'Dispatch No.',
-    field: 'dispatch_no',
+    field: 'ChallanNo',
   },
   {
     headerName: 'Vehicle No.',
     field: 'vehicle_no',
+    cellRenderer: (params: any) => {
+      const span = document.createElement('span');
+      span.style.color =
+        params.data.vehicleStatus === 'Running'
+          ? 'green'
+          : params.data.vehicleStatus === 'Stopped'
+            ? 'red'
+            : params.data.vehicleStatus === 'InActive'
+              ? 'grey'
+              : params.data.vehicleStatus === 'At Destination'
+                ? '#1d4380'
+                : params.data.vehicleStatus === 'At Source'
+                  ? 'black'
+                  : 'inherit';
+      span.style.textDecoration = 'underline';
+      span.style.cursor = 'pointer';
+      span.textContent = params.value;
+      span.addEventListener('click', (event: any) => {
+        if (params.context.componentParent) {
+          params.context.componentParent.onVehicleClick(params);
+        }
+      });
+      return span;
+    },
   },
   {
-    headerName: 'Quantity	',
-    field: 'quantity',
+    headerName: 'Supplier',
+    field: 'Supplier',
   },
   {
-    headerName: 'Dispatch Date	',
-    field: 'dispatch_date',
+    headerName: 'Plant',
+    field: 'Plant',
+  },
+  {
+    headerName: 'Target Date',
+    field: 'targetDate',
+  },
+  {
+    headerName: 'Tanker Status',
+    field: 'vehicleStatus',
+    valueGetter: (params: any) => {
+      const status = params.data.vehicleStatus;
+      switch (status) {
+        case 'Running':
+          return 'Intransit';
+        case 'Stopped':
+          return 'Stopped';
+        case 'At Destination':
+          return 'At Destination';
+        case 'At Source':
+          return 'At Source';
+        case 'Return':
+          return 'Return';
+        case 'NoGPS':
+          return 'NoGPS';
+        default:
+          return 'Data Not Available';
+      }
+    },
+  },
+  {
+    headerName: 'Qty',
+    field: 'Qty',
+  },
+  {
+    headerName: 'Fat',
+    field: 'Fat',
+  },
+  {
+    headerName: 'Snf',
+    field: 'Snf',
+  },
+  {
+    headerName: 'ETA / Arrival Time',
+    field: 'eta',
+  },
+  {
+    headerName: 'Driver Details',
+    field: 'DriverDetails',
+  },
+  {
+    headerName: 'Status',
+    field: 'dispatchStatus',
+  },
+  // {
+  //   headerName: 'Live Lock Status',
+  //   field: 'lockStatus',
+  //   cellRenderer: (params: any) => {
+  //     if (!params.value) return '';
+  //     let html = '';
+  //     params.value.forEach((status: any) => {
+  //       Object.keys(status).forEach((key) => {
+  //         if (key !== 'imei') {
+  //           html += `${key}: ${status[key]} , `;
+  //         }
+  //       });
+  //     });
+  //     return html;
+  //   },
+  // },
+  {
+    headerName: 'Live Lock Status',
+    field: 'lockStatus',
+    autoHeight: true,
+    cellRenderer: (params: any) => {
+      if (!params.value) return '';
+
+      const container = document.createElement('div');
+
+      const entries: any[] = [];
+
+      params.value.forEach((status: any) => {
+        Object.keys(status).forEach((key) => {
+          if (key !== 'imei') {
+            entries.push({
+              key,
+              value: status[key],
+              imei: status.imei,
+            });
+          }
+        });
+      });
+
+      entries.forEach((entry, index) => {
+        // 🔹 clickable span (ONLY text + icon)
+        const clickableSpan = document.createElement('span');
+
+        const text = document.createElement('span');
+        text.innerText = `${entry.key}: `;
+        clickableSpan.appendChild(text);
+
+        const icon = document.createElement('i');
+        icon.className = getIconClass(entry.value);
+        icon.style.marginRight = '5px';
+        clickableSpan.appendChild(icon);
+
+        // 🔥 apply click ONLY here
+        if (isKeyClickable(entry.key)) {
+          clickableSpan.style.cursor = 'pointer';
+          clickableSpan.style.textDecoration = 'underline';
+
+          clickableSpan.addEventListener('click', () => {
+            params.context?.componentParent?.onKeyClick(
+              params.data,
+              entry.imei,
+            );
+          });
+        }
+
+        container.appendChild(clickableSpan);
+
+        // 🔥 comma OUTSIDE clickable span
+        if (index !== entries.length - 1) {
+          const comma = document.createElement('span');
+          comma.innerText = ', ';
+          container.appendChild(comma);
+        }
+      });
+
+      return container;
+    },
+  },
+  // {
+
+  //   headerName: 'Live Lock Status',
+  //   field: 'lockStatus',
+  //   autoHeight: true,
+  //   cellRenderer: (params: any) => {
+  //     if (!params.value) return '';
+
+  //     const container = document.createElement('div');
+
+  //     params.value.forEach((status: any) => {
+  //       Object.keys(status).forEach((key) => {
+  //         if (key === 'imei') return;
+
+  //         const span = document.createElement('span');
+
+  //         // 🔹 text
+  //         const text = document.createElement('span');
+  //         text.innerText = `${key}: `;
+  //         span.appendChild(text);
+
+  //         // 🔹 icon
+  //         const icon = document.createElement('i');
+  //         icon.className = getIconClass(status[key]);
+  //         icon.style.marginRight = '5px';
+  //         span.appendChild(icon);
+
+  //         // 🔹 spacing
+  //         span.appendChild(document.createTextNode(' , '));
+
+  //         // 🔥 clickable only MH / DH
+  //         if (isKeyClickable(key)) {
+  //           span.style.cursor = 'pointer';
+  //           span.style.textDecoration = 'underline';
+
+  //           span.addEventListener('click', () => {
+  //             if (params.context?.componentParent) {
+  //               params.context.componentParent.onKeyClick(
+  //                 params.data,
+  //                 status.imei,
+  //               );
+  //             }
+  //           });
+  //         }
+
+  //         container.appendChild(span);
+  //       });
+  //     });
+
+  //     return container;
+  //   },
+  // },
+  {
+    headerName: 'Transporter',
+    field: 'Transporter',
+  },
+  {
+    headerName: 'Mcc',
+    field: 'Mcc',
+  },
+  {
+    headerName: 'Lr. No.',
+    field: 'LRNumber',
+  },
+  {
+    headerName: 'Indent No.',
+    field: 'IndentNo',
+  },
+  {
+    headerName: 'Temperature',
+    field: 'Temperature',
+  },
+  {
+    headerName: 'MBRT',
+    field: 'Mbrt',
+  },
+  {
+    headerName: 'Mapped Plant',
+    field: 'PlantOld',
+  },
+  {
+    headerName: 'Alerts',
+    field: 'Alerts',
+    autoHeight: true,
+    cellRenderer: (params: any) => {
+      if (!params.value) return '';
+
+      const container = document.createElement('div');
+
+      Object.keys(params.value).forEach((regionKey) => {
+        const wrapper = document.createElement('span');
+        wrapper.style.marginRight = '8px';
+        wrapper.style.display = 'inline-flex';
+        wrapper.style.alignItems = 'center';
+
+        // 🔹 square icon
+        const icon = document.createElement('i');
+        icon.className = 'fa fa-square';
+        icon.style.fontSize = '15px';
+        icon.style.marginRight = '2px';
+
+        // 🔹 label (clickable)
+        const label = document.createElement('span');
+        label.innerText = regionKey;
+        label.style.color = 'black';
+        label.style.fontSize = '15px';
+        label.style.cursor = 'pointer';
+        label.style.marginLeft = '2px';
+
+        label.addEventListener('click', () => {
+          if (params.context?.componentParent) {
+            params.context.componentParent.alertDatat(
+              params.data.AlertData?.[regionKey],
+              params.data.Mcc,
+              params.data.Plant,
+              params.data.Supplier,
+            );
+          }
+        });
+
+        // 🔹 badge (count)
+        const sup = document.createElement('sup');
+
+        const badge = document.createElement('span');
+        badge.innerText = params.value[regionKey];
+        badge.style.color = 'red';
+        badge.style.fontSize = '14px';
+        badge.style.marginLeft = '2px';
+        badge.style.fontWeight = '700';
+
+        sup.appendChild(badge);
+
+        // append all
+        wrapper.appendChild(icon);
+        wrapper.appendChild(label);
+        wrapper.appendChild(sup);
+
+        container.appendChild(wrapper);
+      });
+
+      return container;
+    },
+  },
+  {
+    headerName: 'Mcc Geofence Out',
+    field: 'MccGeofenceOut',
+  },
+  {
+    headerName: 'Nearby',
+    cellRenderer: () => {
+      return `<span class="map-btn">Map View</span>`;
+    },
   },
 ];
+
+function getIconClass(value: any): string {
+  const iconMap: { [key: string]: string } = {
+    Y: 'fe fe-lock text-success',
+    N: 'fe fe-unlock text-danger',
+    IN: 'fe fe-lock text-secondary',
+    '1': 'fa fa-map-marker text-success',
+    '0': 'fa fa-map-marker text-secondary',
+  };
+  return iconMap[String(value)] || '';
+}
+
+function isKeyClickable(key: any): boolean {
+  const keyStr = String(key);
+  return keyStr === 'MH' || keyStr === 'DH';
+}

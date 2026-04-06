@@ -8,6 +8,13 @@
 </app-filter> -->
 
 <app-collapse-wrapper>
+  <div
+    class="header h-5 w-5 cursor-pointer"
+    custom-icon
+    ngbTooltip="Create Dispatch"
+  >
+    <i class="fa fa-plus-circle icon-add" (click)="directdispatch()"></i>
+  </div>
   <filter-form
     #viewIndentFilter
     [dynamicFields]="filterfields()"
@@ -19,8 +26,21 @@
     [initialData]="initialData()" -->
 </app-collapse-wrapper>
 
-<div align="right">
+<!-- <div align="right">
   <button class="btn btn-primary" (click)="directdispatch()">
     Export to Excel
   </button>
-</div>
+</div> -->
+
+<app-advanced-grid
+  [rowData]="TripRowData()"
+  [config]="tripConfig()"
+  (selectionChanged)="handleSelectionChange($event)"
+>
+  <!-- (selectionChanged)="handleSelectionChange($event)" -->
+  <h5 class="text-center table-heading">Trip List</h5>
+  <div class="header h-5 w-5 cursor-pointer" slot="right">
+    <!-- <i class="fa fa-plus-circle icon-add" (click)="openAddIndent()"></i> -->
+    <!-- <i class="fa-solid fa-circle-xmark icon-delete" (click)="closeIntent()"></i> -->
+  </div>
+</app-advanced-grid>

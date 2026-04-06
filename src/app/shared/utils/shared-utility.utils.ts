@@ -45,7 +45,7 @@ export function handleApiResponse(
   const status = response.Status || response.status;
   const isSuccess =
     status === 'success' || status === 1 || response.success === true;
-  const apiMessage = response.Message || response.message;
+  const apiMessage = response.Message || response.message || response.Data;
 
   // Check for session expiration
   if (response.Result === 'Session Expired' || status === 'Session Expired') {
@@ -93,7 +93,7 @@ export function handleApiError(
   toastService.error(errorMessage);
 }
 export function handleSessionExpiry(res: any, toastService: any) {
-  debugger;
+  // debugger;
   if (
     res?.Result == 'Session Expired due to new login.' ||
     res?.Status == 'failed' ||
@@ -101,6 +101,7 @@ export function handleSessionExpiry(res: any, toastService: any) {
     res?.Message == 'Sorry! Session expired, Please login again ..!'
   ) {
     toastService.error(res?.Message || 'Session expired. Please log in again.');
+    window.location.href = 'https://secutrak.in/logout';
     return true;
   }
   return false;

@@ -2,7 +2,10 @@ import { Injectable, signal, inject } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { DispatchService } from '../dispatch.service';
-import { handleApiError } from '../../../../shared/utils/shared-utility.utils';
+import {
+  handleApiError,
+  handleSessionExpiry,
+} from '../../../../shared/utils/shared-utility.utils';
 // import { handleApiError } from '../../../../shared/utils/shared-utility.utils';
 import { AlertService } from '../../../../shared/services/alert.service';
 
@@ -13,6 +16,7 @@ export interface DispatchState {
   transporterOptions: Transporter[];
   selectedVehicleTransporters?: Transporter[];
   mcclist: any[];
+  plantlist: any[];
   loading: boolean;
 }
 interface Transporter {
@@ -38,6 +42,7 @@ export class DispatchStore {
     transporterOptions: [],
     selectedVehicleTransporters: [],
     mcclist: [],
+    plantlist: [],
     loading: false,
   });
   userType = localStorage.getItem('usertype') || 'supplier';
@@ -82,6 +87,8 @@ export class DispatchStore {
       .subscribe((result: any) => {
         // debugger;
         console.log('API RESULT ✅', result);
+        const sessionExp = handleSessionExpiry(result, this.toastService);
+        if (sessionExp) return;
         // 👉 process data FIRST
         const vehicleOptions = (result?.vehicledata?.Data || []).filter(
           (item: Vehicle) => item.BlacklistStatus !== 1,
@@ -108,6 +115,11 @@ export class DispatchStore {
               (plant: any) => plant.type == 4,
             ) || [];
         }
+        let plantlist: any[] = [];
+        plantlist =
+          result?.masterData?.PlantSupplier?.filter(
+            (plant: any) => plant.type == 3,
+          ) || [];
 
         // ✅ SINGLE UPDATE (IMPORTANT)
         this.state.set({
@@ -116,6 +128,7 @@ export class DispatchStore {
           vehicleOptions,
           transporterOptions,
           mcclist,
+          plantlist,
           loading: false,
         });
 

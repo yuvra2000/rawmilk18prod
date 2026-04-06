@@ -32,18 +32,18 @@
 
   <!-- Header -->
   <div class="row fw-bold">
-    <div class="col"><label class="form-label">Chamber No</label></div>
-    <div class="col"><label class="form-label">Milk Type</label></div>
-    <div class="col"><label class="form-label">Temp</label></div>
-    <div class="col"><label class="form-label">Qty</label></div>
-    <div class="col"><label class="form-label">Fat</label></div>
-    <div class="col"><label class="form-label">SNF</label></div>
-    <div class="col"><label class="form-label">MBRT</label></div>
+    <div class="col"><label class="form-label required">Chamber No</label></div>
+    <div class="col"><label class="form-label required">Milk Type</label></div>
+    <div class="col"><label class="form-label required">Temp</label></div>
+    <div class="col"><label class="form-label required">Qty</label></div>
+    <div class="col"><label class="form-label required">Fat</label></div>
+    <div class="col"><label class="form-label required">SNF</label></div>
+    <div class="col"><label class="form-label required">MBRT</label></div>
     <div class="col"><label class="form-label">Upload</label></div>
   </div>
 
   <!-- ✅ NO formArrayName -->
-  @for (row of rows.controls; track $index) {
+  @for (row of rows.controls; track $index; let i = $index) {
     <div [formGroup]="getFormGroup(row)" class="row mb-3 align-items-center">
       <div class="col form-input">
         <input
@@ -58,15 +58,15 @@
         <ng-select
           [items]="store.state().milkList"
           bindLabel="displayName"
-          placeholder="Select Milk Type"
           formControlName="milkType"
           placeholder="Select Milk Type"
-          [searchable]="true"
-          [clearable]="true"
-          [virtualScroll]="true"
+          [searchable]="!isMilkTypeReadonly(i)"
+          [clearable]="!isMilkTypeReadonly(i)"
+          (click)="isMilkTypeReadonly(i) ? $event.stopPropagation() : null"
+          (keydown)="isMilkTypeReadonly(i) ? $event.preventDefault() : null"
           [appendTo]="'body'"
           [ngbTooltip]="
-            getFormGroup(row).get('milkType')?.value.displayName ||
+            getFormGroup(row).get('milkType')?.value?.displayName ||
             'Select Milk Type'
           "
         ></ng-select>
@@ -86,9 +86,9 @@
           class="text-danger small mt-1"
           *ngIf="isFieldInvalid(row, 'temperature')"
         >
-          <span *ngIf="getError(row, 'temperature', 'required')">
+          <!-- <span *ngIf="getError(row, 'temperature', 'required')">
             Temperature is required
-          </span>
+          </span> -->
 
           <span *ngIf="getError(row, 'temperature', 'pattern')">
             Enter valid temp (-99.99 to 99.99)
@@ -110,7 +110,9 @@
           <!-- <span *ngIf="getError(row, 'quantity', 'childExceedsParent')">
             Total quantity cannot exceed 10% of main quantity
           </span> -->
-          <span *ngIf="getError(row, 'quantity', 'totalExceeded')">
+          <span
+            *ngIf="!isEditMode && getError(row, 'quantity', 'totalExceeded')"
+          >
             Total quantity cannot exceed 10% of main quantity
           </span>
         </div>
@@ -125,15 +127,15 @@
           (paste)="sanitizePaste($event)"
         />
 
-        <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'fat')">
-          <span *ngIf="getError(row, 'fat', 'required')">
+        <!-- <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'fat')"> -->
+        <!-- <span *ngIf="getError(row, 'fat', 'required')">
             Fat is required
-          </span>
+          </span> -->
 
-          <span *ngIf="getError(row, 'fat', 'pattern')">
+        <!-- <span *ngIf="getError(row, 'fat', 'pattern')">
             Enter valid fat (e.g. 6.5)
-          </span>
-        </div>
+          </span> -->
+        <!-- </div> -->
       </div>
 
       <div class="col form-input">
@@ -146,7 +148,7 @@
           (paste)="sanitizePaste($event)"
         />
 
-        <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'snf')">
+        <!-- <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'snf')">
           <span *ngIf="getError(row, 'snf', 'required')">
             SNF is required
           </span>
@@ -154,7 +156,7 @@
           <span *ngIf="getError(row, 'snf', 'pattern')">
             Enter valid SNF (e.g. 8.5)
           </span>
-        </div>
+        </div> -->
       </div>
       <div class="col form-input">
         <input
@@ -166,7 +168,7 @@
           (paste)="sanitizePaste($event)"
         />
 
-        <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'mbrt')">
+        <!-- <div class="text-danger small mt-1" *ngIf="isFieldInvalid(row, 'mbrt')">
           <span *ngIf="getError(row, 'mbrt', 'required')">
             MBRT is required
           </span>
@@ -174,7 +176,7 @@
           <span *ngIf="getError(row, 'mbrt', 'pattern')">
             Max 3 digit number allowed
           </span>
-        </div>
+        </div> -->
       </div>
       <!-- <div class="col"></div> -->
       <div class="col form-input">

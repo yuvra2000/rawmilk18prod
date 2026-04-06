@@ -981,7 +981,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
 
     // 4. 🚨 THE MOST IMPORTANT STEP FOR SNAPSHOTS 🚨
     // '' leak ko khatam karne ke liye console saaf karein
-    console.clear();
+    // console.clear();
 
     // Note: Turn OFF "Preserve Log" in Chrome Console settings
     console.log('🚀 Isolation Test: Component Purged Successfully');

@@ -40,7 +40,7 @@ import { QuantityValidators, InputValidators } from '../state-service/utils';
 })
 export class ChamberDetailsComponent {
   @Input() rows!: FormArray;
-
+  @Input() isEditMode!: boolean;
   public store = inject(DispatchStore);
   // private masterservice = inject(DispatchService);
   // private toastService = inject(AlertService);
@@ -244,6 +244,10 @@ export class ChamberDetailsComponent {
         control.setErrors(Object.keys(errors).length ? errors : null);
       });
     });
+  }
+
+  isMilkTypeReadonly(index: number): boolean {
+    return this.isEditMode && index === 0;
   }
 
   // async loadinitialData() {

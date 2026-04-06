@@ -2,19 +2,20 @@
 <div class="p-3 mb-3" [formGroup]="form">
   <!-- <h5>Main Details</h5> -->
 
-  <div class="row">
-    <div class="col form-input">
-      <label class="form-label">Indent No</label>
+  <div class="row gy-3">
+    <div class="col-lg-2 form-input" [ngClass]="isEditMode() ? 'd-none' : ''">
+      <label class="form-label required">Indent No</label>
       <input
         type="text"
         class="form-control"
         formControlName="indent"
         placeholder="Indent"
+        [readonly]="!isEditMode"
       />
     </div>
 
-    <div class="col form-input">
-      <label class="form-label">LR No</label>
+    <div class="col-lg-2 form-input">
+      <label class="form-label required">LR No</label>
       <input
         type="text"
         class="form-control"
@@ -23,18 +24,21 @@
       />
     </div>
 
-    <div class="col form-input">
-      <label class="form-label">Plant</label>
-      <input
-        type="text"
-        class="form-control"
+    <div class="col-lg-2 form-input">
+      <label class="form-label required">Plant</label>
+      <ng-select
+        [items]="store.state().plantlist"
+        bindLabel="displayName"
         formControlName="plant"
-        placeholder="Plant"
-      />
+        placeholder="Select plant"
+        [searchable]="true"
+        [clearable]="true"
+        [readonly]="!isEditMode"
+      ></ng-select>
     </div>
 
-    <div class="col form-input">
-      <label class="form-label">MCC/BMC</label>
+    <div class="col-lg-2 form-input" [ngClass]="isEditMode() ? 'd-none' : ''">
+      <label class="form-label required">MCC/BMC</label>
       <!-- <input type="text" class="form-control" formControlName="MCC" /> -->
       <ng-select
         [items]="store.state().mcclist"
@@ -43,15 +47,15 @@
         placeholder="Select MCC/BMC"
         [searchable]="true"
         [clearable]="true"
+        [readonly]="!isEditMode"
       ></ng-select>
     </div>
 
-    <div class="col form-input">
-      <label class="form-label">Vehicle</label>
+    <div class="col-lg-2 form-input">
+      <label class="form-label required">Vehicle</label>
       <ng-select
         [items]="store.state().vehicleOptions"
         bindLabel="VehicleNo"
-        bindValue="VehicleId"
         formControlName="vehicle"
         placeholder="Select Vehicle"
         [searchable]="true"
@@ -59,11 +63,11 @@
         (change)="onVehicleChange($event)"
       ></ng-select>
     </div>
-  </div>
+    <!-- </div> -->
 
-  <div class="row mt-3">
-    <div class="col form-input">
-      <label class="form-label">Driver Name</label>
+    <!-- <div class="row mt-3"> -->
+    <div class="col-lg-2 form-input">
+      <label class="form-label required">Driver Name</label>
       <input
         type="text"
         class="form-control"
@@ -72,8 +76,8 @@
       />
     </div>
 
-    <div class="col form-input">
-      <label class="form-label">Driver Number</label>
+    <div class="col-lg-2 form-input">
+      <label class="form-label required">Driver Number</label>
       <input
         type="text"
         class="form-control"
@@ -82,8 +86,8 @@
       />
     </div>
 
-    <div class="col form-input">
-      <label class="form-label">Dispatch Date</label>
+    <div class="col-lg-2 form-input">
+      <label class="form-label required">Dispatch Date</label>
       <input
         type="datetime-local"
         step="1"
@@ -95,12 +99,11 @@
       />
     </div>
 
-    <div class="col form-input">
+    <div class="col-lg-2 form-input">
       <label class="form-label">Transporter</label>
       <ng-select
         [items]="store.state().selectedVehicleTransporters"
         bindLabel="TransporterName"
-        bindValue="TransporterId"
         formControlName="transporter"
         placeholder="Select Transporter"
         [searchable]="true"
@@ -109,7 +112,7 @@
       ></ng-select>
     </div>
 
-    <div class="col form-input">
+    <div class="col-lg-2 form-input">
       <label class="form-label">Remarks</label>
       <input
         type="text"

@@ -1,17 +1,19 @@
 <div class="card-dispatch container-fluid">
-  <h4 class="heading">Create Dispatch</h4>
+  <h4 class="heading">{{ pagename }}</h4>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <!-- Step 1 -->
     <app-main-details
       [form]="form"
-      [targetDate]="prefetchdata.Data[0].target_date"
+      [isEditMode]="this.isdirectdispatch()"
+      [targetDate]="prefetchdata().Data?.[0].target_date"
     ></app-main-details>
 
     <!-- Step 2 -->
     <app-chamber-details
       [rows]="rows"
-      [prefetchQuantity]="prefetchdata.Data[0].quantity"
+      [isEditMode]="this.isdirectdispatch()"
+      [prefetchQuantity]="prefetchdata().Data?.[0].quantity"
     ></app-chamber-details>
 
     <!-- Step 3 -->

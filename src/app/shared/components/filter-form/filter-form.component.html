@@ -9,6 +9,7 @@
     <!-- @if (form.get(field.name)) { -->
     <!-- ✅ NEW: Section Heading Logic -->
     <!-- Agar sectionTitle hai, toh full-width heading aur underline dikhayenge -->
+
     @if (form.get(field.name)) {
       @if (field.sectionTitle) {
         <div class="col-12 mt-0 mb-1 section-header-container">
@@ -21,6 +22,7 @@
           </div>
         </div>
       }
+      <ng-content></ng-content>
       <!-- Flex Break Logic for forceNewLine -->
       @if (field.forceNewLine) {
         <div class="w-100 d-none d-md-block"></div>

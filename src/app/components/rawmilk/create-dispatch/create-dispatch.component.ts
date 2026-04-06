@@ -24,11 +24,6 @@ import {
   QuantityValidators,
   VehicleFormData,
 } from './state-service/utils';
-import {
-  createFormData,
-  handleApiError,
-  handleApiResponse,
-} from './../../../shared/utils/shared-utility.utils';
 import { AlertService } from './../../../shared/services/alert.service';
 import { CommonModule } from '@angular/common';
 import { MainDetailsComponent } from './main-details/main-details.component';

@@ -80,6 +80,14 @@ export const rawMilkRoutes: Routes = [
       {
         path: 'dispatch-planning-report',
         loadComponent: () =>
+          import('./dispatch-planning-report/dispatch-planning-report.component').then(
+            (m) => m.DispatchPlanningReportComponent,
+          ),
+        title: 'Dispatch Planning Report',
+      },
+      {
+        path: 'dispatch-planning',
+        loadComponent: () =>
           import('./dispatch-planning/dispatch-planning.component').then(
             (m) => m.DispatchPlanningComponent,
           ),

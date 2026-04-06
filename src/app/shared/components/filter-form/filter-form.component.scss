@@ -331,6 +331,23 @@ textarea.disabled-field {
   width: 100%;
 }
 
+.formarray-item .equal-col {
+  flex: 0 0 13.6%;
+  max-width: 13.6%;
+  padding: 0 6px;
+}
+.formarray-item .equal-col-lastt {
+  flex: 0 0 13.6%;
+  max-width: 17.6%;
+  padding: 0 6px;
+}
+
+.formarray-item .equal-col-last {
+  flex: 0 0 4.8%;
+  max-width: 4.8%;
+  padding: 0 6px;
+}
+
 ::ng-deep .formarray-item ng-select {
   display: block;
   width: 100%;

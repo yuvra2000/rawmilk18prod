@@ -203,9 +203,6 @@ export class ViewIndentSupplierComponent implements OnInit {
   }
 
   Create_dis(indentId: any, targetdate: any) {
-    debugger;
-    // this.gridModal.close();
-
     this.router.navigate(['/create-dispatch'], {
       state: {
         structuredata: {
@@ -250,26 +247,4 @@ export class ViewIndentSupplierComponent implements OnInit {
         }
       });
   }
-  //  deleteindent(id: any) {
-  //   console.log('id', id);
-  //   const confirmed = window.confirm(
-  //     'Are you sure you want to delete this inventory item?',
-  //   );
-  //   if (confirmed) {
-  //     var formdata = new FormData();
-  //     formdata.append('AccessToken', this.token);
-  //     formdata.append('id', id);
-  //     this.service.indentdelete(formdata).subscribe((res: any) => {
-  //       if (res.Status == 'success') {
-  //         alert(res.Data);
-  //         $('#uploadDoc').modal('hide');
-  //         this.submit('null');
-  //       } else {
-  //         alert(res.Data);
-  //       }
-  //       console.log('re', res);
-  //     });
-  //     // alert('deleted')
-  //   }
-  // }
 }

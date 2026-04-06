@@ -20,7 +20,7 @@ export function getTodayDate(): string {
 export function sessionCheck(
   res: any,
   toastService: ToastrService,
-  router: Router,
+  router?: Router,
 ) {
   if (
     res?.Message == 'Sorry! Session expired, Please login again ..!' ||
@@ -28,7 +28,7 @@ export function sessionCheck(
   ) {
     toastService.error(res?.Message || 'Session expired. Please login again.');
     localStorage.clear();
-    router.navigate(['/auth/login']);
+    router?.navigate(['/auth/login']);
   }
 }
 export function handleError(error: any, toast: ToastrService): void {

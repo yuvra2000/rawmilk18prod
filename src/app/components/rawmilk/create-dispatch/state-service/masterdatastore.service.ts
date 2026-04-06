@@ -16,7 +16,7 @@ export interface DispatchState {
   transporterOptions: Transporter[];
   selectedVehicleTransporters?: Transporter[];
   mcclist: any[];
-  plantlist: any[];
+  supplier: any[];
   loading: boolean;
 }
 interface Transporter {
@@ -42,7 +42,7 @@ export class DispatchStore {
     transporterOptions: [],
     selectedVehicleTransporters: [],
     mcclist: [],
-    plantlist: [],
+    supplier: [],
     loading: false,
   });
   userType = localStorage.getItem('usertype') || 'supplier';
@@ -115,11 +115,16 @@ export class DispatchStore {
               (plant: any) => plant.type == 4,
             ) || [];
         }
-        let plantlist: any[] = [];
-        plantlist =
+        let supplier: any =
           result?.masterData?.PlantSupplier?.filter(
-            (plant: any) => plant.type == 3,
+            (plant: any) => plant.type == 6,
           ) || [];
+
+        // let plantlist: any[] = [];
+        // plantlist =
+        //   result?.masterData?.PlantSupplier?.filter(
+        //     (plant: any) => plant.type == 3,
+        //   ) || [];
 
         // ✅ SINGLE UPDATE (IMPORTANT)
         this.state.set({
@@ -128,7 +133,7 @@ export class DispatchStore {
           vehicleOptions,
           transporterOptions,
           mcclist,
-          plantlist,
+          supplier,
           loading: false,
         });
 

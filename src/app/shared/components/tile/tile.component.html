@@ -1,0 +1,9 @@
+<button type="button" class="btn position-relative tile me-3">
+  <ng-content></ng-content>
+{{title()}}
+<span
+  class="position-absolute top-0 start-100 translate-middle badge rounded-pill" [style.background-color]="color()">
+  {{quantity()}}
+  <span class="visually-hidden">unread messages</span>
+</span>
+</button>

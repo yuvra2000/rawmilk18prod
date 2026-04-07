@@ -109,6 +109,12 @@ export class DispatchStore {
       ) {
         return;
       }
+      if (res.reportData?.Data?.length == 0) {
+        this.toast.info(
+          'No dispatch plans found for today with the current filters.',
+        );
+        return;
+      }
       this.initialData.set({
         dispatchReportData: res.reportData?.Data,
         milkList: res.masterOptions?.Milk,

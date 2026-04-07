@@ -178,6 +178,22 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'E-Lock Report',
       },
+      {
+        path: 'cart-report',
+        loadComponent: () =>
+          import('./cart-report/cart-report.component').then(
+            (m) => m.CartReportComponent,
+          ),
+        title: 'Cart Report',
+      },
+      {
+        path: 'cart-report-exception',
+        loadComponent: () =>
+          import('./cart-exception-report/cart-exception-report.component').then(
+            (m) => m.CartExceptionReportComponent,
+          ),
+        title: 'Cart Report Exception',
+      },
     ],
   },
 ];

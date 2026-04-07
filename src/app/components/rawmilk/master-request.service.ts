@@ -45,8 +45,13 @@ export class MasterRequestService {
     endpoint: string,
     payload: any,
     defaultUrl: boolean = false,
+    loginURL: boolean = false,
   ): Observable<T> {
-    const url = defaultUrl ? endpoint : environment.BASE_URL + endpoint;
+    const url = loginURL
+      ? environment.loginAPI + endpoint
+      : defaultUrl
+        ? endpoint
+        : environment.BASE_URL + endpoint;
     return this.http.post<T>(url, payload);
   }
 

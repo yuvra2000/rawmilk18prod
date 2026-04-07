@@ -3,7 +3,7 @@ import {
   GridConfig,
   GridColumnConfig,
 } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { cartDashboardDummyData, filterfields, gridColumns } from './config';
+import { detailsColumns, filterfields, gridColumns } from './config';
 import {
   createFormData,
   GroupId,
@@ -30,7 +30,6 @@ export class CartDashboardStore {
   private spinner = inject(NgxSpinnerService);
   private cartDashService = inject(CartDashboardService);
   private modal = inject(UniversalModalService);
-  cartDashboardDummyData = cartDashboardDummyData;
   date = signal<string>('');
   lastFilterValues = signal<any>(null);
   initialData = signal<InitialData>({
@@ -58,6 +57,7 @@ export class CartDashboardStore {
     context: {
       componentParent: this,
     },
+    height: '300px',
   }));
   async loadInitialData() {
     this.spinner.show();
@@ -96,13 +96,18 @@ export class CartDashboardStore {
       const res: any = await firstValueFrom(
         this.cartDashService.getDashReport(params),
       );
-      handleSessionExpiry(res, this.toast);
-      const { dashboardData } = res || {};
-      const detailsData = dashboardData?.Data || [];
+      if (handleSessionExpiry(res, this.toast)) {
+        return;
+      }
+      if (!res?.Data?.length) {
+        this.toast.info('No details available');
+        return;
+      }
       this.modal.openGridModal({
         title: `${type === 'authorised' ? 'Authorised' : type === 'unauthorised' ? 'Un-authorised' : 'Delayed'} Carts for ${row?.name || ''}`,
-        columns: [],
-        rowData: detailsData,
+        columns: detailsColumns,
+        rowData: res?.Data || [],
+        size: 'xl',
       });
     } catch (error) {
       this.toast.error('Failed to view details');

@@ -305,7 +305,7 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
-          path: 'reports/cart/franchise-report',
+          path: 'reports/franchise-report',
           title: 'Franchise Report',
           type: 'link',
           dirchange: false,

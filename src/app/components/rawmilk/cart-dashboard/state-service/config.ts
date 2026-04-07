@@ -104,40 +104,87 @@ export const gridColumns: GridColumnConfig[] = [
     },
   },
 ];
-export const cartDashboardDummyData = [
+const dayMap: Record<number, string> = {
+  0: 'Sunday',
+  1: 'Monday',
+  2: 'Tuesday',
+  3: 'Wednesday',
+  4: 'Thursday',
+  5: 'Friday',
+  6: 'Saturday',
+};
+
+export const detailsColumns: GridColumnConfig[] = [
   {
-    name: 'Vikash',
-    total_cart: 28,
-    authorised_cart: 22,
-    unauthorised_cart: 4,
-    delay_cart: 2,
+    headerName: '#',
+    field: 'serialNo',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 40,
+    pinned: 'left',
   },
   {
-    name: 'Barra',
-    total_cart: 19,
-    authorised_cart: 15,
-    unauthorised_cart: 2,
-    delay_cart: 2,
+    headerName: 'Adda',
+    field: 'adda_name',
+    valueGetter: (params: any) => {
+      const addaName = params.data?.adda_name || '-';
+      const addaCode = params.data?.adda_code || '-';
+      return `${addaName} (${addaCode})`;
+    },
+    minWidth: 220,
   },
   {
-    name: 'Rahul',
-    total_cart: 34,
-    authorised_cart: 29,
-    unauthorised_cart: 3,
-    delay_cart: 2,
+    headerName: 'Franchise',
+    field: 'franchise_name',
+    valueGetter: (params: any) => {
+      const franchiseName = params.data?.franchise_name || '-';
+      const franchiseCode = params.data?.franchise_code || '-';
+      return `${franchiseName} (${franchiseCode})`;
+    },
+    minWidth: 230,
   },
   {
-    name: 'MCC-12',
-    total_cart: 12,
-    authorised_cart: 9,
-    unauthorised_cart: 1,
-    delay_cart: 2,
+    headerName: 'Cart No',
+    field: 'cart_no',
+    valueGetter: (params: any) => params.data?.cart_no || '-',
+    minWidth: 130,
   },
   {
-    name: 'Franchise-A',
-    total_cart: 41,
-    authorised_cart: 35,
-    unauthorised_cart: 4,
-    delay_cart: 2,
+    headerName: 'Day',
+    field: 'day',
+    valueGetter: (params: any) => {
+      const day = params.data?.day;
+      return dayMap[day as number] || '-';
+    },
+    width: 90,
+  },
+  {
+    headerName: 'Region',
+    field: 'region_code',
+    valueGetter: (params: any) => params.data?.region_code || '-',
+    width: 100,
+  },
+  {
+    headerName: 'Start Time',
+    field: 'start_time',
+    valueGetter: (params: any) => params.data?.start_time || '-',
+    minWidth: 170,
+  },
+  {
+    headerName: 'End Time',
+    field: 'end_time',
+    valueGetter: (params: any) => params.data?.end_time || '-',
+    minWidth: 170,
+  },
+  {
+    headerName: 'Cart Start Time',
+    field: 'cart_start_time',
+    valueGetter: (params: any) => params.data?.cart_start_time || '-',
+    minWidth: 180,
+  },
+  {
+    headerName: 'Cart end Time',
+    field: 'cart_end_time',
+    valueGetter: (params: any) => params.data?.cart_end_time || '-',
+    minWidth: 180,
   },
 ];

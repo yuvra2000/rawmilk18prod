@@ -1,0 +1,122 @@
+import { computed, inject, signal } from '@angular/core';
+import {
+  GridConfig,
+  GridColumnConfig,
+} from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import { franchiseColumns, filterfields } from './config';
+import {
+  createFormData,
+  GroupId,
+  handleApiResponse,
+  handleSessionExpiry,
+  supplier_id,
+  token,
+  userType,
+} from '../../../../shared/utils/shared-utility.utils';
+import { firstValueFrom } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { createReportParams, mapVehicleListToOptions } from './utils';
+import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
+import { FranchiseReportService } from '../franchise-report.service';
+
+export class InitialData {
+  addaList?: any[];
+  franchiseList?: any[];
+  cartReportData?: any[];
+}
+export class CartReportExceptionStore {
+  private toast = inject(ToastrService);
+  private spinner = inject(NgxSpinnerService);
+  private franchiseService = inject(FranchiseReportService);
+  private modal = inject(UniversalModalService);
+  date = signal<string>('');
+  lastFilterValues = signal<any>(null);
+  initialData = signal<InitialData>({
+    addaList: [],
+    franchiseList: [],
+  });
+  columnConfig = computed<GridConfig>(() => ({
+    theme: 'alpine',
+    columns: franchiseColumns,
+    pagination: true,
+    paginationPageSize: 50,
+    enableSearch: true,
+    enableExport: true,
+    context: {
+      componentParent: this,
+    },
+  }));
+  rowData = computed<any[]>(() => this.initialData().cartReportData || []);
+  filterfields = computed<any[]>(() =>
+    filterfields(this.initialData().addaList, this.initialData().franchiseList),
+  );
+  async loadInitialData() {
+    this.spinner.show();
+    try {
+      const vehicleParams = createFormData(token, {});
+      const listParams = createFormData(token, {
+        group_id: GroupId,
+      });
+      const res: any = await firstValueFrom(
+        this.franchiseService.initializePageData(vehicleParams, listParams),
+      );
+      if (
+        handleSessionExpiry(res?.reportData, this.toast) ||
+        handleSessionExpiry(res?.masterOptions, this.toast)
+      ) {
+        return;
+      }
+      console.log('Vehicle list', res.vehicleList?.VehicleList);
+      this.initialData.set({
+        addaList: res.addaList?.Data,
+        franchiseList: res.franchiseList?.Data,
+      });
+    } catch (error: any) {
+      this.toast.error(error?.error?.message || 'Error loading initial data:');
+    } finally {
+      this.spinner.hide();
+    }
+  }
+  onFormSubmit(data: any) {
+    const selectedFrom =
+      data?.from || new Date().toISOString().substring(0, 10);
+    const selectedTo = data?.to;
+
+    this.initialData.update((prev) => ({
+      ...prev,
+      from: selectedFrom,
+      to: selectedTo,
+    }));
+
+    this.lastFilterValues.set(data);
+
+    const params = createReportParams(selectedFrom, selectedTo, data);
+
+    this.loadReportData(params);
+  }
+
+  private async loadReportData(params: FormData) {
+    this.spinner.show();
+    try {
+      const res: any = await firstValueFrom(
+        this.franchiseService.getListFranchiseReport(params),
+      );
+      if (handleSessionExpiry(res, this.toast)) {
+        return;
+      }
+      const rows = res?.data || res?.Data || [];
+      if (rows.length === 0) {
+        this.toast.info('No data found for the selected criteria.');
+      }
+      this.initialData.update((prev) => ({
+        ...prev,
+        cartReportData: res?.Data || { columns: [], data: [] },
+      }));
+    } catch (error: any) {
+      this.toast.error(error?.error?.message || 'Error loading report data:');
+    } finally {
+      this.spinner.hide();
+    }
+  }
+}

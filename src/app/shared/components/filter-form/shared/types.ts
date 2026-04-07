@@ -11,6 +11,7 @@ export type FieldType =
   | 'text'
   | 'date'
   | 'select'
+  | 'toggle'
   | 'checkbox'
   | 'radio'
   | 'number'
@@ -96,6 +97,15 @@ export interface FieldConfig {
   colorWidth?: string; // Custom width for color select (e.g. '100%', '50px')
   optionColorWidth?: string;
   showButtons?: boolean;
+  hideLabel?: boolean;
+  toggleLabels?: {
+    on: string;
+    off: string;
+  };
+  toggleValues?: {
+    on: any;
+    off: any;
+  };
 }
 
 export interface SpkOptions {

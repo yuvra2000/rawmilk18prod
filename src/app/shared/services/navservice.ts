@@ -165,7 +165,7 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
-          path: 'dairy/cart-dashboard',
+          path: 'cart-dashboard',
           title: 'Cart Dashboard',
           type: 'link',
           dirchange: false,

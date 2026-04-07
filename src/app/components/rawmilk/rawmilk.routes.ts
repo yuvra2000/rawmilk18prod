@@ -38,6 +38,14 @@ export const rawMilkRoutes: Routes = [
         title: 'Remote Lock/Unlock',
       },
       {
+        path: 'load-planning',
+        loadComponent: () =>
+          import('./load-planning/load-planning.component').then(
+            (m) => m.LoadPlanningComponent,
+          ),
+        title: 'Load Planning',
+      },
+      {
         path: 'Allocate',
         loadComponent: () =>
           import('./allocated-indent/allocated-indent.component').then(

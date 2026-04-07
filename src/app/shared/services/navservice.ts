@@ -117,6 +117,12 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
+          path: 'remote-lock-unlock',
+          title: 'Remote Lock/Unlock',
+          type: 'link',
+          dirchange: false,
+        },
+        {
           path: 'Allocate',
           title: 'Allocated Indent',
           type: 'link',

@@ -30,6 +30,14 @@ export const rawMilkRoutes: Routes = [
         title: 'View Indent (Supplier)',
       },
       {
+        path: 'remote-lock-unlock',
+        loadComponent: () =>
+          import('./remote-lock-unlock/remote-lock-unlock.component').then(
+            (m) => m.RemoteLockUnlockComponent,
+          ),
+        title: 'Remote Lock/Unlock',
+      },
+      {
         path: 'Allocate',
         loadComponent: () =>
           import('./allocated-indent/allocated-indent.component').then(

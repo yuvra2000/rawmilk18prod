@@ -21,6 +21,10 @@ export class LoadPlanningService {
     return this.masterRequest.postFormData('/rm_LoadPlanningRepo', payload);
   }
 
+  rmMarkVehicle(payload: any): Observable<any> {
+    return this.masterRequest.postFormData('/rm_markVehicle', payload);
+  }
+
   getFilterOptions(indentPayload: any, tankerPayload: any): Observable<any> {
     return forkJoin({
       indentMaster: this.getCreateIndentMaster(indentPayload),

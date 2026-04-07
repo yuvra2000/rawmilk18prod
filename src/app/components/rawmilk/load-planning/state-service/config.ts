@@ -1,5 +1,9 @@
+import {
+  ActionCellRendererComponent,
+  GridColumnConfig,
+} from "../../../../shared/components/ag-grid/ag-grid/ag-grid.component";
 import { FieldConfig, Option } from "../../../../shared/components/filter-form/filter-form.component";
-import { GridColumnConfig } from "../../../../shared/components/ag-grid/ag-grid/ag-grid.component";
+import { colors } from "../../../../shared/utils/constants";
 
 export const filterFields = (
     transporterList: Option[] = [],
@@ -65,14 +69,66 @@ export const filterFields = (
         ]
     }
 ];
-export const loadPlanningColumns: GridColumnConfig[] = [
-    { headerName: 'S.No.', field: 'serialNo', valueGetter: (params: any) => params.node.rowIndex + 1, width: 80, pinned: 'left' },
-    { headerName: 'Vehicle No.', field: 'VehicleNum' },
-    { headerName: 'Last Dispatch Date', field: 'LastDisDate' },
-    { headerName: 'Last Dispatch Plant', field: 'Destination' },
-    { headerName: 'Last Dispatch close Date', field: 'LastDisCloseDate' },
-    { headerName: 'Source', field: 'Source' },
-    { headerName: 'Destination', field: 'Destination' },
-    { headerName: 'Current Status', field: 'CurrentStatus' },
-    { headerName: 'Action', field: 'action' }
+export const statusModalFields: FieldConfig[] = [
+  {
+    name: 'currentStatus',
+    label: 'Status',
+    type: 'select',
+    placeholder: 'Select Status',
+    required: true,
+    emitValueChanges: true,
+    options: [
+      { id: 'BREAKDOWN', name: 'Break Down' },
+      { id: 'NOTAVAIL', name: 'Not Available' },
+      { id: 'VACANT', name: 'Vacant' },
+      { id: 'ASSIGNED', name: 'Assigned' },
+    ],
+  }
 ];
+
+export const assignedField: FieldConfig = {
+  name: 'assigned',
+  label: 'Mpc/Mcc',
+  type: 'select',
+  placeholder: 'Select Mpc/Mcc',
+  required: true,
+  options: []
+};
+
+export const loadPlanningColumns: GridColumnConfig[] = [
+  {
+    headerName: 'S.No.',
+    field: 'serialNo',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 80,
+    pinned: 'left',
+  },
+  { headerName: 'Vehicle No.', field: 'VehicleNum' },
+  { headerName: 'Last Dispatch Date', field: 'LastDisDate' },
+  { headerName: 'Last Dispatch Plant', field: 'Destination' },
+  { headerName: 'Last Dispatch close Date', field: 'LastDisCloseDate' },
+  { headerName: 'Source', field: 'Source' },
+  { headerName: 'Destination', field: 'Destination' },
+  { headerName: 'Current Status', field: 'CurrentStatus' },
+];
+
+export const actionColumn: GridColumnConfig = {
+  headerName: 'Action',
+  field: 'action',
+  cellRenderer: ActionCellRendererComponent,
+  cellRendererParams: {
+    actions: [
+      {
+        icon: 'fa-solid fa-pen-to-square',
+        action: 'edit',
+        tooltip: 'Change Status',
+        onClick: (data: any, node: any, params: any) => {
+          if (params.context?.componentParent) {
+            params.context.componentParent.onStatusChange(params.data);
+          }
+        },
+        iconStyle: { color: colors.primary, cursor: 'pointer' },
+      },
+    ],
+  },
+};

@@ -68,6 +68,34 @@
             ></path>
           </svg>
         </a>
+        <div class="page-header-breadcrumb">
+          <h1 class="page-title fs-18 header-breadcrumb">
+            {{ formatTitle(routerEvents[routerEvents.length - 1]) }}
+          </h1>
+          <ol class="breadcrumb">
+            @for (path of routerEvents; track path; let i = $index) {
+              <li
+                [ngClass]="{
+                  active: routerEvents.length - 1 == i,
+                  'custom-color': i === routerEvents.length - 1,
+                }"
+                class="breadcrumb-item"
+              >
+                <a
+                  [ngStyle]="{
+                    color:
+                      i === routerEvents.length - 1
+                        ? '#333335'
+                        : 'defaultColor',
+                  }"
+                  href="javascript:void(0);"
+                >
+                  {{ path | titlecase }}
+                </a>
+              </li>
+            }
+          </ol>
+        </div>
         <!-- End::header-link -->
       </div>
       <!-- End::header-element -->
@@ -212,11 +240,9 @@
         <!-- End::header-link -->
       </li>
       <!-- Start::header-element -->
-      <li class="header-element header-theme-mode">
-        <!-- Start::header-link|layout-setting -->
+      <!-- <li class="header-element header-theme-mode">
         <a href="javascript:void(0);" class="header-link layout-setting">
           <span class="light-layout" (click)="updateTheme('dark')">
-            <!-- Start::header-link-icon -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="header-link-icon"
@@ -232,10 +258,8 @@
                 stroke-width="16"
               />
             </svg>
-            <!-- End::header-link-icon -->
           </span>
           <span class="dark-layout" (click)="updateTheme('light')">
-            <!-- Start::header-link-icon -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="header-link-icon"
@@ -341,11 +365,9 @@
                 stroke-width="16"
               />
             </svg>
-            <!-- End::header-link-icon -->
           </span>
         </a>
-        <!-- End::header-link|layout-setting -->
-      </li>
+      </li> -->
       <!-- End::header-element -->
 
       <!-- Start::header-element -->
@@ -362,14 +384,14 @@
         >
           <div class="d-flex align-items-center">
             <div class="me-xl-2 me-0">
-              <img
+              <!-- <img
                 src="./assets/images/faces/2.jpg"
                 alt="img"
                 class="avatar avatar-sm avatar-rounded"
-              />
+              /> -->
             </div>
             <div class="d-xl-block d-none lh-1">
-              <span class="fw-medium lh-1">Mr. Jack</span>
+              <span class="fw-medium lh-1"> {{ UserName }}</span>
             </div>
           </div>
         </a>
@@ -381,8 +403,7 @@
         >
           <li>
             <div class="py-2 px-3 text-center">
-              <span class="fw-semibold"> Mr.Jack Miller </span>
-              <span class="d-block fs-12 text-muted">UI/UX Designer</span>
+              <span class="fw-semibold"> {{ UserName }}</span>
             </div>
           </li>
           <li>
@@ -392,7 +413,7 @@
               ><i class="ti ti-user text-primary me-2 fs-16"></i>Profile</a
             >
           </li>
-          <li>
+          <!-- <li>
             <a
               class="dropdown-item d-flex align-items-center"
               [routerLink]="['/pages/email/mailapp']"
@@ -400,7 +421,7 @@
               <i class="ti ti-mail text-secondary me-2 fs-16"></i>Inbox</a
             >
           </li>
-          <li>
+         <li>
             <a
               class="dropdown-item d-flex align-items-center"
               [routerLink]="['/pages/todolist']"
@@ -414,18 +435,18 @@
               [routerLink]="['/pages/email/mail-settings']"
               ><i class="ti ti-settings text-info me-2 fs-16"></i>Settings</a
             >
-          </li>
+          </li> 
           <li>
             <a
               class="dropdown-item d-flex align-items-center"
               [routerLink]="['/pages/chat']"
               ><i class="ti ti-headset text-warning me-2 fs-16"></i>Support</a
             >
-          </li>
+          </li>-->
           <li class="py-2 px-3">
             <a
               class="btn btn-primary btn-sm w-100"
-              [routerLink]="['/authentication/sign-up/basic']"
+              href="https://secutrak.in/logout"
               >Log Out</a
             >
           </li>

@@ -93,6 +93,7 @@ export class ViewIndentComponent implements OnInit {
     },
     columns: [],
   });
+
   usertype = signal<any>('');
   ngOnInit() {
     this.token = localStorage.getItem('AccessToken') || '';
@@ -115,6 +116,7 @@ export class ViewIndentComponent implements OnInit {
           : viewIndentGridColumns,
     }));
   }
+
   async loadInitialData() {
     try {
       forkJoin({

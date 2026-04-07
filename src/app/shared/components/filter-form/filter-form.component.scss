@@ -362,3 +362,8 @@ textarea.disabled-field {
 ::ng-deep .formarray-item .ng-select .ng-value-container {
   min-width: 0;
 }
+::ng-deep {
+  .form-label {
+    color: var(--primary-color);
+  }
+}

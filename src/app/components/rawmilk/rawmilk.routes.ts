@@ -93,6 +93,22 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Dispatch Planning',
       },
+      {
+        path: 'eta-report',
+        loadComponent: () =>
+          import('./eta-report/eta-report.component').then(
+            (m) => m.EtaReportComponent,
+          ),
+        title: 'ETA Report',
+      },
+      {
+        path: 'summarized-report',
+        loadComponent: () =>
+          import('./summarized-report/summarized-report.component').then(
+            (m) => m.SummarizedReportComponent,
+          ),
+        title: 'Summarized Report',
+      },
     ],
   },
   {
@@ -140,7 +156,7 @@ export const rawMilkRoutes: Routes = [
       },
       {
         path: 'lid-report',
-        loadComponent: () => 
+        loadComponent: () =>
           import('./lid-trip-report/lid-trip-report.component').then(
             (m) => m.LidTripReportComponent,
           ),
@@ -148,12 +164,12 @@ export const rawMilkRoutes: Routes = [
       },
       {
         path: 'e-lock-report',
-        loadComponent: () => 
+        loadComponent: () =>
           import('./elock-trip-report/elock-trip-report.component').then(
             (m) => m.ElockTripReportComponent,
           ),
         title: 'E-Lock Report',
-      }
+      },
     ],
   },
 ];

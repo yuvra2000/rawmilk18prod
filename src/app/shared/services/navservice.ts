@@ -180,8 +180,14 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
-          path: 'production-planning/eta-report/',
+          path: 'eta-report',
           title: 'ETA Report',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'summarized-report',
+          title: 'Summarized Report',
           type: 'link',
           dirchange: false,
         },

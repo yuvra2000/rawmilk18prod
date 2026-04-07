@@ -166,8 +166,8 @@ export class ViewIndentComponent implements OnInit {
   async onFormSubmit(data: any) {
     const params = {
       AccessToken: this.token,
-      from: data.from,
-      to: data.to,
+      FromDate: data.from,
+      ToDate: data.to,
       GroupId: localStorage.getItem('GroupId') || '',
       UserType: this.usertype(),
       SubRole: '',

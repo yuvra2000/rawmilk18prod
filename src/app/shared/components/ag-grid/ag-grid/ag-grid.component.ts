@@ -58,7 +58,13 @@ import {
   // ICellRendererAngularComp
 } from 'ag-grid-community';
 // import { MenuModule } from '@ag-grid-enterprise/menu';
-import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  debounceTime,
+  distinctUntilChanged,
+  config,
+} from 'rxjs';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 // import { FleetCellRendererComponent } from '../../../../cv/common/manage/route-fleet-assignment/clickable-chips-renderer';
 import {
@@ -137,6 +143,7 @@ export interface GridConfig {
   // enableSideBar?: boolean;
   tooltipComponent?: any;
   context?: any;
+  isFitGridWidth?: boolean;
 }
 
 export interface GridEvents {
@@ -856,7 +863,8 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       rowBuffer: 30,
       autoSizeStrategy: this.config().autoSizeColumns
         ? { type: 'fitCellContents' }
-        : { type: 'fitGridWidth' },
+        : undefined,
+
       cellSelection: this.config().enableRangeSelection || false,
       rowHeight: this.config().rowHeight,
       headerHeight: this.config().headerHeight,
@@ -893,7 +901,11 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       }
       //yeh place thodi doubtful hai
     }
-    // console.log('Final grid options:', options);
+    debugger;
+    if (this.config().isFitGridWidth) {
+      options.autoSizeStrategy = { type: 'fitGridWidth' };
+    }
+    console.log('Final grid options:', options);
     return options;
   });
   frameworkComponents = {

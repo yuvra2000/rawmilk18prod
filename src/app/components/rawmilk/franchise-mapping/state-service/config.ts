@@ -37,7 +37,6 @@ export const franchiseMappingColumns: GridColumnConfig[] = [
   {
     headerName: 'Status',
     field: 'status',
-    minWidth: 140,
     valueGetter: (params: any) =>
       Number(params.data?.status) == 1 ? 'Assign' : 'Deassign',
     cellRenderer: StatusCellRendererComponent,
@@ -88,32 +87,24 @@ export const editFields = (regionList: any[]): FieldConfig[] => [
     options: statusList,
   },
 ];
-export const addFields = (regionList: any[]): FieldConfig[] => [
+export const addFranchiseFields = (
+  franchiseList: any[],
+  addaList: any[],
+): FieldConfig[] => [
   {
-    name: 'name',
-    type: 'text',
-    label: 'Adda Name',
-    placeholder: 'Enter Adda Name',
-  },
-  {
-    name: 'code',
-    type: 'text',
-    label: 'Code',
-    placeholder: 'Code',
-  },
-  {
-    name: 'latlng',
-    type: 'text',
-    label: 'Geo Coordinates',
-    required: true,
-    placeholder: 'Lat,Lng',
-  },
-  {
-    name: 'region_code',
+    name: 'franchise_code',
     type: 'select',
-    label: 'Region',
-    placeholder: 'Select Region',
-    options: regionList,
+    label: 'Franchise',
+    placeholder: 'Select Franchise',
+    options: franchiseList,
+    required: true,
+  },
+  {
+    name: 'adda_code',
+    type: 'select',
+    label: 'Adda',
+    placeholder: 'Select Adda',
+    options: addaList,
     required: true,
   },
 ];

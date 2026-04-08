@@ -19,6 +19,18 @@ export class FranchiseMappingService {
       params,
     );
   }
+  addFranchiseAssignment(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      '/addFranchiseAssignment',
+      params,
+    );
+  }
+  assignDeAssign(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      '/editFranchiseAssignment',
+      params,
+    );
+  }
   initialData(params: any): Observable<any> {
     return forkJoin({
       addaList: this.getListAdda(params),

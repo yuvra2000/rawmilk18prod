@@ -35,6 +35,7 @@ export class FranchiseStore {
     context: {
       componentParent: this,
     },
+    isFitGridWidth: true,
   }));
   async loadInitialData() {
     try {

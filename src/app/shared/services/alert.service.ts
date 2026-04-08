@@ -98,6 +98,50 @@ export class AlertService {
 
     return result.isConfirmed;
   }
+  async confirmInfo(
+    title: string = 'Information',
+    text: string = 'This is some information.',
+    confirmButtonText: string = 'OK',
+    cancelButtonText: string = 'Cancel',
+    iconColor: string = '#17a2b8', // Default to info color
+    color: 'info' | 'warning' | 'error' | 'success' | 'question' = 'question',
+  ): Promise<boolean> {
+    const result = await Swal.fire({
+      title,
+      text,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText,
+      cancelButtonText,
+      reverseButtons: true,
+    });
+
+    return result.isConfirmed;
+  }
+  async confirmQuestion(
+    title: string = 'Information',
+    text: string = 'This is some information.',
+    confirmButtonText: string = 'OK',
+    cancelButtonText: string = 'Cancel',
+    iconColor: string = '#17a2b8', // Default to info color
+    color: 'info' | 'warning' | 'error' | 'success' | 'question' = 'question',
+  ): Promise<boolean> {
+    const result = await Swal.fire({
+      title,
+      text,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText,
+      cancelButtonText,
+      reverseButtons: true,
+    });
+
+    return result.isConfirmed;
+  }
 
   /**
    * Shows a SweetAlert2 success message after an action

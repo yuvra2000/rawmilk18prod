@@ -163,6 +163,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Cart Mapping',
       },
+      {
+        path: 'agreement-info',
+        loadComponent: () =>
+          import('./agreement-info/agreement-info.component').then(
+            (m) => m.AgreementInfoComponent,
+          ),
+        title: 'Agreement Info',
+      },
     ],
   },
   {

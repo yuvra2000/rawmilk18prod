@@ -74,10 +74,20 @@ export class ElockTripReportComponent implements OnInit {
 
   onFormSubmit(formData: any) {
     console.log('Form Data:', formData);
+    const vehicleList = formData.vehicleNumber.map((v: any) => v.ImeiNo + '$' + v.VehicleId).join(',');
+    
+    // Format dates to yyyy-mm-dd hh:mm:ss
+    const formatDate = (dateStr: string): string => {
+      if (!dateStr) return '';
+      let str = String(dateStr).replace('T', ' ');
+      if (str.split(':').length === 2) str += ':00'; // Append seconds if missing
+      return str;
+    };
+
     const payload = createFormData(this.token, {
-      from_date: formData.fromDate || '2026-04-06 00:00:00',
-      to_date: formData.toDate || '2026-04-06 23:55:55',
-      vehicle: formData?.vehicleNumber?.ImeiNo + '$' + formData?.vehicleNumber?.VehicleId,
+      from_date: formData.fromDate ? formatDate(formData.fromDate) : '2026-04-08 00:00:00',
+      to_date: formData.toDate ? formatDate(formData.toDate) : '2026-04-08 23:55:55',
+      vehicle: vehicleList,
       otp_for: formData?.otpFor?.id,
       status: formData?.status?.id
     });

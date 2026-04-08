@@ -856,7 +856,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       rowBuffer: 30,
       autoSizeStrategy: this.config().autoSizeColumns
         ? { type: 'fitCellContents' }
-        : undefined,
+        : { type: 'fitGridWidth' },
       cellSelection: this.config().enableRangeSelection || false,
       rowHeight: this.config().rowHeight,
       headerHeight: this.config().headerHeight,

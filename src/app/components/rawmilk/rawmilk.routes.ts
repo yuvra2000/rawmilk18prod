@@ -139,6 +139,14 @@ export const rawMilkRoutes: Routes = [
           import('./adda/adda.component').then((m) => m.AddaComponent),
         title: 'Adda',
       },
+      {
+        path: 'franchise',
+        loadComponent: () =>
+          import('./franchise/franchise.component').then(
+            (m) => m.FranchiseComponent,
+          ),
+        title: 'Franchise',
+      },
     ],
   },
   {

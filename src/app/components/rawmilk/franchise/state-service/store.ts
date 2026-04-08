@@ -2,37 +2,32 @@ import { computed, inject, signal } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
-import { AddaService } from '../adda.service';
 import { GridConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { firstValueFrom } from 'rxjs';
 import { addParams, createMasterParams, editParams } from './utils';
 import {
-  createFormData,
-  GroupId,
   handleApiResponse,
   handleSessionExpiry,
-  token,
 } from '../../../../shared/utils/shared-utility.utils';
-import { addaColumns, addFields, editFields } from './config';
+import { franchiseColumns, addFields, editFields } from './config';
 import { AlertService } from '../../../../shared/services/alert.service';
+import { FranchiseService } from '../franchise.service';
 interface InitialData {
-  addaList: any[];
-  regionList?: any[];
+  franchiseList: any[];
 }
 export class AddaStore {
   private toast = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private modal = inject(UniversalModalService);
-  private addaService = inject(AddaService);
+  private franchiseService = inject(FranchiseService);
   private alertService = inject(AlertService);
-  rowData = computed(() => this.initialData().addaList || []);
+  rowData = computed(() => this.initialData().franchiseList || []);
   initialData = signal<InitialData>({
-    addaList: [],
-    regionList: [],
+    franchiseList: [],
   });
   columnConfig = computed<GridConfig>(() => ({
     theme: 'alpine',
-    columns: addaColumns,
+    columns: franchiseColumns,
     pagination: true,
     paginationPageSize: 50,
     enableSearch: true,
@@ -46,21 +41,13 @@ export class AddaStore {
       this.spinner.show();
       const params = createMasterParams();
       const res: any = await firstValueFrom(
-        this.addaService.initialData(params),
+        this.franchiseService.getListFranchise(params),
       );
       if (handleSessionExpiry(res, this.toast)) {
         return;
       }
-      handleApiResponse(res?.addaList, this.toast);
-      handleApiResponse(res?.regionList, this.toast);
       this.initialData.set({
-        addaList: res.addaList?.Data || [],
-        regionList:
-          res.regionList?.Data?.map((r: any) => ({
-            ...r,
-            name: r.zone_code,
-            id: r.zone_code,
-          })) || [],
+        franchiseList: res.Data || [],
       });
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Something went wrong');
@@ -71,9 +58,9 @@ export class AddaStore {
   onEdit(data: any) {
     console.log('Edit data', data);
     this.modal.openForm({
-      title: 'Edit Adda',
+      title: 'Edit Franchise',
       mode: 'form',
-      fields: editFields(this.initialData().regionList || []),
+      fields: editFields(),
       initialData: {
         ...data,
         status: data.status === 1 ? 'Active' : 'Deactive',
@@ -85,13 +72,6 @@ export class AddaStore {
   }
 
   async saveForm(formData: any, data: any, type: 'edit' | 'add') {
-    console.log('Form Data from saveform', formData);
-    const latlng = (formData?.latlng ?? formData?.geoCord ?? '').trim();
-    const latLngRegex =
-      /^-?(?:90(?:\.0+)?|[1-8]?\d(?:\.\d+)?),\s*-?(?:180(?:\.0+)?|1[0-7]\d(?:\.\d+)?|\d{1,2}(?:\.\d+)?)$/;
-    if (!latLngRegex.test(latlng)) {
-      throw new Error('Invalid Geo Coordinates format');
-    }
     if (type == 'edit') {
       const isConfirmed = await this.alertService.confirmEdit(
         'Do you want to edit this Adda?',
@@ -109,8 +89,8 @@ export class AddaStore {
       this.spinner.show();
       const res: any = await firstValueFrom(
         type == 'edit'
-          ? this.addaService.editAdda(payload)
-          : this.addaService.addAdda(payload),
+          ? this.franchiseService.editFranchise(payload)
+          : this.franchiseService.addFranchise(payload),
       );
 
       const isSuccess = handleApiResponse(res, this.toast);
@@ -128,9 +108,9 @@ export class AddaStore {
   }
   addAdda() {
     this.modal.openForm({
-      title: 'Add Adda',
+      title: 'Add Franchise',
       mode: 'form',
-      fields: addFields(this.initialData().regionList || []),
+      fields: addFields(),
       onSave: async (formData: any) => {
         await this.saveForm(formData, null, 'add');
       },

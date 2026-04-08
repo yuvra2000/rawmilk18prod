@@ -125,6 +125,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Summarized Report',
       },
+      {
+        path: 'cart-dashboard',
+        loadComponent: () =>
+          import('./cart-dashboard/cart-dashboard.component').then(
+            (m) => m.CartDashboardComponent,
+          ),
+        title: 'Cart Dashboard',
+      },
     ],
   },
   {

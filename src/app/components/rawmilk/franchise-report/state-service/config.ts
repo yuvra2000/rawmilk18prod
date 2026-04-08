@@ -100,7 +100,7 @@ export const franchiseColumns: GridColumnConfig[] = [
     width: 90,
   },
   {
-    headerName: 'Franchisee Name',
+    headerName: 'Franchise Name',
     field: 'FranchiseeName',
     valueGetter: (params: any) => params.data?.FranchiseeName || '-',
     minWidth: 220,

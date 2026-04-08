@@ -15,7 +15,7 @@ export class FranchiseReportService {
     return this.masterRequestService.postFormData('/listFranchise', params);
   }
   getListFranchiseReport(params: any): Observable<any> {
-    return this.masterRequestService.postFormData('/listFranchise', params);
+    return this.masterRequestService.postFormData('/franchiseReport', params);
   }
   // Combined method using forkJoin for parallel API calls
   initializePageData(vehicleParams: any, listParams: any): Observable<any> {

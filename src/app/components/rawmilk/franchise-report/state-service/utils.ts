@@ -31,7 +31,7 @@ export function createReportParams(
     toDate: dateTo || dateFrom,
     franchise_code: filterValues?.franchise_code?.code || '',
     adda_code: filterValues?.adda_code?.code || '',
-    cart_no: filterValues?.cart_no?.id || '',
+    exception_type: filterValues?.exception_type?.id || '',
     group_id: GroupId,
   });
 }

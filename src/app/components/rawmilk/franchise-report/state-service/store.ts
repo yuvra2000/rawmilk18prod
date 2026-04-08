@@ -23,7 +23,7 @@ import { FranchiseReportService } from '../franchise-report.service';
 export class InitialData {
   addaList?: any[];
   franchiseList?: any[];
-  cartReportData?: any[];
+  franchiseReportData?: any[];
 }
 export class CartReportExceptionStore {
   private toast = inject(ToastrService);
@@ -47,7 +47,7 @@ export class CartReportExceptionStore {
       componentParent: this,
     },
   }));
-  rowData = computed<any[]>(() => this.initialData().cartReportData || []);
+  rowData = computed<any[]>(() => this.initialData().franchiseReportData || []);
   filterfields = computed<any[]>(() =>
     filterfields(this.initialData().addaList, this.initialData().franchiseList),
   );
@@ -111,7 +111,7 @@ export class CartReportExceptionStore {
       }
       this.initialData.update((prev) => ({
         ...prev,
-        cartReportData: res?.Data || { columns: [], data: [] },
+        franchiseReportData: res?.Data || { columns: [], data: [] },
       }));
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Error loading report data:');

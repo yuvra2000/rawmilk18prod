@@ -608,7 +608,7 @@ export const tripDashboardGird: GridColumnConfig[] = [
       span.textContent = params.value;
       span.addEventListener('click', (event: any) => {
         if (params.context.componentParent) {
-          params.context.componentParent.onVehicleClick(params);
+          params.context.componentParent.onVehicleClick(params.data);
         }
       });
       return span;
@@ -867,6 +867,7 @@ export const tripDashboardGird: GridColumnConfig[] = [
               params.data.Mcc,
               params.data.Plant,
               params.data.Supplier,
+              regionKey,
             );
           }
         });
@@ -921,3 +922,92 @@ function isKeyClickable(key: any): boolean {
   const keyStr = String(key);
   return keyStr === 'MH' || keyStr === 'DH';
 }
+
+export const lockstatuscolumn: GridColumnConfig[] = [
+  {
+    headerName: 'SL',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 80,
+  },
+  {
+    headerName: 'Vehicle',
+    field: 'Vehicle',
+  },
+  {
+    headerName: 'OTP for',
+    field: 'OTPfor',
+  },
+  {
+    headerName: 'OTP Type',
+    field: 'otpType',
+  },
+  {
+    headerName: 'User',
+    field: 'user',
+  },
+  {
+    headerName: 'MobileIMENo',
+    field: 'MobileIMENo',
+  },
+  {
+    headerName: 'Action Time',
+    field: 'actionTym',
+  },
+  {
+    headerName: 'Location Action',
+    field: 'location',
+  },
+  {
+    headerName: 'View Images',
+    field: 'view',
+    cellRenderer: (params: any) => {
+      return `<span style="color: blue; cursor: pointer;">view</span>`;
+    },
+  },
+];
+
+export const alertDetailColumns: GridColumnConfig[] = [
+  {
+    headerName: 'Sr No.',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 90,
+  },
+  { headerName: 'Alert Type', field: 'alert_type' },
+  { headerName: 'Dispatch No.', field: 'shipment_no' },
+  { headerName: 'Dispatch Date', field: 'run_date' },
+  { headerName: 'Plant', field: 'plant' },
+  { headerName: 'MPC', field: 'mcc' },
+  { headerName: 'Mcc', field: 'supplier' },
+  { headerName: 'Start Time', field: 'start_time' },
+  { headerName: 'End Time', field: 'end_time' },
+  { headerName: 'Duration', field: 'voilation_time' },
+];
+export const regularLocationColumns: GridColumnConfig[] = [
+  // ✅ Normal Location
+  {
+    headerName: 'Location',
+    field: 'location',
+    cellRenderer: () =>
+      `<i class="fa fa-map-marker" style="font-size:20px;color:#1d4380;cursor:pointer"></i>`,
+    tooltipValueGetter: (params: any) => params.data?.location || 'NA',
+  },
+];
+export const lockUnlockLocationColumns: GridColumnConfig[] = [
+  // ✅ Lock Location
+  {
+    headerName: 'Lock Location',
+    field: 'lock_location',
+    cellRenderer: () =>
+      `<i class="fa fa-map-marker" style="font-size:20px;color:#1d4380;cursor:pointer"></i>`,
+    tooltipValueGetter: (params: any) => params.data?.lock_location || 'NA',
+  },
+
+  // ✅ Unlock Location
+  {
+    headerName: 'Unlock Location',
+    field: 'unlock_location',
+    cellRenderer: () =>
+      `<i class="fa fa-map-marker" style="font-size:20px;color:#1d4380;cursor:pointer"></i>`,
+    tooltipValueGetter: (params: any) => params.data?.unlock_location || 'NA',
+  },
+];

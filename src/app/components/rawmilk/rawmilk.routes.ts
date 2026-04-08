@@ -140,7 +140,7 @@ export const rawMilkRoutes: Routes = [
       },
       {
         path: 'lid-report',
-        loadComponent: () => 
+        loadComponent: () =>
           import('./lid-trip-report/lid-trip-report.component').then(
             (m) => m.LidTripReportComponent,
           ),
@@ -148,12 +148,18 @@ export const rawMilkRoutes: Routes = [
       },
       {
         path: 'e-lock-report',
-        loadComponent: () => 
+        loadComponent: () =>
           import('./elock-trip-report/elock-trip-report.component').then(
             (m) => m.ElockTripReportComponent,
           ),
         title: 'E-Lock Report',
-      }
+      },
+      {
+        path: 'travelreport',
+        loadComponent: () =>
+          import('./travel/travel.component').then((m) => m.TravelComponent),
+        title: 'Travel Report',
+      },
     ],
   },
 ];

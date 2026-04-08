@@ -1,0 +1,8 @@
+<app-collapse-wrapper>
+  <filter-form
+    #travelform
+    [dynamicFields]="filterfields()"
+    (formSubmit)="onFormSubmit($event)"
+  >
+  </filter-form>
+</app-collapse-wrapper>

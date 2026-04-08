@@ -9,6 +9,7 @@ import {
   GroupId,
   handleApiResponse,
   handleSessionExpiry,
+  mapVehicleListToOptions,
   supplier_id,
   token,
   userType,
@@ -16,7 +17,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { createReportParams, mapVehicleListToOptions } from './utils';
+import { createReportParams } from './utils';
 import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
 
 import { CartReportService } from '../cart-report.service';

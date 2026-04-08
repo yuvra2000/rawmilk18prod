@@ -155,6 +155,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Franchise Mapping',
       },
+      {
+        path: 'cart-mapping',
+        loadComponent: () =>
+          import('./cart-mapping/cart-mapping.component').then(
+            (m) => m.CartMappingComponent,
+          ),
+        title: 'Cart Mapping',
+      },
     ],
   },
   {

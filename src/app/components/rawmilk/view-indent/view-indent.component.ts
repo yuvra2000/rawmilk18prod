@@ -146,14 +146,15 @@ export class ViewIndentComponent implements OnInit {
             plantList: result?.masterData.PlantSupplier || [],
           }));
           this.setupFieldOptions();
-          this.indentRowData.set(result?.indentData.Indents || []);
-          handleApiResponse(
-            result?.indentData,
-            this.toastService,
-            undefined,
-            undefined,
-            'Indent data loaded successfully',
-          );
+          if (result?.indentData.Indents.length === 0) {
+            this.toastService.info(
+              'No indent data found for the selected criteria',
+            );
+            this.indentRowData.set(result?.indentData.Indents);
+          } else {
+            this.toastService.success('Indent data loaded successfully');
+            this.indentRowData.set([]);
+          }
         });
     } catch (error: any) {
       handleApiError(

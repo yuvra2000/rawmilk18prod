@@ -4,13 +4,13 @@
   [config]="store.columnConfig()"
   (selectionChanged)="store.onRowSelection($event)"
 >
-  <h5 class="text-center table-heading">Franchise Mapping list</h5>
+  <h5 class="text-center table-heading">Cart Mapping list</h5>
   <div slot="right" class="d-flex gap-2">
     <app-action-button
-      name="Assign Franchise"
+      name="Assign Cart"
       color="primary"
       [icon]="{ type: 'fa', value: 'fa-plus' }"
-      actionType="assign-franchise"
+      actionType="assign-cart"
       (buttonClick)="store.handleButtonAction($event)"
     />
     <app-action-button

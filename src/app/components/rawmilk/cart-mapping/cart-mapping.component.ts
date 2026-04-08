@@ -5,17 +5,17 @@ import {
   ActionButtonData,
   IconConfig,
 } from '../../../shared/components/action-button/action-button.component';
-import { FranchiseMappingStore } from './state-service/store';
+import { CartMappingStore } from './state-service/store';
 
 @Component({
-  selector: 'app-franchise-mapping',
+  selector: 'app-cart-mapping',
   standalone: true,
   imports: [AdvancedGridComponent, ActionButtonComponent],
-  templateUrl: './franchise-mapping.component.html',
-  styleUrl: './franchise-mapping.component.scss',
+  templateUrl: './cart-mapping.component.html',
+  styleUrl: './cart-mapping.component.scss',
 })
-export class FranchiseMappingComponent implements OnInit {
-  store: FranchiseMappingStore = new FranchiseMappingStore();
+export class CartMappingComponent implements OnInit {
+  store: CartMappingStore = new CartMappingStore();
 
   ngOnInit(): void {
     this.store.loadInitialData();

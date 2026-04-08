@@ -901,7 +901,6 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       }
       //yeh place thodi doubtful hai
     }
-    debugger;
     if (this.config().isFitGridWidth) {
       options.autoSizeStrategy = { type: 'fitGridWidth' };
     }

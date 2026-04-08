@@ -10,33 +10,34 @@ import {
   GroupId,
   handleApiResponse,
   handleSessionExpiry,
+  mapVehicleListToOptions,
   token,
 } from '../../../../shared/utils/shared-utility.utils';
-import { franchiseMappingColumns, addFranchiseFields } from './config';
+import { cartMappingColumns, assignCartFields } from './config';
 import { AlertService } from '../../../../shared/services/alert.service';
-import { FranchiseMappingService } from '../franchise-mapping.service';
 import { ActionButtonData } from '../../../../shared/components/action-button/action-button.component';
+import { CartMappingService } from '../cart-mapping.service';
 interface InitialData {
-  addaList: any[];
+  cartList: any[];
   franchiseList?: any[];
-  franchiseMappingList?: any[];
+  cartMappingList?: any[];
 }
-export class FranchiseMappingStore {
+export class CartMappingStore {
   private toast = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private modal = inject(UniversalModalService);
-  private franchiseMapppingService = inject(FranchiseMappingService);
+  private cartMapppingService = inject(CartMappingService);
   private alertService = inject(AlertService);
-  rowData = computed(() => this.initialData().franchiseMappingList || []);
+  rowData = computed(() => this.initialData().cartMappingList || []);
   selectedRows = signal<any[]>([]);
   initialData = signal<InitialData>({
-    addaList: [],
+    cartList: [],
     franchiseList: [],
-    franchiseMappingList: [],
+    cartMappingList: [],
   });
   columnConfig = computed<GridConfig>(() => ({
     theme: 'alpine',
-    columns: franchiseMappingColumns,
+    columns: cartMappingColumns,
     pagination: true,
     paginationPageSize: 50,
     enableSearch: true,
@@ -52,22 +53,21 @@ export class FranchiseMappingStore {
     try {
       this.spinner.show();
       const params = createMasterParams();
+      const cartParams = createFormData(token, {});
       const res: any = await firstValueFrom(
-        this.franchiseMapppingService.initialData(params),
+        this.cartMapppingService.initialData(params, cartParams),
       );
       if (handleSessionExpiry(res, this.toast)) {
         return;
       }
-      handleApiResponse(res?.addaList, this.toast);
       handleApiResponse(res?.franchiseList, this.toast);
-      handleApiResponse(res?.franchiseMappingList, this.toast);
+      handleApiResponse(res?.cartMappingList, this.toast);
       this.initialData.set({
-        addaList:
-          res.addaList?.Data?.map((a: any) => ({ ...a, id: a.code })) || [],
+        cartList: mapVehicleListToOptions(res.cartList?.VehicleList),
         franchiseList:
           res.franchiseList?.Data?.map((f: any) => ({ ...f, id: f.code })) ||
           [],
-        franchiseMappingList: res.franchiseMappingList?.Data || [],
+        cartMappingList: res.cartMappingList?.Data || [],
       });
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Something went wrong');
@@ -80,8 +80,8 @@ export class FranchiseMappingStore {
   }
   handleButtonAction(actionData: ActionButtonData): void {
     switch (actionData.action) {
-      case 'assign-franchise':
-        this.assignFranchise();
+      case 'assign-cart':
+        this.assignCart();
         break;
       case 'assign':
         this.assignDe(actionData.data, 1);
@@ -93,44 +93,44 @@ export class FranchiseMappingStore {
         console.warn('Unhandled action:', actionData.action);
     }
   }
-  assignFranchise() {
+  assignCart() {
     this.modal.openForm({
-      title: 'Assign Franchise',
-      fields: addFranchiseFields(
+      title: 'Assign Cart',
+      fields: assignCartFields(
         this.initialData().franchiseList || [],
-        this.initialData().addaList || [],
+        this.initialData().cartList || [],
       ),
       mode: 'form',
       onSave: async (formData: any) => {
-        await this.saveAssignFranchise(formData);
+        await this.saveAssignCart(formData);
       },
     });
   }
-  async saveAssignFranchise(formData: any) {
+  async saveAssignCart(formData: any) {
     const params = addParams(formData);
     this.spinner.show();
     try {
       const res: any = await firstValueFrom(
-        this.franchiseMapppingService.addFranchiseAssignment(params),
+        this.cartMapppingService.franchiseCartAssignment(params),
       );
       if (handleSessionExpiry(res, this.toast)) {
         return;
       }
       handleApiResponse(res, this.toast);
-      this.toast.success('Franchise assigned successfully');
+      this.toast.success('Cart assigned successfully');
       this.loadInitialData();
     } catch (error) {
-      this.toast.error('Failed to assign franchise');
+      this.toast.error('Failed to assign cart');
     } finally {
       this.spinner.hide();
     }
   }
   assignDe(data: any, type: number) {
-    const title = type == 1 ? 'Assign Franchise' : 'De-Assign Franchise';
+    const title = type == 1 ? 'Assign Cart' : 'De-Assign Cart';
     const text =
       type == 1
-        ? 'Are you sure you want to assign selected franchises?'
-        : 'Are you sure you want to de-assign selected franchises?';
+        ? 'Are you sure you want to assign selected carts?'
+        : 'Are you sure you want to de-assign selected carts?';
     this.alertService.confirmQuestion(title, text).then((confirmed) => {
       if (confirmed) {
         this.saveAssignDe(data, type);
@@ -145,20 +145,18 @@ export class FranchiseMappingStore {
     this.spinner.show();
     try {
       const res: any = await firstValueFrom(
-        this.franchiseMapppingService.assignDeAssign(params),
+        this.cartMapppingService.assignDeAssign(params),
       );
-      if (handleSessionExpiry(res, this.toast)) {
-        return;
-      }
+      handleSessionExpiry(res, this.toast);
       handleApiResponse(res, this.toast);
       this.toast.success(
-        `Franchise ${type == 1 ? 'assigned' : 'de-assigned'} successfully`,
+        `Cart ${type == 1 ? 'assigned' : 'de-assigned'} successfully`,
       );
       this.loadInitialData();
     } catch (error: any) {
       this.toast.error(
         error?.error?.message ||
-          `Failed to ${type == 1 ? 'assign' : 'de-assign'} franchise`,
+          `Failed to ${type == 1 ? 'assign' : 'de-assign'} cart`,
       );
     } finally {
       this.spinner.hide();

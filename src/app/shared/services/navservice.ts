@@ -122,12 +122,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
-        {
-          path: 'Allocate',
-          title: 'Allocated Indent',
-          type: 'link',
-          dirchange: false,
-        },
+        // {
+        //   path: 'Allocate',
+        //   title: 'Allocated Indent',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
         {
           path: 'Inventory',
           title: 'Inventory',

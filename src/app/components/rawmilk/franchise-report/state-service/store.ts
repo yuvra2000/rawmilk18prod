@@ -16,7 +16,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { createReportParams, mapVehicleListToOptions } from './utils';
+import { createReportParams } from './utils';
 import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
 import { FranchiseReportService } from '../franchise-report.service';
 

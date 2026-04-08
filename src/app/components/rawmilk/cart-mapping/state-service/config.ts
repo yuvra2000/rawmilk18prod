@@ -1,5 +1,4 @@
 import {
-  ActionCellRendererComponent,
   GridColumnConfig,
   StatusCellRendererComponent,
 } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
@@ -7,9 +6,8 @@ import {
   FieldConfig,
   Option,
 } from '../../../../shared/components/filter-form/filter-form.component';
-import { colors } from '../../../../shared/utils/constants';
 
-export const franchiseMappingColumns: GridColumnConfig[] = [
+export const cartMappingColumns: GridColumnConfig[] = [
   {
     headerName: 'S No',
     field: 'sNo',
@@ -22,15 +20,9 @@ export const franchiseMappingColumns: GridColumnConfig[] = [
     field: 'franchise_code',
   },
   {
-    headerName: 'Adda code',
-    field: 'adda_code',
-    headerTooltip: 'Adda code',
-    cellStyle: { textAlign: 'center' },
-    headerClass: 'text-center',
-  },
-  {
-    headerName: 'Create Date',
-    field: 'create_date',
+    headerName: 'Vehicle No',
+    field: 'vehicle_no',
+    headerTooltip: 'Vehicle Number',
     cellStyle: { textAlign: 'center' },
     headerClass: 'text-center',
   },
@@ -52,9 +44,9 @@ const statusList: Option[] = [
   { name: 'Active', id: 1 },
   { name: 'Deactive', id: 2 },
 ];
-export const addFranchiseFields = (
+export const assignCartFields = (
   franchiseList: any[],
-  addaList: any[],
+  cartList: any[],
 ): FieldConfig[] => [
   {
     name: 'franchise_code',
@@ -65,11 +57,11 @@ export const addFranchiseFields = (
     required: true,
   },
   {
-    name: 'adda_code',
+    name: 'vehicle_no',
     type: 'select',
-    label: 'Adda',
-    placeholder: 'Select Adda',
-    options: addaList,
+    label: 'Cart',
+    placeholder: 'Select Cart',
+    options: cartList,
     required: true,
   },
 ];

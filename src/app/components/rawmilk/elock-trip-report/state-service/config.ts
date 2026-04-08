@@ -81,6 +81,8 @@ export const elockFilterFields = (vehicleList: Option[] = []): FieldConfig[] => 
     options: vehicleList,
     bindLabel: 'VehicleNo',
     placeholder: 'Select Vehicle',
+    multiple: true,
+    required: true
   },
   {
     name: 'otpFor',

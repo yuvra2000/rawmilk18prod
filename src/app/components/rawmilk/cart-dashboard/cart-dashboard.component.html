@@ -10,10 +10,7 @@
 </app-collapse-wrapper>
 <!-- @if (store.rowData().length > 0) { -->
 <!-- <app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()"> -->
-<app-advanced-grid
-  [rowData]="store.cartDashboardDummyData"
-  [config]="store.columnConfig()"
->
+<app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()">
   <h5 class="text-center table-heading">Cart Dashboard</h5>
 </app-advanced-grid>
 <!-- } -->

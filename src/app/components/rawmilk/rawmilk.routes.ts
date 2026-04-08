@@ -210,6 +210,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Cart Report Exception',
       },
+      {
+        path: 'franchise-report',
+        loadComponent: () =>
+          import('./franchise-report/franchise-report.component').then(
+            (m) => m.FranchiseReportComponent,
+          ),
+        title: 'Franchise Report',
+      },
     ],
   },
 ];

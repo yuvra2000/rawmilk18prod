@@ -91,36 +91,44 @@ export class reusableMapLoader {
   // );
 
   // --- अलर्ट मार्कर बनाने का लॉजिक ---
-  private alertMarkers = computed<Marker[]>(() =>
-    this.alerts()?.map((alert: any, index) => {
-      const coords = (alert.geocoord || '0,0').split(',');
-      const alertName = alert.trigger
-        ? alert.trigger.toString().substring(0, 5) // Limit to 5 characters
-        : 'Unknown Alert';
-      return {
-        position: { lat: parseFloat(coords[0]), lng: parseFloat(coords[1]) },
-        title: alert.vehicle_name || `Alert ${index + 1}`,
-        icon: { url: '', labelOrigin: { x: 19, y: 14 } },
-        label: {
-          text: alertName || 'ALERT', // API से trigger key का उपयोग करें ,scaledSize: { width: 32, height: 32 },
+  // private alertMarkers = computed<Marker[]>(() =>
+  //   this.alerts()?.map((alert: any, index) => {
+  //     console.log('alert', alert);
+  //     const alertName =
+  //       alert.alert_type === 'LID TAMPERING' ||
+  //       alert.alert_type === 'LOCK TAMPERING'
+  //         ? 'LT'
+  //         : alert.alert_type;
+  //     console.log('alert', alert);
+  //     const coords = (alert.geocoord || '0,0').split(',');
+  //     // const alertName = alert.alert_type
+  //     //   ? alert.trigger.toString().substring(0, 5) // Limit to 5 characters
+  //     //   : 'Unknown Alert';
+  //     return {
+  //       position: { lat: parseFloat(coords[0]), lng: parseFloat(coords[1]) },
+  //       title: alert.vehicle_name || `Alert ${index + 1}`,
+  //       icon: { url: '', labelOrigin: { x: 19, y: 14 } },
+  //       label: {
+  //         text: alertName || 'ALERT', // API से trigger key का उपयोग करें ,scaledSize: { width: 32, height: 32 },
 
-          fontWeight: '400',
-          fontSize: '12px',
-          color: 'white',
-        },
-        params: {
-          startDate: alert.run_date,
-          endDate: alert.close_date,
-          alertName: alert.trigger,
-          location: alert.location,
-          level: alert.level,
-          status: alert.status,
-          title: 'Alert Details',
-        },
-        markerType: 'alert', // <-- डेटा का प्रकार बताएँ
-      };
-    }),
-  );
+  //         fontWeight: '400',
+  //         fontSize: '12px',
+  //         color: 'white',
+  //       },
+  //       params: {
+  //         startDate: alert.run_date,
+  //         endDate: alert.close_date,
+  //         alertName: alert.trigger,
+  //         location: alert.location,
+  //         level: alert.level,
+  //         status: alert.status,
+  //         title: 'Alert Details',
+  //       },
+  //       markerType: 'alert', // <-- डेटा का प्रकार बताएँ
+  //     };
+  //   }),
+  // );
+
   private customerMarkers = computed<Marker[]>(() =>
     this.customerData()?.map((item: any, index) => {
       const coords = (item.Coordinates || '0,0').split(',');
@@ -294,6 +302,6 @@ export class reusableMapLoader {
     this.alerts.set(response); // locations signal अपडेट हुआ
 
     // markers computed signal अब स्वतः (automatically) अपडेट हो जाएगा
-    return this.alertMarkers();
+    // return this.alertMarkers();
   }
 }

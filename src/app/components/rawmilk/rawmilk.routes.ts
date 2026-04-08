@@ -224,6 +224,12 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Franchise Report',
       },
+      {
+        path: 'travelreport',
+        loadComponent: () =>
+          import('./travel/travel.component').then((m) => m.TravelComponent),
+        title: 'Travel Report',
+      },
     ],
   },
 ];

@@ -75,6 +75,7 @@ export class ViewIndentSupplierComponent implements OnInit {
   private loader = inject(NgxSpinnerService);
   private router = inject(Router);
   private toast = inject(AlertService);
+  private spinner = inject(NgxSpinnerService);
   filterfields = signal<FieldConfig[]>(viewIndentSupplierFilterFields);
   indentRowData = signal<any[]>([]);
   pageTitle = 'View Indents';
@@ -166,6 +167,7 @@ export class ViewIndentSupplierComponent implements OnInit {
   }
   modal: any;
   async viewIndent(indentId: any) {
+    this.spinner.show();
     try {
       const params = {
         AccessToken: this.token,
@@ -192,7 +194,10 @@ export class ViewIndentSupplierComponent implements OnInit {
           componentParent: this,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      this.spinner.hide();
+    }
     // Implement the logic to view indent details, e.g., open a modal with details
   }
   fetchIndentValue(indentId: any, quantity: any, actionType: any) {

@@ -30,6 +30,22 @@ export const rawMilkRoutes: Routes = [
         title: 'View Indent (Supplier)',
       },
       {
+        path: 'remote-lock-unlock',
+        loadComponent: () =>
+          import('./remote-lock-unlock/remote-lock-unlock.component').then(
+            (m) => m.RemoteLockUnlockComponent,
+          ),
+        title: 'Remote Lock/Unlock',
+      },
+      {
+        path: 'load-planning',
+        loadComponent: () =>
+          import('./load-planning/load-planning.component').then(
+            (m) => m.LoadPlanningComponent,
+          ),
+        title: 'Load Planning',
+      },
+      {
         path: 'Allocate',
         loadComponent: () =>
           import('./allocated-indent/allocated-indent.component').then(
@@ -93,6 +109,36 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Dispatch Planning',
       },
+      {
+        path: 'eta-report',
+        loadComponent: () =>
+          import('./eta-report/eta-report.component').then(
+            (m) => m.EtaReportComponent,
+          ),
+        title: 'ETA Report',
+      },
+      {
+        path: 'summarized-report',
+        loadComponent: () =>
+          import('./summarized-report/summarized-report.component').then(
+            (m) => m.SummarizedReportComponent,
+          ),
+        title: 'Summarized Report',
+      },
+      {
+        path: 'cart-dashboard',
+        loadComponent: () =>
+          import('./cart-dashboard/cart-dashboard.component').then(
+            (m) => m.CartDashboardComponent,
+          ),
+        title: 'Cart Dashboard',
+      },
+      {
+        path: 'adda',
+        loadComponent: () =>
+          import('./adda/adda.component').then((m) => m.AddaComponent),
+        title: 'Adda',
+      },
     ],
   },
   {
@@ -141,6 +187,7 @@ export const rawMilkRoutes: Routes = [
       {
         path: 'lid-report',
         loadComponent: () =>
+        loadComponent: () =>
           import('./lid-trip-report/lid-trip-report.component').then(
             (m) => m.LidTripReportComponent,
           ),
@@ -149,10 +196,36 @@ export const rawMilkRoutes: Routes = [
       {
         path: 'e-lock-report',
         loadComponent: () =>
+        loadComponent: () =>
           import('./elock-trip-report/elock-trip-report.component').then(
             (m) => m.ElockTripReportComponent,
           ),
         title: 'E-Lock Report',
+      },
+      {
+        path: 'cart-report',
+        loadComponent: () =>
+          import('./cart-report/cart-report.component').then(
+            (m) => m.CartReportComponent,
+          ),
+        title: 'Cart Report',
+      },
+      {
+        path: 'cart-report-exception',
+        loadComponent: () =>
+          import('./cart-exception-report/cart-exception-report.component').then(
+            (m) => m.CartExceptionReportComponent,
+          ),
+        title: 'Cart Report Exception',
+      },
+      {
+        path: 'franchise-report',
+        loadComponent: () =>
+          import('./franchise-report/franchise-report.component').then(
+            (m) => m.FranchiseReportComponent,
+          ),
+        title: 'Franchise Report',
+      },
       },
       {
         path: 'travelreport',

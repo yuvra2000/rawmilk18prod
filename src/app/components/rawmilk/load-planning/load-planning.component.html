@@ -1,0 +1,26 @@
+<div class="mt-3">
+<app-tile [title]="'Loaded'" [quantity]="loadedCount()" [color]="'#28a745'" >
+  <i class="fa-solid fa-truck-ramp-box"></i>
+</app-tile>
+<app-tile [title]="'Break Down'" [quantity]="breakDownCount()" [color]="'#dc3545'" >
+  <i class="fa-solid fa-house-chimney-crack"></i>
+</app-tile>
+<app-tile [title]="'Not Available'" [quantity]="notAvailCount()" [color]="'#6c757d'" >
+  <i class="fa-solid fa-ban"></i>
+</app-tile>
+<app-tile [title]="'Vacant Vehicle'" [quantity]="vacantCount()" [color]="'#007bff'" >
+  <i class="fa-solid fa-car-side"></i>
+</app-tile>
+<app-tile [title]="'Assigned Vehicle'" [quantity]="assignedCount()" [color]="'#17a2b8'" >
+  <i class="fa-solid fa-truck"></i>
+</app-tile>
+</div>
+<app-collapse-wrapper>
+  <filter-form [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"></filter-form>
+</app-collapse-wrapper>
+
+<app-advanced-grid
+  [rowData]="tableData()"
+  [config]="gridConfig()"
+></app-advanced-grid>
+

@@ -1,0 +1,98 @@
+<div class="container py-4">
+  <!-- Filter Accordion -->
+  <div class="row">
+    <div class="col-md-12">
+      <app-collapse-wrapper>
+        <filter-form
+          [dynamicFields]="filterfields()"
+          (formSubmit)="onFormSubmit($event)">
+        </filter-form>
+      </app-collapse-wrapper>
+    </div>
+  </div>
+
+  <!-- Control Panel - Shows after tanker selection -->
+  <div class="row mt-4" *ngIf="showControlPanel()">
+    <div class="col-md-12">
+      <div class="control-panel">
+        <!-- Header -->
+        <div class="panel-header">
+          <h5>Device Control Panel</h5>
+          <p class="tanker-name">{{ selectedTanker()?.VehicleNo || 'N/A' }} - {{ selectedTanker()?.Location || 'N/A' }}</p>
+        </div>
+
+        <!-- Status Grid -->
+        <div class="status-grid">
+          <!-- Supply Status -->
+          <div class="status-item">
+            <label class="status-label">Supply Status:</label>
+            <span class="status-value" [class.connected]="currentSupplyStatus() === 'Connected'">
+              {{ currentSupplyStatus() }}
+            </span>
+            <span class="status-sub">Voltage: {{ batteryVoltage() }} V</span>
+          </div>
+
+          <!-- Lock Status -->
+          <div class="status-item">
+            <label class="status-label">Lock Status:</label>
+            <span class="status-value" [class.locked]="currentStatus() === 'Locked'">
+              {{ currentStatus() }}
+            </span>
+          </div>
+
+          <!-- Device Time -->
+          <div class="status-item">
+            <label class="status-label">Device Time:</label>
+            <span class="status-value">{{ deviceTime() }}</span>
+          </div>
+
+          <!-- Device Type -->
+          <div class="status-item">
+            <label class="status-label">Device Type:</label>
+            <span class="status-value">{{ currentDeviceType() || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <!-- Lock Button (hidden if DeviceType === 13) -->
+          <button
+            *ngIf="!isLockButtonHidden"
+            type="button"
+            class="btn btn-primary"
+            [disabled]="isLoading()"
+            (click)="lockDevice()">
+            <i class="bi bi-lock" *ngIf="!isLoading()"></i>
+            <span class="spinner-border spinner-border-sm me-2" *ngIf="isLoading()" role="status" aria-hidden="true"></span>
+            {{ isLoading() ? 'Processing...' : 'Lock Device' }}
+          </button>
+
+          <!-- Unlock Button -->
+          <button
+            type="button"
+            class="btn btn-warning"
+            [disabled]="isLoading()"
+            (click)="unlockDevice()">
+            <i class="bi bi-unlock" *ngIf="!isLoading()"></i>
+            <span class="spinner-border spinner-border-sm me-2" *ngIf="isLoading()" role="status" aria-hidden="true"></span>
+            {{ isLoading() ? 'Processing...' : 'Unlock Device' }}
+          </button>
+        </div>
+
+        <!-- Wait Message -->
+        <div class="wait-message" *ngIf="isLoading() && waitMessage()">
+          <p class="text-muted small">⏳ {{ waitMessage() }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="row mt-4" *ngIf="!showControlPanel()">
+    <div class="col-md-12">
+      <div class="empty-state">
+        <p class="text-muted">Select a tanker above to view device status and control options.</p>
+      </div>
+    </div>
+  </div>
+</div>

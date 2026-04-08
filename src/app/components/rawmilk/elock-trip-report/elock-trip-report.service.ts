@@ -13,4 +13,12 @@ export class ElockTripReportService {
     // using defaultUrl = true because full URL is provided
     return this.masterRequest.postFormData('https://api-secutrak.secutrak.in/dev-app-secutrak/userVehicleListV3', payload, true);
   }
+
+  getTableData(payload: any): Observable<any> {
+    return this.masterRequest.postFormData('https://apinode1.secutrak.in/dev-app-secutrak/report_angular', payload, true);
+  }
+
+  getImages(payload: any): Observable<any> {
+    return this.masterRequest.postFormData('https://apinode1.secutrak.in/dev-app-secutrak/get_images', payload, true);
+  }
 }

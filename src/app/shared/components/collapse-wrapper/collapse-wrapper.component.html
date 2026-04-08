@@ -9,7 +9,7 @@
     <p>
       <!-- <i class="fa-solid fa-filter" aria-hidden="true"></i> -->
       <img src="./assets/images/secutrak/filter-logo.svg" alt="FilterLogo" />
-      FILTER
+      {{ filterText() }}
     </p>
   </button>
   <ng-content (click)="onIconClick()" select="[custom-icon]"></ng-content>

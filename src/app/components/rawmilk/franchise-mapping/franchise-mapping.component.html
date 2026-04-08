@@ -1,0 +1,9 @@
+@if (store.rowData().length > 0) {
+  <app-advanced-grid
+    [rowData]="store.rowData()"
+    [config]="store.columnConfig()"
+    (selectionChanged)="store.onRowSelection($event)"
+  >
+    <h5 class="text-center table-heading">Franchise Mapping list</h5>
+  </app-advanced-grid>
+}

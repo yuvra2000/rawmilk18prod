@@ -15,7 +15,7 @@ import { FranchiseService } from '../franchise.service';
 interface InitialData {
   franchiseList: any[];
 }
-export class AddaStore {
+export class FranchiseStore {
   private toast = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
   private modal = inject(UniversalModalService);

@@ -147,6 +147,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Franchise',
       },
+      {
+        path: 'franchise-mapping',
+        loadComponent: () =>
+          import('./franchise-mapping/franchise-mapping.component').then(
+            (m) => m.FranchiseMappingComponent,
+          ),
+        title: 'Franchise Mapping',
+      },
     ],
   },
   {

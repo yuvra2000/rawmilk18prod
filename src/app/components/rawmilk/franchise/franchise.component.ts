@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { AddaStore } from './state-service/store';
+import { FranchiseStore } from './state-service/store';
 
 @Component({
   selector: 'app-franchise',
@@ -10,7 +10,7 @@ import { AddaStore } from './state-service/store';
   styleUrl: './franchise.component.scss',
 })
 export class FranchiseComponent implements OnInit {
-  store: AddaStore = new AddaStore();
+  store: FranchiseStore = new FranchiseStore();
   ngOnInit(): void {
     this.store.loadInitialData();
   }

@@ -420,6 +420,16 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
   }
 
   getStatus(): string {
+    const statusFromParams = this.params?.colDef?.cellRendererParams?.status;
+
+    if (typeof statusFromParams === 'function') {
+      return statusFromParams(this.params);
+    }
+
+    if (typeof statusFromParams === 'string') {
+      return statusFromParams.toLowerCase();
+    }
+
     return this.params.value?.toLowerCase() || 'inactive';
   }
 }

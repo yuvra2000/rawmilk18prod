@@ -55,7 +55,7 @@ export function handleApiResponse(
     toastService.error(apiMessage || 'Session expired. Please log in again.');
     return false;
   }
-
+  console.log('API Response Status:', status, 'Message:', apiMessage);
   if (isSuccess) {
     const message =
       successMessage || apiMessage || 'Operation completed successfully';

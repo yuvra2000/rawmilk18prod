@@ -133,6 +133,12 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Cart Dashboard',
       },
+      {
+        path: 'adda',
+        loadComponent: () =>
+          import('./adda/adda.component').then((m) => m.AddaComponent),
+        title: 'Adda',
+      },
     ],
   },
   {

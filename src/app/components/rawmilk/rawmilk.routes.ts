@@ -110,6 +110,14 @@ export const rawMilkRoutes: Routes = [
         title: 'Dispatch Planning',
       },
       {
+        path: 'document-wallet',
+        loadComponent: () =>
+          import('./document-wallet/document-wallet.component').then(
+            (m) => m.DocumentWalletComponent,
+          ),
+        title: 'Document Wallet',
+      },
+      {
         path: 'eta-report',
         loadComponent: () =>
           import('./eta-report/eta-report.component').then(
@@ -138,6 +146,46 @@ export const rawMilkRoutes: Routes = [
         loadComponent: () =>
           import('./adda/adda.component').then((m) => m.AddaComponent),
         title: 'Adda',
+      },
+      {
+        path: 'franchise',
+        loadComponent: () =>
+          import('./franchise/franchise.component').then(
+            (m) => m.FranchiseComponent,
+          ),
+        title: 'Franchise',
+      },
+      {
+        path: 'franchise-mapping',
+        loadComponent: () =>
+          import('./franchise-mapping/franchise-mapping.component').then(
+            (m) => m.FranchiseMappingComponent,
+          ),
+        title: 'Franchise Mapping',
+      },
+      {
+        path: 'cart-mapping',
+        loadComponent: () =>
+          import('./cart-mapping/cart-mapping.component').then(
+            (m) => m.CartMappingComponent,
+          ),
+        title: 'Cart Mapping',
+      },
+      {
+        path: 'agreement-info',
+        loadComponent: () =>
+          import('./agreement-info/agreement-info.component').then(
+            (m) => m.AgreementInfoComponent,
+          ),
+        title: 'Agreement Info',
+      },
+      {
+        path: 'cart-timing',
+        loadComponent: () =>
+          import('./cart-timing/cart-timing.component').then(
+            (m) => m.CartTimingComponent,
+          ),
+        title: 'Cart Timing',
       },
     ],
   },

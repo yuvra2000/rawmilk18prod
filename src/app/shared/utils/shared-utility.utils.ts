@@ -109,3 +109,19 @@ export function handleSessionExpiry(res: any, toastService: any) {
   }
   return false;
 }
+export function mapVehicleListToOptions(vehicleList: any): any[] {
+  if (!vehicleList) {
+    return [];
+  }
+
+  const normalizedList = Array.isArray(vehicleList)
+    ? vehicleList
+    : Object.values(vehicleList);
+  return normalizedList.map((item: any) => {
+    const vehicleNo = item?.VehicleNo || item?.vehicleNo || '';
+    return {
+      id: vehicleNo,
+      name: vehicleNo,
+    };
+  });
+}

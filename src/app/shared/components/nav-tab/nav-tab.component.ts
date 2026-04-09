@@ -20,4 +20,5 @@ export class NavTabComponent {
   active = model<number>(0);
   tabStyle = input<{ [key: string]: string }>();
   wrapperStyle = input<{ [key: string]: string }>();
+  useComponent = input<boolean>(true);
 }

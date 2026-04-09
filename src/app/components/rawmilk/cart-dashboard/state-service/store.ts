@@ -32,6 +32,7 @@ export class CartDashboardStore {
   private modal = inject(UniversalModalService);
   date = signal<string>('');
   lastFilterValues = signal<any>(null);
+  loading = signal(false);
   initialData = signal<InitialData>({
     cartDashboardData: [],
     addaList: [],
@@ -61,6 +62,7 @@ export class CartDashboardStore {
   }));
   async loadInitialData() {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const reportParams = createReportParams();
       const listParams = createFormData(token, {
@@ -80,6 +82,7 @@ export class CartDashboardStore {
     } catch (error) {
       this.toast.error('Failed to load data');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -91,6 +94,7 @@ export class CartDashboardStore {
       mode: 'details',
       metric: type,
     });
+    this.loading.set(true);
     this.spinner.show();
     try {
       const res: any = await firstValueFrom(
@@ -112,11 +116,13 @@ export class CartDashboardStore {
     } catch (error) {
       this.toast.error('Failed to view details');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
   async onFormSubmit(data: any) {
     this.spinner.show();
+    this.loading.set(true);
     const type = this.isAddaFilterEnabled() ? 'adda' : 'franchise';
     const params = createReportParams(data, type);
     try {
@@ -132,6 +138,7 @@ export class CartDashboardStore {
     } catch (error) {
       this.toast.error('Failed to submit form');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }

@@ -9,6 +9,7 @@ import {
   GroupId,
   handleApiResponse,
   handleSessionExpiry,
+  mapVehicleListToOptions,
   supplier_id,
   token,
   userType,
@@ -16,7 +17,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { createReportParams, mapVehicleListToOptions } from './utils';
+import { createReportParams } from './utils';
 import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
 
 import { CartReportService } from '../cart-report.service';
@@ -57,8 +58,10 @@ export class CartReportStore {
       this.initialData().franchiseList,
     ),
   );
+  loading = signal(false);
   async loadInitialData() {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const vehicleParams = createFormData(token, {});
       const listParams = createFormData(token, {
@@ -83,6 +86,7 @@ export class CartReportStore {
       this.toast.error(error?.error?.message || 'Error loading initial data:');
     } finally {
       this.spinner.hide();
+      this.loading.set(false);
     }
   }
   onFormSubmit(data: any) {
@@ -105,6 +109,7 @@ export class CartReportStore {
 
   private async loadReportData(params: FormData) {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const res: any = await firstValueFrom(
         this.cartReportService.getCartReport(params),
@@ -123,6 +128,7 @@ export class CartReportStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Error loading report data:');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }

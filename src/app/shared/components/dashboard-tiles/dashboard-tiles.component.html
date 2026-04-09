@@ -1,0 +1,38 @@
+<div class="tiles-container">
+  <div class="tile" *ngFor="let tile of tiles">
+    <div class="tile-header">
+      <span>{{ tile | titlecase }}</span>
+
+      <div class="icon">
+        <i
+          class="fa"
+          [ngClass]="{
+            'fa-map-marker': tile === 'gps',
+            'fa-truck': tile === 'alert',
+            'fa-clock': tile === 'eta',
+            'fa-industry': tile === 'supplier',
+          }"
+        ></i>
+      </div>
+    </div>
+
+    <div class="tile-top">
+      <div class="chart-section">
+        <div echarts [options]="chartOptions[tile]" class="chart"></div>
+      </div>
+
+      <div class="count-section">
+        <div class="counts">
+          {{ countsMap[tile] }}
+        </div>
+      </div>
+    </div>
+
+    <div class="tile-legend">
+      <div class="legend" *ngFor="let l of legendMap[tile]">
+        <span class="dot" [ngClass]="l.color"></span>
+        {{ l.name }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import { FieldConfig } from '../components/filter-form/filter-form.component';
 export const supplier_id = localStorage.getItem('supplier_id') || '';
 export const token = localStorage.getItem('AccessToken') || '';
 export const GroupId = localStorage.getItem('GroupId') || '';
+export const userType = localStorage.getItem('usertype') || '';
 export function createFormData(
   token: string = localStorage.getItem('AccessToken') || '',
   params: Record<string, any> = {},
@@ -54,7 +55,7 @@ export function handleApiResponse(
     toastService.error(apiMessage || 'Session expired. Please log in again.');
     return false;
   }
-
+  console.log('API Response Status:', status, 'Message:', apiMessage);
   if (isSuccess) {
     const message =
       successMessage || apiMessage || 'Operation completed successfully';

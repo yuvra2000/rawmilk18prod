@@ -19,8 +19,8 @@ const toDate = new Date();
 toDate.setDate(toDate.getDate() + 7);
 export const formData = {
   AccessToken: token,
-  from: new Date().toISOString().split('T')[0],
-  to: toDate.toISOString().split('T')[0],
+  FromDate: new Date().toISOString().split('T')[0],
+  ToDate: toDate.toISOString().split('T')[0],
   GroupId: localStorage.getItem('GroupId') || '',
   UserType: '',
   SubRole: '',

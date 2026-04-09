@@ -1,0 +1,20 @@
+<!-- ✅ FIX: Use safe navigation (?.) or check existence -->
+<h4 class="infowindow-header-title">
+  @if (params()) {
+    {{ params()['title'] }}
+  }
+</h4>
+
+<div class="infowindow-body-content">
+  <!-- ✅ Dynamic Width Binding -->
+  <table class="no-border-table" [style.width]="tableWidth()" style="text-align: start;">
+    <tbody>
+      <!-- entries() computed property already handles null internally -->
+      <tr *ngFor="let entry of entries()">
+        <td class="label">{{ getLabel(entry.key) }}</td>
+        <td class="colon">:</td>
+        <td class="value text-wrap">{{ entry.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

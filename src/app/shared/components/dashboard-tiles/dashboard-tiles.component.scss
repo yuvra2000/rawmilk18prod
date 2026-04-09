@@ -1,0 +1,157 @@
+/* CONTAINER */
+.tiles-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 10px;
+}
+
+/* TILE CARD */
+.tile {
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #1d4380;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* HEADER */
+.tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+
+  span {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1f3b73;
+  }
+
+  .icon {
+    font-size: 16px;
+    color: #1f3b73;
+  }
+}
+
+/* TOP SECTION (CHART + COUNTS) */
+.tile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* 🔥 CHART FIXED SIZE */
+.chart-section {
+  flex: 0 0 120px; /* FIXED WIDTH */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart {
+  width: 120px !important;
+  height: 120px !important;
+}
+
+/* COUNTS */
+// .count-section {
+//   flex: 1;
+//   min-width: 0; /* IMPORTANT for wrapping */
+// }
+
+.count-section {
+  flex: 1;
+  min-width: 0;
+
+  display: flex; // 🔥 enable flex
+  justify-content: flex-end; // 👉 move to right
+  align-items: flex-end; // 👉 move to bottom
+}
+.counts {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f3b73;
+  line-height: 1.4;
+
+  word-break: break-word; /* wrap long values */
+}
+
+/* LEGEND */
+.tile-legend {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+/* EACH LEGEND ITEM */
+.legend {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+/* DOT */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* COLORS */
+.green {
+  background-color: #2db783;
+}
+
+.orange {
+  background-color: #f08a24;
+}
+
+.blue {
+  background-color: #2f54eb;
+}
+
+.gray {
+  background-color: #d9d9d9;
+}
+
+.purple {
+  background-color: #9254de;
+}
+
+.cyan {
+  background-color: #13c2c2;
+}
+
+/* 🔥 RESPONSIVE */
+@media (max-width: 1200px) {
+  .tiles-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .tiles-container {
+    grid-template-columns: 1fr;
+  }
+
+  .tile-top {
+    flex-direction: row;
+  }
+
+  .chart-section {
+    flex: 0 0 100px;
+  }
+
+  .chart {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}

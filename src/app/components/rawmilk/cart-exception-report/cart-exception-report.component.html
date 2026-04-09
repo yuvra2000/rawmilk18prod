@@ -1,0 +1,18 @@
+<app-collapse-wrapper>
+  <filter-form
+    #dispatchPlanningFilter
+    [dynamicFields]="store.filterfields()"
+    (formSubmit)="store.onFormSubmit($event)"
+    [initialData]="store.initialData()"
+    [btnClass]="'mt-0'"
+  >
+  </filter-form>
+</app-collapse-wrapper>
+@if (store.rowData().length > 0) {
+  <app-advanced-grid
+    [rowData]="store.rowData()"
+    [config]="store.columnConfig()"
+  >
+    <h5 class="text-center table-heading">Cart Exception Report</h5>
+  </app-advanced-grid>
+}

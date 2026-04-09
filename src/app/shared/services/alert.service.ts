@@ -78,6 +78,27 @@ export class AlertService {
     return result.isConfirmed;
   }
 
+  async confirmEdit(
+    title: string = 'Do you want to edit?',
+    text: string = 'Your changes will be updated.',
+    confirmButtonText: string = 'Yes, update it!',
+    cancelButtonText: string = 'Cancel',
+  ): Promise<boolean> {
+    const result = await Swal.fire({
+      title,
+      text,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText,
+      cancelButtonText,
+      reverseButtons: true,
+    });
+
+    return result.isConfirmed;
+  }
+
   /**
    * Shows a SweetAlert2 success message after an action
    * @param title The title of the success message

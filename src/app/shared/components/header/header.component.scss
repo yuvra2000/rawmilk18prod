@@ -18,3 +18,64 @@
 .breadcrumb {
   margin-bottom: 0 !important;
 }
+.page-title {
+  font-size: 21px;
+  font-weight: 600;
+}
+.header-tiles {
+  display: flex;
+  // gap: 0px;
+  // flex-wrap: wrap;
+}
+
+.tile-pill {
+  display: flex;
+  // align-items: center;
+  // gap: 8px;
+  // background: #f1f5f9;
+  padding: 3px 7px;
+  // border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+// .tile-pill.active {
+//   background: #2f4b7c;
+//   color: white;
+// }
+
+.icon-wrapper {
+  position: relative;
+  width: 41px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.icon-wrapper img {
+  width: 32px;
+  height: 35px;
+}
+
+.icon-wrapper i {
+  font-size: 14px;
+}
+
+.badge {
+  position: absolute;
+  top: -7px;
+  right: -6px;
+  font-size: 10px;
+  padding: 3px 4px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+}

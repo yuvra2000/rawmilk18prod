@@ -41,6 +41,7 @@ import { DispatchStore } from './state-service/masterdatastore.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { DispatchPayloadBuilder } from './state-service/dispatch-payload.utils';
+import { SharedModule } from '../../../shared/shared.module';
 
 // interface Transporter {
 //   TransporterId: number;
@@ -72,6 +73,7 @@ import { DispatchPayloadBuilder } from './state-service/dispatch-payload.utils';
     ChamberDetailsComponent,
     MccSelectionComponent,
     MccChambersComponent,
+    SharedModule,
   ],
   templateUrl: './create-dispatch.component.html',
   styleUrl: './create-dispatch.component.scss',

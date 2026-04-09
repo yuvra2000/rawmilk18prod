@@ -31,5 +31,7 @@
       </li>
     }
   </ul>
-  <div [ngbNavOutlet]="nav" class="p-1"></div>
+  @if(useComponent()){
+    <div [ngbNavOutlet]="nav" class="p-1"></div>
+  }
 </div>

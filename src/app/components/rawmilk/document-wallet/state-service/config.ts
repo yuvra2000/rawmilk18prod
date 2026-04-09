@@ -1,4 +1,7 @@
-import { FieldConfig, Option } from "../../../../shared/components/filter-form/filter-form.component";
+import {
+  FieldConfig,
+  Option,
+} from '../../../../shared/components/filter-form/filter-form.component';
 import {
   ActionCellRendererComponent,
   GridColumnConfig,
@@ -23,7 +26,7 @@ export const vehicleDocumentColumns: GridColumnConfig[] = [
   { headerName: 'Driver', field: 'DriverName' },
   { headerName: 'Remarks', field: 'Remark' },
   { headerName: 'Status', field: 'Status' },
-  { headerName: 'Image', field: 'FilePath', hide: true}
+  { headerName: 'Image', field: 'FilePath', hide: true },
 ];
 
 export const actionColumn: GridColumnConfig = {
@@ -78,128 +81,152 @@ export const editColumn: GridColumnConfig = {
 
 export const editVehicleDocumentFields = (
   documentTypes: Option[] = [],
-  vehicles: Option[] = []
+  vehicles: Option[] = [],
 ): FieldConfig[] => [
   {
-    name: "vehicle",
-    label: "Vehicle Number",
-    type: "select",
-    placeholder: "Select Vehicle",
+    name: 'vehicle',
+    label: 'Vehicle Number',
+    type: 'select',
+    placeholder: 'Select Vehicle',
     options: vehicles,
-    bindLabel: "VehicleNum",
+    bindLabel: 'VehicleNum',
     required: true,
-    class: "col-md-12"
+    class: 'col-md-12',
   },
   {
-    name: "documentType",
-    label: "Document Type",
-    type: "select",
-    placeholder: "Select Document Type",
+    name: 'documentType',
+    label: 'Document Type',
+    type: 'select',
+    placeholder: 'Select Document Type',
     options: documentTypes,
-    bindLabel: "DocumentTypeName",
+    bindLabel: 'DocumentTypeName',
     required: true,
-    class: "col-md-6"
+    class: 'col-md-6',
   },
   {
-    name: "documentNumber1",
-    label: "Document Number",
-    type: "text",
-    placeholder: "Enter Document Number",
+    name: 'documentNumber1',
+    label: 'Document Number',
+    type: 'text',
+    placeholder: 'Enter Document Number',
     required: true,
-    class: "col-md-6"
+    class: 'col-md-6',
   },
   {
-    name: "from_Date1",
-    label: "Issue Date",
-    type: "date",
+    name: 'from_Date1',
+    label: 'Issue Date',
+    type: 'date',
     required: false,
-    class: "col-md-6"
+    class: 'col-md-6',
   },
   {
-    name: "To_Date1",
-    label: "Expiry Date",
-    type: "date",
+    name: 'To_Date1',
+    label: 'Expiry Date',
+    type: 'date',
     required: false,
-    class: "col-md-6"
+    class: 'col-md-6',
   },
   {
-    name: "uploadDocument",
-    label: "Upload Document",
-    type: "file-upload",
+    name: 'uploadDocument',
+    label: 'Upload Document',
+    type: 'file-upload',
     required: false,
-    class: "col-md-6",
-    uploadText: "Choose File"
+    class: 'col-md-6',
+    uploadText: 'Choose File',
   },
   {
-    name: "remark",
-    label: "Remark",
-    type: "text",
-    placeholder: "Remark",
+    name: 'remark',
+    label: 'Remark',
+    type: 'text',
+    placeholder: 'Remark',
     required: false,
-    class: "col-md-6"
-  }
+    class: 'col-md-6',
+  },
 ];
 
 export const filterfields = (
   documentTypes: Option[] = [],
   suppliers: Option[] = [],
   transporters: Option[] = [],
-  vehicles: Option[] = []
-): FieldConfig[] => [
-  {
-    name: "fromDate",
-    label: "From Date",
-    type: "date",
-    placeholder: "Select Date",
-    required: false,
-    class: "col-md-2"
-  },
-  {
-    name: "toDate",
-    label: "To Date",
-    type: "date",
-    placeholder: "Select Date",
-    required: false,
-    class: "col-md-2"
-  },
-  {
-    name: "documentType",
-    label: "Document Type",
-    type: "select",
-    placeholder: "--Select--",
-    options: documentTypes,
-    bindLabel: "DocumentTypeName",
-    required: false,
-    class: "col-md-2"
-  },
-  {
-    name: "supplier",
-    label: "Supplier",
-    type: "select",
-    placeholder: "--Select--",
-    options: suppliers,
-    bindLabel: "displayName",
-    required: false,
-    class: "col-md-2"
-  },
-  {
-    name: "transporter",
-    label: "Transporter",
-    type: "select",
-    placeholder: "--Select--",
-    options: transporters,
-    bindLabel: "TransporterName",
-    required: false,
-    class: "col-md-2"
-  },
-  {
-    name: "vehicle",
-    label: "Vehicle",
-    type: "select",
-    placeholder: "--Select--",
-    options: vehicles,
-    bindLabel: "VehicleNum",
-    required: false,
-    class: "col-md-2"
+  vehicles: Option[] = [],
+  tabState: string = ''
+): FieldConfig[] => {
+  const fields: FieldConfig[] = [
+    {
+      name: 'fromDate',
+      label: 'From Date',
+      type: 'date',
+      placeholder: 'Select Date',
+      required: false,
+      class: 'col-md-2',
+    },
+    {
+      name: 'toDate',
+      label: 'To Date',
+      type: 'date',
+      placeholder: 'Select Date',
+      required: false,
+      class: 'col-md-2',
+    },
+    {
+      name: 'documentType',
+      label: 'Document Type',
+      type: 'select',
+      placeholder: '--Select--',
+      options: documentTypes,
+      bindLabel: 'DocumentTypeName',
+      required: false,
+      class: 'col-md-2',
+    },
+    {
+      name: 'supplier',
+      label: 'Supplier',
+      type: 'select',
+      placeholder: '--Select--',
+      options: suppliers,
+      bindLabel: 'displayName',
+      required: false,
+      class: 'col-md-2',
+    },
+    {
+      name: 'transporter',
+      label: 'Transporter',
+      type: 'select',
+      placeholder: '--Select--',
+      options: transporters,
+      bindLabel: 'TransporterName',
+      required: false,
+      class: 'col-md-2',
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      placeholder: '--Select--',
+      options: [
+        { name: 'Active', id: '1' },
+        { name: 'Expired', id: '2' },
+        { name: 'About To Expire in 1 month', id: '3' },
+      ],
+      bindLabel: 'name', 
+      required: false,
+      class: 'col-md-2',
+    },
+  ];
+
+  if (tabState === 'vehicle') {
+    fields.splice(5, 0, {
+      name: 'vehicle',
+      label: 'Vehicle',
+      type: 'select',
+      placeholder: '--Select--',
+      options: vehicles,
+      bindLabel: 'VehicleNum',
+      required: false,
+      class: 'col-md-2',
+    });
   }
-];
+
+  return fields;
+};
+
+

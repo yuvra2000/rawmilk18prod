@@ -5,7 +5,7 @@ export const environment = {
   production: false,
   BASE_URL: 'https://apinode1.secutrak.in/mobileApiDairyM',
   loginAPI: 'https://api-secutrak.secutrak.in/dev-app-secutrak',
-  googleMapsApiKey: 'AIzaSyC9n1sXo2j8l3mLh7Zt5vX9y8w6e4r2t1',
+  googleMapsApiKey: 'AIzaSyD1cCWh9XixRiwV_O7jcRbDHqEpFJbvTlA',
 };
 
 /*

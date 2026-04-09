@@ -14,4 +14,11 @@ export class TripService {
   tripdata(params: any) {
     return this.masterRequestService.post(`/tripDashboard`, params);
   }
+  elockonclick(params: any) {
+    return this.masterRequestService.postFormData(
+      `https://dairybeta.secutrak.in/elock/report_angular`,
+      params,
+      true,
+    );
+  }
 }

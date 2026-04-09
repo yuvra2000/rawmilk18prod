@@ -1,45 +1,45 @@
 import { computed, inject, signal } from '@angular/core';
-import { mccMappingColumns, filterfields, dummyMccMappingData } from './config';
+import {
+  mccMappingColumns,
+  filterfields,
+  ChillingMakerCheckerStatus,
+  RemMakerCheckerStatus,
+} from './config';
 import { GridConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { firstValueFrom } from 'rxjs';
 import {
   createFormData,
+  GroupId,
   handleApiResponse,
   handleSessionExpiry,
   token,
 } from '../../../../shared/utils/shared-utility.utils';
 import { createReportParams } from './utils';
-import { Router } from '@angular/router';
 import { AlertService } from '../../../../shared/services/alert.service';
 import { ToastrService } from 'ngx-toastr';
-import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
+
 import { NgxSpinnerService } from 'ngx-spinner';
-import { MccMappingInfoService } from '../mcc-mapping-info.service';
+import { MakerCheckerService } from '../maker-checker.service';
 export interface InitialData {
   date?: any;
-  mccList?: any[];
-  mccMappingInfoData: any[];
+  userList?: any[];
+  makerCheckerReportData: any[];
+  makerCheckerList?: any[];
 }
 interface res {
-  masterOptions: any;
-  reportData: any;
+  user: any;
+  checkerMaker: any;
 }
-export class MCCMappingInfoStore {
+export class MakerCheckerStore {
   date = signal<string>(new Date().toISOString().split('T')[0]);
-  private mccMappingInfoService = inject(MccMappingInfoService);
+  private makerCheckerService = inject(MakerCheckerService);
   private toast = inject(ToastrService);
   private alert = inject(AlertService);
-  private router = inject(Router);
-  private modalService = inject(UniversalModalService);
   private spinner = inject(NgxSpinnerService);
-  token = localStorage.getItem('AccessToken') || '';
-  GroupId = localStorage.getItem('GroupId') || '';
-  supplier_id = localStorage.getItem('supplier_id') || '';
-  user_type = localStorage.getItem('AccountType') || '';
   initialData = signal<InitialData>({
-    date: '',
-    mccList: [],
-    mccMappingInfoData: [],
+    userList: [],
+    makerCheckerReportData: [],
+    makerCheckerList: [],
   });
   loading = signal(false);
   constructor() {
@@ -50,9 +50,12 @@ export class MCCMappingInfoStore {
     this.loadInitialData();
   }
   filterfields = computed<any[]>(() =>
-    filterfields(this.initialData().mccList),
+    filterfields(
+      this.initialData().userList,
+      this.initialData().makerCheckerList,
+    ),
   );
-  rowData = computed(() => this.initialData()?.mccMappingInfoData || []);
+  rowData = computed(() => this.initialData()?.makerCheckerReportData || []);
   // rowData = computed(() => dummyMccMappingData);
   columnConfig = computed<GridConfig>(() => ({
     theme: 'alpine',
@@ -65,39 +68,35 @@ export class MCCMappingInfoStore {
       componentParent: this,
     },
     height: '300px',
+    isFitGridWidth: true,
   }));
 
   async loadInitialData() {
     this.spinner.show();
     this.loading.set(true);
     try {
-      const masterFilterParams = createFormData(this.token, {
-        GroupId: this.GroupId,
+      const userParams = createFormData(token, {
+        GroupId: GroupId,
         ForApp: '0',
       });
-      const reportParams = createFormData(this.token, {
-        ForWeb: '1',
+      const reportParams = createFormData(token, {
+        ForApp: '0',
       });
       const res: res = await firstValueFrom(
-        this.mccMappingInfoService.initializePageData(
-          masterFilterParams,
-          reportParams,
-        ),
+        this.makerCheckerService.initializePageData(userParams, reportParams),
       );
       if (
-        handleSessionExpiry(res?.reportData, this.toast) ||
-        handleSessionExpiry(res?.masterOptions, this.toast)
+        handleSessionExpiry(res?.user, this.toast) ||
+        handleSessionExpiry(res?.checkerMaker, this.toast)
       ) {
         return;
       }
 
       this.initialData.set({
-        mccMappingInfoData: res.reportData?.Data,
-        mccList: res.masterOptions?.PlantSupplier?.filter(
-          (item: any) => item.type == 4,
-        ),
+        makerCheckerReportData: res.checkerMaker?.Data,
+        userList: res.user?.Data,
       });
-      if (this.initialData().mccMappingInfoData?.length === 0) {
+      if (this.initialData().makerCheckerReportData?.length === 0) {
         this.toast.info('No mapping found');
       }
     } catch (error: any) {
@@ -116,9 +115,9 @@ export class MCCMappingInfoStore {
 
       // Call the production planning API
       const res: any = await firstValueFrom(
-        this.mccMappingInfoService.createMCCMapping(reportParams),
+        this.makerCheckerService.assignMakerChecker(reportParams),
       );
-
+      handleApiResponse(res, this.toast);
       this.fetchReportData();
     } catch (error) {
       console.error('Error fetching production planning data:', error);
@@ -132,18 +131,18 @@ export class MCCMappingInfoStore {
       this.loading.set(true);
       this.spinner.show();
 
-      const reportParams = createFormData(this.token, {
+      const reportParams = createFormData(token, {
         ForWeb: '1',
       });
       const res: any = await firstValueFrom(
-        this.mccMappingInfoService.getMCCMappingReport(reportParams),
+        this.makerCheckerService.getMakerCheckerList(reportParams),
       );
       if (handleSessionExpiry(res, this.toast)) {
         return;
       }
       this.initialData.update((data) => ({
         ...data,
-        mccMappingInfoData: res?.Data || [],
+        makerCheckerReportData: res?.Data || [],
       }));
     } catch (error) {
       console.error('Error fetching report data:', error);
@@ -155,20 +154,20 @@ export class MCCMappingInfoStore {
   deleteMapping(data: any) {
     this.alert
       .confirmDelete(
-        'Delete Mapping',
-        'Are you sure you want to delete this mapping?',
+        'Deassign Mapping',
+        'Are you sure you want to deassign this mapping?',
       )
       .then(async (confirmed) => {
         if (confirmed) {
           const params = createFormData(token, {
-            MccMappingId: data?.ID,
-            ForWeb: '1',
+            id: data?.id,
+            ForApp: '0',
           });
           try {
             this.spinner.show();
             this.loading.set(true);
             const res: any = await firstValueFrom(
-              this.mccMappingInfoService.deleteMCCMapping(params),
+              this.makerCheckerService.deAssignMakerChecker(params),
             );
             if (
               res.Status == 'Success' ||
@@ -188,5 +187,26 @@ export class MCCMappingInfoStore {
           this.fetchReportData();
         }
       });
+  }
+  onFilterChange(event: any) {
+    console.log('Filter changed:', event);
+    if (event?.controlName === 'userId') {
+      console.log('User type', event?.value?.user_type);
+      if (event?.value?.user_type == 'ChillingPlant') {
+        this.initialData.update((data) => ({
+          ...data,
+          makerCheckerList: ChillingMakerCheckerStatus,
+        }));
+      } else {
+        this.initialData.update((data) => ({
+          ...data,
+          makerCheckerList: RemMakerCheckerStatus,
+        }));
+      }
+    }
+    console.log(
+      'Updated makerCheckerList:',
+      this.initialData().makerCheckerList,
+    );
   }
 }

@@ -79,6 +79,7 @@ export function handleApiResponse(
   } else {
     const message =
       apiMessage || errorMessage || response.Data || 'Operation failed';
+    console.log('API Error:', message);
     toastService.error(message);
     return false;
   }

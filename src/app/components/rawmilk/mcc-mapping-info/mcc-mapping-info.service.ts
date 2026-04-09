@@ -25,6 +25,12 @@ export class MccMappingInfoService {
       params,
     );
   }
+  deleteMCCMapping(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      '/rm_deleteMccMapping',
+      params,
+    );
+  }
 
   // Combined method using forkJoin for parallel API calls
   initializePageData(masterParams: any, reportParams: any): Observable<any> {

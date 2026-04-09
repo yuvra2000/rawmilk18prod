@@ -51,7 +51,7 @@ export const filterfields = (mccList: Option[] = []): FieldConfig[] => [
     name: 'StandByVehCount',
     type: 'text',
     label: 'Standby Vehicle Count',
-    placeholder: 'Enter Standby Vehicle Count',
+    placeholder: 'Standby Vehicle Count',
     class: 'col-md-2',
   },
 ];
@@ -106,8 +106,8 @@ export const mccMappingColumns: GridColumnConfig[] = [
           tooltip: 'Delete',
           onClick: (data: any, node: any, params: any) => {
             const parent = params?.context?.componentParent;
-            if (parent && typeof parent.deletemapping === 'function') {
-              parent.deletemapping(data);
+            if (parent && typeof parent.deleteMapping === 'function') {
+              parent.deleteMapping(data);
             }
           },
           iconStyle: {
@@ -120,5 +120,28 @@ export const mccMappingColumns: GridColumnConfig[] = [
     },
     cellStyle: { textAlign: 'center' },
     headerClass: 'text-center',
+  },
+];
+export const dummyMccMappingData = [
+  {
+    Mcc: 'MCC-001',
+    VehChamberType: 'Single Chamber',
+    MinVehCapacity: 1000,
+    MaxVehCapacity: 1500,
+    StandByVehCount: 2,
+  },
+  {
+    Mcc: 'MCC-002',
+    VehChamberType: 'Multiple Chamber',
+    MinVehCapacity: 1200,
+    MaxVehCapacity: 1800,
+    StandByVehCount: 3,
+  },
+  {
+    Mcc: 'MCC-003',
+    VehChamberType: 'Both',
+    MinVehCapacity: 900,
+    MaxVehCapacity: 1400,
+    StandByVehCount: 1,
   },
 ];

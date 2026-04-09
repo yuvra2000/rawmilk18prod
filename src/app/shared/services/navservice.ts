@@ -170,6 +170,18 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'mcc-mapping-info',
+          title: 'MCC Mapping Info',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'agreement-info',
+          title: 'Agreement Info',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     { headTitle: 'OPERATIONS' },
@@ -194,12 +206,6 @@ export class NavService implements OnDestroy {
         {
           path: 'summarized-report',
           title: 'Summarized Report',
-          type: 'link',
-          dirchange: false,
-        },
-        {
-          path: 'mcc-mapping-info',
-          title: 'MCC Mapping Info',
           type: 'link',
           dirchange: false,
         },

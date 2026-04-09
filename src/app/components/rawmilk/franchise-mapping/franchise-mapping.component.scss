@@ -1,0 +1,44 @@
+.action-buttons-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fafafa;
+
+  h5 {
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .d-flex {
+    display: flex;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  .mb-3 {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .d-flex {
+      flex-direction: column;
+    }
+
+    app-action-button {
+      width: 100%;
+    }
+  }
+}
+
+.table-heading {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}

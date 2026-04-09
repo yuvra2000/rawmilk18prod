@@ -58,7 +58,13 @@ import {
   // ICellRendererAngularComp
 } from 'ag-grid-community';
 // import { MenuModule } from '@ag-grid-enterprise/menu';
-import { Subject, takeUntil, debounceTime, distinctUntilChanged } from 'rxjs';
+import {
+  Subject,
+  takeUntil,
+  debounceTime,
+  distinctUntilChanged,
+  config,
+} from 'rxjs';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 // import { FleetCellRendererComponent } from '../../../../cv/common/manage/route-fleet-assignment/clickable-chips-renderer';
 import {
@@ -137,6 +143,7 @@ export interface GridConfig {
   // enableSideBar?: boolean;
   tooltipComponent?: any;
   context?: any;
+  isFitGridWidth?: boolean;
 }
 
 export interface GridEvents {
@@ -599,11 +606,6 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
           </div>
         </div>
       </div>
-      <!-- Loading Overlay 
-      <div class="loading-overlay" *ngIf="isLoading">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">{{ loadingText }}</div>
-      </div>-->
 
       <!-- AG-Grid -->
       <div class="grid-wrapper w-100 " [ngClass]="config().customCssClass">
@@ -857,6 +859,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       autoSizeStrategy: this.config().autoSizeColumns
         ? { type: 'fitCellContents' }
         : undefined,
+
       cellSelection: this.config().enableRangeSelection || false,
       rowHeight: this.config().rowHeight,
       headerHeight: this.config().headerHeight,
@@ -893,7 +896,10 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       }
       //yeh place thodi doubtful hai
     }
-    // console.log('Final grid options:', options);
+    if (this.config().isFitGridWidth) {
+      options.autoSizeStrategy = { type: 'fitGridWidth' };
+    }
+    console.log('Final grid options:', options);
     return options;
   });
   frameworkComponents = {
@@ -915,7 +921,8 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
     effect(
       () => {
         this.loadingSignal.set(true);
-        // console.log(this.rowData(), 'rowdata changed');
+        console.log(this.rowData(), 'rowdata changed');
+        debugger;
         if (
           (this.rowData() && this.rowData().length > 0) ||
           !this.loadingRowData()

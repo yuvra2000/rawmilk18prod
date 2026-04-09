@@ -48,6 +48,7 @@ import { CommonHeaderComponent } from '../../../shared/components/common-header/
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridModalComponent } from '../../../shared/components/reusable-modal/shared/grid-modal/grid-modal.component';
+import { SharedModule } from '../../../shared/shared.module';
 interface formResponse {
   Indents: any[];
   Message: string;
@@ -62,6 +63,7 @@ interface formResponse {
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
+    SharedModule,
     // CommonHeaderComponent,
   ],
   providers: [NgbActiveModal],

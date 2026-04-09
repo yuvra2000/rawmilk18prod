@@ -3,6 +3,7 @@ import { CollapseWrapperComponent } from '../../../shared/components/collapse-wr
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
 import { DispatchStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-dispatch-planning',
@@ -11,6 +12,7 @@ import { DispatchStore } from './state-service/store';
     CollapseWrapperComponent,
     AdvancedGridComponent,
     FilterFormComponent,
+    SharedModule,
   ],
   templateUrl: './dispatch-planning-report.component.html',
   styleUrl: './dispatch-planning-report.component.scss',

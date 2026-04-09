@@ -6,11 +6,12 @@ import {
   IconConfig,
 } from '../../../shared/components/action-button/action-button.component';
 import { CartMappingStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-cart-mapping',
   standalone: true,
-  imports: [AdvancedGridComponent, ActionButtonComponent],
+  imports: [AdvancedGridComponent, ActionButtonComponent, SharedModule],
   templateUrl: './cart-mapping.component.html',
   styleUrl: './cart-mapping.component.scss',
 })

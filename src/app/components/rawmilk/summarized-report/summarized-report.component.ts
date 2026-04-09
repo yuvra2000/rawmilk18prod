@@ -3,6 +3,7 @@ import { FilterFormComponent } from '../../../shared/components/filter-form/filt
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { SummarizedReportStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-summarized-report',
@@ -11,6 +12,7 @@ import { SummarizedReportStore } from './state-service/store';
     FilterFormComponent,
     CollapseWrapperComponent,
     AdvancedGridComponent,
+    SharedModule,
   ],
   templateUrl: './summarized-report.component.html',
   styleUrl: './summarized-report.component.scss',

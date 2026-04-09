@@ -1,5 +1,7 @@
 <!-- <app-common-header [title]="pageTitle" [breadcrumbs]="breadcrumbs">
 </app-common-header> -->
+<app-header [title]="'View Indent Supplier'">
+  ></app-header>
 <app-collapse-wrapper>
   <filter-form #viewIndentFilter [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"
     (controlValueChange)="onFilterChange($event)" [initialData]="initialData()">

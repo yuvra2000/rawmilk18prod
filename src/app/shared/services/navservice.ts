@@ -170,6 +170,24 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        // {
+        //   path: 'mcc-mapping-info',
+        //   title: 'MCC Mapping Info',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
+        // {
+        //   path: 'agreement-info',
+        //   title: 'Agreement Info',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
+        // {
+        //   path: 'maker-checker',
+        //   title: 'Maker Checker',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
       ],
     },
     { headTitle: 'OPERATIONS' },
@@ -229,12 +247,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
-        {
-          path: 'cart-timing',
-          title: 'Cart Timing',
-          type: 'link',
-          dirchange: false,
-        },
+        // {
+        //   path: 'cart-timing',
+        //   title: 'Cart Timing',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
       ],
     },
     {

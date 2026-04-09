@@ -86,6 +86,13 @@ export const rawMilkRoutes: Routes = [
         title: 'Leci Dashboard',
       },
       {
+        path: 'maker-dashboard',
+        loadComponent: () =>
+          import('./maker-dashboard/maker-dashboard.component').then(
+            (m) => m.MakerDashboardComponent,
+          ),
+      },
+      {
         path: 'leci-add-form',
         loadComponent: () =>
           import('./leci-add-form/leci-add-form.component').then(
@@ -186,6 +193,22 @@ export const rawMilkRoutes: Routes = [
             (m) => m.CartTimingComponent,
           ),
         title: 'Cart Timing',
+      },
+      {
+        path: 'mcc-mapping-info',
+        loadComponent: () =>
+          import('./mcc-mapping-info/mcc-mapping-info.component').then(
+            (m) => m.MccMappingInfoComponent,
+          ),
+        title: 'MCC Mapping Info',
+      },
+      {
+        path: 'maker-checker',
+        loadComponent: () =>
+          import('./maker-checker/maker-checker.component').then(
+            (m) => m.MakerCheckerComponent,
+          ),
+        title: 'Maker Checker',
       },
     ],
   },

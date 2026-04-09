@@ -921,8 +921,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
     effect(
       () => {
         this.loadingSignal.set(true);
-        console.log(this.rowData(), 'rowdata changed');
-        debugger;
+
         if (
           (this.rowData() && this.rowData().length > 0) ||
           !this.loadingRowData()

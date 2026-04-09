@@ -116,7 +116,8 @@ export const rawMilkRoutes: Routes = [
             (m) => m.DocumentWalletComponent,
           ),
         title: 'Document Wallet',
-      }
+      },
+      {
         path: 'eta-report',
         loadComponent: () =>
           import('./eta-report/eta-report.component').then(

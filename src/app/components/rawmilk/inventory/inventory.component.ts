@@ -59,6 +59,7 @@ export class InventoryComponent implements OnInit {
   groupId: string = '';
   supplierId: string = '';
   userType: string = '';
+  loading = signal(false);
 
   // Filter data signals
   mccList = signal<any[]>([]);
@@ -145,6 +146,7 @@ export class InventoryComponent implements OnInit {
     });
 
     this.spinner.show();
+    this.loading.set(true);
 
     this.inventoryService
       .initializePageData(filterParams, reportParams)
@@ -155,6 +157,9 @@ export class InventoryComponent implements OnInit {
         },
         error: (error) => {
           handleError(error, this.toast);
+        },
+        complete: () => {
+          this.loading.set(false);
           this.spinner.hide();
         },
       });
@@ -229,6 +234,7 @@ export class InventoryComponent implements OnInit {
   }
   async createInventoryData(value: any): Promise<void> {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const payload = buildCreateInventoryPayload(value);
       const response: any = await firstValueFrom(
@@ -243,6 +249,7 @@ export class InventoryComponent implements OnInit {
     } catch (error) {
       handleError(error, this.toast);
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -261,7 +268,7 @@ export class InventoryComponent implements OnInit {
     });
 
     this.spinner.show();
-
+    this.loading.set(true);
     this.inventoryService.getInventoryReport(params).subscribe({
       next: (response) => {
         if (response.Status === 'success') {
@@ -277,6 +284,9 @@ export class InventoryComponent implements OnInit {
       error: (error) => {
         handleError(error, this.toast);
         this.spinner.hide();
+      },
+      complete: () => {
+        this.loading.set(false);
       },
     });
   }
@@ -410,7 +420,7 @@ export class InventoryComponent implements OnInit {
       MilkId: '',
       MccId: '',
     });
-
+    this.loading.set(true);
     this.inventoryService.getInventoryReport(reportParams).subscribe({
       next: (response) => {
         if (response.Status === 'success') {
@@ -421,6 +431,9 @@ export class InventoryComponent implements OnInit {
       },
       error: (error) => {
         handleError(error, this.toast);
+      },
+      complete: () => {
+        this.loading.set(false);
       },
     });
   }

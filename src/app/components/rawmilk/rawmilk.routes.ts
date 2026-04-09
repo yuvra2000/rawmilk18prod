@@ -171,6 +171,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Agreement Info',
       },
+      {
+        path: 'cart-timing',
+        loadComponent: () =>
+          import('./cart-timing/cart-timing.component').then(
+            (m) => m.CartTimingComponent,
+          ),
+        title: 'Cart Timing',
+      },
     ],
   },
   {

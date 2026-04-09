@@ -35,6 +35,7 @@ export class CartMappingStore {
     franchiseList: [],
     cartMappingList: [],
   });
+  loading = signal(false);
   columnConfig = computed<GridConfig>(() => ({
     theme: 'alpine',
     columns: cartMappingColumns,
@@ -52,6 +53,7 @@ export class CartMappingStore {
   async loadInitialData() {
     try {
       this.spinner.show();
+      this.loading.set(true);
       const params = createMasterParams();
       const cartParams = createFormData(token, {});
       const res: any = await firstValueFrom(
@@ -72,6 +74,7 @@ export class CartMappingStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Something went wrong');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -143,6 +146,7 @@ export class CartMappingStore {
       id: JSON.stringify(data.selectedRows.map((r: any) => r._id.$oid)),
     });
     this.spinner.show();
+    this.loading.set(true);
     try {
       const res: any = await firstValueFrom(
         this.cartMapppingService.assignDeAssign(params),
@@ -159,6 +163,7 @@ export class CartMappingStore {
           `Failed to ${type == 1 ? 'assign' : 'de-assign'} cart`,
       );
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }

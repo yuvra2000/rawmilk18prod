@@ -29,6 +29,7 @@ export class FranchiseMappingStore {
   private alertService = inject(AlertService);
   rowData = computed(() => this.initialData().franchiseMappingList || []);
   selectedRows = signal<any[]>([]);
+  loading = signal(false);
   initialData = signal<InitialData>({
     addaList: [],
     franchiseList: [],
@@ -50,6 +51,8 @@ export class FranchiseMappingStore {
   }));
   async loadInitialData() {
     try {
+      this.loading.set(true);
+
       this.spinner.show();
       const params = createMasterParams();
       const res: any = await firstValueFrom(
@@ -72,6 +75,7 @@ export class FranchiseMappingStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Something went wrong');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -110,6 +114,7 @@ export class FranchiseMappingStore {
     const params = addParams(formData);
     this.spinner.show();
     try {
+      this.loading.set(true);
       const res: any = await firstValueFrom(
         this.franchiseMapppingService.addFranchiseAssignment(params),
       );
@@ -122,6 +127,7 @@ export class FranchiseMappingStore {
     } catch (error) {
       this.toast.error('Failed to assign franchise');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -144,6 +150,7 @@ export class FranchiseMappingStore {
     });
     this.spinner.show();
     try {
+      this.loading.set(true);
       const res: any = await firstValueFrom(
         this.franchiseMapppingService.assignDeAssign(params),
       );
@@ -161,6 +168,7 @@ export class FranchiseMappingStore {
           `Failed to ${type == 1 ? 'assign' : 'de-assign'} franchise`,
       );
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }

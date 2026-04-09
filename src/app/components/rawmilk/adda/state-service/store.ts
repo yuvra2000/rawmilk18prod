@@ -30,6 +30,7 @@ export class AddaStore {
     addaList: [],
     regionList: [],
   });
+  loading = signal(false);
   columnConfig = computed<GridConfig>(() => ({
     theme: 'alpine',
     columns: addaColumns,
@@ -44,6 +45,7 @@ export class AddaStore {
   async loadInitialData() {
     try {
       this.spinner.show();
+      this.loading.set(true);
       const params = createMasterParams();
       const res: any = await firstValueFrom(
         this.addaService.initialData(params),
@@ -65,6 +67,7 @@ export class AddaStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Something went wrong');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -106,6 +109,7 @@ export class AddaStore {
     const payload =
       type == 'edit' ? editParams(data, formData) : addParams(formData);
     try {
+      this.loading.set(true);
       this.spinner.show();
       const res: any = await firstValueFrom(
         type == 'edit'
@@ -123,6 +127,7 @@ export class AddaStore {
         this.toast.error(error.error.message || 'Something went wrong');
       }
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }

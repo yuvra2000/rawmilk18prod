@@ -606,11 +606,6 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
           </div>
         </div>
       </div>
-      <!-- Loading Overlay 
-      <div class="loading-overlay" *ngIf="isLoading">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">{{ loadingText }}</div>
-      </div>-->
 
       <!-- AG-Grid -->
       <div class="grid-wrapper w-100 " [ngClass]="config().customCssClass">
@@ -926,7 +921,8 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
     effect(
       () => {
         this.loadingSignal.set(true);
-        // console.log(this.rowData(), 'rowdata changed');
+        console.log(this.rowData(), 'rowdata changed');
+        debugger;
         if (
           (this.rowData() && this.rowData().length > 0) ||
           !this.loadingRowData()

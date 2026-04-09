@@ -21,6 +21,7 @@ export class FranchiseStore {
   private modal = inject(UniversalModalService);
   private franchiseService = inject(FranchiseService);
   private alertService = inject(AlertService);
+  loading = signal(false);
   rowData = computed(() => this.initialData().franchiseList || []);
   initialData = signal<InitialData>({
     franchiseList: [],
@@ -39,6 +40,7 @@ export class FranchiseStore {
   }));
   async loadInitialData() {
     try {
+      this.loading.set(true);
       this.spinner.show();
       const params = createMasterParams();
       const res: any = await firstValueFrom(
@@ -53,6 +55,7 @@ export class FranchiseStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Something went wrong');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -88,6 +91,7 @@ export class FranchiseStore {
       type == 'edit' ? editParams(data, formData) : addParams(formData);
     try {
       this.spinner.show();
+      this.loading.set(true);
       const res: any = await firstValueFrom(
         type == 'edit'
           ? this.franchiseService.editFranchise(payload)
@@ -104,6 +108,7 @@ export class FranchiseStore {
         this.toast.error(error.error.message || 'Something went wrong');
       }
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }

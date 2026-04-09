@@ -52,6 +52,7 @@ export class DispatchStore {
     plantListDivert: [],
     dispatchReportData: [],
   });
+  loading = signal(false);
   constructor() {
     this.initialData.update((data) => ({
       ...data,
@@ -85,6 +86,7 @@ export class DispatchStore {
 
   async loadInitialData() {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const masterFilterParams = createFormData(this.token, {
         GroupId: this.GroupId,
@@ -134,12 +136,14 @@ export class DispatchStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Error loading initial data:');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
   async onFormSubmit(filterValues: any) {
     console.log('Form submitted with values:', filterValues);
     this.spinner.show();
+    this.loading.set(true);
     try {
       // Format date range and create report params with filter values
       const reportParams = createReportParams(filterValues?.date, filterValues);
@@ -159,6 +163,7 @@ export class DispatchStore {
     } catch (error) {
       console.error('Error fetching production planning data:', error);
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -183,6 +188,8 @@ export class DispatchStore {
           ForApp: '0',
         });
         try {
+          this.loading.set(true);
+          this.spinner.show();
           const res: any = await firstValueFrom(
             this.dispatchPlanningService.divertDispatch(formData),
           );
@@ -198,12 +205,18 @@ export class DispatchStore {
           );
         } catch (error) {
           this.alert.showError('Error', 'Failed to divert dispatch plan.');
+        } finally {
+          this.loading.set(false);
+          this.spinner.hide();
         }
       },
     });
   }
   fetchReportData = async (date: any) => {
     try {
+      this.loading.set(true);
+      this.spinner.show();
+
       const reportParams = createReportParams(date);
       const res: any = await firstValueFrom(
         this.dispatchPlanningService.getProductionPlanningData(reportParams),
@@ -217,6 +230,9 @@ export class DispatchStore {
       }));
     } catch (error) {
       console.error('Error fetching report data:', error);
+    } finally {
+      this.loading.set(false);
+      this.spinner.hide();
     }
   };
   onDelete(row: any) {
@@ -235,6 +251,8 @@ export class DispatchStore {
             ForApp: '0',
           });
           try {
+            this.loading.set(true);
+            this.spinner.show();
             const res: any = await firstValueFrom(
               this.dispatchPlanningService.deleteDispatch(formData),
             );
@@ -245,6 +263,9 @@ export class DispatchStore {
             }
           } catch (error) {
             this.alert.showError('Error', 'Failed to delete indent.');
+          } finally {
+            this.loading.set(false);
+            this.spinner.hide();
           }
         } else {
         }

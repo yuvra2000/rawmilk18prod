@@ -31,6 +31,7 @@ export class CartReportExceptionStore {
   private franchiseService = inject(FranchiseReportService);
   private modal = inject(UniversalModalService);
   date = signal<string>('');
+  loading = signal(false);
   lastFilterValues = signal<any>(null);
   initialData = signal<InitialData>({
     addaList: [],
@@ -53,6 +54,7 @@ export class CartReportExceptionStore {
   );
   async loadInitialData() {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const vehicleParams = createFormData(token, {});
       const listParams = createFormData(token, {
@@ -75,6 +77,7 @@ export class CartReportExceptionStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Error loading initial data:');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -98,6 +101,7 @@ export class CartReportExceptionStore {
 
   private async loadReportData(params: FormData) {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const res: any = await firstValueFrom(
         this.franchiseService.getListFranchiseReport(params),
@@ -116,6 +120,7 @@ export class CartReportExceptionStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Error loading report data:');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }

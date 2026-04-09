@@ -55,6 +55,7 @@ export class CartReportExceptionStore {
       componentParent: this,
     },
   }));
+  loading = signal(false);
   rowData = computed<any[]>(() => this.initialData().agreementReportData || []);
   filterfields = computed<any[]>(() =>
     filterfields(
@@ -65,6 +66,7 @@ export class CartReportExceptionStore {
   );
   async loadInitialData() {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const masterParams = createMasterParams();
       const tankerParams = createTankerParams();
@@ -100,6 +102,7 @@ export class CartReportExceptionStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Error loading initial data:');
     } finally {
+      this.loading.set(false);
       this.spinner.hide();
     }
   }
@@ -123,6 +126,7 @@ export class CartReportExceptionStore {
 
   private async loadReportData(params: FormData) {
     this.spinner.show();
+    this.loading.set(true);
     try {
       const res: any = await firstValueFrom(
         this.agreementInfoService.AgreementInfoReport(params),
@@ -141,6 +145,8 @@ export class CartReportExceptionStore {
     } catch (error: any) {
       this.toast.error(error?.error?.message || 'Error loading report data:');
     } finally {
+      this.loading.set(false);
+
       this.spinner.hide();
     }
   }

@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { AddaStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-cart-timing',
   standalone: true,
-  imports: [AdvancedGridComponent],
+  imports: [AdvancedGridComponent, SharedModule],
   templateUrl: './cart-timing.component.html',
   styleUrl: './cart-timing.component.scss',
 })

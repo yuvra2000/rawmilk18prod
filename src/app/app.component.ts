@@ -8,11 +8,12 @@ import {
   NgxSpinnerService,
   NgxSpinnerModule,
 } from 'ngx-spinner';
+import { SharedModule } from './shared/shared.module';
 ModuleRegistry.registerModules([AllCommunityModule]);
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, NgxSpinnerModule],
+  imports: [RouterOutlet, CommonModule, NgxSpinnerModule, SharedModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

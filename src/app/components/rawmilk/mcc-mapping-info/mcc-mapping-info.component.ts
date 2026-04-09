@@ -3,6 +3,7 @@ import { CollapseWrapperComponent } from '../../../shared/components/collapse-wr
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
 import { DispatchStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-mcc-mapping-info',
@@ -11,6 +12,7 @@ import { DispatchStore } from './state-service/store';
     CollapseWrapperComponent,
     AdvancedGridComponent,
     FilterFormComponent,
+    SharedModule,
   ],
   templateUrl: './mcc-mapping-info.component.html',
   styleUrl: './mcc-mapping-info.component.scss',

@@ -48,7 +48,7 @@ export function handleApiResponse(
   const status = response.Status || response.status;
   const isSuccess =
     status === 'success' || status === 1 || response.success === true;
-  const apiMessage = response.Message || response.message || response.Data;
+  const apiMessage = response.Message || response.message;
 
   // Check for session expiration
   if (
@@ -64,6 +64,7 @@ export function handleApiResponse(
   if (isSuccess) {
     const message =
       apiMessage || successMessage || 'Operation completed successfully';
+    console.log('API Success:', message);
     if (message) {
       toastService.success(message);
     }

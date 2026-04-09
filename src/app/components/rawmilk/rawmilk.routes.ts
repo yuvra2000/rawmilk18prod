@@ -86,6 +86,13 @@ export const rawMilkRoutes: Routes = [
         title: 'Leci Dashboard',
       },
       {
+        path: 'maker-dashboard',
+        loadComponent: () =>
+          import('./maker-dashboard/maker-dashboard.component').then(
+            (m) => m.MakerDashboardComponent,
+          ),
+      },
+      {
         path: 'leci-add-form',
         loadComponent: () =>
           import('./leci-add-form/leci-add-form.component').then(

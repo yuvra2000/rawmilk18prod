@@ -182,6 +182,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'maker-checker',
+          title: 'Maker Checker',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     { headTitle: 'OPERATIONS' },

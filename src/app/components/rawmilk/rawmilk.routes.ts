@@ -202,6 +202,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'MCC Mapping Info',
       },
+      {
+        path: 'maker-checker',
+        loadComponent: () =>
+          import('./maker-checker/maker-checker.component').then(
+            (m) => m.MakerCheckerComponent,
+          ),
+        title: 'Maker Checker',
+      },
     ],
   },
   {

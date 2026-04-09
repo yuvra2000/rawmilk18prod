@@ -1,0 +1,10 @@
+<app-header [title]="'Maker Checker'">
+    ></app-header>
+<app-collapse-wrapper [filterText]="'Assign Maker/Checker'">
+    <filter-form #makerChecker [dynamicFields]="store.filterfields()" (formSubmit)="store.onFormSubmit($event)"
+        [initialData]="store.date()" [buttonName]="'Assign'" (controlValueChange)="store.onFilterChange($event)">
+    </filter-form>
+</app-collapse-wrapper>
+<app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()" [loadingRowData]="store.loading()">
+    <h5 class="text-center table-heading">Maker/Checker List</h5>
+</app-advanced-grid>

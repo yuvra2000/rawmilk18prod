@@ -21,6 +21,7 @@ import { ViewChild, TemplateRef } from '@angular/core';
 export class ElockTripReportComponent implements OnInit {
   token: string = localStorage.getItem('AccessToken') || '';
   
+  loading = signal<boolean>(false);
   vehicleList = signal<any[]>([]);
   filterfields = computed<FieldConfig[]>(() => elockFilterFields(this.vehicleList()));
 
@@ -57,6 +58,7 @@ export class ElockTripReportComponent implements OnInit {
       ForWeb: '1'
     });
 
+    this.loading.set(true);
     this.elockService.getVehicleList(payload).subscribe({
       next: (res) => {
         if (res?.VehicleList) {
@@ -68,7 +70,8 @@ export class ElockTripReportComponent implements OnInit {
       error: (err) => {
         this.alertService.error('Failed to load vehicles');
         console.error('API Error:', err);
-      }
+      },
+      complete: () => {this.loading.set(false);}
     });
   }
 
@@ -91,7 +94,7 @@ export class ElockTripReportComponent implements OnInit {
       otp_for: formData?.otpFor?.id,
       status: formData?.status?.id
     });
-
+    this.loading.set(true);
     this.elockService.getTableData(payload).subscribe({
       next: (res: any) => {
         if (res && res.Report) {
@@ -113,7 +116,8 @@ export class ElockTripReportComponent implements OnInit {
       },
       error: (error: any) => {
         this.alertService.error(error?.message || 'Error fetching data');
-      }
+      },
+      complete: () => {this.loading.set(false);}
     });
   }
 

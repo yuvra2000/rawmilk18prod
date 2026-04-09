@@ -48,19 +48,24 @@ export function handleApiResponse(
   const status = response.Status || response.status;
   const isSuccess =
     status === 'success' || status === 1 || response.success === true;
-  const apiMessage = response.Message || response.message || response.Data;
+  const apiMessage = response.Message || response.message;
 
   // Check for session expiration
-  if (response.Result === 'Session Expired' || status === 'Session Expired') {
+  if (
+    response.Result === 'Session Expired due to new login.' ||
+    status === 'failed' ||
+    apiMessage == 'Invalid or expired accesstoken.' ||
+    apiMessage == 'Sorry! Session expired, Please login again ..!'
+  ) {
     toastService.error(apiMessage || 'Session expired. Please log in again.');
+    window.location.href = 'https://secutrak.in/logout';
     return false;
   }
-  console.log('API Response Status:', status, 'Message:', apiMessage);
   if (isSuccess) {
     const message =
-      successMessage || apiMessage || 'Operation completed successfully';
-    // Only show success toast if a custom message is provided or it's a non-data action
-    if (successMessage) {
+      apiMessage || successMessage || 'Operation completed successfully';
+    console.log('API Success:', message);
+    if (message) {
       toastService.success(message);
     }
 
@@ -73,7 +78,7 @@ export function handleApiResponse(
     return true;
   } else {
     const message =
-      errorMessage || apiMessage || response.Data || 'Operation failed';
+      apiMessage || errorMessage || response.Data || 'Operation failed';
     toastService.error(message);
     return false;
   }
@@ -99,7 +104,6 @@ export function handleSessionExpiry(res: any, toastService: any) {
   // debugger;
   if (
     res?.Result == 'Session Expired due to new login.' ||
-    res?.Status == 'failed' ||
     res?.Message == 'Invalid or expired accesstoken.' ||
     res?.Message == 'Sorry! Session expired, Please login again ..!'
   ) {

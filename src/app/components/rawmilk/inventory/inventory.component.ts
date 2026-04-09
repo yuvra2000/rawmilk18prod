@@ -35,6 +35,7 @@ import {
   Breadcrumb,
   CommonHeaderComponent,
 } from '../../../shared/components/common-header/common-header.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-inventory',
@@ -45,7 +46,7 @@ import {
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
-    CommonHeaderComponent,
+    SharedModule,
   ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss',

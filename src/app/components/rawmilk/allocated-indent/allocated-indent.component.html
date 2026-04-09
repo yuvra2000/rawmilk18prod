@@ -1,3 +1,5 @@
+<app-header [title]="'Agreement Info'">
+  ></app-header>
 <div class="ibox-title text-center custom-box">
   <h4>
     Demand quantity:
@@ -19,78 +21,56 @@
       </thead>
       <tbody formArrayName="rows">
         <tr [formGroupName]="i" class="text-center" *ngFor="let row of rows.controls; let i = index">
-            <td width="40%">
-              <!-- {{ row.get("mcc")?.value | json }}/ -->
-              <ng-select
-                formControlName="mcc"
-                class="full-width-select"
-                [items]="master"
-                bindLabel="displayName"
-                placeholder="Select MCC"
-              >
-              </ng-select>
-              @if (row.get("mcc")?.touched && row.get("mcc")?.invalid) {
-                <div class="error">MCC is required.</div>
+          <td width="40%">
+            <!-- {{ row.get("mcc")?.value | json }}/ -->
+            <ng-select formControlName="mcc" class="full-width-select" [items]="master" bindLabel="displayName"
+              placeholder="Select MCC">
+            </ng-select>
+            @if (row.get("mcc")?.touched && row.get("mcc")?.invalid) {
+            <div class="error">MCC is required.</div>
+            }
+          </td>
+          <td width="30%">
+            <input type="number" formControlName="quantity" class="full-width-input" min="0"
+              (input)="updateRemainingQuantity()" />
+            @if (
+            row.get("quantity")?.touched && row.get("quantity")?.invalid
+            ) {
+            <div class="error">
+              @if (row.get("quantity")?.hasError("required")) {
+              <div>Quantity is required.</div>
               }
-            </td>
-            <td width="30%">
-              <input
-                type="number"
-                formControlName="quantity"
-                class="full-width-input"
-                min="0"
-                (input)="updateRemainingQuantity()"
-              />
-              @if (
-                row.get("quantity")?.touched && row.get("quantity")?.invalid
-              ) {
-                <div class="error">
-                  @if (row.get("quantity")?.hasError("required")) {
-                    <div>Quantity is required.</div>
-                  }
-                  @if (row.get("quantity")?.errors?.["pattern"]) {
-                    <small>Only positive integers are allowed.</small>
-                  }
-                  @if (row.get("quantity")?.errors?.[min]) {
-                    <small>Quantity must be at least 1.</small>
-                  }
-                </div>
+              @if (row.get("quantity")?.errors?.["pattern"]) {
+              <small>Only positive integers are allowed.</small>
               }
-            </td>
-            <td width="30%">
-              <div class="action-buttons-container">
-                @if (i === 0) {
-                  <button
-                    type="button"
-                    (click)="addRow()"
-                    class="btn-action btn-add"
-                  >
-                    <i class="fa fa-plus"></i> Add More
-                  </button>
-                }
+              @if (row.get("quantity")?.errors?.[min]) {
+              <small>Quantity must be at least 1.</small>
+              }
+            </div>
+            }
+          </td>
+          <td width="30%">
+            <div class="action-buttons-container">
+              @if (i === 0) {
+              <button type="button" (click)="addRow()" class="btn-action btn-add">
+                <i class="fa fa-plus"></i> Add More
+              </button>
+              }
 
-                @if (i > 0 && !row.get("isPrefilled")?.value) {
-                  <button
-                    type="button"
-                    (click)="removeRow(i)"
-                    class="btn-action btn-remove"
-                  >
-                    <i class="fa fa-times"></i> Remove
-                  </button>
-                }
+              @if (i > 0 && !row.get("isPrefilled")?.value) {
+              <button type="button" (click)="removeRow(i)" class="btn-action btn-remove">
+                <i class="fa fa-times"></i> Remove
+              </button>
+              }
 
-                @if (row.get("isPrefilled")?.value) {
-                  <button
-                    type="button"
-                    (click)="deletePrefilledRow(row.get('id')?.value, i)"
-                    class="btn-action btn-delete"
-                  >
-                    <i class="fa fa-trash"></i> Delete
-                  </button>
-                }
-              </div>
-            </td>
-          </tr>
+              @if (row.get("isPrefilled")?.value) {
+              <button type="button" (click)="deletePrefilledRow(row.get('id')?.value, i)" class="btn-action btn-delete">
+                <i class="fa fa-trash"></i> Delete
+              </button>
+              }
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
     <div class="col-lg-2 mt-2 ms-auto me-auto">

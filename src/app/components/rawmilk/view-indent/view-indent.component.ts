@@ -44,6 +44,7 @@ import { AlertService } from '../../../shared/services/alert.service';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { TabConfig } from '../../../shared/components/nav-tab/nav-tab.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-view-indent',
@@ -54,6 +55,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
+    SharedModule,
   ],
   templateUrl: './view-indent.component.html',
   styleUrl: './view-indent.component.scss',

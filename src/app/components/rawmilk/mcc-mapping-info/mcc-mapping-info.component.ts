@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { CartReportExceptionStore } from './state-service/store';
+import { FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
+import { DispatchStore } from './state-service/store';
 import { SharedModule } from '../../../shared/shared.module';
+
 @Component({
-  selector: 'app-cart-exception-report',
+  selector: 'app-mcc-mapping-info',
   standalone: true,
   imports: [
-    FilterFormComponent,
     CollapseWrapperComponent,
     AdvancedGridComponent,
+    FilterFormComponent,
     SharedModule,
   ],
-  templateUrl: './cart-exception-report.component.html',
-  styleUrl: './cart-exception-report.component.scss',
+  templateUrl: './mcc-mapping-info.component.html',
+  styleUrl: './mcc-mapping-info.component.scss',
 })
-export class CartExceptionReportComponent implements OnInit {
-  store: CartReportExceptionStore = new CartReportExceptionStore();
+export class MccMappingInfoComponent implements OnInit {
+  store: DispatchStore = new DispatchStore();
   ngOnInit(): void {
     this.store.loadInitialData();
   }

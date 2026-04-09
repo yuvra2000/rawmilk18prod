@@ -6,11 +6,12 @@ import {
   IconConfig,
 } from '../../../shared/components/action-button/action-button.component';
 import { FranchiseMappingStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-franchise-mapping',
   standalone: true,
-  imports: [AdvancedGridComponent, ActionButtonComponent],
+  imports: [AdvancedGridComponent, ActionButtonComponent, SharedModule],
   templateUrl: './franchise-mapping.component.html',
   styleUrl: './franchise-mapping.component.scss',
 })

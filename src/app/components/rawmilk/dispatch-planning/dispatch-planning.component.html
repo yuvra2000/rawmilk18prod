@@ -1,29 +1,16 @@
-<filter-form
-  #dispatchPlanningFilter
-  [dynamicFields]="store.filterfields()"
-  (formSubmit)="store.onFormSubmit($event)"
-  [filerFormClass]="{ 'row-gap': '1rem' }"
-  [btnClass]="'mt-0'"
-  ><div class="w-100 d-flex justify-content-end mt-2" custom-icon>
+<app-header [title]="'Dispatch Planning'">
+  ></app-header>
+<filter-form #dispatchPlanningFilter [dynamicFields]="store.filterfields()" (formSubmit)="store.onFormSubmit($event)"
+  [filerFormClass]="{ 'row-gap': '1rem' }" [btnClass]="'mt-0'">
+  <div class="w-100 d-flex justify-content-end mt-2" custom-icon>
     <div class="cursor-pointer d-flex align-items-center gap-1">
-      <a
-        href="assets/files/Production_Planning_Dispatch.xlsx"
-        download
-        ngbTooltip="Download Sample File"
-        container="body"
-        class="btn p-0"
-      >
+      <a href="assets/files/Production_Planning_Dispatch.xlsx" download ngbTooltip="Download Sample File"
+        container="body" class="btn p-0">
         <i class="fa fa-download excel-icon"></i>
       </a>
       <!-- Hidden file input -->
-      <input
-        type="file"
-        id="excelUpload"
-        hidden
-        (change)="onExcelUpload($event)"
-        accept=".xlsx,.xls"
-        class="cursor-pointer"
-      />
+      <input type="file" id="excelUpload" hidden (change)="onExcelUpload($event)" accept=".xlsx,.xls"
+        class="cursor-pointer" />
       <label for="excelUpload" ngbTooltip="Upload File" class="cursor-pointer">
         <i class="fa fa-upload excel-icon"></i>
       </label>

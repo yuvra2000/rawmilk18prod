@@ -15,6 +15,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SharedModule } from '../../../shared/shared.module';
 declare var $: any;
 declare var pako: any;
 
@@ -23,7 +24,13 @@ declare var pako: any;
   templateUrl: './allocated-indent.component.html',
   styleUrls: ['./allocated-indent.component.scss'],
   standalone: true,
-  imports: [NgSelectComponent, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    NgSelectComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    SharedModule,
+  ],
   providers: [DatePipe],
 })
 export class AllocatedIndentComponent implements OnInit {

@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FilterFormComponent } from '../../../shared/components/filter-form/filter-form.component';
 import { DispatchPlanningStore } from './state-service/store';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-dispatch-planning',
   standalone: true,
-  imports: [FilterFormComponent, NgbTooltip],
+  imports: [FilterFormComponent, NgbTooltip, SharedModule],
   templateUrl: './dispatch-planning.component.html',
   styleUrl: './dispatch-planning.component.scss',
 })

@@ -187,6 +187,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Cart Timing',
       },
+      {
+        path: 'mcc-mapping-info',
+        loadComponent: () =>
+          import('./mcc-mapping-info/mcc-mapping-info.component').then(
+            (m) => m.MccMappingInfoComponent,
+          ),
+        title: 'MCC Mapping Info',
+      },
     ],
   },
   {

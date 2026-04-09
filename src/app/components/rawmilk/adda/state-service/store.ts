@@ -53,8 +53,20 @@ export class AddaStore {
       if (handleSessionExpiry(res, this.toast)) {
         return;
       }
-      handleApiResponse(res?.addaList, this.toast);
-      handleApiResponse(res?.regionList, this.toast);
+      handleApiResponse(
+        res?.addaList,
+        this.toast,
+        undefined,
+        'Failed to load Adda list',
+        '',
+      );
+      handleApiResponse(
+        res?.regionList,
+        this.toast,
+        undefined,
+        'Failed to load Region list',
+        '',
+      );
       this.initialData.set({
         addaList: res.addaList?.Data || [],
         regionList:

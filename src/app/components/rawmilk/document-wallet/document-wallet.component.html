@@ -1,0 +1,36 @@
+<app-collapse-wrapper>
+  <filter-form [dynamicFields]="filterfieldsOptions()" (formSubmit)="onFormSubmit($event)"></filter-form>
+</app-collapse-wrapper>
+
+<div class="card custom-card mt-3">
+  <div class="card-header">
+    <div class="card-title">Document Status Overview</div>
+  </div>
+  <div class="card-body">
+    <spk-apexcharts [chartOptions]="documentStatusChartOptions"></spk-apexcharts>
+  </div>
+</div>
+
+<div class="card custom-card mt-3">
+  <div class="card-body p-0">
+    <app-advanced-grid
+      [rowData]="tableData()"
+      [config]="gridConfig()"
+    ></app-advanced-grid>
+  </div>
+</div>
+
+<!-- Image View Modal -->
+<ng-template #imageModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Document Image</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body text-center">
+    <img *ngIf="selectedImagePath" [src]="selectedImagePath" alt="Document Image" class="img-fluid" style="max-height: 70vh;" />
+    <p *ngIf="!selectedImagePath" class="text-muted">No image path provided.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

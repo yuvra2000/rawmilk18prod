@@ -197,6 +197,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'mcc-mapping-info',
+          title: 'MCC Mapping Info',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     {

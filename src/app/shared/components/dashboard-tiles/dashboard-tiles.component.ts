@@ -46,6 +46,15 @@ export class DashboardTilesComponent implements OnChanges {
       .replace(/_/g, ' ')
       .replace(/^./, (str) => str.toUpperCase());
   }
+  tiletitle(key: string) {
+    if (['gps', 'eta'].includes(key.toLowerCase())) {
+      return key.toUpperCase(); // ✅ GPS, ETA
+    }
+    return key
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/_/g, ' ')
+      .replace(/^./, (str) => str.toUpperCase());
+  }
 
   /* 🔥 MAIN PARSER */
   parseTile(type: string): TileItem[] {

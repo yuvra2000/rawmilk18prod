@@ -110,6 +110,13 @@ export const rawMilkRoutes: Routes = [
         title: 'Dispatch Planning',
       },
       {
+        path: 'document-wallet',
+        loadComponent: () =>
+          import('./document-wallet/document-wallet.component').then(
+            (m) => m.DocumentWalletComponent,
+          ),
+        title: 'Document Wallet',
+      }
         path: 'eta-report',
         loadComponent: () =>
           import('./eta-report/eta-report.component').then(

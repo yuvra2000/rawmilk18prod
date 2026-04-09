@@ -141,12 +141,6 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
-          path: 'maker-dashboard',
-          title: 'Maker Dashboard',
-          type: 'link',
-          dirchange: false,
-        },
-        {
           path: 'trip-dashboard',
           title: 'Trip Dashboard',
           type: 'link',

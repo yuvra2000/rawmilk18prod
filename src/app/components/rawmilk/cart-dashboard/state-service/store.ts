@@ -145,7 +145,6 @@ export class CartDashboardStore {
   onFilterControlChange(event: any) {
     const isAddaFilterEnabled = event.value === true ? true : false;
     this.isAddaFilterEnabled.update(() => isAddaFilterEnabled);
-    console.log('Filter control change:', event.controlName, event.value);
     filterfields(
       this.initialData().franchiseList,
       this.initialData().addaList,
@@ -155,5 +154,27 @@ export class CartDashboardStore {
       ...this.lastFilterValues(),
       [event.controlName]: event.value,
     });
+    this.fetchReportData();
+  }
+  async fetchReportData() {
+    const type = this.isAddaFilterEnabled() ? 'adda' : 'franchise';
+    const params = createReportParams(this.lastFilterValues(), type);
+    this.loading.set(true);
+    this.spinner.show();
+    try {
+      const res: any = await firstValueFrom(
+        this.cartDashService.getDashReport(params),
+      );
+      handleSessionExpiry(res, this.toast);
+      this.initialData.update((prev) => ({
+        ...prev,
+        cartDashboardData: res?.Data || [],
+      }));
+    } catch (error) {
+      this.toast.error('Failed to fetch report data');
+    } finally {
+      this.loading.set(false);
+      this.spinner.hide();
+    }
   }
 }

@@ -1,6 +1,22 @@
 <app-header [title]="'Cart Dashboard'">
   ></app-header>
 <app-collapse-wrapper>
+  <span class="filter-toggle-row" toggle (click)="$event.stopPropagation()">
+
+    <span class="filter-divider" aria-hidden="true"></span>
+
+    <span class="adda-toggle-wrap">
+      <input type="checkbox" class="adda-toggle-input" id="highShipment" [checked]="store.isAddaFilterEnabled()"
+        (change)="store.onFilterControlChange({ controlName: 'highShipment', value: $any($event.target).checked })" />
+      <label class="adda-toggle-label" for="highShipment">
+        <span class="adda-toggle-track" aria-hidden="true">
+          <span class="adda-toggle-thumb"></span>
+        </span>
+        <span class="adda-toggle-text">{{ store.isAddaFilterEnabled() ? 'Adda Wise' : 'Franchise Wise' }}</span>
+      </label>
+    </span>
+  </span>
+
   <filter-form #dispatchPlanningFilter [dynamicFields]="store.filterfields()" (formSubmit)="store.onFormSubmit($event)"
     (controlValueChange)="store.onFilterControlChange($event)" [initialData]="store.initialData()">
   </filter-form>

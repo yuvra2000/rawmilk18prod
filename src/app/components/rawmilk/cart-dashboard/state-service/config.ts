@@ -10,16 +10,6 @@ export const filterfields = (
   isAddaFilterEnabled: boolean = false,
 ): FieldConfig[] => [
   {
-    name: 'highShipment',
-    label: '',
-    checkboxLabel: isAddaFilterEnabled ? 'Adda Wise' : 'Franchise Wise',
-    type: 'checkbox',
-    labelStyle: { 'padding-bottom': '0px' },
-    class: 'col-md-2 mb-0 form-switch flex-rowi  gap-4 mt-4',
-    checkboxstyle: { width: '50px', 'border-radius': '1.175rem' },
-    emitValueChanges: true,
-  },
-  {
     name: 'adda_code',
     type: 'select',
     label: 'Adda',

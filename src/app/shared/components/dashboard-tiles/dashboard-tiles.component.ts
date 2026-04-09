@@ -1,11 +1,13 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  ChangeDetectionStrategy,
-} from '@angular/core';
-import { NgxEchartsModule } from 'ngx-echarts';
+import { Component, Input, OnChanges, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxEchartsModule } from 'ngx-echarts';
+// import { TilesResponse } from '../../../components/rawmilk/trip-dashboard/state-service/config';
+
+import {
+  TilesResponse,
+  TileItem,
+  TILE_UI_CONFIG,
+} from '../../../components/rawmilk/trip-dashboard/state-service/config';
 
 @Component({
   selector: 'app-dashboard-tiles',
@@ -13,30 +15,31 @@ import { CommonModule } from '@angular/common';
   imports: [NgxEchartsModule, CommonModule],
   templateUrl: './dashboard-tiles.component.html',
   styleUrls: ['./dashboard-tiles.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardTilesComponent implements OnChanges {
-  @Input() tilesData: any;
+  @Input() tilesData!: TilesResponse;
 
   tiles: string[] = [];
-
   chartOptions: any = {};
   countsMap: any = {};
   legendMap: any = {};
 
+  loading = signal(true);
+
   ngOnChanges() {
     if (!this.tilesData) return;
 
-    this.tiles = Object.keys(this.tilesData); // 🔥 FULLY DYNAMIC TILES
+    this.tiles = Object.keys(this.tilesData);
 
     this.tiles.forEach((tile) => {
       this.chartOptions[tile] = this.buildOptions(tile);
       this.countsMap[tile] = this.buildCounts(tile);
       this.legendMap[tile] = this.buildLegend(tile);
     });
+
+    this.loading.set(false); // 🔥 auto UI update
   }
 
-  /* LABEL FORMATTER */
   formatLabel(key: string) {
     return key
       .replace(/([A-Z])/g, ' $1')
@@ -44,146 +47,118 @@ export class DashboardTilesComponent implements OnChanges {
       .replace(/^./, (str) => str.toUpperCase());
   }
 
-  /* CENTER LABEL */
-  getCenterLabel(value: number) {
-    return {
-      show: true,
-      position: 'center',
-      formatter: `${value}`,
-      fontSize: 16,
-      fontWeight: 'bold',
-      color: '#1f3b73',
-      silent: true,
-    };
-  }
-
-  /* PIE CONFIG */
-  getPieConfig(data: any[], total: number) {
-    return {
-      animation: false,
-      animationDuration: 0,
-      animationDurationUpdate: 0,
-
-      tooltip: {
-        trigger: 'item',
-        formatter: (p: any) => `<b>${p.name}</b>: ${p.value}`,
-      },
-
-      series: [
-        {
-          type: 'pie',
-          radius: ['65%', '95%'],
-          avoidLabelOverlap: false,
-          label: this.getCenterLabel(total),
-
-          itemStyle: {
-            borderWidth: 2,
-            borderColor: '#fff',
-            borderRadius: 3,
-          },
-
-          data: data,
-        },
-      ],
-    };
-  }
-
-  /* OPTIONS (FULLY DYNAMIC) */
-  buildOptions(type: string) {
-    const d = this.tilesData?.[type];
-    if (!d) return {};
-
-    const entries: any[] = [];
-
-    Object.keys(d).forEach((key) => {
-      if (key === 'total') return;
-
-      // Supplier handling
-      if (key.startsWith('quantity')) {
-        const index = key.replace('quantity', '');
-        const nameKey = 'name' + index;
-
-        entries.push({
-          name: d[nameKey] || `Item ${index}`,
-          value: d[key],
-        });
-      }
-
-      // Normal numeric keys
-      else if (typeof d[key] === 'number') {
-        entries.push({
-          name: this.formatLabel(key),
-          value: d[key],
-        });
-      }
-    });
-
-    const colors = [
-      '#2db783',
-      '#f08a24',
-      '#2f54eb',
-      '#d9d9d9',
-      '#9254de',
-      '#13c2c2',
-    ];
-
-    const data = entries.map((e, i) => ({
-      ...e,
-      itemStyle: { color: colors[i % colors.length] },
-    }));
-
-    return this.getPieConfig(data, d.total || 0);
-  }
-
-  /* COUNTS (DYNAMIC) */
-  buildCounts(type: string) {
-    const d = this.tilesData?.[type];
-    if (!d) return '';
-
-    const values: number[] = [];
-
-    Object.keys(d).forEach((key) => {
-      if (key === 'total') return;
-
-      if (typeof d[key] === 'number') {
-        values.push(d[key]);
-      }
-    });
-
-    return values.join(' / ');
-  }
-
-  /* LEGEND (DYNAMIC) */
-  buildLegend(type: string) {
+  /* 🔥 MAIN PARSER */
+  parseTile(type: string): TileItem[] {
     const d = this.tilesData?.[type];
     if (!d) return [];
 
-    const colors = ['green', 'orange', 'blue', 'gray', 'purple', 'cyan'];
+    const config = TILE_UI_CONFIG[type] || {};
 
-    const legends: any[] = [];
+    const defaultColors = [
+      '#31AA87',
+      '#E77817',
+      '#C7C7CC',
+      '#1D4380',
+      '#2f54eb',
+
+      '#9254de',
+      '#2db783',
+
+      '#f08a24',
+    ];
+
+    const colors = config.colors || defaultColors;
+
+    const items: TileItem[] = [];
     let i = 0;
 
     Object.keys(d).forEach((key) => {
       if (key === 'total') return;
 
+      // ✅ supplier case
       if (key.startsWith('quantity')) {
         const index = key.replace('quantity', '');
-        const nameKey = 'name' + index;
 
-        legends.push({
-          name: d[nameKey] || `Item ${index}`,
-          color: colors[i % colors.length],
+        items.push({
+          name: d['name' + index] || `Item ${index}`,
+          value: d[key],
+          color: colors[i++ % colors.length],
         });
-        i++;
-      } else if (typeof d[key] === 'number') {
-        legends.push({
-          name: this.formatLabel(key),
-          color: colors[i % colors.length],
+      }
+
+      // ✅ normal case (gps, alert, eta)
+      else if (typeof d[key] === 'number') {
+        items.push({
+          name: config.labels?.[key] || this.formatLabel(key),
+
+          value: d[key],
+          color: colors[i++ % colors.length],
         });
-        i++;
       }
     });
 
-    return legends;
+    return items;
+  }
+
+  /* 📊 CHART */
+  buildOptions(type: string) {
+    const d = this.tilesData?.[type];
+    if (!d) return {};
+
+    const items = this.parseTile(type);
+
+    return {
+      tooltip: {
+        trigger: 'item',
+        formatter: (p: any) => `${p.name}: ${p.value}`,
+      },
+
+      series: [
+        {
+          type: 'pie',
+          radius: ['65%', '90%'],
+
+          label: {
+            show: true,
+            position: 'center',
+            formatter: `${d.total || 0}`,
+            fontSize: 16,
+            fontWeight: 'bold',
+          },
+
+          emphasis: {
+            scale: true,
+            scaleSize: 6,
+          },
+
+          data: items.map((i) => ({
+            name: i.name,
+            value: i.value,
+            itemStyle: { color: i.color },
+          })),
+        },
+      ],
+    };
+  }
+
+  buildCounts(type: string) {
+    return this.parseTile(type)
+      .map((x) => x.value)
+      .join(' / ');
+  }
+
+  buildLegend(type: string) {
+    return this.parseTile(type);
+  }
+
+  getIcon(tile: string): string {
+    const map: any = {
+      gps: 'fa-map-marker',
+      alert: 'fa-bell',
+      eta: 'fa-clock',
+      supplier: 'fa-industry',
+    };
+
+    return map[tile] || 'fa-circle';
   }
 }

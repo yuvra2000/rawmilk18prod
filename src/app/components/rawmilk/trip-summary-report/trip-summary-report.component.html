@@ -1,0 +1,12 @@
+<!-- report filter start -->
+<app-collapse-wrapper>
+  <filter-form #filterRef 
+               [dynamicFields]="filterfields()" 
+               [initialData]="initialFilterData"
+               (formSubmit)="onFormSubmit($event)" 
+               (controlValueChange)="onFilterChange($event)">
+  </filter-form>
+</app-collapse-wrapper>
+<!-- report filter end -->
+
+<!-- Component content -->

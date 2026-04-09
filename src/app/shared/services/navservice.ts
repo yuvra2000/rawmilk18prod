@@ -316,7 +316,7 @@ export class NavService implements OnDestroy {
         },
         {
           path: 'reports/trip-summary',
-          title: 'Trip Summary',
+          title: 'Trip Summary Report',
           type: 'link',
           dirchange: false,
         },

@@ -1011,3 +1011,110 @@ export const lockUnlockLocationColumns: GridColumnConfig[] = [
     tooltipValueGetter: (params: any) => params.data?.unlock_location || 'NA',
   },
 ];
+
+export interface HeaderTile {
+  label: string;
+  count: number;
+  key: string;
+
+  icon?: string; // font-awesome
+  img?: string; // png path
+
+  color: string; // main color
+  textColor?: string;
+}
+
+// export interface TileItem {
+//   name: string;
+//   value: number;
+//   color?: string;
+// }
+
+// export interface TileData {
+//   total?: number;
+
+//   // dynamic keys (gps, alert, etc)
+//   [key: string]: any;
+// }
+
+// export interface TilesResponse {
+//   gps?: TileData;
+//   alert?: TileData;
+//   eta?: TileData;
+//   supplier?: TileData;
+
+//   // future safe
+//   [key: string]: TileData | undefined;
+// }
+
+// export const TILE_UI_CONFIG: any = {
+//   gps: {
+//     icon: 'fa-map-marker',
+//     colors: ['#2db783', '#f08a24', '#2f54eb', '#d9d9d9'],
+//   },
+//   alert: {
+//     icon: 'fa-truck',
+//   },
+//   eta: {
+//     icon: 'fa-clock',
+//   },
+//   supplier: {
+//     icon: 'fa-industry',
+//   },
+// };
+export interface TileItem {
+  name: string;
+  value: number;
+  color?: string;
+}
+
+export interface TileData {
+  total?: number;
+  [key: string]: any;
+}
+
+export interface TilesResponse {
+  [key: string]: TileData;
+}
+
+/* 🔥 FULL CONTROL CONFIG */
+export const TILE_UI_CONFIG: any = {
+  /* GPS */
+  gps: {
+    labels: {
+      running: 'Running Vehicle',
+      inactive: 'Inactive',
+      noGps: 'No GPS',
+      stopped: 'Stopped',
+    },
+    // colors: ['#2db783', '#f08a24', '#2f54eb', '#d9d9d9'],
+  },
+
+  /* 🔥 ALERT (IMPORTANT FIX) */
+  alert: {
+    labels: {
+      S20: 'S20',
+      S30: 'S30',
+      DFG: 'DFG',
+      LID: 'LID',
+      TANKER_HOLD: 'Tanker Hold',
+      LOCK_TAMPERING: 'Lock Tampering',
+    },
+    // colors: ['#ff4d4f', '#faad14', '#722ed1', '#13c2c2', '#1890ff', '#52c41a'],
+  },
+
+  /* ETA */
+  eta: {
+    labels: {
+      lessThan2Hr: '< 2 Hr',
+      between2To4Hr: '2–4 Hr',
+      between4To6Hr: '4–6 Hr',
+      above6Hr: '> 6 Hr',
+    },
+  },
+
+  /* SUPPLIER */
+  supplier: {
+    customNames: true,
+  },
+};

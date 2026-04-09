@@ -1,3 +1,11 @@
+<app-header
+  [title]="'Trip Dashboard'"
+  [tiles]="Header_tiles()"
+  [activeFilter]="selectedFilter()"
+  (tileClick)="onTileClick($event)"
+>
+  ></app-header
+>
 <app-collapse-wrapper>
   <div
     class="header h-5 w-5 cursor-pointer"
@@ -16,7 +24,7 @@
 </app-collapse-wrapper>
 <app-dashboard-tiles [tilesData]="tiles()"></app-dashboard-tiles>
 <app-advanced-grid
-  [rowData]="TripRowData()"
+  [rowData]="filteredData()"
   [config]="tripConfig()"
   (selectionChanged)="handleSelectionChange($event)"
 >

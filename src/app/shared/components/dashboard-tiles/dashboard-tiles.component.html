@@ -1,38 +1,56 @@
 <div class="tiles-container">
-  <div class="tile" *ngFor="let tile of tiles">
-    <div class="tile-header">
-      <span>{{ tile | titlecase }}</span>
+  @for (tile of tiles; track tile) {
+    <div class="tile">
+      <!-- HEADER -->
+      <div class="tile-header">
+        <!-- LEFT: TITLE -->
+        <span class="title">
+          {{ tile | titlecase }}
+        </span>
 
-      <div class="icon">
-        <i
-          class="fa"
-          [ngClass]="{
-            'fa-map-marker': tile === 'gps',
-            'fa-truck': tile === 'alert',
-            'fa-clock': tile === 'eta',
-            'fa-industry': tile === 'supplier',
-          }"
-        ></i>
+        <!-- RIGHT: ICON -->
+        <i class="fa" [ngClass]="getIcon(tile)"> </i>
+      </div>
+
+      <!-- BODY -->
+      <div class="tile-top">
+        @if (loading()) {
+          <div class="skeleton-chart"></div>
+        } @else {
+          <!-- CHART (TOP) -->
+          <div class="chart-section">
+            <div echarts [options]="chartOptions[tile]" class="chart"></div>
+          </div>
+
+          <!-- COUNT (BOTTOM RIGHT) -->
+          <div class="count-section">
+            <!-- <div class="counts">
+              {{ countsMap[tile] }}
+            </div> -->
+            <div class="counts">
+              @for (c of legendMap[tile]; track c; let i = $index) {
+                <span [style.color]="c.color">
+                  {{ c.value }}
+                </span>
+
+                @if (i < legendMap[tile].length - 1) {
+                  <span class="separator"> / </span>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- LEGEND -->
+      <div class="tile-legend">
+        @for (l of legendMap[tile]; track l) {
+          <div class="legend" [style.color]="l.color">
+            <span class="dot" [style.background]="l.color"></span>
+            {{ l.name }}
+          </div>
+        }
       </div>
     </div>
-
-    <div class="tile-top">
-      <div class="chart-section">
-        <div echarts [options]="chartOptions[tile]" class="chart"></div>
-      </div>
-
-      <div class="count-section">
-        <div class="counts">
-          {{ countsMap[tile] }}
-        </div>
-      </div>
-    </div>
-
-    <div class="tile-legend">
-      <div class="legend" *ngFor="let l of legendMap[tile]">
-        <span class="dot" [ngClass]="l.color"></span>
-        {{ l.name }}
-      </div>
-    </div>
-  </div>
+  }
 </div>

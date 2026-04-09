@@ -16,6 +16,8 @@ import {
   alertDetailColumns,
   regularLocationColumns,
   lockUnlockLocationColumns,
+  HeaderTile,
+  TilesResponse,
 } from './state-service/config';
 import { AlertService } from '../../../shared/services/alert.service';
 import { DispatchStore } from '../create-dispatch/state-service/masterdatastore.service';
@@ -42,6 +44,7 @@ import { UniversalModalService } from '../../../shared/services/universal-modal.
 import { MapLoader } from './state-service/map.loader';
 import { DashboardTilesComponent } from '../../../shared/components/dashboard-tiles/dashboard-tiles.component';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-trip-dashboard',
@@ -54,6 +57,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
     NgbModule,
     AdvancedGridComponent,
     DashboardTilesComponent,
+    SharedModule,
   ],
   templateUrl: './trip-dashboard.component.html',
   styleUrl: './trip-dashboard.component.scss',
@@ -108,7 +112,9 @@ export class TripDashboardComponent {
   });
   usertype = signal<any>('');
   TripRowData = signal<any[]>([]);
-  tiles = signal<any[]>([]);
+  tiles = signal<TilesResponse>({});
+  Header_tiles = signal<HeaderTile[]>([]);
+  selectedFilter = signal<string>('all');
 
   tripConfig = signal<GridConfig>({
     theme: 'alpine',
@@ -176,6 +182,64 @@ export class TripDashboardComponent {
       if (success) {
         this.TripRowData.set(res.Data);
         this.tiles.set(res.Tiles);
+        this.Header_tiles.set([
+          {
+            label: 'Total',
+            count: res.totalVehicle || 0,
+            key: 'all',
+            img: 'assets/total.svg',
+            color: '#007AFF',
+          },
+          {
+            label: 'Running',
+            count: res.Running || 0,
+            key: 'running',
+            img: 'assets/running.svg',
+            color: '#226030',
+          },
+          {
+            label: 'Inactive',
+            count: res.InActive || 0,
+            key: 'inactive',
+            img: 'assets/Inactive.svg',
+            color: '#6c757d',
+          },
+          {
+            label: 'Stopped',
+            count: res.Stopped || 0,
+            key: 'stopped',
+            img: 'assets/atsrc.svg',
+            color: '#dc3545',
+          },
+          {
+            label: 'At Source',
+            count: res.atSource || 0,
+            key: 'source',
+            img: 'assets/dest.svg',
+            color: '#ffc107',
+          },
+          {
+            label: 'At Destination',
+            count: res.atDestination || 0,
+            key: 'source',
+            img: 'assets/stop.svg',
+            color: '#1D4380',
+          },
+          {
+            label: 'No GPS',
+            count: res.noGPS || 0,
+            key: 'nogps',
+            img: 'assets/nogps.svg',
+            color: '#ff4d4f',
+          },
+          {
+            label: 'Return',
+            count: res.return || 0,
+            key: 'return',
+            img: 'assets/return.svg',
+            color: '#79b1e6',
+          },
+        ]);
         console.log('tiles', this.tiles);
       }
     } catch (error: any) {
@@ -188,6 +252,38 @@ export class TripDashboardComponent {
       this.spinner.hide();
     }
   }
+
+  // ✅ CLICK FROM HEADER
+  onTileClick(key: string) {
+    this.selectedFilter.set(key);
+  }
+
+  // ✅ FILTERED GRID DATA
+  filteredData = computed(() => {
+    const filter = this.selectedFilter();
+    const data = this.TripRowData();
+
+    if (filter === 'all') return data;
+
+    return data.filter((item: any) => {
+      switch (filter) {
+        case 'running':
+          return item.vehicleStatus === 'Running';
+        case 'inactive':
+          return item.vehicleStatus === 'Inactive';
+        case 'stopped':
+          return item.vehicleStatus === 'Stopped';
+        case 'source':
+          return item.vehicleStatus === 'At Source';
+        case 'nogps':
+          return item.vehicleStatus === 'No GPS';
+        case 'return':
+          return item.vehicleStatus === 'Return';
+        default:
+          return true;
+      }
+    });
+  });
 
   directdispatch() {
     // Logic to export data to Excel

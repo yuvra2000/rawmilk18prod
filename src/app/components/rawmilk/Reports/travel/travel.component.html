@@ -1,3 +1,5 @@
+<app-header [title]="'Travel Report'"> </app-header>
+
 <app-collapse-wrapper>
   <filter-form
     #travelform
@@ -6,3 +8,8 @@
   >
   </filter-form>
 </app-collapse-wrapper>
+
+<app-advanced-grid
+  [config]="travelConfig()"
+  [rowData]="triprowdata()"
+></app-advanced-grid>

@@ -296,10 +296,28 @@ export const rawMilkRoutes: Routes = [
         title: 'Franchise Report',
       },
       {
-        path: 'travelreport',
+        path: 'distance-report',
         loadComponent: () =>
-          import('./travel/travel.component').then((m) => m.TravelComponent),
+          import('./Reports/distance-report/distance-report.component').then(
+            (m) => m.DistanceReportComponent,
+          ),
+        title: 'Distance Report',
+      },
+      {
+        path: 'travel-report',
+        loadComponent: () =>
+          import('./Reports/travel/travel.component').then(
+            (m) => m.TravelComponent,
+          ),
         title: 'Travel Report',
+      },
+      {
+        path: 'monthly-report',
+        loadComponent: () =>
+          import('./Reports/monthly-report/monthly-report.component').then(
+            (m) => m.MonthlyReportComponent,
+          ),
+        title: 'Monthly Report',
       },
     ],
   },

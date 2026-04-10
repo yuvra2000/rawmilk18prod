@@ -129,9 +129,7 @@ export class TripDashboardComponent {
         params.data?.dispatchStatus !== 'Closed'
       );
     },
-    // isRowSelectable: (params: any) => {
-    //   return params?.closeStatus == 1 && this.usertype() === 'Manager';
-    // },
+
     context: {
       componentParent: this,
     },

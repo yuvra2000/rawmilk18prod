@@ -1,0 +1,43 @@
+<app-header [title]="'Distance Report'"></app-header>
+
+<app-collapse-wrapper>
+  <filter-form
+    #Distanceform
+    [dynamicFields]="filterfields()"
+    (formSubmit)="onFormSubmit($event)"
+  >
+  </filter-form>
+</app-collapse-wrapper>
+
+@if (selectedReport === "Standard") {
+  <app-advanced-grid [config]="distanceConfig()" [rowData]="standardData()">
+  </app-advanced-grid>
+}
+
+@if (selectedReport === "Detailed") {
+  <app-advanced-grid [config]="distanceConfig()" [rowData]="detailedData()">
+  </app-advanced-grid>
+}
+
+@if (selectedReport === "Day-wise") {
+  @for (key of objectKeys(dayWiseObject()); track key; let i = $index) {
+    <div class="col-lg-12">
+      <div class="container-fluid mt-2">
+        <!-- 🔥 HEADER (same like your old caption) -->
+        <div style="font-weight: bold; color: #1d4380; margin-bottom: 10px">
+          Vehicle: {{ dayWiseObject()[key]?.[0]?.vehicle_no }}, IMEI:
+          {{ dayWiseObject()[key]?.[0]?.imei_no }}
+        </div>
+
+        <!-- 🔥 GRID -->
+        <app-advanced-grid
+          [config]="distanceConfig()"
+          [rowData]="dayWiseObject()[key]"
+        >
+        </app-advanced-grid>
+      </div>
+    </div>
+  }
+} @else {
+  <div class="text-center mt-3">No Data Available</div>
+}

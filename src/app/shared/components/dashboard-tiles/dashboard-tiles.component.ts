@@ -82,7 +82,7 @@ export class DashboardTilesComponent implements OnChanges {
     let i = 0;
 
     Object.keys(d).forEach((key) => {
-      if (key === 'total') return;
+      // if (key === 'total') return;
 
       // ✅ supplier case
       if (key.startsWith('quantity')) {
@@ -115,7 +115,7 @@ export class DashboardTilesComponent implements OnChanges {
     if (!d) return {};
 
     const items = this.parseTile(type);
-
+    const total = d.total ?? items.reduce((sum, i) => sum + i.value, 0);
     return {
       tooltip: {
         trigger: 'item',
@@ -130,7 +130,7 @@ export class DashboardTilesComponent implements OnChanges {
           label: {
             show: true,
             position: 'center',
-            formatter: `${d.total || 0}`,
+            formatter: `${total || 0}`,
             fontSize: 16,
             fontWeight: 'bold',
           },
@@ -143,7 +143,12 @@ export class DashboardTilesComponent implements OnChanges {
           data: items.map((i) => ({
             name: i.name,
             value: i.value,
-            itemStyle: { color: i.color },
+            // itemStyle: { color: i.color },
+            itemStyle: {
+              color: i.color,
+              borderWidth: 2, // 👈 add border thickness
+              borderColor: '#fff', // 👈 border color (white looks clean)
+            },
           })),
         },
       ],

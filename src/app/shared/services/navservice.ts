@@ -147,6 +147,12 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
+          path: 'summary-dashboard',
+          title: 'Summary Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
+        {
           path: 'projection',
           title: 'Projection',
           type: 'link',

@@ -14,6 +14,14 @@ export const rawMilkRoutes: Routes = [
         title: 'Trip Dashboard',
       },
       {
+        path: 'summary-dashboard',
+        loadComponent: () =>
+          import('./summary-dashboard/summary-dashboard.component').then(
+            (m) => m.SummaryDashboardComponent,
+          ),
+        title: 'Summary Dashboard',
+      },
+      {
         path: 'view-indent',
         loadComponent: () =>
           import('./view-indent/view-indent.component').then(

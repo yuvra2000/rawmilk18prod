@@ -63,6 +63,7 @@ export interface FieldConfig {
   bindValue?: string;
   min?: number;
   max?: number;
+  showSelectAll?: boolean;
   slectConfig?: SelectConfig;
   // ✅ FormArray specific properties
   formArrayFields?: FieldConfig[]; // Sub-fields for formarray

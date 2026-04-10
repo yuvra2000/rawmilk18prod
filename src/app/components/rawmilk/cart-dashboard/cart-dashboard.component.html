@@ -1,6 +1,34 @@
 <app-header [title]="'Cart Dashboard'">
   ></app-header>
-<app-collapse-wrapper>
+<!-- <div class="mt-2 mb-0">
+ 
+</div> -->
+<div [ngbCollapse]="isChartCollapsed()" id="alertStatsSection">
+  <section class="dashboard-cards-grid">
+    <app-reusable-stat-card [config]="store.cartStatusCardConfig()" [overrideColumns]="2"
+      [titleStyle]="{ 'font-size': '18px', color: '#1d4380', 'font-weight': '700', }"
+      [iconStyle]="{ 'font-size': '24px', opacity: '1', right: '8px', top: '5px' }"
+      [legendStyle]="{ 'font-size': '14px', 'font-weight': '600','margin-top': '5px'  }">
+    </app-reusable-stat-card>
+
+    <app-reusable-stat-card [config]="store.addaStatusCardConfig()" [overrideColumns]="2"
+      [titleStyle]="{ 'font-size': '18px', color: '#1d4380', 'font-weight': '700', }"
+      [iconStyle]="{ 'font-size': '24px', opacity: '1', right: '8px', top: '5px' }"
+      [legendStyle]="{ 'font-size': '14px', 'font-weight': '600','margin-top': '5px' }">
+    </app-reusable-stat-card>
+
+    <article class="franchise-chart-card">
+      <div class="d-flex title-icon">
+        <h5 class="franchise-chart-title">Franchise Wise Active Carts</h5>
+        <i class="fa-solid fa-chart-column "></i>
+      </div>
+      <app-reusable-chart [config]="store.franchiseActiveCartChartConfig()"
+        [style]="{ height: '200px', width: '100%' }">
+      </app-reusable-chart>
+    </article>
+  </section>
+</div>
+<app-collapse-wrapper [collapseSectionClass]="'mt-1'">
   <span class="filter-toggle-row" toggle (click)="$event.stopPropagation()">
 
     <span class="filter-divider" aria-hidden="true"></span>
@@ -20,10 +48,11 @@
   <filter-form #dispatchPlanningFilter [dynamicFields]="store.filterfields()" (formSubmit)="store.onFormSubmit($event)"
     (controlValueChange)="store.onFilterControlChange($event)" [initialData]="store.initialData()">
   </filter-form>
+  <i class="fa-solid fa-chart-pie icon-add" custom-icon (click)="onChartIconClick()" [ngbTooltip]="'Toggle Chart'"></i>
+
 </app-collapse-wrapper>
-<!-- @if (store.rowData().length > 0) { -->
-<!-- <app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()"> -->
+
+
 <app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()" [loadingRowData]="store.loading()">
   <h5 class="text-center table-heading">Cart Dashboard</h5>
 </app-advanced-grid>
-<!-- } -->

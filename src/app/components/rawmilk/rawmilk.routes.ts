@@ -312,6 +312,14 @@ export const rawMilkRoutes: Routes = [
         title: 'Travel Report',
       },
       {
+        path: 'trip-summary',
+        loadComponent: () =>
+          import('./trip-summary-report/trip-summary-report.component').then(
+            (m) => m.TripSummaryReportComponent,
+          ),
+        title: 'Trip Summary Report',
+      }
+      {
         path: 'monthly-report',
         loadComponent: () =>
           import('./Reports/monthly-report/monthly-report.component').then(

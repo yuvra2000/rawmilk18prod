@@ -1,0 +1,35 @@
+Create a filter form in [ComponentName] component using SKILL.md
+
+GLOBAL RULES
+* Use ACCESSTOKEN FROM LOCALSTORAGE
+* DON'T USE FORKJOIN (backend is unable to handle parallel requests reliably)
+
+TARGET FIELDS
+List all the fields for the filter form, e.g., Filter Label: [Input Type like date, text, ng-select]
+
+1. [Filter 1 Name]: [Type]
+2. [Filter 2 Name]: [Type]
+3. [Dropdown Name]: ng-select 
+
+API REQUIREMENTS (for dropdowns / ng-select)
+
+Dropdown 1: [Name of Dropdown, e.g., Supplier]
+* Populate from API
+* Request URL: [URL here]
+* Request Method: [POST/GET]
+* Payload/Params:
+  * AccessToken: [Leave blank to use from local storage]
+  * GroupId: [e.g., 5731]
+  * ForApp: [e.g., 0]
+* Data Mapping: Use variable where [Condition, e.g., item.type == 6]
+
+Dropdown 2: [Name of Dropdown, e.g., Plant]
+* Populate from API
+* Request URL: [Same as previous or new URL]
+* Request Method: [POST/GET]
+* Data Mapping: Use variable where [Condition, e.g., item.type == 3]
+
+Dropdown 3: [Name of Dropdown, e.g., Milk Type]
+* Populate from API
+* Request URL: [Same as previous or new URL]
+* Data Mapping: Use variable where [Condition]

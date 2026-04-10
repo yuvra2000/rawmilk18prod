@@ -318,7 +318,7 @@ export const rawMilkRoutes: Routes = [
             (m) => m.TripSummaryReportComponent,
           ),
         title: 'Trip Summary Report',
-      }
+      },
       {
         path: 'monthly-report',
         loadComponent: () =>

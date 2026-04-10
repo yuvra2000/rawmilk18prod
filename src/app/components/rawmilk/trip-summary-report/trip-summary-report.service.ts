@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 import { MasterRequestService } from '../master-request.service';
 
 @Injectable({
@@ -21,27 +22,28 @@ export class TripSummaryReportService {
     return this.masterRequest.postFormData('/get_mcc', params);
   }
 
-  getFilterOptions(authParams: any): Observable<any> {
-    const tankerParams = new FormData();
-    tankerParams.append('AccessToken', authParams.AccessToken);
-    tankerParams.append('ForWeb', '1');
+  getTripSummaryReport(params: FormData): Observable<any> {
+    return this.masterRequest.postFormData('/tripSummary', params);
+  }
 
-    const mpcPlantParams = new FormData();
-    mpcPlantParams.append('AccessToken', authParams.AccessToken);
-    mpcPlantParams.append('GroupId', authParams.GroupId);
-    mpcPlantParams.append('ForApp', '0');
-
-    const mccParams = new FormData();
-    mccParams.append('AccessToken', authParams.AccessToken);
-    mccParams.append('GroupId', authParams.GroupId);
-    mccParams.append('ForApp', '0');
-    // Mcc uses supplier_id
-
-    return forkJoin({
-      tankerData: this.getTankerFilter(tankerParams),
-      masterData: this.getCreateIndentMaster(mpcPlantParams),
-      mccData: this.getMcc(mccParams)
-    });
+  getFilterOptions(tankerParams: FormData, mpcPlantParams: FormData, mccParams: FormData): Observable<any> {
+    // Calling sequentially to avoid 502 errors from concurrent requests
+    return this.getTankerFilter(tankerParams).pipe(
+      concatMap((tankerData) => 
+        this.getCreateIndentMaster(mpcPlantParams).pipe(
+          concatMap((masterData) => 
+            this.getMcc(mccParams).pipe(
+              map((mccData) => ({
+                tankerData,
+                masterData,
+                mccData
+              }))
+            )
+          )
+        )
+      )
+    );
   }
 }
+
 

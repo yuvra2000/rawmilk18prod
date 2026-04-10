@@ -86,7 +86,56 @@
   box-shadow: 0 0 0 3px rgba(31, 74, 143, 0.25);
 }
 
+.dashboard-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0.8rem;
+
+  app-reusable-stat-card {
+    grid-column: span 4;
+    --cv-card-bg: #ffffff;
+    --cv-card-border: #1d43805c;
+    --cv-card-shadow: 0 2px 8px rgba(29, 67, 128, 0.1);
+    --cv-card-heading: #1d4380;
+    --cv-brand-primary: #1d4380;
+    --cv-text-primary: #243c72;
+    --cv-text-secondary: #445a87;
+    --cv-text-tertiary: #8f9bb5;
+    --cv-divider: #e7ebf3;
+    --cv-badge-bg: #eef4ff;
+    --cv-shadow-sm: 0 1px 4px rgba(29, 67, 128, 0.18);
+  }
+}
+
+.franchise-chart-card {
+  grid-column: span 4;
+  background: #ffffff;
+  border: 1px solid var(--primary-color);
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(29, 67, 128, 0.1);
+  padding: 8px 8px 6px;
+}
+
+.franchise-chart-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1d4380;
+  margin: 0;
+  margin-left: 8px;
+  margin-top: 8px;
+}
+
 @media (max-width: 768px) {
+  .dashboard-cards-grid {
+    grid-template-columns: 1fr;
+
+    app-reusable-stat-card,
+    .franchise-chart-card {
+      grid-column: auto;
+    }
+  }
+
   .filter-toggle-row {
     margin-left: 0.45rem;
     gap: 0.45rem;
@@ -112,5 +161,14 @@
 
   .adda-toggle-text {
     font-size: 0.95rem;
+  }
+}
+.title-icon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  i {
+    font-size: 1.2rem;
+    color: var(--primary-color);
   }
 }

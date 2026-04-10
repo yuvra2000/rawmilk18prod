@@ -21,7 +21,7 @@ import { Option, SelectConfig } from './types';
       class="ng-select custom-placeholder-style"
       [formControl]="control()"
       [id]="fieldName()"
-      [items]="options()"
+      [items]="enhancedOptions()"
       [bindLabel]="bindLabel()"
       [clearable]="true"
       [multiple]="multiple()"
@@ -32,7 +32,6 @@ import { Option, SelectConfig } from './types';
       [addTag]="resolvedAddTag()"
       [addTagText]="addTagText()"
       (change)="onSelectChange($event)"
-     
     >
     </ng-select>
   `,
@@ -51,11 +50,33 @@ export class CascadingSelectFieldComponent {
   selectionChange = output<EventEmitter<any>>();
   addTag = input<boolean | ((term: string) => any)>(false);
   addTagText = input<string>('Add item');
+  showSelectAll = input<boolean>(true);
   selectConfig = input<SelectConfig | undefined>({
     enableExclusiveAll: false,
     allOptionValue: 'all',
   });
+  enhancedOptions = computed(() => {
+    const opts = this.options();
 
+    if (!this.multiple() || !this.showSelectAll() || opts.length === 0) {
+      return opts;
+    }
+
+    const actionOptions: Option[] = [
+      {
+        id: 'SELECT_ALL',
+        name: ' Select All',
+        isAction: true,
+      } as any,
+      {
+        id: 'CLEAR_ALL',
+        name: 'Clear All',
+        isAction: true,
+      } as any,
+    ];
+
+    return [...actionOptions, ...opts];
+  });
   // ✅ Computed: Decides which addTag function to use
   resolvedAddTag = computed(() => {
     const config = this.addTag();
@@ -98,20 +119,24 @@ export class CascadingSelectFieldComponent {
     const config = this.selectConfig();
     const bLabel = this.bindLabel();
     // Feature check
-    if (!this.multiple() || !config?.enableExclusiveAll || !Array.isArray(selectedItems) || selectedItems.length <= 1) {
+    if (
+      !this.multiple() ||
+      !config?.enableExclusiveAll ||
+      !Array.isArray(selectedItems) ||
+      selectedItems.length <= 1
+    ) {
       return;
     }
-
 
     const allLabelName = config.allOptionValue; // E.g., 'All'
 
     // ✅ Helper: Object ke andar label field check karega
     const isItemAll = (item: any) => {
-      const labelValue = (item && typeof item === 'object') ? item[bLabel] : item;
+      const labelValue = item && typeof item === 'object' ? item[bLabel] : item;
       return labelValue === allLabelName;
     };
 
-    const hasAll = selectedItems.some(item => isItemAll(item));
+    const hasAll = selectedItems.some((item) => isItemAll(item));
 
     if (hasAll) {
       const lastSelectedItem = selectedItems[selectedItems.length - 1];
@@ -121,7 +146,9 @@ export class CascadingSelectFieldComponent {
         this.control().setValue([lastSelectedItem]);
       } else {
         // Case B: 'All' pehle se tha, naya item select kiya -> 'All' object filter kardo
-        const filteredObjects = selectedItems.filter(item => !isItemAll(item));
+        const filteredObjects = selectedItems.filter(
+          (item) => !isItemAll(item),
+        );
         this.control().setValue(filteredObjects);
       }
     }

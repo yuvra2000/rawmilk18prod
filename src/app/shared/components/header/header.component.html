@@ -68,34 +68,38 @@
             ></path>
           </svg>
         </a>
-        <div class="page-header-breadcrumb">
-          <h1 class="page-title fs-18 header-breadcrumb">
-            {{ formatTitle(routerEvents[routerEvents.length - 1]) }}
-          </h1>
-          <!-- <ol class="breadcrumb">
-            @for (path of routerEvents; track path; let i = $index) {
-              <li
-                [ngClass]="{
-                  active: routerEvents.length - 1 == i,
-                  'custom-color': i === routerEvents.length - 1,
-                }"
-                class="breadcrumb-item"
+        <div class="d-flex align-items-center gap-3">
+          <h1 class="page-title m-0">{{ title }}</h1>
+
+          <div class="header-tiles">
+            @for (tile of tiles; track tile.key) {
+              <div
+                class="tile-pill"
+                [class.active]="tile.key === activeFilter"
+                (click)="tileClick.emit(tile.key)"
+                [ngbTooltip]="tile.label"
+                container="body"
               >
-                <a
-                  [ngStyle]="{
-                    color:
-                      i === routerEvents.length - 1
-                        ? '#333335'
-                        : 'defaultColor',
-                  }"
-                  href="javascript:void(0);"
-                >
-                  {{ path | titlecase }}
-                </a>
-              </li>
+                <div class="icon-wrapper">
+                  @if (tile.img) {
+                    <img [src]="tile.img" />
+                  }
+
+                  @if (tile.icon) {
+                    <i [class]="tile.icon"></i>
+                  }
+
+                  <span class="badge" [style.background]="tile.color">
+                    {{ tile.count }}
+                  </span>
+                </div>
+
+                <!-- <span class="label">{{ tile.label }}</span> -->
+              </div>
             }
-          </ol> -->
+          </div>
         </div>
+
         <!-- End::header-link -->
       </div>
       <!-- End::header-element -->

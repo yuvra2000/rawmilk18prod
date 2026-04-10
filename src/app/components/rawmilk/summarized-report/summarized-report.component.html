@@ -1,16 +1,10 @@
+<app-header [title]="'Summarized Report'">
+  ></app-header>
 <app-collapse-wrapper>
-  <filter-form
-    #dispatchPlanningFilter
-    [dynamicFields]="store.filterfields()"
-    (formSubmit)="store.onFormSubmit($event)"
-    [initialData]="store.initialData()"
-    [btnClass]="'mt-0'"
-  >
+  <filter-form #dispatchPlanningFilter [dynamicFields]="store.filterfields()" (formSubmit)="store.onFormSubmit($event)"
+    [initialData]="store.initialData()" [btnClass]="'mt-0'">
   </filter-form>
 </app-collapse-wrapper>
-<app-advanced-grid
-  [rowData]="store.summarizedRows()"
-  [config]="store.summarizedConfig()"
->
+<app-advanced-grid [rowData]="store.summarizedRows()" [config]="store.summarizedConfig()">
   <h5 class="text-center table-heading">Summarized Report List</h5>
 </app-advanced-grid>

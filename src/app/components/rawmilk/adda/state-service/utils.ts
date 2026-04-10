@@ -17,7 +17,7 @@ export const editParams = (data: any, formData: any) => {
     region_code: formData.region_code,
     radius: '0.5',
     addaId: data?._id?.$oid,
-    status: formData?.status?.id == 'Active' ? 1 : 2,
+    status: formData?.status?.id,
   });
 };
 export const addParams = (formData: any) => {

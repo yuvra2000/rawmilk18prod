@@ -1,0 +1,10 @@
+<!-- @if (store.rowData().length > 0) { -->
+<app-header [title]="'Cart Timing'">
+    ></app-header>
+<app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()" [loadingRowData]="store.loading()">
+    <h5 class="text-center table-heading">Cart Timing List</h5>
+    <div class="header h-5 w-5 cursor-pointer" slot="right">
+        <i class="fa fa-plus-circle icon-add" (click)="store.assignCartTiming()"></i>
+    </div>
+</app-advanced-grid>
+<!-- } -->

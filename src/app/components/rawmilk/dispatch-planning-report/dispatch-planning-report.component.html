@@ -1,24 +1,16 @@
+<app-header [title]="'Dispatch Planning Report'">
+  ></app-header>
 <app-collapse-wrapper>
   @if (store.user_type == "Supplier") {
-    <div class="header h-5 w-5 cursor-pointer" custom-icon>
-      <i
-        class="fa fa-plus-circle icon-add"
-        (click)="store.openCreateDispatch()"
-        ngbTooltip="Add New Dispatch"
-      ></i>
-    </div>
+  <div class="header h-5 w-5 cursor-pointer" custom-icon>
+    <i class="fa fa-plus-circle icon-add" (click)="store.openCreateDispatch()" ngbTooltip="Add New Dispatch"></i>
+  </div>
   }
-  <filter-form
-    #dispatchPlanningFilter
-    [dynamicFields]="store.filterfields()"
-    (formSubmit)="store.onFormSubmit($event)"
-    [initialData]="store.date()"
-  >
+  <filter-form #dispatchPlanningFilter [dynamicFields]="store.filterfields()" (formSubmit)="store.onFormSubmit($event)"
+    [initialData]="store.date()">
   </filter-form>
 </app-collapse-wrapper>
-<app-advanced-grid
-  [rowData]="store.initialData().dispatchReportData"
-  [config]="store.dispatchConfig()"
->
+<app-advanced-grid [rowData]="store.initialData().dispatchReportData" [config]="store.dispatchConfig()"
+  [loadingRowData]="store.loading()">
   <h5 class="text-center table-heading">Dispatch Planning List</h5>
 </app-advanced-grid>

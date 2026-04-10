@@ -1,0 +1,10 @@
+<app-header [title]="'Franchise'">
+  ></app-header>
+@if (store.rowData().length > 0) {
+<app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()" [loadingRowData]="store.loading()">
+  <h5 class="text-center table-heading">Franchise list</h5>
+  <div class="header h-5 w-5 cursor-pointer" slot="right">
+    <i class="fa fa-plus-circle icon-add" (click)="store.addAdda()"></i>
+  </div>
+</app-advanced-grid>
+}

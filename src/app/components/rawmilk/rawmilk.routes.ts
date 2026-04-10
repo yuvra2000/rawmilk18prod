@@ -154,6 +154,62 @@ export const rawMilkRoutes: Routes = [
           import('./adda/adda.component').then((m) => m.AddaComponent),
         title: 'Adda',
       },
+      {
+        path: 'franchise',
+        loadComponent: () =>
+          import('./franchise/franchise.component').then(
+            (m) => m.FranchiseComponent,
+          ),
+        title: 'Franchise',
+      },
+      {
+        path: 'franchise-mapping',
+        loadComponent: () =>
+          import('./franchise-mapping/franchise-mapping.component').then(
+            (m) => m.FranchiseMappingComponent,
+          ),
+        title: 'Franchise Mapping',
+      },
+      {
+        path: 'cart-mapping',
+        loadComponent: () =>
+          import('./cart-mapping/cart-mapping.component').then(
+            (m) => m.CartMappingComponent,
+          ),
+        title: 'Cart Mapping',
+      },
+      {
+        path: 'agreement-info',
+        loadComponent: () =>
+          import('./agreement-info/agreement-info.component').then(
+            (m) => m.AgreementInfoComponent,
+          ),
+        title: 'Agreement Info',
+      },
+      {
+        path: 'cart-timing',
+        loadComponent: () =>
+          import('./cart-timing/cart-timing.component').then(
+            (m) => m.CartTimingComponent,
+          ),
+        title: 'Cart Timing',
+      },
+      {
+        path: 'mcc-mapping-info',
+        loadComponent: () =>
+          import('./mcc-mapping-info/mcc-mapping-info.component').then(
+            (m) => m.MccMappingInfoComponent,
+          ),
+        title: 'MCC Mapping Info',
+      },
+      {
+        path: 'maker-checker',
+        loadComponent: () =>
+          import('./maker-checker/maker-checker.component').then(
+            (m) => m.MakerCheckerComponent,
+          ),
+        title: 'Maker Checker',
+      },
     ],
   },
   {

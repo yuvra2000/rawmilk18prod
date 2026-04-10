@@ -48,6 +48,8 @@ export const filterfields = (
     label: 'Region',
     placeholder: 'Select Region',
     options: regionList,
+    showSelectAll: true,
+    multiple: true,
   },
 ];
 // export const gridColumns: GridColumnConfig[] = [];

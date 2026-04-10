@@ -265,6 +265,7 @@ export class CartDashboardStore {
     }
   }
   async onFormSubmit(data: any) {
+    console.log('Form submitted with data:', data);
     this.spinner.show();
     this.loading.set(true);
     const type = this.isAddaFilterEnabled() ? 'adda' : 'franchise';

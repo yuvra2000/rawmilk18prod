@@ -80,6 +80,7 @@
             [required]="field.required ?? false"
             [isOpen]="field.isOpen"
             [bindLabel]="field?.bindLabel ?? 'name'"
+            [showSelectAll]="field.showSelectAll ?? false"
             [addTag]="field.addTag ?? false"
             [addTagText]="field.addTagText || 'Add ' + field.label"
           ></app-cascading-select-field>

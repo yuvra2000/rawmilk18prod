@@ -15,9 +15,11 @@ import {
   GridColumnConfig,
   GridConfig,
   ActionCellRendererComponent,
+  IActionCellRendererParams,
 } from '../../../ag-grid/ag-grid/ag-grid.component';
 import { ReusableModalComponent } from '../../reusable-modal.component';
 import { AlertService } from '../../../../services/alert.service';
+import { ITooltipAngularComp } from 'ag-grid-angular';
 
 export interface GridModalConfig {
   title: string;
@@ -40,6 +42,7 @@ export interface GridModalConfig {
   height?: string;
   context?: any;
   onActionClick?: (actionType: string, rowData: any) => void;
+  tooltipComponent?: any;
 }
 
 @Component({
@@ -106,11 +109,13 @@ export interface GridModalConfig {
 export class GridModalComponent {
   readonly activeModal = inject(NgbActiveModal);
   private alertService = inject(AlertService);
-
+  private params = signal<IActionCellRendererParams | null>(null);
   readonly config = signal<GridModalConfig | null>(null);
   private selectedRows = signal<any[]>([]);
   private gridApi: any = null;
-
+  agInit(params: IActionCellRendererParams): void {
+    this.params.set(params);
+  }
   readonly resolvedGridConfig = computed((): GridConfig => {
     const cfg = this.config();
     if (!cfg)
@@ -132,6 +137,7 @@ export class GridModalComponent {
           this.handleGridAction(actionType, rowData);
         },
       },
+      tooltipComponent: cfg.tooltipComponent,
     } as GridConfig;
   });
   private handleGridAction(actionType: string, rowData: any): void {

@@ -10,7 +10,7 @@
   </button>
   <ng-content (click)="onIconClick()" select="[custom-icon]"></ng-content>
 </div>
-<div [ngbCollapse]="collapsed()" id="collapseSection">
+<div [ngbCollapse]="collapsed()" id="collapseSection" [ngClass]="collapseSectionClass()">
   <div class="collapsible-content p-0">
     <ng-content></ng-content>
   </div>

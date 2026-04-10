@@ -1,15 +1,17 @@
 import { computed, inject, signal } from '@angular/core';
+import { GridConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import {
-  GridConfig,
-  GridColumnConfig,
-} from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { detailsColumns, filterfields, gridColumns } from './config';
+  detailsColumns,
+  filterfields,
+  gridColumns,
+  delayColumns,
+  statusColumns,
+} from './config';
 import {
   createFormData,
   GroupId,
   handleApiResponse,
   handleSessionExpiry,
-  supplier_id,
   token,
   userType,
 } from '../../../../shared/utils/shared-utility.utils';
@@ -18,69 +20,24 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
 import { CartDashboardService } from '../cart-dashboard.service';
-import { createReportParams } from './utils';
+import {
+  createReportParams,
+  DashboardSummaryData,
+  extractSummaryData,
+  DEFAULT_SUMMARY_DATA,
+  CustomTooltipComponent,
+} from './utils';
 import { StatCardConfig } from '../../../../shared/components/reusable-stat-card/model/stat-card.model';
 import { ChartConfig } from '../../../../shared/components/reusable-chart/models/chart-config.model';
-
-interface DashboardSummaryData {
-  gps: {
-    total: number;
-    running: number;
-    inactive: number;
-    noGps: number;
-    stopped: number;
-  };
-  eta: {
-    total: number;
-    lessThan2Hr: number;
-    between2To4Hr: number;
-    between4To6Hr: number;
-    above6Hr: number;
-  };
-  supplier: {
-    quantity1: number;
-    quantity2: number;
-    quantity3: number;
-    name1: string;
-    name2: string;
-    name3: string;
-    others: number;
-  };
-}
 
 interface InitialData {
   cartDashboardData?: any[];
   addaList?: any[];
   franchiseList?: any[];
+  regionList?: any[];
   highShipment?: boolean;
   summaryData?: DashboardSummaryData;
 }
-
-const DEFAULT_SUMMARY_DATA: DashboardSummaryData = {
-  gps: {
-    total: 0,
-    running: 0,
-    inactive: 0,
-    noGps: 0,
-    stopped: 0,
-  },
-  eta: {
-    total: 0,
-    lessThan2Hr: 0,
-    between2To4Hr: 0,
-    between4To6Hr: 0,
-    above6Hr: 0,
-  },
-  supplier: {
-    quantity1: 0,
-    quantity2: 0,
-    quantity3: 0,
-    name1: 'Franchise 1',
-    name2: 'Franchise 2',
-    name3: 'Franchise 3',
-    others: 0,
-  },
-};
 
 export class CartDashboardStore {
   private toast = inject(ToastrService);
@@ -94,6 +51,7 @@ export class CartDashboardStore {
     cartDashboardData: [],
     addaList: [],
     franchiseList: [],
+    regionList: [],
     highShipment: true,
     summaryData: DEFAULT_SUMMARY_DATA,
   });
@@ -110,10 +68,10 @@ export class CartDashboardStore {
       icon: 'fa-solid fa-cart-shopping',
       chartType: 'doughnut',
       chartData: [
-        { name: 'Active', value: gps.running, color: '#1f4a8f' },
-        { name: 'Delay', value: gps.stopped, color: '#ea7f13' },
+        { name: 'En-Route', value: gps.enRoute, color: '#5676b8' },
+        { name: 'At Base', value: gps.atBase, color: '#ea7f13' },
         { name: 'Inactive', value: gps.inactive, color: '#ff3b3f' },
-        { name: 'Non GPS', value: gps.noGps, color: '#c6c8ce' },
+        { name: 'Non GPS', value: gps.noGps, color: '#8f84dc' },
       ],
     };
   });
@@ -125,10 +83,10 @@ export class CartDashboardStore {
       icon: 'fa-solid fa-location-dot',
       chartType: 'doughnut',
       chartData: [
-        { name: 'In-Route', value: eta.lessThan2Hr, color: '#2fb38b' },
-        { name: 'Active', value: eta.between2To4Hr, color: '#1f4a8f' },
-        { name: 'Off-Route', value: eta.between4To6Hr, color: '#c6c8ce' },
-        { name: 'Inactive', value: eta.above6Hr, color: '#ff3b3f' },
+        { name: 'Okay', value: eta.ok, color: '#6be58f' },
+        { name: 'Lower Cart', value: eta.lower, color: '#5676b8' },
+        { name: 'Higher Cart', value: eta.higher, color: '#8f84dc' },
+        { name: 'No Cart', value: eta.noCart, color: '#ff3b3f' },
       ],
     };
   });
@@ -148,7 +106,6 @@ export class CartDashboardStore {
         name: supplier.name3 || 'Franchise 3',
         value: Number(supplier.quantity3) || 0,
       },
-      { name: 'Others', value: Number(supplier.others) || 0 },
     ];
 
     return {
@@ -159,9 +116,9 @@ export class CartDashboardStore {
           ...options,
           grid: {
             top: 34,
-            left: 20,
+            left: 15,
             right: 20,
-            bottom: 36,
+            bottom: 0,
             containLabel: true,
           },
           xAxis: {
@@ -199,6 +156,10 @@ export class CartDashboardStore {
                   color: ['#8f84dc', '#e48ad4', '#6be58f', '#f2a394'][index],
                 },
               })),
+              showBackground: true,
+              backgroundStyle: {
+                color: 'rgba(180, 180, 180, 0.2)',
+              },
             },
           ],
         }),
@@ -210,6 +171,7 @@ export class CartDashboardStore {
     filterfields(
       this.initialData().franchiseList,
       this.initialData().addaList,
+      this.initialData().regionList,
       this.isAddaFilterEnabled(),
     ),
   );
@@ -224,6 +186,7 @@ export class CartDashboardStore {
       componentParent: this,
     },
     height: '300px',
+    tooltipComponent: CustomTooltipComponent,
   }));
   async loadInitialData() {
     this.spinner.show();
@@ -237,12 +200,18 @@ export class CartDashboardStore {
         this.cartDashService.initializePageData(reportParams, listParams),
       );
       handleSessionExpiry(res, this.toast);
-      const { dashboardData, addaList, franchiseList } = res || {};
+      const { dashboardData, addaList, franchiseList, regionList } = res || {};
       this.initialData.set({
         cartDashboardData: dashboardData?.Data || [],
         addaList: addaList?.Data || [],
         franchiseList: franchiseList?.Data || [],
-        summaryData: this.extractSummaryData(res),
+        regionList:
+          res.regionList?.Data?.map((r: any) => ({
+            ...r,
+            name: r.zone_code,
+            id: r.zone_code,
+          })) || [],
+        summaryData: extractSummaryData(res),
       });
       console.log('Cart dashboard initial data:', this.initialData());
     } catch (error) {
@@ -252,7 +221,10 @@ export class CartDashboardStore {
       this.spinner.hide();
     }
   }
-  async viewDetails(row: any, type: 'authorised' | 'unauthorised' | 'delay') {
+  async viewDetails(
+    row: any,
+    type: 'authorised' | 'unauthorised' | 'delay' | 'total',
+  ) {
     const params = createFormData(token, {
       group_id: GroupId,
       type: this.isAddaFilterEnabled() ? 'adda' : 'franchise',
@@ -274,10 +246,16 @@ export class CartDashboardStore {
         return;
       }
       this.modal.openGridModal({
-        title: `${type === 'authorised' ? 'Authorised' : type === 'unauthorised' ? 'Un-authorised' : 'Delayed'} Carts for ${row?.name || ''}`,
-        columns: detailsColumns,
+        title: `${type === 'authorised' ? 'Authorised' : type === 'unauthorised' ? 'Un-authorised' : type === 'delay' ? 'Delayed' : 'Total'} Carts for ${row?.name || ''}`,
+        columns:
+          type === 'delay'
+            ? detailsColumns
+            : type === 'total'
+              ? [...detailsColumns, ...delayColumns, ...statusColumns]
+              : [...detailsColumns, ...delayColumns],
         rowData: res?.Data || [],
         size: 'xl',
+        height: '300px',
       });
     } catch (error) {
       this.toast.error('Failed to view details');
@@ -287,6 +265,7 @@ export class CartDashboardStore {
     }
   }
   async onFormSubmit(data: any) {
+    console.log('Form submitted with data:', data);
     this.spinner.show();
     this.loading.set(true);
     const type = this.isAddaFilterEnabled() ? 'adda' : 'franchise';
@@ -300,7 +279,7 @@ export class CartDashboardStore {
       this.initialData.update((prev) => ({
         ...prev,
         cartDashboardData: dashboardData?.Data || [],
-        summaryData: this.extractSummaryData(res),
+        summaryData: extractSummaryData(res),
       }));
     } catch (error) {
       this.toast.error('Failed to submit form');
@@ -315,6 +294,7 @@ export class CartDashboardStore {
     filterfields(
       this.initialData().franchiseList,
       this.initialData().addaList,
+      this.initialData().regionList,
       this.isAddaFilterEnabled(),
     );
     this.lastFilterValues.set({
@@ -336,7 +316,7 @@ export class CartDashboardStore {
       this.initialData.update((prev) => ({
         ...prev,
         cartDashboardData: res?.Data || [],
-        summaryData: this.extractSummaryData(res),
+        summaryData: extractSummaryData(res),
       }));
     } catch (error) {
       this.toast.error('Failed to fetch report data');
@@ -344,56 +324,5 @@ export class CartDashboardStore {
       this.loading.set(false);
       this.spinner.hide();
     }
-  }
-
-  private extractSummaryData(res: any): DashboardSummaryData {
-    const candidates = [
-      res,
-      res?.Data,
-      res?.dashboardData,
-      res?.dashboardSummary,
-      res?.summary,
-      res?.summaryData,
-    ];
-
-    const rawSummary =
-      candidates.find((candidate) => this.hasSummarySections(candidate)) ||
-      DEFAULT_SUMMARY_DATA;
-
-    return {
-      gps: {
-        total: Number(rawSummary?.gps?.total) || 0,
-        running: Number(rawSummary?.gps?.running) || 0,
-        inactive: Number(rawSummary?.gps?.inactive) || 0,
-        noGps: Number(rawSummary?.gps?.noGps) || 0,
-        stopped: Number(rawSummary?.gps?.stopped) || 0,
-      },
-      eta: {
-        total: Number(rawSummary?.eta?.total) || 0,
-        lessThan2Hr: Number(rawSummary?.eta?.lessThan2Hr) || 0,
-        between2To4Hr: Number(rawSummary?.eta?.between2To4Hr) || 0,
-        between4To6Hr: Number(rawSummary?.eta?.between4To6Hr) || 0,
-        above6Hr: Number(rawSummary?.eta?.above6Hr) || 0,
-      },
-      supplier: {
-        quantity1: Number(rawSummary?.supplier?.quantity1) || 0,
-        quantity2: Number(rawSummary?.supplier?.quantity2) || 0,
-        quantity3: Number(rawSummary?.supplier?.quantity3) || 0,
-        name1: rawSummary?.supplier?.name1 || 'Franchise 1',
-        name2: rawSummary?.supplier?.name2 || 'Franchise 2',
-        name3: rawSummary?.supplier?.name3 || 'Franchise 3',
-        others: Number(rawSummary?.supplier?.others) || 0,
-      },
-    };
-  }
-
-  private hasSummarySections(data: any): boolean {
-    return !!(
-      data &&
-      typeof data === 'object' &&
-      data.gps &&
-      data.eta &&
-      data.supplier
-    );
   }
 }

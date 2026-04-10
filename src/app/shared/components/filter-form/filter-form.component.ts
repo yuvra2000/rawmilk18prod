@@ -170,6 +170,7 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
   effectiveFieldsSignal = computed(() => {
     const dynamic = this._dynamicFieldsSignal();
     const regular = this._fieldsSignal();
+
     return dynamic.length > 0 ? dynamic : regular;
   });
 

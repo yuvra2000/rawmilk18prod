@@ -1,12 +1,27 @@
-import { GridColumnConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import {
+  GridColumnConfig,
+  StatusCellRendererComponent,
+} from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import { ActionCellRenderer } from '../../../../shared/components/ag-grid/renderers';
 import {
   FieldConfig,
   Option,
 } from '../../../../shared/components/filter-form/filter-form.component';
+import { TooltipField } from './utils';
+
+const cartTooltipFields: TooltipField[] = [
+  { label: 'Name', key: 'name' },
+  { label: 'Code', key: 'code' },
+  { label: 'Geo Coord', key: 'latlng' },
+];
+const InchargeTooltipFields: TooltipField[] = [
+  { label: 'Incharge Name', key: 'adda_code' },
+];
 
 export const filterfields = (
   franchiseList: Option[] = [],
   addaList: Option[] = [],
+  regionList: Option[] = [],
   isAddaFilterEnabled: boolean = false,
 ): FieldConfig[] => [
   {
@@ -27,6 +42,13 @@ export const filterfields = (
     bindLabel: 'name',
     class: isAddaFilterEnabled ? 'd-none' : 'col-md-2',
   },
+  {
+    name: 'region',
+    type: 'select',
+    label: 'Region',
+    placeholder: 'Select Region',
+    options: regionList,
+  },
 ];
 // export const gridColumns: GridColumnConfig[] = [];
 export const gridColumns: GridColumnConfig[] = [
@@ -39,11 +61,33 @@ export const gridColumns: GridColumnConfig[] = [
     headerName: 'Name',
     field: 'name',
     valueGetter: (params: any) => params.data?.name || '-',
+    tooltipValueGetter: (params: any) => {
+      console.log('Tooltip params:', params);
+      return params.data?.adda_incharge || params.data?.name || '-';
+    },
+    tooltipComponentParams: (params: any) => ({
+      tooltip: params.data,
+      header: 'Detail',
+      tooltipFields: cartTooltipFields,
+    }),
+    cellStyle: {
+      cursor: 'pointer',
+      color: '#1d4380',
+    },
   },
   {
     headerName: 'Total Carts',
     field: 'total_cart',
     valueGetter: (params: any) => params.data?.total_cart ?? 0,
+    cellStyle: {
+      cursor: 'pointer',
+      textDecoration: 'underline',
+      textDecorationColor: '#1d4380',
+      color: '#1d4380',
+    },
+    onCellClicked: (params: any) => {
+      params.context?.componentParent?.viewDetails?.(params.data, 'total');
+    },
   },
   {
     headerName: 'Authorised Carts',
@@ -94,16 +138,31 @@ export const gridColumns: GridColumnConfig[] = [
     },
   },
 ];
-const dayMap: Record<number, string> = {
-  0: 'Sunday',
-  1: 'Monday',
-  2: 'Tuesday',
-  3: 'Wednesday',
-  4: 'Thursday',
-  5: 'Friday',
-  6: 'Saturday',
-};
-
+export const delayColumns: GridColumnConfig[] = [
+  {
+    headerName: 'Delay',
+    field: 'delay_status',
+    valueGetter: (params: any) => params.data?.delay_status || '-',
+    cellRenderer: StatusCellRendererComponent,
+    cellRendererParams: {
+      status: (params: any) =>
+        params.data?.delay_status == 'NO' ? 'inactive' : 'active',
+    },
+  },
+];
+export const statusColumns: GridColumnConfig[] = [
+  {
+    headerName: 'Status',
+    field: 'status',
+    valueGetter: (params: any) =>
+      Number(params.data?.status) == 1 ? 'Authorized' : 'Unauthorized',
+    cellRenderer: StatusCellRendererComponent,
+    cellRendererParams: {
+      status: (params: any) =>
+        Number(params?.data?.status) === 1 ? 'active' : 'inactive',
+    },
+  },
+];
 export const detailsColumns: GridColumnConfig[] = [
   {
     headerName: '#',
@@ -111,6 +170,31 @@ export const detailsColumns: GridColumnConfig[] = [
     valueGetter: (params: any) => params.node.rowIndex + 1,
     width: 40,
     pinned: 'left',
+  },
+
+  {
+    headerName: 'Cart No',
+    field: 'cart_no',
+    valueGetter: (params: any) => params.data?.cart_no || '-',
+    minWidth: 130,
+  },
+  {
+    headerName: 'Status',
+    field: 'status',
+    valueGetter: (params: any) => params.data?.cart_no || '-',
+    minWidth: 130,
+  },
+  {
+    headerName: 'Scheduled Time',
+    field: 'scheduled_time',
+    valueGetter: (params: any) => params.data?.scheduled_time || '-',
+    minWidth: 130,
+  },
+  {
+    headerName: 'Actual Time',
+    field: 'actual_time',
+    valueGetter: (params: any) => params.data?.actual_time || '-',
+    minWidth: 130,
   },
   {
     headerName: 'Adda',
@@ -120,7 +204,18 @@ export const detailsColumns: GridColumnConfig[] = [
       const addaCode = params.data?.adda_code || '-';
       return `${addaName} (${addaCode})`;
     },
+    tooltipValueGetter: (params: any) => {
+      return (
+        `Incharge: ${params.data?.adda_name}` ||
+        `Incharge: ${params.data?.adda_incharge}` ||
+        '-'
+      );
+    },
     minWidth: 220,
+    cellStyle: {
+      cursor: 'pointer',
+      color: '#1d4380',
+    },
   },
   {
     headerName: 'Franchise',
@@ -130,51 +225,18 @@ export const detailsColumns: GridColumnConfig[] = [
       const franchiseCode = params.data?.franchise_code || '-';
       return `${franchiseName} (${franchiseCode})`;
     },
-    minWidth: 230,
-  },
-  {
-    headerName: 'Cart No',
-    field: 'cart_no',
-    valueGetter: (params: any) => params.data?.cart_no || '-',
-    minWidth: 130,
-  },
-  {
-    headerName: 'Day',
-    field: 'day',
-    valueGetter: (params: any) => {
-      const day = params.data?.day;
-      return dayMap[day as number] || '-';
+    tooltipValueGetter: (params: any) => {
+      return (
+        `Incharge: ${params.data?.franchise_name}` ||
+        `Incharge: ${params.data?.franchise_incharge}` ||
+        '-'
+      );
     },
-    width: 90,
-  },
-  {
-    headerName: 'Region',
-    field: 'region_code',
-    valueGetter: (params: any) => params.data?.region_code || '-',
-    width: 100,
-  },
-  {
-    headerName: 'Start Time',
-    field: 'start_time',
-    valueGetter: (params: any) => params.data?.start_time || '-',
-    minWidth: 170,
-  },
-  {
-    headerName: 'End Time',
-    field: 'end_time',
-    valueGetter: (params: any) => params.data?.end_time || '-',
-    minWidth: 170,
-  },
-  {
-    headerName: 'Cart Start Time',
-    field: 'cart_start_time',
-    valueGetter: (params: any) => params.data?.cart_start_time || '-',
-    minWidth: 180,
-  },
-  {
-    headerName: 'Cart end Time',
-    field: 'cart_end_time',
-    valueGetter: (params: any) => params.data?.cart_end_time || '-',
-    minWidth: 180,
+
+    cellStyle: {
+      cursor: 'pointer',
+      color: '#1d4380',
+    },
+    minWidth: 230,
   },
 ];

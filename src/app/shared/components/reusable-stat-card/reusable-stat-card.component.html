@@ -2,63 +2,49 @@
   <div class="header">
     <h5 class="title" [ngStyle]="titleStyle()">{{ config().title }}</h5>
     @if (isImagePath(config().icon)) {
-      <img
-        [src]="config().icon"
-        alt="icon"
-        class="icon-img"
-        [ngStyle]="iconStyle()"
-      />
+    <img [src]="config().icon" alt="icon" class="icon-img" [ngStyle]="iconStyle()" />
     } @else {
-      <i [class]="config().icon" class="icon-font" [ngStyle]="iconStyle()"></i>
+    <i [class]="config().icon" class="icon-font" [ngStyle]="iconStyle()"></i>
     }
   </div>
 
   <div class="body">
     <div class="chart-area">
-      <app-reusable-chart
-        [config]="chartConfig()"
-        [style]="{ height: '120px', width: '120px' }"
-        (chartEvent)="onChartEvent($event)"
-      ></app-reusable-chart>
+      <app-reusable-chart [config]="chartConfig()" [style]="{ height: '120px', width: '120px' }"
+        (chartEvent)="onChartEvent($event)"></app-reusable-chart>
       @if (config().typeLabel) {
-        <div class="type-pill-container">
-          <span class="type-pill">{{ config().typeLabel }}</span>
-        </div>
+      <div class="type-pill-container">
+        <span class="type-pill">{{ config().typeLabel }}</span>
+      </div>
       }
     </div>
 
     <div class="details">
       @for (item of config().chartData; track item.name; let isLast = $last) {
-        <div class="detail-item">
-          <span [ngStyle]="{ color: item.color }" class="detail-value">
-            {{ item.value }}
+      <div class="detail-item">
+        <span [ngStyle]="{ color: item.color }" class="detail-value">
+          {{ item.value }}
 
-            @if (!isLast) {
-              <span class="detail-separator">/</span>
-            }
-          </span>
-        </div>
+          @if (!isLast) {
+          <span class="detail-separator">/</span>
+          }
+        </span>
+      </div>
       }
     </div>
   </div>
 
   <div class="footer-legend" [ngClass]="legendClass()">
     @for (item of config().chartData; track item.name) {
-      <div
-        class="legend-item"
-        [ngStyle]="getLegendItemStyle(item.color)"
-        [attr.title]="truncateLabels() ? item.name : null"
-      >
-        <span class="dot" [ngStyle]="{ 'background-color': item.color }"></span>
+    <div class="legend-item" [ngStyle]="getLegendItemStyle(item.color)"
+      [attr.title]="truncateLabels() ? item.name : null">
+      <span class="dot" [ngStyle]="{ 'background-color': item.color }"></span>
 
-        <span
-          class="legend-label"
-          [class.apply-ellipsis]="truncateLabels()"
-          [style.max-width]="truncateLabels() ? maxLabelWidth() : 'auto'"
-        >
-          {{ item.name }}
-        </span>
-      </div>
+      <span class="legend-label" [class.apply-ellipsis]="truncateLabels()"
+        [style.max-width]="truncateLabels() ? maxLabelWidth() : 'auto'">
+        {{ item.name }}
+      </span>
+    </div>
     }
   </div>
 </div>

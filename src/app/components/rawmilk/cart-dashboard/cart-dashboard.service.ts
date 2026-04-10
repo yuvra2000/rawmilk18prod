@@ -23,6 +23,9 @@ export class CartDashboardService {
   getListFranchise(params: any): Observable<any> {
     return this.masterRequestService.postFormData('/listFranchise', params);
   }
+  getListRegion(params: any): Observable<any> {
+    return this.masterRequestService.postFormData('/listRegion', params);
+  }
   getDashReport(params: any): Observable<any> {
     return this.masterRequestService.postFormData('/cartDashboard', params);
   }
@@ -32,6 +35,7 @@ export class CartDashboardService {
       dashboardData: this.getDashReport(reportParams),
       addaList: this.getListAdda(listParams),
       franchiseList: this.getListFranchise(listParams),
+      regionList: this.getListRegion(listParams),
     });
   }
 }

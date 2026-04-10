@@ -4,11 +4,11 @@ export const token = localStorage.getItem('AccessToken') || '';
 export const GroupId = localStorage.getItem('GroupId') || '';
 export const userType = localStorage.getItem('usertype') || '';
 export function createFormData(
-  token: string = localStorage.getItem('AccessToken') || '',
+  tokenn: string = token || '',
   params: Record<string, any> = {},
 ): FormData {
   const formData = new FormData();
-  formData.append('AccessToken', token);
+  formData.append('AccessToken', tokenn);
   Object.entries(params).forEach(([key, value]) => {
     formData.append(key, value || '');
   });

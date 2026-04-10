@@ -13,6 +13,7 @@ interface BaseConfig {
 export interface BarChartConfig extends BaseConfig {
   type: 'bar' | 'line';
   data: SingleSeriesData;
+  showBackground?: boolean; 
 }
 
 export interface HorizontalBarChartConfig extends BaseConfig {

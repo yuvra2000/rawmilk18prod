@@ -208,8 +208,8 @@ export class CartDashboardStore {
       const { dashboardData } = res || {};
       this.initialData.update((prev) => ({
         ...prev,
-        cartDashboardData: dashboardData?.Data || [],
-        summaryData: extractSummaryData(res),
+        cartDashboardData: res?.Data || [],
+        // summaryData: extractSummaryData(res),
       }));
     } catch (error) {
       this.toast.error('Failed to submit form');

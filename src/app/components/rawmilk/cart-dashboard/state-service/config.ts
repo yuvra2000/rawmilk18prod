@@ -181,12 +181,6 @@ export const detailsColumns: GridColumnConfig[] = [
     minWidth: 130,
   },
   {
-    headerName: 'Status',
-    field: 'status',
-    valueGetter: (params: any) => params.data?.cart_no || '-',
-    minWidth: 130,
-  },
-  {
     headerName: 'Scheduled Time',
     field: 'scheduled_time',
     valueGetter: (params: any) => {

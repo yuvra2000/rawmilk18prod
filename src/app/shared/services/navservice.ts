@@ -405,6 +405,7 @@ export class NavService implements OnDestroy {
       'cart-dashboard',
       'reports/cart-report',
       'reports/cart-report-exception',
+      'reports/franchise-report',
     ];
 
     // ✅ Build new menu

@@ -32,6 +32,7 @@ import {
   editVehicleDocumentFields,
 } from './state-service/config';
 import { NavTabComponent } from '../../../shared/components/nav-tab/nav-tab.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-document-wallet',
@@ -43,6 +44,7 @@ import { NavTabComponent } from '../../../shared/components/nav-tab/nav-tab.comp
     SpkApexchartsComponent,
     AdvancedGridComponent,
     NavTabComponent,
+    SharedModule
   ],
   templateUrl: './document-wallet.component.html',
   styleUrl: './document-wallet.component.scss',

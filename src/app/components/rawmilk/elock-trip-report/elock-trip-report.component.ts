@@ -10,11 +10,12 @@ import { AlertService } from '../../../shared/services/alert.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { ViewChild, TemplateRef } from '@angular/core';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-elock-trip-report',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './elock-trip-report.component.html',
   styleUrl: './elock-trip-report.component.scss'
 })

@@ -7,11 +7,12 @@ import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag
 import { mpcFilterFields, mpcGridColumns } from './state-service/config';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { AlertService } from '../../../shared/services/alert.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-mpc-trip-report',
   standalone: true,
-  imports: [CommonModule, FilterFormComponent, CollapseWrapperComponent, AdvancedGridComponent],
+  imports: [CommonModule, FilterFormComponent, CollapseWrapperComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './mpc-trip-report.component.html',
   styleUrl: './mpc-trip-report.component.scss'
 })

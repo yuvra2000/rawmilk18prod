@@ -13,6 +13,7 @@ import {
   AdvancedGridComponent,
   GridConfig,
 } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-summary-dashboard',
@@ -22,6 +23,7 @@ import {
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
+    SharedModule
   ],
   templateUrl: './summary-dashboard.component.html',
   styleUrl: './summary-dashboard.component.scss',

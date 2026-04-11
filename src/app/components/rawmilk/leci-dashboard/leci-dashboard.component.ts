@@ -11,11 +11,12 @@ import { leciDashboardFilterFields, leciDashboardColumns, alertDetailColumns } f
 import { LeciDashboardService } from './leci-dashboard.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-leci-dashboard',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './leci-dashboard.component.html',
   styleUrl: './leci-dashboard.component.scss'
 })

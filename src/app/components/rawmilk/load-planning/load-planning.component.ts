@@ -10,11 +10,12 @@ import { TileComponent } from '../../../shared/components/tile/tile.component';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { AlertService } from '../../../shared/services/alert.service';
 import { firstValueFrom } from 'rxjs';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-load-planning',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, TileComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, TileComponent, SharedModule],
   templateUrl: './load-planning.component.html',
   styleUrl: './load-planning.component.scss'
 })

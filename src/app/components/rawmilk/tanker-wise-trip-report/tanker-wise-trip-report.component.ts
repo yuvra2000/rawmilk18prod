@@ -7,11 +7,12 @@ import { TankerWiseTripReportService } from './tanker-wise-trip-report.service';
 import { AlertService } from '../../../shared/services/alert.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-tanker-wise-trip-report',
   standalone: true,
-  imports: [CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './tanker-wise-trip-report.component.html',
   styleUrl: './tanker-wise-trip-report.component.scss'
 })

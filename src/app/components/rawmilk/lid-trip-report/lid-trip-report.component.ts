@@ -7,11 +7,12 @@ import { AlertService } from '../../../shared/services/alert.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { lidTripReportFilterFields, lidTripGridColumns } from './state-service/config';
 import { LidTripReportService } from './lid-trip-report.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-lid-trip-report',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './lid-trip-report.component.html',
   styleUrl: './lid-trip-report.component.scss'
 })

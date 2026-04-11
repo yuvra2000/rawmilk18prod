@@ -7,11 +7,12 @@ import { LeciReportService } from './leci-report.service';
 import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { ToastrService } from 'ngx-toastr';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-leci-report',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './leci-report.component.html',
   styleUrl: './leci-report.component.scss'
 })

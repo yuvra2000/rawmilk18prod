@@ -291,6 +291,16 @@ export function buildFranchiseActiveCartChartConfig(
           itemHeight: 8,
           itemWidth: 8,
         },
+        tooltip: {
+          trigger: 'item',
+          axisPointer: { type: 'shadow' },
+          formatter: (params: any) => {
+            const name = params?.name || '';
+            const series = params?.seriesName || '';
+            const value = params?.value ?? 0;
+            return `${name}<br/>${series}: ${value}`;
+          },
+        },
         series: (options.series as any[]).map((seriesItem) => ({
           ...seriesItem,
           barWidth: 28,

@@ -69,8 +69,8 @@ export class CartDashboardStore {
       icon: 'fa-solid fa-cart-shopping',
       chartType: 'doughnut',
       chartData: [
-        { name: 'En-Route', value: cart.enRoute, color: '#5676b8' },
-        { name: 'At Base', value: cart.atBase, color: '#ea7f13' },
+        { name: 'In-Route', value: cart.enRoute, color: '#5676b8' },
+        { name: 'At Base Location', value: cart.atBase, color: '#ea7f13' },
         { name: 'Inactive', value: cart.inactive, color: '#ff3b3f' },
         { name: 'No GPS', value: cart.noGps, color: '#8f84dc' },
       ],

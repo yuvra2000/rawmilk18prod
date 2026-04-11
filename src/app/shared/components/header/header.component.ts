@@ -466,4 +466,15 @@ export class HeaderComponent {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   }
+
+  goToOldPage() {
+    const token = localStorage.getItem('AccessToken');
+
+    if (token) {
+      const url = `https://uat-dairy12.secutrak.in/auth/login?exttkn=${token}`;
+      window.open(url, '_self'); // same tab
+    } else {
+      console.error('Token not found');
+    }
+  }
 }

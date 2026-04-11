@@ -6,6 +6,7 @@ import {
 } from '../../../../shared/utils/shared-utility.utils';
 import { ITooltipAngularComp } from 'ag-grid-angular';
 import { Component } from '@angular/core';
+import { ChartConfig } from '../../../../shared/components/reusable-chart/models/chart-config.model';
 
 export interface TooltipField {
   label: string;
@@ -34,53 +35,30 @@ export function createReportParams(filterValues?: any, type?: any) {
   });
 }
 export interface DashboardSummaryData {
-  gps: {
+  cart_status: {
     total: number;
     enRoute: number;
     inactive: number;
     noGps: number;
     atBase: number;
   };
-  eta: {
+  adda_status: {
     total: number;
     ok: number;
     lower: number;
     higher: number;
     noCart: number;
   };
-  supplier: {
-    quantity1: number;
-    quantity2: number;
-    quantity3: number;
-    name1: string;
-    name2: string;
-    name3: string;
-  };
+  franchise_wise_status: FranchiseWiseStatusItem[];
 }
-export const DEFAULT_SUMMARY_DATA: DashboardSummaryData = {
-  gps: {
-    total: 0,
-    enRoute: 0,
-    inactive: 0,
-    noGps: 0,
-    atBase: 0,
-  },
-  eta: {
-    total: 0,
-    ok: 0,
-    lower: 0,
-    higher: 0,
-    noCart: 0,
-  },
-  supplier: {
-    quantity1: 0,
-    quantity2: 0,
-    quantity3: 0,
-    name1: 'Total No of Cart',
-    name2: 'To be Supplied',
-    name3: 'Actual Number of Cart',
-  },
-};
+
+export interface FranchiseWiseStatusItem {
+  franchise_code: string;
+  franchise_name: string;
+  cartToBeSupplied: number;
+  actualCart: number;
+  totalCart?: number;
+}
 export function extractSummaryData(res: any): DashboardSummaryData {
   const candidates = [
     res,
@@ -91,45 +69,71 @@ export function extractSummaryData(res: any): DashboardSummaryData {
     res?.summaryData,
   ];
 
-  const rawSummary =
-    candidates.find((candidate) => hasSummarySections(candidate)) ||
-    DEFAULT_SUMMARY_DATA;
+  const candidateSummary = candidates.find((candidate) => {
+    if (!candidate) {
+      return false;
+    }
+    if (Array.isArray(candidate)) {
+      return candidate.some(
+        (item) =>
+          item?.cart_status ||
+          item?.adda_status ||
+          item?.vrs_status ||
+          item?.franchise_wise_status,
+      );
+    }
+    return (
+      candidate?.cart_status ||
+      candidate?.adda_status ||
+      candidate?.vrs_status ||
+      candidate?.franchise_wise_status ||
+      candidate?.vrs_supplier
+    );
+  });
+
+  const rawSummary = Array.isArray(candidateSummary)
+    ? candidateSummary.find(
+        (item) =>
+          item?.cart_status ||
+          item?.adda_status ||
+          item?.vrs_status ||
+          item?.franchise_wise_status,
+      ) || {}
+    : candidateSummary || res || DEFAULT_SUMMARY_DATA;
+
+  const vrsStatusRaw =
+    rawSummary?.vrs_status ?? rawSummary?.franchise_wise_status ?? [];
+  const franchiseWiseStatus: FranchiseWiseStatusItem[] = Array.isArray(
+    vrsStatusRaw,
+  )
+    ? vrsStatusRaw.map((item: any) => ({
+        franchise_code: String(item?.franchise_code ?? ''),
+        franchise_name: String(item?.franchise_name ?? ''),
+        cartToBeSupplied: Number(item?.cartToBeSupplied) || 0,
+        actualCart: Number(item?.actualCart) || 0,
+        totalCart: Number(item?.total_cart) || 0,
+      }))
+    : [];
 
   return {
-    gps: {
-      total: Number(rawSummary?.gps?.total) || 0,
-      enRoute: Number(rawSummary?.gps?.enRoute) || 0,
-      inactive: Number(rawSummary?.gps?.inactive) || 0,
-      noGps: Number(rawSummary?.gps?.noGps) || 0,
-      atBase: Number(rawSummary?.gps?.atBase) || 0,
+    cart_status: {
+      total: Number(rawSummary?.cart_status?.total) || 0,
+      enRoute: Number(rawSummary?.cart_status?.['In Route']) || 0,
+      inactive: Number(rawSummary?.cart_status?.['Inactive']) || 0,
+      noGps: Number(rawSummary?.cart_status?.['Non-GPS']) || 0,
+      atBase: Number(rawSummary?.cart_status?.['At Base Location']) || 0,
     },
-    eta: {
-      total: Number(rawSummary?.eta?.total) || 0,
-      ok: Number(rawSummary?.eta?.ok) || 0,
-      lower: Number(rawSummary?.eta?.lower) || 0,
-      higher: Number(rawSummary?.eta?.higher) || 0,
-      noCart: Number(rawSummary?.eta?.noCart) || 0,
+    adda_status: {
+      total: Number(rawSummary?.adda_status?.total) || 0,
+      ok: Number(rawSummary?.adda_status?.Ok) || 0,
+      lower: Number(rawSummary?.adda_status?.['Lower No of Cart']) || 0,
+      higher: Number(rawSummary?.adda_status?.['Higher No of Cart']) || 0,
+      noCart: Number(rawSummary?.adda_status?.['No Cart']) || 0,
     },
-    supplier: {
-      quantity1: Number(rawSummary?.supplier?.quantity1) || 0,
-      quantity2: Number(rawSummary?.supplier?.quantity2) || 0,
-      quantity3: Number(rawSummary?.supplier?.quantity3) || 0,
-      name1: rawSummary?.supplier?.name1 || 'Franchise 1',
-      name2: rawSummary?.supplier?.name2 || 'Franchise 2',
-      name3: rawSummary?.supplier?.name3 || 'Franchise 3',
-    },
+    franchise_wise_status: franchiseWiseStatus,
   };
 }
 
-export function hasSummarySections(data: any): boolean {
-  return !!(
-    data &&
-    typeof data === 'object' &&
-    data.gps &&
-    data.eta &&
-    data.supplier
-  );
-}
 // Tooltip Component
 @Component({
   selector: 'custom-tooltip',
@@ -194,4 +198,118 @@ export class CustomTooltipComponent implements ITooltipAngularComp {
     const value = this.params?.tooltip?.[key];
     return value === null || value === undefined || value === '' ? '-' : value;
   }
+}
+export const DEFAULT_SUMMARY_DATA: DashboardSummaryData = {
+  cart_status: {
+    total: 0,
+    enRoute: 0,
+    inactive: 0,
+    noGps: 0,
+    atBase: 0,
+  },
+  adda_status: {
+    total: 0,
+    ok: 0,
+    lower: 0,
+    higher: 0,
+    noCart: 0,
+  },
+  franchise_wise_status: [
+    {
+      franchise_code: '=',
+      franchise_name: '-',
+      cartToBeSupplied: 0,
+      actualCart: 0,
+      totalCart: 0,
+    },
+  ],
+};
+
+export function buildFranchiseActiveCartChartConfig(
+  supplierList: FranchiseWiseStatusItem[],
+): ChartConfig {
+  const groupedData = supplierList.flatMap((supplier) => {
+    const franchiseName =
+      supplier.franchise_name || supplier.franchise_code || 'Unknown';
+    const franchiseCode = supplier.franchise_code || '';
+    return [
+      {
+        name: `${franchiseName} (${franchiseCode})`,
+        series: 'Cart To Be Supplied',
+        value: Number(supplier.cartToBeSupplied) || 0,
+      },
+      {
+        name: `${franchiseName} (${franchiseCode})`,
+        series: 'Actual Cart',
+        value: Number(supplier.actualCart) || 0,
+      },
+      {
+        name: `${franchiseName} (${franchiseCode})`,
+        series: 'Total Cart',
+        value: Number(supplier.totalCart) || 0,
+      },
+    ];
+  });
+
+  return {
+    type: 'groupedBar',
+    data: groupedData,
+    plugins: [
+      (options) => ({
+        ...options,
+        grid: {
+          top: 34,
+          left: 15,
+          right: 20,
+          bottom: 25,
+          containLabel: true,
+        },
+        xAxis: {
+          ...(Array.isArray(options.xAxis) ? options.xAxis[0] : options.xAxis),
+          axisLabel: {
+            rotate: 0,
+            fontSize: 12,
+            interval: 0,
+            align: 'center',
+            verticalAlign: 'top',
+            margin: 8,
+            hideOverlap: false,
+          },
+          axisTick: { show: true, alignWithLabel: true },
+          offset: 0,
+        },
+        yAxis: {
+          ...(Array.isArray(options.yAxis) ? options.yAxis[0] : options.yAxis),
+          splitLine: {
+            show: true,
+            lineStyle: { type: 'dashed', color: '#d8dce5' },
+          },
+        },
+        legend: {
+          show: true,
+          bottom: 0,
+          itemHeight: 8,
+          itemWidth: 8,
+        },
+        series: (options.series as any[]).map((seriesItem) => ({
+          ...seriesItem,
+          barWidth: 28,
+          barGap: '0%',
+          barCategoryGap: '15%',
+          itemStyle: {
+            color:
+              seriesItem.name === 'Cart To Be Supplied'
+                ? '#8f84dc'
+                : seriesItem.name === 'Actual Cart'
+                  ? '#6be58f'
+                  : '#f2a394',
+          },
+          showBackground: true,
+          backgroundStyle: {
+            color: 'rgba(180, 180, 180, 0.2)',
+          },
+        })),
+      }),
+    ],
+  };
 }

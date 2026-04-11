@@ -62,7 +62,7 @@ export class CascadingSelectFieldComponent {
   });
   enhancedOptions = computed(() => {
     const opts = this.options();
-    debugger;
+
     if (!this.multiple() || !this.showSelectAll() || opts.length === 0) {
       return opts;
     }

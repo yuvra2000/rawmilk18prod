@@ -8,13 +8,6 @@
   >
   </filter-form>
 </app-collapse-wrapper>
-<!-- 
-<app-advanced-grid
-  [config]="travelConfig()"
-  [rowData]="triprowdata()"
-></app-advanced-grid> -->
-<!-- <app-advanced-grid [config]="distanceConfig()" [rowData]="triprowdata()">
-</app-advanced-grid> -->
 
 @if (vehicleWiseData() && objectKeys(vehicleWiseData()).length > 0) {
   @for (key of objectKeys(vehicleWiseData()); track key; let i = $index) {

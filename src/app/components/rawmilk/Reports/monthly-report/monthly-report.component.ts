@@ -4,9 +4,12 @@ import {
   FilterFormComponent,
 } from '../../../../shared/components/filter-form/filter-form.component';
 import {
+  dayWiseGrid,
+  detailedGrid,
   Distacefeilds,
   DistanceGrid,
   monthfeilds,
+  monthStandardGrid,
   travelfeilds,
 } from '../state-service/config';
 import { MasterStore } from '../state-service/masterstore.service';
@@ -89,12 +92,52 @@ export class MonthlyReportComponent implements OnInit {
   }
 
   // 🔥 SWITCH COLUMNS
+  // updateColumns() {
+  //   this.distanceConfig.update((config) => ({
+  //     ...config,
+  //     columns:
+  //       this.selectedReport === 'Standard' ? travelStandardGrid : DistanceGrid,
+  //   }));
+  // }
+  // updateColumns() {
+  //   this.distanceConfig.update((config) => ({
+  //     ...config,
+  //     columns: monthStandardGrid,
+  //     // this.selectedReport == 'Standard'
+  //     //   ? monthStandardGrid
+  //     //   : this.selectedReport == 'Day-wise'
+  //     //     ? dayWiseGrid
+  //     //     : detailedGrid,
+  //   }));
+  // }
+  // updateColumns() {
+  //   this.distanceConfig.update((config) => ({
+  //     ...config,
+  //     columns:
+  //       this.selectedReport == 'Standard'
+  //         ? monthStandardGrid
+  //         : this.selectedReport == 'Day-wise'
+  //           ? dayWiseGrid
+  //           : detailedGrid,
+  //   }));
+  // }
+
   updateColumns() {
+    const columns =
+      this.selectedReport?.trim() === 'Standard'
+        ? [...monthStandardGrid]
+        : this.selectedReport?.trim() === 'Day-wise'
+          ? [...dayWiseGrid]
+          : [...detailedGrid];
+
+    console.log('Selected:', this.selectedReport, columns);
+
     this.distanceConfig.update((config) => ({
       ...config,
-      columns:
-        this.selectedReport === 'Standard' ? travelStandardGrid : DistanceGrid,
+      columns,
     }));
+
+    // this.gridApi?.setColumnDefs(columns);
   }
   // 🔥 FORM SUBMIT
   onFormSubmit(value: any) {
@@ -103,14 +146,15 @@ export class MonthlyReportComponent implements OnInit {
     const token = localStorage.getItem('AccessToken') || '';
     const [year, month] = value.Date.split('-');
     this.selectedReport = value.Report.value;
+    console.log('slec>>>>>>>>>>>>>>>>', this.selectedReport);
     // this.updateColumns(this.selectedReport);
 
     const vehicles = Array.isArray(value.Vehicle)
       ? value.Vehicle
       : [value.Vehicle];
 
-    const imeis = vehicles
-      ?.map((v: any) => v?.ImeiNo)
+    const vehicle_id = vehicles
+      ?.map((v: any) => v.VehicleId)
       .filter((i: string) => i && i !== 'N/A')
       .join(',');
 
@@ -124,9 +168,9 @@ export class MonthlyReportComponent implements OnInit {
     };
 
     const payload = createFormData(token, {
-      imeis,
-      from: formatDate(value.from),
-      to: formatDate(value.to),
+      vehicle_id,
+      // from: formatDate(value.from),
+      // to: formatDate(value.to),
       month: month,
       year: year,
       // threshold: 0,

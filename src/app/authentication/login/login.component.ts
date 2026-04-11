@@ -129,9 +129,11 @@ export class LoginComponent {
         localStorage.setItem('makerchecker', resp.Data.MakerChecker);
         localStorage.setItem('mcm', resp.Data.MCM);
         localStorage.setItem('termsAccepted', resp.Data.termAccepted);
-
-        this.router.navigate(['/trip-dashboard']);
-
+        if (resp.Data.GroupId == 5938) {
+          this.router.navigate(['/cart-dashboard']);
+        } else {
+          this.router.navigate(['/trip-dashboard']);
+        }
         //           if (resp.Data.termAccepted == 1) {
 
         //              if (resp.Data.remoteLocation_based == 1){
@@ -485,7 +487,7 @@ export class LoginComponent {
         localStorage.setItem('AccessMenu', JSON.stringify(res.AccessMenu));
         this.router.navigate(['/trip-dashboard']);
       }
-    } catch (error) { }
+    } catch (error) {}
   }
 
   toggleVisibility() {

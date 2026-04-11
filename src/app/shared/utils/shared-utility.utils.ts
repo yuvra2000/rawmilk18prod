@@ -53,7 +53,6 @@ export function handleApiResponse(
   // Check for session expiration
   if (
     response.Result === 'Session Expired due to new login.' ||
-    status === 'failed' ||
     apiMessage == 'Invalid or expired accesstoken.' ||
     apiMessage == 'Sorry! Session expired, Please login again ..!'
   ) {

@@ -144,46 +144,6 @@ export class DistanceReportComponent implements OnInit {
     });
   }
 
-  // 🔥 API CALL
-  // traveldata(payload: any) {
-  //   this.reportservice.travelData(payload).subscribe({
-  //     next: (res: any) => {
-  //       const sessionExp = handleSessionExpiry(res, this.toastService);
-  //       if (sessionExp) return;
-
-  //       const success = handleApiResponse(res, this.toastService);
-
-  //       if (success) {
-  //         // const standard = res?.Data?.standard || [];
-  //         const detailedObj = res?.Data || {};
-
-  //         // convert object → array
-  //         // const detailedArray = Object.values(detailedObj).flatMap(
-  //         //   (v: any) => v.Report || [],
-  //         // );
-
-  //         this.triprowdata.set(detailedObj);
-  //       }
-  //     },
-  //     error: (err) => handleApiError(err, this.toastService),
-  //   });
-  // }
-
-  // 🔥 ACTION CLICK
-  // find_detailreport(vehicle: string) {
-  //   console.log('Clicked:', vehicle);
-  //   const vehicleData = this.detailedData?.[vehicle]?.Report || [];
-  //   this.modal = this.modalService.openGridModal({
-  //     title: 'Alert Details',
-  //     columns: [...travelDetailedGrid], // ✅ from config.ts
-  //     rowData: vehicleData,
-  //     size: 'xl',
-  //     context: {
-  //       componentParent: this,
-  //     },
-  //   });
-  // }
-
   findAddress11(latlong: string, trip: any): void {
     const token = localStorage.getItem('AccessToken') || '';
 

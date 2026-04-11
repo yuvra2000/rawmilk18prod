@@ -168,7 +168,7 @@ export const detailsColumns: GridColumnConfig[] = [
     headerName: '#',
     field: 'serialNo',
     valueGetter: (params: any) => params.node.rowIndex + 1,
-    width: 40,
+    width: 80,
     pinned: 'left',
   },
 

@@ -51,4 +51,10 @@ export class AuthService {
   login(formData: any): any {
     return this.http.post(`${environment.loginAPI}/loginV2`, formData);
   }
+  loginByAccessToken(formData: any): any {
+    return this.http.post(
+      `${environment.loginAPI}/loginByAccessTokenV2`,
+      formData,
+    );
+  }
 }

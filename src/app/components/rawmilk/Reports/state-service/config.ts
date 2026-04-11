@@ -19,6 +19,7 @@ export const travelfeilds: FieldConfig[] = [
     label: 'Vehicle',
     placeholder: 'Select Plant',
     multiple: true,
+    showSelectAll: true,
     options: [], // 🔥 dynamic
     bindLabel: 'VehicleNo',
     required: true,
@@ -108,6 +109,7 @@ export const monthfeilds: FieldConfig[] = [
     label: 'Vehicle',
     placeholder: 'Select Vehicle',
     multiple: true,
+    showSelectAll: true,
     options: [], // 🔥 dynamic
     bindLabel: 'VehicleNo',
     required: true,
@@ -456,6 +458,144 @@ export const DistanceGrid: GridColumnConfig[] = [
 
   {
     headerName: 'Average Speed (km/hr)',
+    field: 'averageSpeed',
+  },
+];
+
+export const monthStandardGrid: GridColumnConfig[] = [
+  {
+    headerName: '',
+    width: 100,
+    cellRenderer: (params: any) => {
+      const container = document.createElement('div');
+      container.style.display = 'flex';
+      container.style.alignItems = 'center';
+      container.style.gap = '8px';
+
+      // ➕ icon
+      const icon = document.createElement('span');
+      icon.innerHTML = `<i class="fa fa-plus"></i>`;
+      icon.style.cursor = 'pointer';
+
+      icon.addEventListener('click', () => {
+        params.context?.componentParent?.find_detailreport(
+          params.data.vehicle_no,
+        );
+      });
+
+      // 🔢 Serial Number
+      const serial = document.createElement('span');
+      serial.innerText = (params.node.rowIndex + 1).toString();
+
+      // append both
+      container.appendChild(icon);
+      container.appendChild(serial);
+
+      return container;
+    },
+  },
+  {
+    headerName: 'Start Time',
+    field: 'travel_start_time',
+  },
+  {
+    headerName: 'End Time',
+    field: 'travel_end_time',
+  },
+  {
+    headerName: 'Vehicle',
+    field: 'vehicle_no',
+  },
+  {
+    headerName: 'IMEI',
+    field: 'imei_no',
+  },
+  {
+    headerName: 'Distance (km)',
+    field: 'totalDist',
+  },
+  {
+    headerName: 'Travel Time',
+    field: 'travelDuration',
+  },
+  {
+    headerName: 'Max Speed',
+    field: 'maxSpeed',
+  },
+  {
+    headerName: 'Avg Speed',
+    field: 'avgSpeed',
+  },
+];
+
+export const dayWiseGrid: GridColumnConfig[] = [
+  {
+    headerName: 'S.No',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 80,
+  },
+  {
+    headerName: 'Vehicle No',
+    field: 'vehicle_no',
+  },
+  {
+    headerName: 'IMEI No',
+    field: 'imei_no',
+  },
+  {
+    headerName: 'Date',
+    field: 'date',
+  },
+  {
+    headerName: 'Distance (km)',
+    field: 'distance',
+  },
+  {
+    headerName: 'Max Speed',
+    field: 'maxspeed',
+  },
+  {
+    headerName: 'Avg Speed',
+    field: 'avgSpeed',
+  },
+];
+
+export const detailedGrid: GridColumnConfig[] = [
+  {
+    headerName: 'S.No',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 80,
+  },
+  {
+    headerName: 'Vehicle',
+    field: 'vehicle_no',
+  },
+  {
+    headerName: 'IMEI',
+    field: 'imei_no',
+  },
+  {
+    headerName: 'Start Time',
+    field: 'travel_start_time',
+  },
+  {
+    headerName: 'End Time',
+    field: 'travel_end_time',
+  },
+  {
+    headerName: 'Distance (km)',
+    field: 'distance',
+  },
+  {
+    headerName: 'Travel Time',
+    field: 'travelTime',
+  },
+  {
+    headerName: 'Max Speed',
+    field: 'maxSpeed',
+  },
+  {
+    headerName: 'Avg Speed',
     field: 'averageSpeed',
   },
 ];

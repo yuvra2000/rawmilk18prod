@@ -396,6 +396,10 @@ textarea.disabled-field {
   .form-label {
     color: var(--primary-color);
   }
+  .ng-value-container {
+    max-height: 90px !important;
+    overflow-y: scroll !important;
+  }
 }
 // .b-1 {
 //   border: 1px solid var(--primary-color);

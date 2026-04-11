@@ -59,6 +59,10 @@ export class NavService implements OnDestroy {
   active: any;
 
   constructor(private router: Router) {
+    const groupId: number = Number(localStorage.getItem('GroupId')); // ✅ DEFINE HERE
+
+    this.filterMenuByGroup(groupId); // ✅ NOW VALID
+
     this.setScreenWidth(window.innerWidth);
     fromEvent(window, 'resize')
       .pipe(debounceTime(1000), takeUntil(this.unsubscriber))
@@ -83,6 +87,19 @@ export class NavService implements OnDestroy {
     }
   }
 
+  // constructor(private router: Router) {
+  //   this.setScreenWidth(window.innerWidth);
+
+  //   const groupId: number = Number(localStorage.getItem('groupId')); // ✅ DEFINE HERE
+
+  //   this.filterMenuByGroup(groupId); // ✅ NOW VALID
+
+  //   fromEvent(window, 'resize')
+  //     .pipe(debounceTime(500), takeUntil(this.unsubscriber))
+  //     .subscribe((evt: any) => {
+  //       this.setScreenWidth(evt.target.innerWidth);
+  //     });
+  // }
   ngOnDestroy() {
     this.unsubscriber.next;
     this.unsubscriber.complete();
@@ -375,6 +392,41 @@ export class NavService implements OnDestroy {
       ],
     },
   ];
+
+  filterMenuByGroup(groupId: number) {
+    // ✅ If NOT 5839 → show full menu
+    if (groupId != 5938) {
+      this.items.next(this.MENUITEMS);
+      return;
+    }
+
+    // ✅ Allowed paths
+    const allowedPaths = [
+      'cart-dashboard',
+      'reports/cart-report',
+      'reports/cart-report-exception',
+    ];
+
+    // ✅ Build new menu
+    const filteredMenu: Menu[] = [];
+
+    this.MENUITEMS.forEach((menu) => {
+      if (menu.children) {
+        const filteredChildren = menu.children.filter((child) =>
+          allowedPaths.includes(child.path || ''),
+        );
+
+        if (filteredChildren.length > 0) {
+          filteredMenu.push({
+            ...menu,
+            children: filteredChildren,
+          });
+        }
+      }
+    });
+
+    this.items.next(filteredMenu);
+  }
 
   items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
 }

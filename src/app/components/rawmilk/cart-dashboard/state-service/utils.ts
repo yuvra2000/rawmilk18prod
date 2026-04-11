@@ -111,7 +111,7 @@ export function extractSummaryData(res: any): DashboardSummaryData {
         franchise_name: String(item?.franchise_name ?? ''),
         cartToBeSupplied: Number(item?.cartToBeSupplied) || 0,
         actualCart: Number(item?.actualCart) || 0,
-        totalCart: Number(item?.total_cart) || 0,
+        totalCart: Number(item?.totalCart) || 0,
       }))
     : [];
 

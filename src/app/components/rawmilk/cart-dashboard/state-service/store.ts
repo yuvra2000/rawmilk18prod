@@ -129,7 +129,7 @@ export class CartDashboardStore {
       const res: any = await firstValueFrom(
         this.cartDashService.initializePageData(reportParams, listParams),
       );
-      handleSessionExpiry(res, this.toast);
+      handleSessionExpiry(res?.dashboardData, this.toast);
       const { dashboardData, addaList, franchiseList, regionList } = res || {};
       this.initialData.set({
         cartDashboardData: dashboardData?.Data || [],

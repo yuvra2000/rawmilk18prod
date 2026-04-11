@@ -36,8 +36,8 @@ export const filterfields = (
   {
     name: 'franchise_code',
     type: 'select',
-    label: 'Franchise',
-    placeholder: 'Select Franchise',
+    label: 'VRS',
+    placeholder: 'Select VRS',
     options: franchiseList,
     bindLabel: 'name',
     class: isAddaFilterEnabled ? 'd-none' : 'col-md-2',
@@ -189,13 +189,21 @@ export const detailsColumns: GridColumnConfig[] = [
   {
     headerName: 'Scheduled Time',
     field: 'scheduled_time',
-    valueGetter: (params: any) => params.data?.scheduled_time || '-',
+    valueGetter: (params: any) => {
+      const startTime = params.data?.start_time?.split(' ')[1] || '-';
+      const endTime = params.data?.end_time?.split(' ')[1] || '';
+      return params.data?.scheduled_time || `${startTime} - ${endTime}` || '-';
+    },
     minWidth: 130,
   },
   {
     headerName: 'Actual Time',
     field: 'actual_time',
-    valueGetter: (params: any) => params.data?.actual_time || '-',
+    valueGetter: (params: any) => {
+      const startTime = params.data?.cart_start_time?.split(' ')[1] || '-';
+      const endTime = params.data?.cart_end_time?.split(' ')[1] || '';
+      return params.data?.actual_time || `${startTime} - ${endTime}` || '-';
+    },
     minWidth: 130,
   },
   {

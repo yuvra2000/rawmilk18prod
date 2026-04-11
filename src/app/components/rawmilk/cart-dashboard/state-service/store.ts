@@ -24,8 +24,9 @@ import {
   createReportParams,
   DashboardSummaryData,
   extractSummaryData,
-  DEFAULT_SUMMARY_DATA,
   CustomTooltipComponent,
+  DEFAULT_SUMMARY_DATA,
+  buildFranchiseActiveCartChartConfig,
 } from './utils';
 import { StatCardConfig } from '../../../../shared/components/reusable-stat-card/model/stat-card.model';
 import { ChartConfig } from '../../../../shared/components/reusable-chart/models/chart-config.model';
@@ -62,22 +63,22 @@ export class CartDashboardStore {
   isAddaFilterEnabled = signal<boolean>(true);
 
   cartStatusCardConfig = computed<StatCardConfig>(() => {
-    const gps = this.summaryData().gps;
+    const cart = this.summaryData()?.cart_status;
     return {
       title: 'Cart Status',
       icon: 'fa-solid fa-cart-shopping',
       chartType: 'doughnut',
       chartData: [
-        { name: 'En-Route', value: gps.enRoute, color: '#5676b8' },
-        { name: 'At Base', value: gps.atBase, color: '#ea7f13' },
-        { name: 'Inactive', value: gps.inactive, color: '#ff3b3f' },
-        { name: 'Non GPS', value: gps.noGps, color: '#8f84dc' },
+        { name: 'En-Route', value: cart.enRoute, color: '#5676b8' },
+        { name: 'At Base', value: cart.atBase, color: '#ea7f13' },
+        { name: 'Inactive', value: cart.inactive, color: '#ff3b3f' },
+        { name: 'No GPS', value: cart.noGps, color: '#8f84dc' },
       ],
     };
   });
 
   addaStatusCardConfig = computed<StatCardConfig>(() => {
-    const eta = this.summaryData().eta;
+    const eta = this.summaryData()?.adda_status;
     return {
       title: 'Adda Status',
       icon: 'fa-solid fa-location-dot',
@@ -92,79 +93,8 @@ export class CartDashboardStore {
   });
 
   franchiseActiveCartChartConfig = computed<ChartConfig>(() => {
-    const supplier = this.summaryData().supplier;
-    const barData = [
-      {
-        name: supplier.name1 || 'Franchise 1',
-        value: Number(supplier.quantity1) || 0,
-      },
-      {
-        name: supplier.name2 || 'Franchise 2',
-        value: Number(supplier.quantity2) || 0,
-      },
-      {
-        name: supplier.name3 || 'Franchise 3',
-        value: Number(supplier.quantity3) || 0,
-      },
-    ];
-
-    return {
-      type: 'bar',
-      data: barData,
-      plugins: [
-        (options) => ({
-          ...options,
-          grid: {
-            top: 34,
-            left: 15,
-            right: 20,
-            bottom: 0,
-            containLabel: true,
-          },
-          xAxis: {
-            ...(Array.isArray(options.xAxis)
-              ? options.xAxis[0]
-              : options.xAxis),
-            axisLabel: {
-              rotate: 0,
-              fontSize: 11,
-              interval: 0,
-            },
-          },
-          yAxis: {
-            ...(Array.isArray(options.yAxis)
-              ? options.yAxis[0]
-              : options.yAxis),
-            splitLine: {
-              show: true,
-              lineStyle: { type: 'dashed', color: '#d8dce5' },
-            },
-          },
-          legend: {
-            show: true,
-            bottom: 6,
-            itemHeight: 10,
-            itemWidth: 10,
-          },
-          series: [
-            {
-              type: 'bar',
-              barWidth: 42,
-              data: barData.map((item, index) => ({
-                value: item.value,
-                itemStyle: {
-                  color: ['#8f84dc', '#e48ad4', '#6be58f', '#f2a394'][index],
-                },
-              })),
-              showBackground: true,
-              backgroundStyle: {
-                color: 'rgba(180, 180, 180, 0.2)',
-              },
-            },
-          ],
-        }),
-      ],
-    };
+    const supplierList = this.summaryData()?.franchise_wise_status || [];
+    return buildFranchiseActiveCartChartConfig(supplierList);
   });
 
   filterfields = computed<any[]>(() =>
@@ -211,7 +141,7 @@ export class CartDashboardStore {
             name: r.zone_code,
             id: r.zone_code,
           })) || [],
-        summaryData: extractSummaryData(res),
+        summaryData: extractSummaryData(dashboardData?.Tiles || []),
       });
       console.log('Cart dashboard initial data:', this.initialData());
     } catch (error) {
@@ -316,7 +246,6 @@ export class CartDashboardStore {
       this.initialData.update((prev) => ({
         ...prev,
         cartDashboardData: res?.Data || [],
-        summaryData: extractSummaryData(res),
       }));
     } catch (error) {
       this.toast.error('Failed to fetch report data');

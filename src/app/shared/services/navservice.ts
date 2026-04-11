@@ -407,6 +407,7 @@ export class NavService implements OnDestroy {
       'reports/cart-report-exception',
       'reports/franchise-report',
     ];
+    //add  cart report frenchise
 
     // ✅ Build new menu
     const filteredMenu: Menu[] = [];

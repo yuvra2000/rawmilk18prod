@@ -19,7 +19,11 @@
             <img src="" alt="" />
           </a>
           <ng-template ngbNavContent class="mt-2">
-            <form [formGroup]="loginForm" (ngSubmit)="Submit()">
+            <form
+              [formGroup]="loginForm"
+              (ngSubmit)="Submit()"
+              (keydown.enter)="Submit()"
+            >
               <div class="text-danger">{{ error }}</div>
               <div class="col-xl-12">
                 <label for="signin-UserId" class="form-label text-default"

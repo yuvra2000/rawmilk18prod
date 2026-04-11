@@ -58,9 +58,9 @@ export class LoginComponent {
   }
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      UserId: ['test_procurement', [Validators.required]],
-      Password: ['Dairy@2024', Validators.required],
-      GroupId: ['5731', Validators.required],
+      UserId: ['', [Validators.required]],
+      Password: ['', Validators.required],
+      GroupId: ['', Validators.required],
     });
     this.access_token();
   }
@@ -70,9 +70,9 @@ export class LoginComponent {
   }
 
   // firebase
-  email = 'test_procurement';
-  Password = 'Dairy@2024';
-  GroupId = '5731';
+  email = '';
+  Password = '';
+  GroupId = '';
   errorMessage = ''; // validation _error handle
   _error: { name: string; message: string } = { name: '', message: '' }; // for firbase _error handle
   clearErrorMessage() {
@@ -98,7 +98,7 @@ export class LoginComponent {
     const formData = new FormData();
     formData.append('AccessToken', acc);
     // if (this.validateForm(this.loginForm.controls['userid'].value, this.loginForm.controls['Password'].value)) {
-    this.authservice.Access(formData).subscribe((resp: any) => {
+    this.authservice.Access(formData).subscribe(async (resp: any) => {
       console.log('login123', resp);
       if (resp.Status === 'error') {
         alert(resp.Result);
@@ -129,6 +129,13 @@ export class LoginComponent {
         localStorage.setItem('makerchecker', resp.Data.MakerChecker);
         localStorage.setItem('mcm', resp.Data.MCM);
         localStorage.setItem('termsAccepted', resp.Data.termAccepted);
+        const formData = new FormData();
+        formData.append('AccessToken', acc);
+        const res: any = await firstValueFrom(
+          this.authservice.loginByAccessToken(formData),
+        );
+        localStorage.setItem('SegmentType', res.Data.SegmentType);
+
         if (resp.Data.GroupId == 5938) {
           this.router.navigate(['/cart-dashboard']);
         } else {

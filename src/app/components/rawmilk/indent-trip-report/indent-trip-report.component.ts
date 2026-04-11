@@ -7,11 +7,12 @@ import { indentTripFilterFields, indentTripGridColumns } from './state-service/c
 import { IndentTripReportService } from './indent-trip-report.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { AlertService } from '../../../shared/services/alert.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-indent-trip-report',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './indent-trip-report.component.html',
   styleUrl: './indent-trip-report.component.scss'
 })

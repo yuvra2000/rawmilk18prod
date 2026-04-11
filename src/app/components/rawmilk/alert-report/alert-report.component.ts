@@ -7,12 +7,12 @@ import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { map } from 'rxjs';
 import { AlertService } from '../../../shared/services/alert.service';
-
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-alert-report',
   standalone: true,
-  imports: [CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './alert-report.component.html',
   styleUrl: './alert-report.component.scss'
 })

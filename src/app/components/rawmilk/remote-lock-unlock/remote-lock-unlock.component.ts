@@ -5,11 +5,12 @@ import { FieldConfig, FilterFormComponent, Option } from '../../../shared/compon
 import { remoteFilterFields } from './state-service/config';
 import { RemoteLockUnlockService } from './remote-lock-unlock.service';
 import { AlertService } from '../../../shared/services/alert.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-remote-lock-unlock',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, SharedModule],
   templateUrl: './remote-lock-unlock.component.html',
   styleUrl: './remote-lock-unlock.component.scss'
 })

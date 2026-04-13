@@ -12,7 +12,7 @@ export class TripService {
     return this.masterRequestService.postFormData(`/get_mcc`, params);
   }
   tripdata(params: any) {
-    return this.masterRequestService.post(`/tripDashboard`, params);
+    return this.masterRequestService.postFormData(`/tripDashboard`, params);
   }
   elockonclick(params: any) {
     return this.masterRequestService.postFormData(

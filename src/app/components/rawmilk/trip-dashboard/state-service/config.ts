@@ -11,14 +11,12 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     type: 'date',
     label: 'From Date',
     placeholder: 'Select Date',
-    required: true,
   },
   {
     name: 'to',
     type: 'date',
     label: 'To Date',
     placeholder: 'Select Date',
-    required: true,
   },
   {
     name: 'supplier',

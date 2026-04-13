@@ -15,6 +15,8 @@ export const editParams = (data: any, formData: any) => {
     name: formData?.name || '',
     franchiseId: data?._id?.$oid,
     status: formData?.status?.id,
+    inchargeName: formData?.inchargeName || '',
+    inchargeContact: formData?.inchargeContact || '',
   });
 };
 export const addParams = (formData: any) => {
@@ -22,5 +24,7 @@ export const addParams = (formData: any) => {
     name: formData?.name || '',
     code: formData.code,
     group_id: GroupId,
+    inchargeName: formData?.inchargeName || '',
+    inchargeContact: formData?.inchargeContact || '',
   });
 };

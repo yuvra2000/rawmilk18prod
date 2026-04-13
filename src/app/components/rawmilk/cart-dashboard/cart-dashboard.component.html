@@ -23,6 +23,7 @@
         'font-weight': '600',
         'margin-top': '5px',
       }"
+      (sliceClick)="store.onCartStatusSliceClick($event)"
     >
     </app-reusable-stat-card>
 
@@ -45,6 +46,7 @@
         'font-weight': '600',
         'margin-top': '5px',
       }"
+      (sliceClick)="store.onAddaStatusSliceClick($event)"
     >
     </app-reusable-stat-card>
 
@@ -56,6 +58,7 @@
       <app-reusable-chart
         [config]="store.franchiseActiveCartChartConfig()"
         [style]="{ height: '200px', width: '100%' }"
+        (chartEvent)="store.onFranchiseWiseCartChartClick($event)"
       >
       </app-reusable-chart>
     </article>
@@ -97,12 +100,18 @@
     [initialData]="store.initialData()"
   >
   </filter-form>
-  <i
-    class="fa-solid fa-chart-pie icon-add"
-    custom-icon
-    (click)="onChartIconClick()"
-    [ngbTooltip]="'Toggle Chart'"
-  ></i>
+  <div custom-icon class="d-flex gap-2">
+    <i
+      class="fa-solid fa-chart-pie icon-add"
+      (click)="onChartIconClick()"
+      [ngbTooltip]="'Toggle Chart'"
+    ></i>
+    <i
+      class="fa-solid fa-map icon-add"
+      [ngbTooltip]="'View Map'"
+      (click)="store.onMapClick()"
+    ></i>
+  </div>
 </app-collapse-wrapper>
 
 <app-advanced-grid

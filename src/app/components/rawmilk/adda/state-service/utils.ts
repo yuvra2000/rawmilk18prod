@@ -18,6 +18,8 @@ export const editParams = (data: any, formData: any) => {
     radius: '0.5',
     addaId: data?._id?.$oid,
     status: formData?.status?.id,
+    inchargeName: formData?.inchargeName || '',
+    inchargeContact: formData?.inchargeContact || '',
   });
 };
 export const addParams = (formData: any) => {
@@ -28,5 +30,7 @@ export const addParams = (formData: any) => {
     radius: '0.5',
     code: formData.code,
     group_id: GroupId,
+    inchargeName: formData?.inchargeName || '',
+    inchargeContact: formData?.inchargeContact || '',
   });
 };

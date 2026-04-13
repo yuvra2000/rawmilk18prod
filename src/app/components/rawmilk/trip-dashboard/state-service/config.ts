@@ -58,6 +58,16 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     class: userType == 'ChillingPlant' ? 'd-none' : 'col-md-2', // Hide for suppliers, show for others
     emitValueChanges: true,
   },
+  {
+    name: 'reportType',
+    type: 'select',
+    label: 'Report Type',
+    placeholder: 'Select Report Type',
+    options: [
+      { name: 'All', id: 'ALL' },
+      { name: 'Cancelled', id: 'CANCELLED' },
+    ]
+  }
 ];
 
 export const viewIndentSupplierGridColumnsIfNotChillingPlant: FieldConfig[] = [

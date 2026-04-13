@@ -197,7 +197,8 @@ export class CartDashboardStore {
           type === 'delay'
             ? detailsColumns
             : type === 'total'
-              ? [...detailsColumns, ...delayColumns, ...statusColumns]
+              ? // ? [...detailsColumns, ...delayColumns, ...statusColumns]
+                [...detailsColumns, ...delayColumns]
               : [...detailsColumns, ...delayColumns],
         rowData: res?.Data || [],
         size: 'xl',

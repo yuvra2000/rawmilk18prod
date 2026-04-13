@@ -43,6 +43,7 @@ export interface GridModalConfig {
   context?: any;
   onActionClick?: (actionType: string, rowData: any) => void;
   tooltipComponent?: any;
+  fitGridWidth?: boolean;
 }
 
 @Component({
@@ -138,6 +139,7 @@ export class GridModalComponent {
         },
       },
       tooltipComponent: cfg.tooltipComponent,
+      isFitGridWidth: cfg.fitGridWidth ?? false,
     } as GridConfig;
   });
   private handleGridAction(actionType: string, rowData: any): void {

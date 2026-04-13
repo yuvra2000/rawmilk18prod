@@ -76,7 +76,8 @@ export class ReusableStatCardComponent {
   }
 
   onChartEvent(event: any) {
-    if (event.componentType === 'series' && event.type === 'click') {
+    console.log('Chart event in StatCard:', event);
+    if (event.componentType == 'series' && event.type == 'click') {
       this.sliceClick.emit({
         cardTitle: this.config().title,
         clickedSlice: {

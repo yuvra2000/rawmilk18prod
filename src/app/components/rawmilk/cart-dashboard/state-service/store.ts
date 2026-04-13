@@ -6,6 +6,9 @@ import {
   gridColumns,
   delayColumns,
   statusColumns,
+  cartDetailsColumns,
+  addaDetailsColumns,
+  franchiseDetailsColumns,
 } from './config';
 import {
   createFormData,
@@ -27,9 +30,11 @@ import {
   CustomTooltipComponent,
   DEFAULT_SUMMARY_DATA,
   buildFranchiseActiveCartChartConfig,
+  DashboardTileData,
 } from './utils';
 import { StatCardConfig } from '../../../../shared/components/reusable-stat-card/model/stat-card.model';
 import { ChartConfig } from '../../../../shared/components/reusable-chart/models/chart-config.model';
+import { MapModalData } from '../../../../shared/components/google-map-viewer/map-modal';
 
 interface InitialData {
   cartDashboardData?: any[];
@@ -38,6 +43,8 @@ interface InitialData {
   regionList?: any[];
   highShipment?: boolean;
   summaryData?: DashboardSummaryData;
+  tileData?: DashboardTileData;
+  tiles?: any;
 }
 
 export class CartDashboardStore {
@@ -48,6 +55,11 @@ export class CartDashboardStore {
   date = signal<string>('');
   lastFilterValues = signal<any>(null);
   loading = signal(false);
+  mapMarkers = signal<any[]>([
+    { lat: 28.6139, lng: 77.209 },
+    { lat: 19.076, lng: 72.8777 },
+    { lat: 13.0827, lng: 80.2707 },
+  ]);
   initialData = signal<InitialData>({
     cartDashboardData: [],
     addaList: [],
@@ -55,6 +67,8 @@ export class CartDashboardStore {
     regionList: [],
     highShipment: true,
     summaryData: DEFAULT_SUMMARY_DATA,
+    tiles: {},
+    tileData: {},
   });
   rowData = computed<any[]>(() => this.initialData().cartDashboardData || []);
   summaryData = computed<DashboardSummaryData>(
@@ -69,10 +83,10 @@ export class CartDashboardStore {
       icon: 'fa-solid fa-cart-shopping',
       chartType: 'doughnut',
       chartData: [
-        { name: 'In-Route', value: cart.enRoute, color: '#5676b8' },
+        { name: 'In Route', value: cart.enRoute, color: '#5676b8' },
         { name: 'At Base Location', value: cart.atBase, color: '#ea7f13' },
         { name: 'Inactive', value: cart.inactive, color: '#ff3b3f' },
-        { name: 'No GPS', value: cart.noGps, color: '#8f84dc' },
+        { name: 'Non-GPS', value: cart.noGps, color: '#8f84dc' },
       ],
     };
   });
@@ -142,6 +156,8 @@ export class CartDashboardStore {
             id: r.zone_code,
           })) || [],
         summaryData: extractSummaryData(dashboardData?.Tiles || []),
+        tiles: dashboardData?.Tiles || [],
+        tileData: dashboardData?.TilesData || [],
       });
       console.log('Cart dashboard initial data:', this.initialData());
     } catch (error) {
@@ -209,6 +225,8 @@ export class CartDashboardStore {
       this.initialData.update((prev) => ({
         ...prev,
         cartDashboardData: res?.Data || [],
+        tileData: dashboardData?.TilesData || [],
+        tiles: dashboardData?.Tiles || [],
         // summaryData: extractSummaryData(res),
       }));
     } catch (error) {
@@ -253,5 +271,61 @@ export class CartDashboardStore {
       this.loading.set(false);
       this.spinner.hide();
     }
+  }
+  onFranchiseWiseCartChartClick(event: any) {
+    const seriesMap: any = {
+      '0': 'Cart To Be Supplied',
+      '1': 'Actual Cart',
+      '2': 'Total Cart',
+    };
+    this.modal.openGridModal({
+      title: `${seriesMap[event?.seriesIndex]} for ${event?.name}`,
+      columns: franchiseDetailsColumns,
+      rowData: this.initialData().tileData?.vrs_data?.[event?.name] || [],
+      size: 'lg',
+      fitGridWidth: true,
+      height: '300px',
+    });
+  }
+  onCartStatusSliceClick(event: any) {
+    this.modal.openGridModal({
+      title: `Carts with status: ${event.clickedSlice?.name}`,
+      columns: cartDetailsColumns,
+      rowData:
+        this.initialData().tileData?.cart_data?.[event.clickedSlice?.name] ||
+        [],
+      size: 'lg',
+      fitGridWidth: true,
+      height: '300px',
+    });
+  }
+  onAddaStatusSliceClick(event: any) {
+    this.modal.openGridModal({
+      title: `Adda with status: ${event.clickedSlice?.name}`,
+      columns: addaDetailsColumns,
+      rowData:
+        this.initialData().tileData?.adda_data?.[event.clickedSlice?.name] ||
+        [],
+      size: 'lg',
+      fitGridWidth: true,
+      height: '300px',
+    });
+  }
+  onMapClick() {
+    this.mapMarkers.set([
+      { lat: 28.6139, lng: 77.209 },
+      { lat: 19.076, lng: 72.8777 },
+      { lat: 13.0827, lng: 80.2707 },
+    ]);
+    const modalCOnfig: MapModalData = {
+      title: 'Cart Locations',
+      initialData: {
+        locationsPromise: Promise.resolve(this.mapMarkers()),
+        center: { lat: 28.6139, lng: 77.209 },
+        zoom: 8,
+      },
+      size: 'xl',
+    };
+    this.modal.openMapModal(modalCOnfig);
   }
 }

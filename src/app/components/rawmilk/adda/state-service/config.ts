@@ -107,6 +107,18 @@ export const editFields = (regionList: any[]): FieldConfig[] => [
     disabled: true,
   },
   {
+    name: 'inchargeName',
+    type: 'text',
+    label: 'Incharge Name',
+    placeholder: 'Incharge Name',
+  },
+  {
+    name: 'inchargeContact',
+    type: 'text',
+    label: 'Incharge Contact',
+    placeholder: 'Incharge Contact',
+  },
+  {
     name: 'latlng',
     type: 'text',
     label: 'Geo Coordinates',
@@ -140,6 +152,18 @@ export const addFields = (regionList: any[]): FieldConfig[] => [
     type: 'text',
     label: 'Code',
     placeholder: 'Code',
+  },
+  {
+    name: 'inchargeName',
+    type: 'text',
+    label: 'Incharge Name',
+    placeholder: 'Incharge Name',
+  },
+  {
+    name: 'inchargeContact',
+    type: 'text',
+    label: 'Incharge Contact',
+    placeholder: 'Incharge Contact',
   },
   {
     name: 'latlng',

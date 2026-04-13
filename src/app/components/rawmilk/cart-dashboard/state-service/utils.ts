@@ -106,13 +106,15 @@ export function extractSummaryData(res: any): DashboardSummaryData {
   const franchiseWiseStatus: FranchiseWiseStatusItem[] = Array.isArray(
     vrsStatusRaw,
   )
-    ? vrsStatusRaw.map((item: any) => ({
-        franchise_code: String(item?.franchise_code ?? ''),
-        franchise_name: String(item?.franchise_name ?? ''),
-        cartToBeSupplied: Number(item?.cartToBeSupplied) || 0,
-        actualCart: Number(item?.actualCart) || 0,
-        totalCart: Number(item?.totalCart) || 0,
-      }))
+    ? vrsStatusRaw
+        .map((item: any) => ({
+          franchise_code: String(item?.franchise_code ?? ''),
+          franchise_name: String(item?.franchise_name ?? ''),
+          cartToBeSupplied: Number(item?.cartToBeSupplied) || 0,
+          actualCart: Number(item?.actualCart) || 0,
+          totalCart: Number(item?.totalCart) || 0,
+        }))
+        .slice(0, 3)
     : [];
 
   return {

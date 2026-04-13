@@ -225,7 +225,7 @@
             [id]="field.name"
             [placeholder]="field.placeholder ?? 'Select Date & Time'"
             [attr.aria-required]="field.required"
-            [step]="0"
+            [step]="field.step || 0"
             [class.disabled-field]="field.disabled"
             [required]="field.required ?? false"
             [min]="computeDateConstraint(field.minDate)"

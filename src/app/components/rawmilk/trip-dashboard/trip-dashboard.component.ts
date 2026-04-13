@@ -304,11 +304,11 @@ export class TripDashboardComponent {
         ForApp: '0',
         FromDate: value.from || '',
         ToDate: value.to || '',
-        Supplier: value.supplier.id || '',
-        Plant: value.Plant.id || '',
-        Transporter: value.transporter.TransporterId || '',
-        Mcc: value.mcc.entity_id || '',
-        report_data: 'ALL',
+        Supplier: value.supplier?.id || '',
+        Plant: value.Plant?.id || '',
+        Transporter: value.transporter?.TransporterId || '',
+        Mcc: value.mcc?.entity_id || '',
+        report_data: value.reportType?.id || 'ALL',
       };
 
       const formDataPayload = createFormData(this.token, payloadObj);

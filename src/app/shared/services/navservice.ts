@@ -164,6 +164,12 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
+          path: 'trip-dashboard-vlc',
+          title: 'Trip Dashboard VLC',
+          type: 'link',
+          dirchange: false,
+        },
+        {
           path: 'summary-dashboard',
           title: 'Summary Dashboard',
           type: 'link',

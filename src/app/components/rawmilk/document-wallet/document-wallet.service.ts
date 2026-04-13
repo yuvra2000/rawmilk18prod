@@ -32,4 +32,8 @@ export class DocumentWalletService {
   editDocument(payload: FormData): Observable<any> {
     return this.masterRequest.postFormData('/rm_editDocument', payload);
   }
+
+  addDocument(payload: FormData): Observable<any> {
+    return this.masterRequest.postFormData('/rm_addDocument', payload);
+  }
 }

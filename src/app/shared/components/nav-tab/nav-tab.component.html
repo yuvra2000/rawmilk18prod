@@ -1,4 +1,7 @@
-<div class="nav-tab-wrapper rounded bg-white mb-3" [ngStyle]="wrapperStyle()">
+<div
+  class="nav-tab-wrapper rounded bg-white mb-3 d-flex align-items-center"
+  [ngStyle]="wrapperStyle()"
+>
   <ul
     ngbNav
     #nav="ngbNav"
@@ -31,7 +34,12 @@
       </li>
     }
   </ul>
-  @if(useComponent()){
-    <div [ngbNavOutlet]="nav" class="p-1"></div>
-  }
+
+  <div class="ms-auto">
+    <ng-content></ng-content>
+  </div>
+
+  <div [ngbNavOutlet]="nav" class="p-1"></div>
+  <!-- @if (useComponent()) {
+  } -->
 </div>

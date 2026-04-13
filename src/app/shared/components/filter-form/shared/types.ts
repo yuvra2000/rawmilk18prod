@@ -107,6 +107,7 @@ export interface FieldConfig {
     on: any;
     off: any;
   };
+  step?: number; // For number inputs, defines the step increment/decrement
 }
 
 export interface SpkOptions {

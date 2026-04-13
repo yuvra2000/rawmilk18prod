@@ -77,6 +77,7 @@ export const filterfields = (
     placeholder: 'Select Vehicle',
     multiple: true,
     options: vehicleList,
+    emitValueChanges: true,
   },
 
   {
@@ -84,19 +85,20 @@ export const filterfields = (
     type: 'datetime',
     label: 'From Date',
     placeholder: 'Select Date',
+    step: 300,
   },
   {
     name: 'to',
     type: 'datetime',
     label: 'To Date',
     placeholder: 'Select Date',
+    step: 300,
   },
   {
     name: 'threshold',
     type: 'select',
     label: 'Interval Minutes',
     placeholder: 'Select Interval',
-    multiple: true,
     options: intervalList,
   },
   {

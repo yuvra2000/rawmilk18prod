@@ -5,6 +5,7 @@
     [dynamicFields]="store.filterfields()"
     [initialData]="store.initialData()"
     (formSubmit)="store.onFormSubmit($event)"
+    (controlValueChange)="store.onFilterChange($event)"
   >
   </filter-form>
 </app-collapse-wrapper>

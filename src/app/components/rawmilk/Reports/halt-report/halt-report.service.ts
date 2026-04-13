@@ -24,6 +24,14 @@ export class HaltReportService {
       true,
     );
   }
+  getHaltReport(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      'https://www.secutrak.in/reports/halt_report_angular',
+      params,
+      true,
+      false,
+    );
+  }
   initializePageData(params: any): Observable<any> {
     return forkJoin({
       vehicleList: this.getVehicleList(params),

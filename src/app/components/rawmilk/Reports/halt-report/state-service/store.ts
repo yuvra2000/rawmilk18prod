@@ -6,7 +6,6 @@ import {
   GroupId,
   handleApiResponse,
   handleSessionExpiry,
-  mapVehicleListToOptions,
   token,
   userType,
 } from '../../../../../shared/utils/shared-utility.utils';
@@ -15,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UniversalModalService } from '../../../../../shared/services/universal-modal.service';
 import { HaltReportService } from '../halt-report.service';
+import { createReportParams, mapVehicleListToOptions } from './utils';
 
 interface InitialData {
   threshold?: any;
@@ -63,7 +63,23 @@ export class HaltReportStore {
     height: '300px',
   }));
 
-  async onFormSubmit(data: any) {}
+  async onFormSubmit(data: any) {
+    const formData = createReportParams(data.from, data.to, data);
+    this.spinner.show();
+    try {
+      const res: any = await firstValueFrom(
+        this.haltReportService.getHaltReport(formData),
+      );
+      handleApiResponse(res, this.toast);
+      this.initialData.update((prev) => ({
+        ...prev,
+        reportData: res?.Data || [],
+      }));
+    } catch (error) {
+    } finally {
+      this.spinner.hide();
+    }
+  }
   async loadInitialData() {
     this.spinner.show();
     this.loading.set(true);

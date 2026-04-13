@@ -77,7 +77,7 @@ export const filterfields = (
     placeholder: 'Select Vehicle',
     multiple: true,
     options: vehicleList,
-    emitValueChanges:true
+    emitValueChanges: true,
   },
 
   {
@@ -99,7 +99,6 @@ export const filterfields = (
     type: 'select',
     label: 'Interval Minutes',
     placeholder: 'Select Interval',
-    multiple: true,
     options: intervalList,
   },
   {

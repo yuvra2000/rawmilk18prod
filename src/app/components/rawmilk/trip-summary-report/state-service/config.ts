@@ -1,5 +1,8 @@
 import { inject } from '@angular/core';
-import { FieldConfig, Option } from '../../../../shared/components/filter-form/filter-form.component';
+import {
+  FieldConfig,
+  Option,
+} from '../../../../shared/components/filter-form/filter-form.component';
 import { GridColumnConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 
 import { colors } from '../../../../shared/utils/constants';
@@ -40,7 +43,10 @@ export const tripSummaryGridColumns: GridColumnConfig[] = [
         span.style.textDecoration = 'underline';
         span.addEventListener('click', () => {
           if (params.context?.componentParent) {
-            params.context.componentParent.onTripClick(params.data, 'total_trips');
+            params.context.componentParent.onTripClick(
+              params.data,
+              'total_trips',
+            );
           }
         });
       }
@@ -60,7 +66,10 @@ export const tripSummaryGridColumns: GridColumnConfig[] = [
         span.style.textDecoration = 'underline';
         span.addEventListener('click', () => {
           if (params.context?.componentParent) {
-            params.context.componentParent.onTripClick(params.data, 'inactive_trips');
+            params.context.componentParent.onTripClick(
+              params.data,
+              'inactive_trips',
+            );
           }
         });
       }
@@ -80,7 +89,10 @@ export const tripSummaryGridColumns: GridColumnConfig[] = [
         span.style.textDecoration = 'underline';
         span.addEventListener('click', () => {
           if (params.context?.componentParent) {
-            params.context.componentParent.onTripClick(params.data, 'non_lock_trips');
+            params.context.componentParent.onTripClick(
+              params.data,
+              'non_lock_trips',
+            );
           }
         });
       }
@@ -100,7 +112,10 @@ export const tripSummaryGridColumns: GridColumnConfig[] = [
         span.style.textDecoration = 'underline';
         span.addEventListener('click', () => {
           if (params.context?.componentParent) {
-            params.context.componentParent.onTripClick(params.data, 'lid_alert_trips');
+            params.context.componentParent.onTripClick(
+              params.data,
+              'lid_alert_trips',
+            );
           }
         });
       }
@@ -110,14 +125,30 @@ export const tripSummaryGridColumns: GridColumnConfig[] = [
 ];
 
 export const tripDetailColumns: GridColumnConfig[] = [
-  { headerName: 'Sr No.', valueGetter: (params: any) => params.node.rowIndex + 1, width: 80 },
+  {
+    headerName: 'Sr No.',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 80,
+  },
   { headerName: 'Vehicle No', field: 'vehicle_no' },
   { headerName: 'Dispatch No', field: 'dispatch_no' },
   { headerName: 'Dispatch Date', field: 'dispatch_date' },
   { headerName: 'LR No', field: 'lr_no' },
-  { headerName: 'Plant Name & Code', valueGetter: (params: any) => `${params.data?.plant_name || ''} (${params.data?.plant_code || ''})` },
-  { headerName: 'Supplier Name & Code', valueGetter: (params: any) => `${params.data?.supplier_name || ''} (${params.data?.supplier_code || ''})` },
-  { headerName: 'Milk Type & Code', valueGetter: (params: any) => `${params.data?.milk_type_name || ''} (${params.data?.milk_type || ''})` },
+  {
+    headerName: 'Plant Name & Code',
+    valueGetter: (params: any) =>
+      `${params.data?.plant_name || ''} (${params.data?.plant_code || ''})`,
+  },
+  {
+    headerName: 'Supplier Name & Code',
+    valueGetter: (params: any) =>
+      `${params.data?.supplier_name || ''} (${params.data?.supplier_code || ''})`,
+  },
+  {
+    headerName: 'Milk Type & Code',
+    valueGetter: (params: any) =>
+      `${params.data?.milk_type_name || ''} (${params.data?.milk_type || ''})`,
+  },
 ];
 
 export const getTripSummaryFilterFields = (

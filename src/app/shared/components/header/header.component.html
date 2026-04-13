@@ -147,6 +147,16 @@
           </div>
         </div>
       </ng-template>
+      <li class="header-element">
+        <a
+          (click)="goToOldPage()"
+          href="javascript:void(0);"
+          class="header-link"
+          ngbTooltip="Back to Old Page"
+        >
+          <i class="bi bi-arrow-left-circle header-link-icon"></i>
+        </a>
+      </li>
       <li class="header-element header-fullscreen" appFullscreen>
         <!-- Start::header-link -->
         <a

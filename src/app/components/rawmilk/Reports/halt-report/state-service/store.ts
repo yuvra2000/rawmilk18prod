@@ -14,7 +14,11 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { UniversalModalService } from '../../../../../shared/services/universal-modal.service';
 import { HaltReportService } from '../halt-report.service';
-import { createReportParams, mapVehicleListToOptions } from './utils';
+import {
+  createReportParams,
+  mapHaltReportData,
+  mapVehicleListToOptions,
+} from './utils';
 
 interface InitialData {
   threshold?: any;
@@ -70,10 +74,10 @@ export class HaltReportStore {
       const res: any = await firstValueFrom(
         this.haltReportService.getHaltReport(formData),
       );
-      handleApiResponse(res, this.toast);
+      // handleApiResponse(res, this.toast);
       this.initialData.update((prev) => ({
         ...prev,
-        reportData: res?.Data || [],
+        reportData: mapHaltReportData(res?.Report),
       }));
     } catch (error) {
     } finally {

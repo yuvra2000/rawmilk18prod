@@ -78,3 +78,24 @@ export function mapVehicleListToOptions(vehicleList: any): any[] {
     };
   });
 }
+
+export function mapHaltReportData(rawData: any): any[] {
+  if (!rawData) return [];
+
+  if (Array.isArray(rawData)) {
+    return rawData;
+  }
+
+  if (typeof rawData === 'object') {
+    return Object.entries(rawData).flatMap(([vehicleKey, rows]) => {
+      if (!Array.isArray(rows)) return [];
+
+      return rows.map((row: any) => ({
+        ...row,
+        vehicle: row?.vehicle || vehicleKey,
+      }));
+    });
+  }
+
+  return [];
+}

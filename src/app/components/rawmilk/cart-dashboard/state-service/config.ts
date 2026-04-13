@@ -262,9 +262,9 @@ export const addaDetailsColumns: GridColumnConfig[] = [
     valueGetter: (params: any) => params.node.rowIndex + 1,
   },
   {
-    headerName: 'Adda Name',
-    field: 'adda_name',
-    valueGetter: (params: any) => params.data?.adda_name || '-',
+    headerName: 'Adda Code',
+    field: 'adda_code',
+    valueGetter: (params: any) => params.data?.adda_code || '-',
   },
 ];
 export const franchiseDetailsColumns: GridColumnConfig[] = [

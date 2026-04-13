@@ -98,9 +98,9 @@ export class CartDashboardStore {
       icon: 'fa-solid fa-location-dot',
       chartType: 'doughnut',
       chartData: [
-        { name: 'Okay', value: eta.ok, color: '#6be58f' },
-        { name: 'Lower Cart', value: eta.lower, color: '#5676b8' },
-        { name: 'Higher Cart', value: eta.higher, color: '#8f84dc' },
+        { name: 'Ok', value: eta.ok, color: '#6be58f' },
+        { name: 'Lower No of Cart', value: eta.lower, color: '#5676b8' },
+        { name: 'Higher No of Cart', value: eta.higher, color: '#8f84dc' },
         { name: 'No Cart', value: eta.noCart, color: '#ff3b3f' },
       ],
     };

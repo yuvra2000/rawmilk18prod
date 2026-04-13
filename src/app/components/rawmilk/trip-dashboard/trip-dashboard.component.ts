@@ -219,7 +219,7 @@ export class TripDashboardComponent {
           {
             label: 'At Destination',
             count: res.atDestination || 0,
-            key: 'source',
+            key: 'destination',
             img: 'assets/stop.svg',
             color: '#1D4380',
           },
@@ -296,7 +296,106 @@ export class TripDashboardComponent {
     console.log('');
   }
 
-  onFormSubmit(vlaue: any) {}
+  async onFormSubmit(value: any) {
+    console.log('Form Value:', value);
+    this.spinner.show();
+    try {
+      const payloadObj = {
+        ForApp: '0',
+        FromDate: value.from || '',
+        ToDate: value.to || '',
+        Supplier: value.supplier?.id || '',
+        Plant: value.Plant?.id || '',
+        Transporter: value.transporter?.TransporterId || '',
+        Mcc: value.mcc?.entity_id || '',
+        report_data: value.reportType?.id || 'ALL',
+      };
+
+      const formDataPayload = createFormData(this.token, payloadObj);
+
+      const res: any = await firstValueFrom(
+        this.tripservice.tripdata(formDataPayload),
+      );
+
+      console.log('Response (onFormSubmit):', res);
+
+      const sessionExp = handleSessionExpiry(res, this.toastService);
+      if (sessionExp) return;
+
+      const success = handleApiResponse(res, this.toastService);
+      if (success) {
+        this.TripRowData.set(res.Data);
+        this.tiles.set(res.Tiles);
+        this.Header_tiles.set([
+          {
+            label: 'Total',
+            count: res.totalVehicle || 0,
+            key: 'all',
+            img: 'assets/total.svg',
+            color: '#007AFF',
+          },
+          {
+            label: 'Running',
+            count: res.Running || 0,
+            key: 'running',
+            img: 'assets/running.svg',
+            color: '#226030',
+          },
+          {
+            label: 'Inactive',
+            count: res.InActive || 0,
+            key: 'inactive',
+            img: 'assets/Inactive.svg',
+            color: '#6c757d',
+          },
+          {
+            label: 'Stopped',
+            count: res.Stopped || 0,
+            key: 'stopped',
+            img: 'assets/atsrc.svg',
+            color: '#dc3545',
+          },
+          {
+            label: 'At Source',
+            count: res.atSource || 0,
+            key: 'source',
+            img: 'assets/dest.svg',
+            color: '#ffc107',
+          },
+          {
+            label: 'At Destination',
+            count: res.atDestination || 0,
+            key: 'destination',
+            img: 'assets/stop.svg',
+            color: '#1D4380',
+          },
+          {
+            label: 'No GPS',
+            count: res.noGPS || 0,
+            key: 'nogps',
+            img: 'assets/nogps.svg',
+            color: '#ff4d4f',
+          },
+          {
+            label: 'Return',
+            count: res.return || 0,
+            key: 'return',
+            img: 'assets/return.svg',
+            color: '#79b1e6',
+          },
+        ]);
+        console.log('tiles', this.tiles);
+      }
+    } catch (error: any) {
+      handleApiError(
+        error,
+        this.toastService,
+        'An error occurred while loading Trip data from filter',
+      );
+    } finally {
+      this.spinner.hide();
+    }
+  }
 
   onFilterChange(event: any) {
     this.dispatchStore.state.update((state) => ({

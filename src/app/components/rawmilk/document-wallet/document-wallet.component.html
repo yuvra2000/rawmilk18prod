@@ -1,5 +1,7 @@
 <app-header [title]="'Document Wallet'"> </app-header>
 
+
+
 <app-nav-tab
   [tabs]="tabsConfigs()"
   [tabStyle]="{ width: '30%' }"
@@ -7,6 +9,7 @@
   (activeChange)="changeTab($event)"
   [useComponent]="false"
 >
+<button class="btn btn-primary" (click)="openAddModal()">+ Document Wallet</button>
 </app-nav-tab>
 
 <app-collapse-wrapper>

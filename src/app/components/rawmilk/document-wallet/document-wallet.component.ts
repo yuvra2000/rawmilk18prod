@@ -452,4 +452,84 @@ export class DocumentWalletComponent implements OnInit {
       };
     }
   }
+
+  openAddModal() {
+    const addFields = editVehicleDocumentFields(
+      this.documentTypesList(),
+      this.vehiclesList(),
+    );
+
+    this.universalModalService.openForm({
+      title: 'Add Document Wallet',
+      fields: addFields,
+      mode: 'form',
+      buttonName: 'ADD',
+      size: 'lg',
+      initialData: {},
+      onSave: (formValues: any) => {
+        return new Promise((resolve, reject) => {
+          try {
+            const formData = new FormData();
+            formData.append('AccessToken', this.token);
+            formData.append('Category', 'Vehicle');
+            formData.append(
+              'DocumentTypeId',
+              formValues?.documentType?.DocumentTypeId || ''
+            );
+            formData.append(
+              'DocumentTypeName',
+              formValues?.documentType?.DocumentTypeName || ''
+            );
+            formData.append('DocumentNo', formValues?.documentNumber1 || '');
+            formData.append('IssueDate', formValues?.from_Date1 || '');
+            formData.append('ExpiryDate', formValues?.To_Date1 || '');
+
+            if (
+              formValues?.uploadDocument &&
+              formValues.uploadDocument instanceof File
+            ) {
+              formData.append('DocumentFile', formValues.uploadDocument);
+            } else if (formValues?.uploadDocument?.file) {
+              formData.append('DocumentFile', formValues.uploadDocument.file);
+            } else {
+              formData.append('DocumentFile', '');
+            }
+
+            formData.append('Remark', formValues?.remark || '');
+            formData.append(
+              'VehicleId',
+              formValues?.vehicle?.VehicleId || ''
+            );
+            formData.append('ForWeb', '1');
+
+            this.documentWalletService.addDocument(formData).subscribe({
+              next: (res: any) => {
+                if (res.Status === 'success') {
+                  this.alertService.success(
+                    res.Message || 'Document added successfully.',
+                  );
+                  this.fetchData(); // Refresh grid
+                  resolve(true);
+                } else {
+                  this.alertService.error(
+                    res.Message || 'Failed to add document.',
+                  );
+                  reject(res.Message);
+                }
+              },
+              error: (err: any) => {
+                this.alertService.error(
+                  err?.message || 'Error adding document'
+                );
+                reject(err);
+              },
+            });
+          } catch (error: any) {
+            this.alertService.error(error?.message || 'Error processing form');
+            reject(error);
+          }
+        });
+      },
+    });
+  }
 }

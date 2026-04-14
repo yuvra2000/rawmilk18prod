@@ -66,8 +66,8 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     options: [
       { name: 'All', id: 'ALL' },
       { name: 'Cancelled', id: 'CANCELLED' },
-    ]
-  }
+    ],
+  },
 ];
 
 export const viewIndentSupplierGridColumnsIfNotChillingPlant: FieldConfig[] = [

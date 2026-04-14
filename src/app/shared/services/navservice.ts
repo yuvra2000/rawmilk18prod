@@ -122,6 +122,7 @@ export class NavService implements OnDestroy {
       children: [
         { path: 'Home', title: 'Home', type: 'link', dirchange: false },
         { path: 'live', title: 'Live', type: 'link', dirchange: false },
+        // nav service added 
         {
           path: 'view-indent',
           title: 'View Indent',

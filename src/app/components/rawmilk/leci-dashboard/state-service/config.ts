@@ -147,6 +147,19 @@ export const leciDashboardColumns: GridColumnConfig[] = [
     headerName: 'Vehicle No',
     field: 'vehicle_no',
     minWidth: 120,
+    cellRenderer: (params: any) => {
+      const span = document.createElement('span');
+      span.style.color = '#1d4380';
+      span.style.textDecoration = 'underline';
+      span.style.cursor = 'pointer';
+      span.textContent = params.value;
+      span.addEventListener('click', (event: any) => {
+        if (params.context.componentParent) {
+          params.context.componentParent.onVehicleClick(params.data);
+        }
+      });
+      return span;
+    },
   },
   {
     headerName: 'Status',

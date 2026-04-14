@@ -1,0 +1,423 @@
+
+<app-header [title]="'Live'">
+
+</app-header>
+<div class="container-fluid">
+    <div class="map-page">
+
+
+        <google-map height="100%" width="100%" [center]="center" [zoom]="zoom" [options]="mapOptions"
+            (mapInitialized)="onMapReady($event)">
+            <!-- <map-marker *ngFor="let m of markers" [position]="m.position" [icon]="m.icon" [title]="m.title"
+                [visible]="m.visible">
+            </map-marker> -->
+        </google-map>
+        <div class="map-loader" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <p>Loading live tracking…</p>
+        </div>
+
+    </div>
+    <div class="slider-section top-bar" [class.open]="isSliderVisible">
+
+
+
+        <button class="filter-btn" (click)="toggleSlider()">
+            {{ isOpen ? '▲' : '▼' }}
+        </button>
+
+
+
+
+        <div class="status-panel small">
+            <div class="status-card filter-card" (click)="openFilter(GSPREPORT)"
+                style="border:#1d4380 1px solid; cursor:pointer;">
+
+                <div class="status-label" style="color:#1d4380;">
+                    Filter
+                </div>
+
+                <div class="status-count">
+                    <i class="fa fa-filter" style="font-size:18px;color:#1d4380;"></i>
+                </div>
+
+            </div>
+            <!-- ////////////////////////////////////////////////////////// -->
+            <div class="status-card" *ngFor="let item of items" (click)="onButtonClick(item.label)"
+                [style.border]="'1px solid ' + item.color">
+
+                <div class="status-label" [style.color]="item.color">{{ item.label }}</div>
+                <div class="status-count" [style.color]="item.color">
+                    {{ item.count }}
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="top-slider" [class.open]="isOpen">
+
+
+        <div class="slider-section menu-section">
+            <span class="tab-icon" [class.active]="activeTab === 'vehicle'" (click)="setTab('vehicle')">
+                All <i class=" fa fa-truck" style=" color: #1d4380;"></i>
+            </span>
+
+            <!-- <span class="tab-icon" [class.active]="activeTab === 'location'" (click)="setTab('location')">
+
+                <img src="assets/images/Tabs_button_icon/Group.svg">
+            </span>
+
+            <span class="tab-icon" [class.active]="activeTab === 'company'" (click)="setTab('company')">
+                <img src="assets/images/users/Landmark icon (inactive state).svg">
+            </span>
+
+            <span class="tab-icon" [class.active]="activeTab === 'user'" (click)="setTab('user')">
+                <i class='fa-solid fa-user-alt' title="Driver List"></i>
+
+            </span> -->
+
+            <span class="tab-icon" [class.active]="activeTab === 'live'" (click)="setTab('live')">
+
+                Live <img  src="assets/images/users/live.svg">
+
+            </span>
+            <span class="tab-icon">
+                <div class="search-wrapper">
+                    <input type="text" class="search-input" placeholder="Search..." [(ngModel)]="searchText"
+                        (input)="onSearchChange(searchText)" />
+
+                    <button class="filter-btn" (click)="toggleSearch()">
+                        🔍
+                    </button>
+                </div>
+                <!-- <div class="search-wrapper">
+                    <input *ngIf="showSearch" type="text" class="search-input" placeholder="Search..."
+                        [(ngModel)]="searchText" (input)="onSearchChange(searchText)" />
+
+                    <button class="filter-btn" (click)="toggleSearch()">
+                        🔍
+                    </button>
+                </div> -->
+
+            </span>
+
+
+
+
+        </div>
+
+
+        <!-- <div class="slider-section content-section">
+            <div *ngIf="activeTab === 'vehicle'">
+
+
+                <div class="link-panel">
+
+                   
+
+
+
+                    <div class="table-wrapper">
+                        <app-link-panel [rowData]="rowData" [columns]="columns" [searchText]="searchText"
+                            (selectedRowsChange)="onSelectedRows($event)">
+                        </app-link-panel>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div *ngIf="activeTab === 'live'">
+
+
+                <div class="link-panel">
+
+
+                  
+
+
+
+                    <div class="table-wrapper">
+                        <app-link-panel [rowData]="rowData" [columns]="columns" [searchText]="searchText"
+                            (selectedRowsChange)="onSelectedRows($event)">
+                        </app-link-panel>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div> -->
+
+        <div class="slider-section content-section">
+
+            <!-- VEHICLE TAB -->
+            <div *ngIf="activeTab === 'vehicle'">
+                <div class="link-panel">
+                    <form class="control-row compact-form">
+                        <div class="">
+                            <label>
+                                <input type="radio" name="clusterOption" value="without" [(ngModel)]="clusterMode"
+                                    (change)="onClusterChange()" />
+                                With Cluster
+                            </label>
+
+                            <label style="margin-left: 15px;">
+                                <input type="radio" name="clusterOption" value="with" [(ngModel)]="clusterMode"
+                                    (change)="onClusterChange()" />
+                                Without Cluster
+                            </label>
+                            <label style="margin-left: 15px;">
+                                <button class="btn btn-sm btn-primary d-flex align-items-center"
+                                    style="gap:5px;background-color: #1d4380!important;" (click)="onGoClick()">
+                                    Go Live
+                                </button>
+                            </label>
+
+
+                        </div>
+                    </form>
+                    <div class="table-wrapper">
+                        <app-link-panel [rowData]="rowData" [columns]="columns" [searchText]="searchText"
+                            (selectedRowsChange)="onSelectedRows($event)">
+                        </app-link-panel>
+                    </div>
+                </div>
+
+                <!-- 🔽 Bottom Controls (Vehicle) -->
+                <div class="bottom-controls d-flex align-items-center mt-2" style="gap:10px; font-size: 12px;">
+
+                    <!-- Radio Buttons -->
+                    <label class="d-flex align-items-center" style="gap:4px;">
+                        <input type="radio" name="mode" value="map" [(ngModel)]="mode" (change)="onModeChange()"
+                            checked>
+                        <i class="fa fa-map" style="color: #1d4380;"></i> Map
+                    </label>
+
+                    <label class="d-flex align-items-center" style="gap:4px;">
+                        <input type="radio" name="mode" value="text" [(ngModel)]="mode" (change)="onModeChange()">
+                        <i class="fa fa-list text-success"></i> Text
+                    </label>
+
+                    <!-- Select Dropdown -->
+                    <select class="form-control form-control-sm" style="width:120px;" (change)="onSelectChange($event)">
+                        <option value="">Select</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                    </select>
+
+                    <!-- Go Button -->
+                    <button class="btn btn-sm btn-primary d-flex align-items-center"
+                        style="gap:5px;background-color: #1d4380!important;" (click)="onGoClick()">
+                        Submit
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- LIVE TAB -->
+            <div *ngIf="activeTab === 'live'">
+                <div class="link-panel">
+                    <div class="table-wrapper">
+                        <app-link-panel [rowData]="rowData" [columns]="columns" [searchText]="searchText"
+                            (selectedRowsChange)="onSelectedRows($event)">
+                        </app-link-panel>
+                    </div>
+                </div>
+
+                <!-- 🔽 Bottom Controls (Live) -->
+                <div class="bottom-controls d-flex align-items-center mt-2" style="gap:15px; font-size: 12px;">
+
+                    <label class="d-flex align-items-center" style="gap:5px;">
+                        <input type="checkbox" [(ngModel)]="showArrow" (change)="onArrowChange()">
+                        <i class="fa fa-location-arrow text-primary"></i> Arrow
+                    </label>
+
+                    <label class="d-flex align-items-center" style="gap:5px;">
+                        <input type="checkbox" [(ngModel)]="showTail" (change)="onTailChange()">
+                        <i class="fa fa-line-chart text-success"></i> Tail
+                    </label>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+</div>
+
+<div class="model-content">
+
+    <ng-template #GSPREPORT let-modal class="summarymodal">
+
+        <div class="model-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <h6 class="modal-title">Filter</h6>
+
+                <button type="button" class="close" (click)="modal.dismiss('Cross click')">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <div ngbAccordion [closeOthers]="true">
+
+                    <div ngbAccordionItem *ngFor="let key of Filter_list_keys">
+
+                        <h2 ngbAccordionHeader>
+                            <button ngbAccordionButton>
+                                {{ key }}
+                            </button>
+                        </h2>
+
+                        <div ngbAccordionCollapse>
+                            <div ngbAccordionBody>
+
+                                <!-- SEARCH -->
+                                <input type="text" class="form-control" placeholder="Search"
+                                    [(ngModel)]="searchKeyword[key]" (input)="onsearch_filter(key)" />
+
+                                <!-- CHECK ALL -->
+                                <div class="row details">
+                                    <div class="col-2">
+                                        <input type="checkbox" class="form-check-input" [(ngModel)]="selectAll[key]"
+                                            (change)="toggleSelectAll(key)">
+                                    </div>
+
+                                    <div class="col-10">
+                                        <label>Select All</label>
+                                    </div>
+                                </div>
+
+
+                                <!-- DATA -->
+                                <div class="filter-list">
+                                    <div class="row details"
+                                        *ngFor="let head of filteredFilterList[key] || [] ;let k = index">
+
+                                        <div class="col-2">
+                                            <input type="checkbox" class="form-check-input" [(ngModel)]="head.checked"
+                                                *ngIf="head" id="head{{k}}" [value]="head">
+                                        </div>
+
+                                        <div class="col-10">
+                                            <label>{{ head?.name }}</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-outline-danger" (click)="resetFilters()">
+
+                    Reset Filter
+                </button>
+
+                <button type="button" class="btn btn-outline-secondary"
+                    (click)="filters(); modal.dismiss('Cross click')">
+
+                    Apply Filter
+                </button>
+
+            </div>
+
+        </div>
+
+    </ng-template>
+
+</div>
+
+<div class="modal fade" id="reportModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered" style="margin-left: 320px;">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Vehicle Report</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- 🔍 Toolbar -->
+                <div class="report-toolbar d-flex justify-content-between align-items-center mb-2">
+
+                    <!-- Search -->
+                    <div class="search-box_table">
+                        <input type="text" class="form-control" id="filter-text-box" placeholder="🔍 Search vehicles..."
+                            (input)="onQuickFilterChanged($event)" />
+                    </div>
+
+                    <!-- Export Buttons -->
+                    <div class="export-buttons d-flex gap-2">
+
+                        <button class="btn btn-excel" (click)="exportExcel()">
+                            <i class="bi bi-file-earmark-excel"></i>
+                        </button>
+
+                        <button class="btn btn-csv" (click)="exportCSV()">
+                            <i class="bi bi-filetype-csv"></i>
+                        </button>
+
+                        <button class="btn btn-pdf" (click)="exportPDF()">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </button>
+
+                        <button class="btn btn-copy" (click)="copyData()">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <ag-grid-angular [rowData]="reportTableData" [columnDefs]="columnDefsReport" [rowHeight]="28"
+                        style="width: 100%; height: 400px;" class="ag-theme-alpine" [headerHeight]="30"
+                        [defaultColDef]="defaultColDefReport" (gridReady)="onGridReadyreport($event)">
+                    </ag-grid-angular>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

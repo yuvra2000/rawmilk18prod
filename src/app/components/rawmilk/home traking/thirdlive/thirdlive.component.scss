@@ -1,0 +1,424 @@
+// .live-stream-container {
+//     width: 100%;
+//     height: 100vh;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// }
+
+// iframe {
+//     border-radius: 12px;
+//     width: 95%;
+//     height: 90%;
+//     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+// }
+.live-stream-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+}
+
+
+
+.app-sidebar__toggle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    /* Ensures the button height matches the header */
+    width: 50px;
+    /* Width of the button, can be adjusted */
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    /* Removes any default margin */
+}
+
+/* Header styling */
+.header {
+    position: relative;
+    padding-left: 50px;
+    /* To offset content from the sidebar toggle button */
+    background-color: #f8f9fa;
+    /* Adjust background color as needed */
+    display: flex;
+    align-items: center;
+}
+
+/* Style for the header brand image */
+.header-brand-img {
+    height: 28px;
+    width: auto;
+    margin-right: 15px;
+}
+
+/* Align the logo and other items vertically */
+.header .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Text styling for the dashboard title */
+.header .text-center span {
+    font-size: 1.25rem;
+    /* Adjust font size */
+    color: #333;
+    /* Adjust text color */
+}
+
+/* Optional: Customize sidebar background color on hover */
+.app-sidebar a:hover {
+    background-color: #575757;
+}
+
+.utilize {
+    color: #6ABD46;
+}
+
+.average-utilize {
+    color: #1D4380;
+}
+
+.live-btn,
+.playback-btn {
+    background-color: #1D4380 !important;
+    /* Bootstrap blue */
+    border: none;
+    color: white;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 8px 14px;
+    transition: background-color 0.3s ease;
+}
+
+.live-btn:hover,
+.playback-btn:hover {
+    background-color: #1D4380;
+}
+
+.under-utilize {
+    color: red;
+}
+
+.streams-container {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+}
+
+.stream-box iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Auto layout by number of streams */
+.streams-container.single {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.streams-container.double {
+    grid-template-columns: 1fr 1fr;
+}
+
+.streams-container.triple {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.streams-container.grid {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+///////////////////////////////////
+/// 
+// .main-screen {
+//     width: 100%;
+//     height: 100vh;
+//     display: grid;
+//     background: #000;
+//     gap: 5px;
+//     overflow: hidden;
+// }
+
+/* Layouts based on number of channels */
+.main-screen.single {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.main-screen.double {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.main-screen.quad {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+/* Each player box */
+.player {
+    position: relative;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 10px;
+    overflow: hidden !important;
+}
+
+.player iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    overflow: hidden;
+    scrollbar-width: none;
+}
+
+/* Optional hover style for clarity */
+.player:hover {
+    outline: 2px solid #00bfff;
+}
+
+.player iframe::-webkit-scrollbar {
+    display: none;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important;
+    /* ✅ disables any scroll at document level */
+    height: 100%;
+    width: 100%;
+}
+
+////////////////////////
+// :host {
+//     display: block;
+//     height: 100vh;
+//     width: 100vw;
+//     margin: 0;
+// }
+
+// .main-screen {
+//     width: 100%;
+//     height: 100%;
+//     display: grid;
+//     gap: 6px;
+//     background: #000;
+//     overflow: hidden;
+// }
+
+// /* grid rules */
+// .main-screen.single {
+//     grid-template-columns: 1fr;
+//     grid-template-rows: 1fr;
+// }
+
+// .main-screen.double {
+//     grid-template-columns: 1fr 1fr;
+//     grid-template-rows: 1fr;
+// }
+
+// .main-screen.quad {
+//     grid-template-columns: 1fr 1fr;
+//     grid-template-rows: 1fr 1fr;
+// }
+
+// .player {
+//     position: relative;
+//     overflow: hidden;
+//     /* clip iframe content */
+//     border-radius: 6px;
+//     background: #000;
+// }
+
+// /* wrapper that holds the iframe positioned absolutely */
+// .iframe-wrap {
+//     position: relative;
+//     width: 100%;
+//     height: 100%;
+//     overflow: hidden;
+// }
+
+// /* absolute iframe fill + slight scaling to hide internal scrollbars */
+// .iframe-wrap iframe {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 102%;
+//     /* slightly larger than container */
+//     height: 102%;
+//     /* slightly larger than container */
+//     transform: translate(-1%, -1%);
+//     /* center the oversize iframe */
+//     border: none;
+//     display: block;
+//     margin: 0;
+//     padding: 0;
+//     box-sizing: border-box;
+//     /* optional performance hint */
+//     will-change: transform;
+// }
+#start_intercomm {
+    display: none;
+}
+
+// .main-screen {
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 10px;
+// }
+
+.main-screen.single {
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-screen.horizontal {
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+
+
+.main-screen.vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    height: auto;
+}
+
+.player {
+    width: 100%;
+    height: 300px;
+    overflow: hidden !important;
+}
+
+iframe {
+    width: 100%;
+    height: 650px !important;
+    overflow: hidden !important;
+    /* adjust height per camera view */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* playback.component.css */
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: #000;
+    height: auto;
+}
+
+.iframe1 {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    color: white !important;
+}
+
+.custom-container {
+    height: 650px;
+    overflow-y: scroll;
+}
+
+.list-group-item {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.list-group-item:hover {
+    background: #f5f5f5;
+}
+
+/* container scroll */
+.alert-container {
+    max-height: 600px;
+    overflow-y: auto;
+    background: #f8f9fc;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+/* each row */
+.alert-item {
+    border-radius: 10px;
+    margin-bottom: 8px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    padding: 10px;
+}
+
+/* hover magic */
+.alert-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    background: #f1f6ff;
+}
+
+/* icon circle */
+.icon-box {
+    width: 20px;
+    height: 20px;
+    background: #ffe5e5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.icon-box i {
+    color: red;
+    font-size: 12px;
+}
+
+/* text styling */
+.alert-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.alert-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: #333;
+}
+
+.alert-time {
+    font-size: 12px;
+    color: #777;
+}
+
+#close_all_video {
+    display: none;
+}
+
+.card_custom {
+    background-color: transparent;
+    z-index: 1000;
+    margin-top: -50px;
+    position: absolute;
+    width: 70vw;
+    margin-left: 50px;
+}

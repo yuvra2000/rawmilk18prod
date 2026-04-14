@@ -218,6 +218,30 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Maker Checker',
       },
+      {
+        path: 'Home',
+        loadComponent: () =>
+          import('./home traking/home/home.component').then(
+            (m) => m.HomeComponent,
+          ),
+        title: 'Home',
+      },
+      {
+        path: 'live',
+        loadComponent: () =>
+          import('./home traking/live/live.component').then(
+            (m) => m.LiveComponent,
+          ),
+        title: 'Live',
+      },
+      {
+        path: 'Thirdlive',
+        loadComponent: () =>
+          import('./home traking/thirdlive/thirdlive.component').then(
+            (m) => m.ThirdliveComponent,
+          ),
+        title: 'Live',
+      },
     ],
   },
   {

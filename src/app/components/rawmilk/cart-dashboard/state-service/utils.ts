@@ -51,6 +51,11 @@ export interface DashboardSummaryData {
   };
   franchise_wise_status: FranchiseWiseStatusItem[];
 }
+export interface DashboardTileData {
+  cart_data?: Record<string, any[]>;
+  adda_data?: Record<string, any[]>;
+  vrs_data?: Record<string, any[]>;
+}
 
 export interface FranchiseWiseStatusItem {
   franchise_code: string;

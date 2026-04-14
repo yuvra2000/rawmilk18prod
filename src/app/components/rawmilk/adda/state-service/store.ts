@@ -135,9 +135,7 @@ export class AddaStore {
       }
       await this.loadInitialData();
     } catch (error: any) {
-      if (error?.error?.message) {
-        this.toast.error(error.error.message || 'Something went wrong');
-      }
+      this.toast.error(error?.error?.Message || 'Something went wrong');
     } finally {
       this.loading.set(false);
       this.spinner.hide();

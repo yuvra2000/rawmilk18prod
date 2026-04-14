@@ -221,16 +221,6 @@ export class MapModalComponent implements OnDestroy {
       const initial = this.initialDataConfig();
       const alert = this.alertDataConfig();
       const customer = this.customerDataConfig();
-
-      // Use untracked to prevent any signals read inside load functions from triggering this effect
-      //   untracked(() => {
-      //     if (initial?.locationsPromise) this.loadLocations(initial.locationsPromise);
-      //     if (alert?.locationsPromise) this.loadalerts(alert.locationsPromise);
-      //     if (customer?.locationsPromise)
-      //       this.loadcustomer(customer.locationsPromise);
-      //   });
-      // });
-      // Is naye block ko paste karein
       untracked(() => {
         this.isLoading.set(true); // Loading ON
 
@@ -402,6 +392,7 @@ export class MapModalComponent implements OnDestroy {
     try {
       const processedMarkers = await promise;
       targetSignal.set(processedMarkers || []);
+      console.log('Markers loaded and set:', processedMarkers);
     } catch (error) {
       console.error('Failed to load map data:', error);
       targetSignal.set([]); // Fallback

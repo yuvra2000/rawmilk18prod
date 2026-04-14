@@ -242,3 +242,41 @@ export const detailsColumns: GridColumnConfig[] = [
     minWidth: 230,
   },
 ];
+export const cartDetailsColumns: GridColumnConfig[] = [
+  {
+    headerName: 'S No',
+    headerTooltip: 'Serial Number',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+  },
+  {
+    headerName: 'Cart Number',
+    field: 'cart_no',
+    valueGetter: (params: any) => params.data?.cart_no || '-',
+  },
+];
+export const addaDetailsColumns: GridColumnConfig[] = [
+  {
+    headerName: 'S No',
+    headerTooltip: 'Serial Number',
+    field: 'serialNo',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+  },
+  {
+    headerName: 'Adda Code',
+    field: 'adda_code',
+    valueGetter: (params: any) => params.data?.adda_code || '-',
+  },
+];
+export const franchiseDetailsColumns: GridColumnConfig[] = [
+  {
+    headerName: 'S No',
+    headerTooltip: 'Serial Number',
+    field: 'serialNo',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+  },
+  {
+    headerName: 'Franchise Name',
+    field: 'franchise_name',
+    valueGetter: (params: any) => params.data?.franchise_name || '-',
+  },
+];

@@ -92,6 +92,18 @@ export const editFields = (): FieldConfig[] => [
     disabled: true,
   },
   {
+    name: 'inchargeName',
+    type: 'text',
+    label: 'Incharge Name',
+    placeholder: 'Incharge Name',
+  },
+  {
+    name: 'inchargeContact',
+    type: 'text',
+    label: 'Incharge Contact',
+    placeholder: 'Incharge Contact',
+  },
+  {
     name: 'status',
     type: 'select',
     label: 'Status',
@@ -103,13 +115,25 @@ export const addFields = (): FieldConfig[] => [
   {
     name: 'name',
     type: 'text',
-    label: 'Adda Name',
-    placeholder: 'Enter Adda Name',
+    label: 'Franchise Name',
+    placeholder: 'Enter Franchise Name',
   },
   {
     name: 'code',
     type: 'text',
     label: 'Code',
     placeholder: 'Code',
+  },
+  {
+    name: 'inchargeName',
+    type: 'text',
+    label: 'Incharge Name',
+    placeholder: 'Incharge Name',
+  },
+  {
+    name: 'inchargeContact',
+    type: 'text',
+    label: 'Incharge Contact',
+    placeholder: 'Incharge Contact',
   },
 ];

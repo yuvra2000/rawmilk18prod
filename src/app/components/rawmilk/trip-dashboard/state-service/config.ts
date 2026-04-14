@@ -11,14 +11,12 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     type: 'date',
     label: 'From Date',
     placeholder: 'Select Date',
-    required: true,
   },
   {
     name: 'to',
     type: 'date',
     label: 'To Date',
     placeholder: 'Select Date',
-    required: true,
   },
   {
     name: 'supplier',
@@ -59,6 +57,16 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     bindLabel: 'displayName',
     class: userType == 'ChillingPlant' ? 'd-none' : 'col-md-2', // Hide for suppliers, show for others
     emitValueChanges: true,
+  },
+  {
+    name: 'reportType',
+    type: 'select',
+    label: 'Report Type',
+    placeholder: 'Select Report Type',
+    options: [
+      { name: 'All', id: 'ALL' },
+      { name: 'Cancelled', id: 'CANCELLED' },
+    ],
   },
 ];
 

@@ -279,6 +279,21 @@ export class CartDashboardStore {
       '1': 'Actual Cart',
       '2': 'Total Cart',
     };
+    if (event?.seriesIndex == 0) {
+      return;
+    }
+
+    const vrsData = this.initialData().tileData?.vrs_data;
+    const vrsDataLength = Object.keys(vrsData ?? {}).length;
+
+    if (vrsDataLength === 0) {
+      this.toast.info('No data available for the selected criteria');
+      return;
+    }
+    if (this.initialData().tileData?.vrs_data?.[event?.name]?.length === 0) {
+      this.toast.info('No data available for the selected criteria');
+      return;
+    }
     this.modal.openGridModal({
       title: `${seriesMap[event?.seriesIndex]} for ${event?.name}`,
       columns: franchiseDetailsColumns,

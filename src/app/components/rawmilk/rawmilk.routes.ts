@@ -16,9 +16,9 @@ export const rawMilkRoutes: Routes = [
       {
         path: 'trip-dashboard-vlc',
         loadComponent: () =>
-        import('./trip-dashboard-vlc/trip-dashboard-vlc.component').then(
-          (m) => m.TripDashboardVlcComponent,
-        ),
+          import('./trip-dashboard-vlc/trip-dashboard-vlc.component').then(
+            (m) => m.TripDashboardVlcComponent,
+          ),
         title: 'Trip Dashboard VLC',
       },
       {
@@ -249,6 +249,14 @@ export const rawMilkRoutes: Routes = [
             (m) => m.ThirdliveComponent,
           ),
         title: 'Live',
+      },
+      {
+        path: 'blacklist',
+        loadComponent: () =>
+          import('./blacklist/blacklist.component').then(
+            (m) => m.BlacklistComponent,
+          ),
+        title: 'Blacklist Report',
       },
     ],
   },

@@ -246,6 +246,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'blacklist',
+          title: 'Blacklist Report',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     {

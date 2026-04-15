@@ -128,6 +128,7 @@ export const gridColumns: GridColumnConfig[] = [
   },
   {
     headerName: 'Location',
+    field: 'location',
     valueGetter: (params: any) => {
       const location = params.data?.location || '';
       return location?.split?.('*')?.[0] || location;
@@ -151,6 +152,7 @@ export const gridColumns: GridColumnConfig[] = [
   },
   {
     headerName: 'Latitude/Longitude',
+    field: 'latLng',
     valueGetter: (params: any) => {
       const lat = params.data?.lat ?? '';
       const lng = params.data?.lng ?? '';

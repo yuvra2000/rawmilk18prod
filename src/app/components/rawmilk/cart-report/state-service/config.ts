@@ -86,6 +86,7 @@ export const cartColumns: GridColumnConfig[] = [
   },
   {
     headerName: 'Adda Name',
+    field: 'adda_name',
     valueGetter: (params: any) => {
       const addaName = params.data?.adda_name || '';
       const addaCode = params.data?.adda_code || '';
@@ -96,6 +97,7 @@ export const cartColumns: GridColumnConfig[] = [
   },
   {
     headerName: 'Franchise Name',
+    field: 'franchise_name',
     valueGetter: (params: any) => {
       const franchiseName = params.data?.franchise_name || '';
       const franchiseCode = params.data?.franchise_code || '';

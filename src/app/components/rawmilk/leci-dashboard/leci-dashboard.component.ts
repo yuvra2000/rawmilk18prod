@@ -12,6 +12,7 @@ import { LeciDashboardService } from './leci-dashboard.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { SharedModule } from '../../../shared/shared.module';
+import { MapLoader } from './state-service/map.loader';
 
 @Component({
   selector: 'app-leci-dashboard',
@@ -24,6 +25,7 @@ export class LeciDashboardComponent implements OnInit {
   private service = inject(LeciDashboardService);
   private modalService = inject(UniversalModalService);
   private router = inject(Router);
+   private mapLoader = inject(MapLoader);
 
   supplierList = signal<any[]>([]);
   plantList = signal<any[]>([]);
@@ -189,5 +191,10 @@ export class LeciDashboardComponent implements OnInit {
     } else {
       console.log('User selected: NO');
     }
+  }
+
+  onVehicleClick(event: any) {
+    console.log('Vehicle clicked:', event);
+    this.mapLoader.openMapCallApi(event);
   }
 }

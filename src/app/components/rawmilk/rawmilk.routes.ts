@@ -14,6 +14,14 @@ export const rawMilkRoutes: Routes = [
         title: 'Trip Dashboard',
       },
       {
+        path: 'trip-dashboard-vlc',
+        loadComponent: () =>
+          import('./trip-dashboard-vlc/trip-dashboard-vlc.component').then(
+            (m) => m.TripDashboardVlcComponent,
+          ),
+        title: 'Trip Dashboard VLC',
+      },
+      {
         path: 'summary-dashboard',
         loadComponent: () =>
           import('./summary-dashboard/summary-dashboard.component').then(
@@ -217,6 +225,30 @@ export const rawMilkRoutes: Routes = [
             (m) => m.MakerCheckerComponent,
           ),
         title: 'Maker Checker',
+      },
+      {
+        path: 'Home',
+        loadComponent: () =>
+          import('./home traking/home/home.component').then(
+            (m) => m.HomeComponent,
+          ),
+        title: 'Home',
+      },
+      {
+        path: 'live',
+        loadComponent: () =>
+          import('./home traking/live/live.component').then(
+            (m) => m.LiveComponent,
+          ),
+        title: 'Live',
+      },
+      {
+        path: 'Thirdlive',
+        loadComponent: () =>
+          import('./home traking/thirdlive/thirdlive.component').then(
+            (m) => m.ThirdliveComponent,
+          ),
+        title: 'Live',
       },
       {
         path: 'blacklist',

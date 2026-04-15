@@ -218,6 +218,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Maker Checker',
       },
+      {
+        path: 'blacklist',
+        loadComponent: () =>
+          import('./blacklist/blacklist.component').then(
+            (m) => m.BlacklistComponent,
+          ),
+        title: 'Blacklist Report',
+      },
     ],
   },
   {

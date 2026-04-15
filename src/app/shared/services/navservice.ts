@@ -120,7 +120,9 @@ export class NavService implements OnDestroy {
       active: false,
       dirchange: false,
       children: [
-        { path: '', title: 'Home', type: 'link', dirchange: false },
+        { path: 'Home', title: 'Home', type: 'link', dirchange: false },
+        { path: 'live', title: 'Live', type: 'link', dirchange: false },
+        // nav service added 
         {
           path: 'view-indent',
           title: 'View Indent',
@@ -160,6 +162,12 @@ export class NavService implements OnDestroy {
         {
           path: 'trip-dashboard',
           title: 'Trip Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'trip-dashboard-vlc',
+          title: 'Trip Dashboard VLC',
           type: 'link',
           dirchange: false,
         },
@@ -235,6 +243,12 @@ export class NavService implements OnDestroy {
         {
           path: 'summarized-report',
           title: 'Summarized Report',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'blacklist',
+          title: 'Blacklist Report',
           type: 'link',
           dirchange: false,
         },

@@ -1,0 +1,204 @@
+
+<app-header [title]="'Dashcam'">
+
+</app-header>
+<div class="card_custom">
+    <div class="" style="padding: 0;">
+        <!-- header start here -->
+        <div class="" style="height: 8vh;">
+            <!-- <button class="app-sidebar__toggle" (click)="sidebarToggle()"></button> -->
+            <div class="col-lg-12" style="margin-top: 7px; padding: 0;">
+                <div class="row align-items-left">
+                    <!-- <div class="col-lg-1"></div> Empty div for spacing -->
+                    <div class="" style="font-weight: 500;
+                     font-size: 19px;
+                        margin-top: -2px;">
+                        <!-- <span>Camera Dashboard</span> -->
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="d-flex justify-content-start">
+                            <button class="btn btn-primary me-2 live-btn" (click)="liveplaybackF('Live')">
+                                <i class="fa fa-video-camera me-1"></i> Live
+                            </button>
+                            <button class="btn btn-primary playback-btn" (click)="liveplaybackF('Playback')">
+                                <i class="fa fa-history me-1"></i> Playback
+                            </button>
+                        </div>
+
+                        <!-- Placeholder for other elements like sign-out or additional buttons -->
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="camera-selection mb-3" *ngIf="LiveFlag">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="selectedChannels.cam1" (change)="updateStreams()" />
+                                Cam 1
+                            </label>
+                            <label class="ms-3">
+                                <input type="checkbox" [(ngModel)]="selectedChannels.cam2" (change)="updateStreams()" />
+                                Cam 2
+                            </label>
+                            <label class="ms-3">
+                                <input type="checkbox" [(ngModel)]="selectedChannels.cam3" (change)="updateStreams()" />
+                                Cam 3
+                            </label>
+                            <label class="ms-3">
+                                <input type="checkbox" [(ngModel)]="selectedChannels.cam4" (change)="updateStreams()" />
+                                Cam 4
+                            </label>
+                        </div>
+                    </div> <!-- More spacing -->
+                    <div class="col-lg-2 text-end">
+                        <!-- <a>
+                            <img src="assets/images/brand/logo-3.png" alt="logo" id="change-image"
+                                class="header-brand-img logo">
+                        </a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="live-stream-container">
+    <iframe *ngIf="liveStreamUrl" [src]="liveStreamUrl" width="100%" height="600" frameborder="0"
+        allowfullscreen></iframe>
+</div> -->
+
+<!-- <div class="streams-container" [ngClass]="{
+  'single': streams.length === 1,
+  'double': streams.length === 2,
+  'triple': streams.length === 3,
+  'grid': streams.length > 3
+}">
+    <div class="stream-box" *ngFor="let stream of streams" (dblclick)="toggleFullScreen($event)">
+        <iframe [src]="stream" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div> -->
+
+<!-- <div class="live-stream-container">
+    <iframe *ngIf="liveStreamUrl" [src]="liveStreamUrl" width="100%" height="100%" frameborder="0"
+        allowfullscreen></iframe>
+</div> -->
+
+<div class="container-fluid">
+    <div claas="col-lg-12">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card shadow-lg border-0">
+                    <!-- Card Header -->
+                    <div class="card-header bg-primary text-white d-flex align-items-center"
+                        style="background-color: #1D4380!important;">
+                        <i class="fa fa-exclamation-triangle me-2"></i>
+                        <h5 class="mb-0">Alert List</h5>
+                    </div>
+
+                    <!-- Card Body -->
+                    <!-- <div class="card-body p-2" style="max-height: 600px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush">
+
+                            <li *ngFor="let alert of cameradata" class="list-group-item d-flex align-items-center"
+                                (click)="openVideo(alert.video_urls)">
+
+                                <i class="fa fa-bell me-2" style="color: red; cursor: pointer;"></i>
+
+                                {{ alert.alert_type }} Detected From
+                                {{ alert.start_time }} To
+                                {{ alert.end_time }}
+
+                            </li>
+
+                        </ul>
+                    </div> -->
+                    <div class="card-body alert-container">
+                        <ul class="list-group list-group-flush">
+
+                            <li *ngFor="let alert of cameradata"
+                                class="list-group-item alert-item d-flex align-items-center"
+                                (click)="openVideo(alert.video_urls)">
+
+                                <div class="icon-box">
+                                    <i class="fa fa-bell"></i>
+                                </div>
+
+                                <div class="alert-content">
+                                    <div class="alert-title">
+                                        {{ alert.alert_type }}
+                                    </div>
+                                    <div class="alert-time">
+                                        {{ alert.start_time }} → {{ alert.end_time }}
+                                    </div>
+                                </div>
+
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <!-- 🎛️ Buttons Section -->
+                <!-- <div class="d-flex justify-content-start">
+                    <button class="btn btn-primary me-2 live-btn">
+                        <i class="fa fa-video-camera me-1"></i> Live
+                    </button>
+                    <button class="btn btn-primary playback-btn">
+                        <i class="fa fa-history me-1"></i> Playback
+                    </button>
+                </div> -->
+
+                <!-- 🎥 Video Section -->
+                <!-- <div class="main-screen" [ngClass]="{
+                'single': streams.length === 1,
+                   'double': streams.length === 2,
+                'quad': streams.length >= 3
+                  }">
+                    <div class="player" *ngFor="let stream of streams">
+                        <iframe [src]="stream" frameborder="0" allowfullscreen style="overflow: hidden!important;"
+                            sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+                    </div>
+                </div> -->
+
+                <!-- <div class="camera-selection mb-3">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="selectedChannels.cam1" (change)="updateStreams()" /> Cam 1
+                    </label>
+                    <label class="ms-3">
+                        <input type="checkbox" [(ngModel)]="selectedChannels.cam2" (change)="updateStreams()" /> Cam 2
+                    </label>
+                    <label class="ms-3">
+                        <input type="checkbox" [(ngModel)]="selectedChannels.cam3" (change)="updateStreams()" /> Cam 3
+                    </label>
+                </div> -->
+
+                <!-- Stream layout -->
+                <ng-container *ngIf="LiveFlag">
+                    <div class="custom-container">
+                        <div class="main-screen vertical">
+                            <div class="player" *ngFor="let stream of streams">
+                                <iframe [src]="stream" frameborder="0" allowfullscreen
+                                    sandbox="allow-same-origin allow-scripts allow-forms"
+                                    style="width: 100%; height: 90vh; border-radius: 10px; overflow: hidden;color: white;"></iframe>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </ng-container>
+                <ng-container *ngIf="LiveFlag==false">
+                    <!-- playback.component.html -->
+                    <div class="video-container">
+                        <iframe [src]="safeUrl" frameborder="0" allowfullscreen class="iframe1" allow="autoplay"
+                            sandbox="allow-same-origin allow-scripts allow-forms allow-downloads allow-popups"
+                            style="width: 100%; height: 80vh; border-radius: 10px; overflow: hidden;color: white;">
+                        </iframe>
+                    </div>
+
+
+                </ng-container>
+            </div>
+
+        </div>
+
+    </div>
+</div>

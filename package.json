@@ -28,6 +28,8 @@
     "@fortawesome/angular-fontawesome": "^0.15.0",
     "@fortawesome/fontawesome-free": "^7.2.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
+    "@googlemaps/markerclusterer": "^2.6.2",
+    "@googlemaps/markerwithlabel": "^2.0.28",
     "@ng-bootstrap/ng-bootstrap": "^17.0.1",
     "@ng-select/ng-select": "^13.9.0",
     "@tsparticles/angular": "^3.0.0",

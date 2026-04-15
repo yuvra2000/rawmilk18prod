@@ -60,6 +60,7 @@ export class MonthlyReportComponent implements OnInit {
   vehicles = computed(() => this.store.state().vehicleOptions);
   vehicleWiseData = signal<any>({});
   objectKeys = Object.keys;
+  fulldetaildata:any
 
   standardData = signal<any[]>([]);
   detailedData = signal<any[]>([]);
@@ -146,6 +147,7 @@ export class MonthlyReportComponent implements OnInit {
     const token = localStorage.getItem('AccessToken') || '';
     const [year, month] = value.Date.split('-');
     this.selectedReport = value.Report.value;
+      this.updateColumns();
     console.log('slec>>>>>>>>>>>>>>>>', this.selectedReport);
     // this.updateColumns(this.selectedReport);
 
@@ -211,6 +213,7 @@ export class MonthlyReportComponent implements OnInit {
 
         // ✅ DETAILED (flatten like old combinedReports)
         const detailedObj = data?.detailed || {};
+        this.fulldetaildata=data?.detailed || {};
         const detailedArray = Object.values(detailedObj).flatMap(
           (v: any) => v.Report || [],
         );
@@ -277,6 +280,21 @@ export class MonthlyReportComponent implements OnInit {
         this.addressCache[latlong] = address;
 
         this.setAddressToRow(latlong, trip, address);
+      },
+    });
+  }
+
+   find_detailreport(vehicle: any) {
+    console.log('Clicked:', vehicle,this.fulldetaildata);
+    const vehicleData = this.fulldetaildata?.[vehicle]?.Report || [];
+     console.log('feched report:', vehicleData);
+    this.modal = this.modalService.openGridModal({
+      title: 'Details',
+      columns: [...travelDetailedGrid], // ✅ from config.ts
+      rowData: vehicleData,
+      size: 'xl',
+      context: {
+        componentParent: this,
       },
     });
   }

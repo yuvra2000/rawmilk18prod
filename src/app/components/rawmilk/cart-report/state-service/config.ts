@@ -54,8 +54,8 @@ export const filterfields = (
   {
     name: 'franchise_code',
     type: 'select',
-    label: 'Milk Type',
-    placeholder: 'Select Milk Type',
+    label: 'Franchise Type',
+    placeholder: 'Select Franchise',
     options: franchiseList,
     bindLabel: 'name',
     class: 'col-md-2',

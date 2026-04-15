@@ -199,4 +199,32 @@ export class UniversalModalService {
 
     return modalRef.result;
   }
+
+  // public closeAll() {
+  //   this.modalService.dismissAll();
+  // }
+
+  openSimpleMapModal(data?: {
+    center?: { lat: number; lng: number };
+    zoom?: number;
+    markers?: any[];
+    title?: string;
+  }) {
+    const modalRef = this.modalService.open(MapModalComponent, {
+      centered: true,
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false,
+    });
+
+    const instance = modalRef.componentInstance as any;
+
+    // pass data directly (NO SIGNAL COMPLEXITY)
+    instance.center = data?.center || { lat: 26.8467, lng: 80.9462 };
+    instance.zoom = data?.zoom || 8;
+    instance.markers = data?.markers || [];
+    instance.title = data?.title || 'Vehicle Map';
+
+    return modalRef;
+  }
 }

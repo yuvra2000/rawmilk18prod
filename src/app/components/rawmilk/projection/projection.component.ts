@@ -16,6 +16,7 @@ import { firstValueFrom } from 'rxjs';
 import { ProjectionService } from './projection.service';
 import { AlertService } from '../../../shared/services/alert.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-projection',
@@ -25,6 +26,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
     AdvancedGridComponent,
     CollapseWrapperComponent,
     NavTabComponent,
+    SharedModule,
   ],
   templateUrl: './projection.component.html',
   styleUrl: './projection.component.scss',

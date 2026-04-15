@@ -11,14 +11,12 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     type: 'date',
     label: 'From Date',
     placeholder: 'Select Date',
-    required: true,
   },
   {
     name: 'to',
     type: 'date',
     label: 'To Date',
     placeholder: 'Select Date',
-    required: true,
   },
   {
     name: 'supplier',
@@ -59,6 +57,16 @@ export const TripDashbordFilterFields: FieldConfig[] = [
     bindLabel: 'displayName',
     class: userType == 'ChillingPlant' ? 'd-none' : 'col-md-2', // Hide for suppliers, show for others
     emitValueChanges: true,
+  },
+  {
+    name: 'reportType',
+    type: 'select',
+    label: 'Report Type',
+    placeholder: 'Select Report Type',
+    options: [
+      { name: 'All', id: 'ALL' },
+      { name: 'Cancelled', id: 'CANCELLED' },
+    ],
   },
 ];
 
@@ -608,7 +616,7 @@ export const tripDashboardGird: GridColumnConfig[] = [
       span.textContent = params.value;
       span.addEventListener('click', (event: any) => {
         if (params.context.componentParent) {
-          params.context.componentParent.onVehicleClick(params);
+          params.context.componentParent.onVehicleClick(params.data);
         }
       });
       return span;
@@ -867,6 +875,7 @@ export const tripDashboardGird: GridColumnConfig[] = [
               params.data.Mcc,
               params.data.Plant,
               params.data.Supplier,
+              regionKey,
             );
           }
         });
@@ -921,3 +930,199 @@ function isKeyClickable(key: any): boolean {
   const keyStr = String(key);
   return keyStr === 'MH' || keyStr === 'DH';
 }
+
+export const lockstatuscolumn: GridColumnConfig[] = [
+  {
+    headerName: 'SL',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 80,
+  },
+  {
+    headerName: 'Vehicle',
+    field: 'Vehicle',
+  },
+  {
+    headerName: 'OTP for',
+    field: 'OTPfor',
+  },
+  {
+    headerName: 'OTP Type',
+    field: 'otpType',
+  },
+  {
+    headerName: 'User',
+    field: 'user',
+  },
+  {
+    headerName: 'MobileIMENo',
+    field: 'MobileIMENo',
+  },
+  {
+    headerName: 'Action Time',
+    field: 'actionTym',
+  },
+  {
+    headerName: 'Location Action',
+    field: 'location',
+  },
+  {
+    headerName: 'View Images',
+    field: 'view',
+    cellRenderer: (params: any) => {
+      return `<span style="color: blue; cursor: pointer;">view</span>`;
+    },
+  },
+];
+
+export const alertDetailColumns: GridColumnConfig[] = [
+  {
+    headerName: 'Sr No.',
+    valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 90,
+  },
+  { headerName: 'Alert Type', field: 'alert_type' },
+  { headerName: 'Dispatch No.', field: 'shipment_no' },
+  { headerName: 'Dispatch Date', field: 'run_date' },
+  { headerName: 'Plant', field: 'plant' },
+  { headerName: 'MPC', field: 'mcc' },
+  { headerName: 'Mcc', field: 'supplier' },
+  { headerName: 'Start Time', field: 'start_time' },
+  { headerName: 'End Time', field: 'end_time' },
+  { headerName: 'Duration', field: 'voilation_time' },
+];
+export const regularLocationColumns: GridColumnConfig[] = [
+  // ✅ Normal Location
+  {
+    headerName: 'Location',
+    field: 'location',
+    cellRenderer: () =>
+      `<i class="fa fa-map-marker" style="font-size:20px;color:#1d4380;cursor:pointer"></i>`,
+    tooltipValueGetter: (params: any) => params.data?.location || 'NA',
+  },
+];
+export const lockUnlockLocationColumns: GridColumnConfig[] = [
+  // ✅ Lock Location
+  {
+    headerName: 'Lock Location',
+    field: 'lock_location',
+    cellRenderer: () =>
+      `<i class="fa fa-map-marker" style="font-size:20px;color:#1d4380;cursor:pointer"></i>`,
+    tooltipValueGetter: (params: any) => params.data?.lock_location || 'NA',
+  },
+
+  // ✅ Unlock Location
+  {
+    headerName: 'Unlock Location',
+    field: 'unlock_location',
+    cellRenderer: () =>
+      `<i class="fa fa-map-marker" style="font-size:20px;color:#1d4380;cursor:pointer"></i>`,
+    tooltipValueGetter: (params: any) => params.data?.unlock_location || 'NA',
+  },
+];
+
+export interface HeaderTile {
+  label: string;
+  count: number;
+  key: string;
+
+  icon?: string; // font-awesome
+  img?: string; // png path
+
+  color: string; // main color
+  textColor?: string;
+}
+
+// export interface TileItem {
+//   name: string;
+//   value: number;
+//   color?: string;
+// }
+
+// export interface TileData {
+//   total?: number;
+
+//   // dynamic keys (gps, alert, etc)
+//   [key: string]: any;
+// }
+
+// export interface TilesResponse {
+//   gps?: TileData;
+//   alert?: TileData;
+//   eta?: TileData;
+//   supplier?: TileData;
+
+//   // future safe
+//   [key: string]: TileData | undefined;
+// }
+
+// export const TILE_UI_CONFIG: any = {
+//   gps: {
+//     icon: 'fa-map-marker',
+//     colors: ['#2db783', '#f08a24', '#2f54eb', '#d9d9d9'],
+//   },
+//   alert: {
+//     icon: 'fa-truck',
+//   },
+//   eta: {
+//     icon: 'fa-clock',
+//   },
+//   supplier: {
+//     icon: 'fa-industry',
+//   },
+// };
+export interface TileItem {
+  name: string;
+  value: number;
+  color?: string;
+}
+
+export interface TileData {
+  total?: number;
+  [key: string]: any;
+}
+
+export interface TilesResponse {
+  [key: string]: TileData;
+}
+
+/* 🔥 FULL CONTROL CONFIG */
+export const TILE_UI_CONFIG: any = {
+  /* GPS */
+  gps: {
+    labels: {
+      running: 'Running Vehicle',
+      inactive: 'Inactive',
+      noGps: 'No GPS',
+      stopped: 'Stopped',
+    },
+    // colors: ['#2db783', '#f08a24', '#2f54eb', '#d9d9d9'],
+  },
+
+  /* 🔥 ALERT (IMPORTANT FIX) */
+  alert: {
+    labels: {
+      S20: 'S20',
+      S30: 'S30',
+      DFG: 'DFG',
+      LID: 'LID',
+      TANKER_HOLD: 'Tanker Hold',
+      LOCK_TAMPERING: 'Lock Tampering',
+    },
+    // colors: ['#ff4d4f', '#faad14', '#722ed1', '#13c2c2', '#1890ff', '#52c41a'],
+  },
+
+  /* ETA */
+  eta: {
+    labels: {
+      lessThan2Hr: '< 2 Hr',
+      between2To4Hr: '2–4 Hr',
+      between4To6Hr: '4–6 Hr',
+      above6Hr: '> 6 Hr',
+    },
+  },
+
+  /* SUPPLIER */
+  supplier: {
+    customNames: true,
+  },
+};

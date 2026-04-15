@@ -1,24 +1,21 @@
 <!-- <app-common-header title="Asset Management" [breadcrumbs]="breadcrumbs">
 </app-common-header> -->
+<app-header [title]="'Inventory'">
+  ></app-header>
 <app-collapse-wrapper>
   @if (
-    userType == "Supplier" ||
-    userType === "ChillingPlant" ||
-    isEditable("2024-12-12 00:00:00", "2024-12-12 13:59:59")
+  userType == "Supplier" ||
+  userType === "ChillingPlant" ||
+  isEditable("2024-12-12 00:00:00", "2024-12-12 13:59:59")
   ) {
-    <div class="header h-5 w-5 cursor-pointer" custom-icon>
-      <i class="fa fa-plus-circle icon-add" (click)="openAddInventory()"></i>
-    </div>
+  <div class="header h-5 w-5 cursor-pointer" custom-icon>
+    <i class="fa fa-plus-circle icon-add" (click)="openAddInventory()"></i>
+  </div>
   }
-  <filter-form
-    #viewinventoryFilter
-    [dynamicFields]="filterfields()"
-    (formSubmit)="onFormSubmit($event)"
-    [initialData]="initialData()"
-    (controlValueChange)="onFilterChange($event)"
-  >
+  <filter-form #viewinventoryFilter [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"
+    [initialData]="initialData()" (controlValueChange)="onFilterChange($event)">
   </filter-form>
 </app-collapse-wrapper>
-<app-advanced-grid [rowData]="inventoryRowData()" [config]="inventoryConfig()">
+<app-advanced-grid [rowData]="inventoryRowData()" [config]="inventoryConfig()" [loadingRowData]="loading()">
   <h5 class="text-center table-heading">Inventory List</h5>
 </app-advanced-grid>

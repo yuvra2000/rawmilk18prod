@@ -48,6 +48,7 @@ import { CommonHeaderComponent } from '../../../shared/components/common-header/
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { GridModalComponent } from '../../../shared/components/reusable-modal/shared/grid-modal/grid-modal.component';
+import { SharedModule } from '../../../shared/shared.module';
 interface formResponse {
   Indents: any[];
   Message: string;
@@ -62,6 +63,7 @@ interface formResponse {
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
+    SharedModule,
     // CommonHeaderComponent,
   ],
   providers: [NgbActiveModal],
@@ -75,8 +77,10 @@ export class ViewIndentSupplierComponent implements OnInit {
   private loader = inject(NgxSpinnerService);
   private router = inject(Router);
   private toast = inject(AlertService);
+  private spinner = inject(NgxSpinnerService);
   filterfields = signal<FieldConfig[]>(viewIndentSupplierFilterFields);
   indentRowData = signal<any[]>([]);
+  loading = signal(false);
   pageTitle = 'View Indents';
   breadcrumbs = [
     { label: 'Home', link: '/' },
@@ -115,7 +119,7 @@ export class ViewIndentSupplierComponent implements OnInit {
   }
   private async loadInitialData() {
     try {
-      this.loader.show();
+      this.loading.set(true);
       const res: any = await firstValueFrom(
         this.viewIndentSupplierService.getIndentData(formData),
       );
@@ -126,7 +130,7 @@ export class ViewIndentSupplierComponent implements OnInit {
     } catch (error) {
       console.error('Error occurred while fetching indent data:', error);
     } finally {
-      this.loader.hide();
+      this.loading.set(false);
     }
   }
   setupGrid() {
@@ -137,6 +141,8 @@ export class ViewIndentSupplierComponent implements OnInit {
   }
   async onFormSubmit(data: any) {
     try {
+      this.spinner.show();
+      this.loading.set(true);
       const formData = createFormData(this.token, {
         FromDate: data.from,
         ToDate: data.to,
@@ -148,9 +154,18 @@ export class ViewIndentSupplierComponent implements OnInit {
       const res: any = await firstValueFrom(
         this.viewIndentSupplierService.getIndentData(formData),
       );
+      if (handleSessionExpiry(res, this.toast)) {
+        return;
+      }
+      if (res?.Indents?.length === 0) {
+        this.toast.info('No indents found for the selected date range');
+      }
       this.indentRowData.set(res?.Indents || []);
     } catch (error) {
       console.error('Error occurred while fetching indent data:', error);
+    } finally {
+      this.loading.set(false);
+      this.spinner.hide();
     }
   }
   onFilterChange(event: any) {
@@ -166,6 +181,7 @@ export class ViewIndentSupplierComponent implements OnInit {
   }
   modal: any;
   async viewIndent(indentId: any) {
+    this.spinner.show();
     try {
       const params = {
         AccessToken: this.token,
@@ -192,7 +208,10 @@ export class ViewIndentSupplierComponent implements OnInit {
           componentParent: this,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      this.spinner.hide();
+    }
     // Implement the logic to view indent details, e.g., open a modal with details
   }
   fetchIndentValue(indentId: any, quantity: any, actionType: any) {

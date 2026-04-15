@@ -43,6 +43,8 @@ import {
 import { AlertService } from '../../../shared/services/alert.service';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { TabConfig } from '../../../shared/components/nav-tab/nav-tab.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-view-indent',
@@ -53,15 +55,19 @@ import { TabConfig } from '../../../shared/components/nav-tab/nav-tab.component'
     CollapseWrapperComponent,
     FilterFormComponent,
     AdvancedGridComponent,
+    SharedModule,
   ],
   templateUrl: './view-indent.component.html',
   styleUrl: './view-indent.component.scss',
 })
 export class ViewIndentComponent implements OnInit {
   @ViewChild('viewIndentFilter') viewIndentFilter!: FilterComponent;
+  @ViewChild(AdvancedGridComponent)
+  public gridComponent!: AdvancedGridComponent;
   private viewIndentService = inject(ViewIndentService);
   private toastService = inject(AlertService);
   private modalService = inject(UniversalModalService);
+  private spinner = inject(NgxSpinnerService);
 
   // Signals for form fields
   filterfields = signal<FieldConfig[]>(viewIndentFilterFields);
@@ -71,6 +77,7 @@ export class ViewIndentComponent implements OnInit {
   uploadIntentFields = signal<FieldConfig[]>(uploadIntentFields);
   addIntentFieldsSignal = signal<FieldConfig[]>([]);
   uploadIntentFieldsSignal = signal<FieldConfig[]>([]);
+  loading = signal<boolean>(false);
 
   // Table data and config
   indentRowData = signal<any[]>([]);
@@ -118,6 +125,8 @@ export class ViewIndentComponent implements OnInit {
   }
 
   async loadInitialData() {
+    this.loading.set(true);
+    this.spinner.show();
     try {
       forkJoin({
         indentData: this.viewIndentService.getIndentData(formData),
@@ -146,14 +155,15 @@ export class ViewIndentComponent implements OnInit {
             plantList: result?.masterData.PlantSupplier || [],
           }));
           this.setupFieldOptions();
-          this.indentRowData.set(result?.indentData.Indents || []);
-          handleApiResponse(
-            result?.indentData,
-            this.toastService,
-            undefined,
-            undefined,
-            'Indent data loaded successfully',
-          );
+          if (result?.indentData.Indents.length === 0) {
+            this.toastService.info(
+              'No indent data found for the selected criteria',
+            );
+            this.indentRowData.set(result?.indentData.Indents);
+          } else {
+            this.toastService.success('Indent data loaded successfully');
+            this.indentRowData.set([]);
+          }
         });
     } catch (error: any) {
       handleApiError(
@@ -161,6 +171,9 @@ export class ViewIndentComponent implements OnInit {
         this.toastService,
         'An error occurred while loading indent data',
       );
+    } finally {
+      this.spinner.hide();
+      this.loading.set(false);
     }
   }
   async onFormSubmit(data: any) {
@@ -173,13 +186,20 @@ export class ViewIndentComponent implements OnInit {
       SubRole: '',
       ForWeb: '1',
     };
+    this.spinner.show();
+    this.loading.set(true);
     try {
       const res: any = await firstValueFrom(
         this.viewIndentService.getIndentData(params),
       );
       this.indentRowData.set(res?.Indents || []);
       console.log('row data', this.indentRowData());
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      this.spinner.hide();
+      this.gridComponent?.hideLoadingOverlay();
+      this.loading.set(false);
+    }
   }
   handleSelectionChange(selected: any) {
     this.selectedRowData.set(selected);

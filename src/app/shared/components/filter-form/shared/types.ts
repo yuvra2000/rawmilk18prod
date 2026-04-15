@@ -11,6 +11,7 @@ export type FieldType =
   | 'text'
   | 'date'
   | 'select'
+  | 'toggle'
   | 'checkbox'
   | 'radio'
   | 'number'
@@ -62,6 +63,7 @@ export interface FieldConfig {
   bindValue?: string;
   min?: number;
   max?: number;
+  showSelectAll?: boolean;
   slectConfig?: SelectConfig;
   // ✅ FormArray specific properties
   formArrayFields?: FieldConfig[]; // Sub-fields for formarray
@@ -96,6 +98,16 @@ export interface FieldConfig {
   colorWidth?: string; // Custom width for color select (e.g. '100%', '50px')
   optionColorWidth?: string;
   showButtons?: boolean;
+  hideLabel?: boolean;
+  toggleLabels?: {
+    on: string;
+    off: string;
+  };
+  toggleValues?: {
+    on: any;
+    off: any;
+  };
+  step?: number; // For number inputs, defines the step increment/decrement
 }
 
 export interface SpkOptions {

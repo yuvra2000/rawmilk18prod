@@ -6,11 +6,12 @@ import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { LeciAddFormService } from './leci-add-form.service';
 import { leciAddFormFields } from './state-service/config';
 import { AlertService } from '../../../shared/services/alert.service';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-leci-add-form',
   standalone: true,
-  imports: [CommonModule, FilterFormComponent],
+  imports: [CommonModule, FilterFormComponent, SharedModule],
   templateUrl: './leci-add-form.component.html',
   styleUrl: './leci-add-form.component.scss'
 })

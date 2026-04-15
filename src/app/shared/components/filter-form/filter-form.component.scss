@@ -242,6 +242,36 @@ textarea.disabled-field {
   padding-left: 4px;
 }
 
+/* Larger switch-style checkbox for filter toggles */
+::ng-deep .form-switch {
+  min-height: 2.25rem;
+  padding-left: 3.1rem;
+}
+
+::ng-deep .form-switch .form-check-input {
+  width: 2.9rem;
+  height: 1.45rem;
+  margin-left: -3.1rem;
+  margin-top: 0.08rem;
+  border-radius: 999px;
+  background-size: 1.05rem;
+  transition:
+    background-position 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:checked {
+    background-position: right center;
+  }
+}
+
+::ng-deep .form-switch .form-check-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgb(var(--primary-rgb));
+}
+
 .input-group-text {
   height: 32px !important;
   border: 1px solid rgb(var(--primary-rgb));
@@ -366,4 +396,12 @@ textarea.disabled-field {
   .form-label {
     color: var(--primary-color);
   }
+  .ng-value-container {
+    max-height: 90px !important;
+    overflow-y: scroll !important;
+  }
 }
+// .b-1 {
+//   border: 1px solid var(--primary-color);
+//   border-radius: 10px;
+// }

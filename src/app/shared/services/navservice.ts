@@ -59,6 +59,10 @@ export class NavService implements OnDestroy {
   active: any;
 
   constructor(private router: Router) {
+    const groupId: number = Number(localStorage.getItem('GroupId')); // ✅ DEFINE HERE
+
+    this.filterMenuByGroup(groupId); // ✅ NOW VALID
+
     this.setScreenWidth(window.innerWidth);
     fromEvent(window, 'resize')
       .pipe(debounceTime(1000), takeUntil(this.unsubscriber))
@@ -83,6 +87,19 @@ export class NavService implements OnDestroy {
     }
   }
 
+  // constructor(private router: Router) {
+  //   this.setScreenWidth(window.innerWidth);
+
+  //   const groupId: number = Number(localStorage.getItem('groupId')); // ✅ DEFINE HERE
+
+  //   this.filterMenuByGroup(groupId); // ✅ NOW VALID
+
+  //   fromEvent(window, 'resize')
+  //     .pipe(debounceTime(500), takeUntil(this.unsubscriber))
+  //     .subscribe((evt: any) => {
+  //       this.setScreenWidth(evt.target.innerWidth);
+  //     });
+  // }
   ngOnDestroy() {
     this.unsubscriber.next;
     this.unsubscriber.complete();
@@ -103,7 +120,9 @@ export class NavService implements OnDestroy {
       active: false,
       dirchange: false,
       children: [
-        { path: '', title: 'Home', type: 'link', dirchange: false },
+        { path: 'Home', title: 'Home', type: 'link', dirchange: false },
+        { path: 'live', title: 'Live', type: 'link', dirchange: false },
+        // nav service added 
         {
           path: 'view-indent',
           title: 'View Indent',
@@ -122,12 +141,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
-        {
-          path: 'Allocate',
-          title: 'Allocated Indent',
-          type: 'link',
-          dirchange: false,
-        },
+        // {
+        //   path: 'Allocate',
+        //   title: 'Allocated Indent',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
         {
           path: 'Inventory',
           title: 'Inventory',
@@ -143,6 +162,18 @@ export class NavService implements OnDestroy {
         {
           path: 'trip-dashboard',
           title: 'Trip Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'trip-dashboard-vlc',
+          title: 'Trip Dashboard VLC',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'summary-dashboard',
+          title: 'Summary Dashboard',
           type: 'link',
           dirchange: false,
         },
@@ -165,11 +196,29 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
-          path: 'dairy/cart-dashboard',
+          path: 'cart-dashboard',
           title: 'Cart Dashboard',
           type: 'link',
           dirchange: false,
         },
+        // {
+        //   path: 'mcc-mapping-info',
+        //   title: 'MCC Mapping Info',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
+        // {
+        //   path: 'agreement-info',
+        //   title: 'Agreement Info',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
+        // {
+        //   path: 'maker-checker',
+        //   title: 'Maker Checker',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
       ],
     },
     { headTitle: 'OPERATIONS' },
@@ -197,6 +246,50 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'blacklist',
+          title: 'Blacklist Report',
+          type: 'link',
+          dirchange: false,
+        },
+      ],
+    },
+    {
+      title: 'Cart Module',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><circle cx="80" cy="216" r="16"></circle><circle cx="184" cy="216" r="16"></circle><path d="M42.3,72H221l-25.1,96.3a16,16,0,0,1-15.5,11.7H82.6a16,16,0,0,1-15.5-11.7L36.7,40H16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path></svg>`,
+      type: 'sub',
+      active: false,
+      children: [
+        {
+          path: 'adda',
+          title: 'Adda',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'franchise',
+          title: 'Franchise',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'franchise-mapping',
+          title: 'Franchise Mapping',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'cart-mapping',
+          title: 'Cart Mapping',
+          type: 'link',
+          dirchange: false,
+        },
+        // {
+        //   path: 'cart-timing',
+        //   title: 'Cart Timing',
+        //   type: 'link',
+        //   dirchange: false,
+        // },
       ],
     },
     {
@@ -278,7 +371,7 @@ export class NavService implements OnDestroy {
         },
         {
           path: 'reports/trip-summary',
-          title: 'Trip Summary',
+          title: 'Trip Summary Report',
           type: 'link',
           dirchange: false,
         },
@@ -305,7 +398,7 @@ export class NavService implements OnDestroy {
           dirchange: false,
         },
         {
-          path: 'reports/cart/franchise-report',
+          path: 'reports/franchise-report',
           title: 'Franchise Report',
           type: 'link',
           dirchange: false,
@@ -313,6 +406,43 @@ export class NavService implements OnDestroy {
       ],
     },
   ];
+
+  filterMenuByGroup(groupId: number) {
+    // ✅ If NOT 5839 → show full menu
+    if (groupId != 5938) {
+      this.items.next(this.MENUITEMS);
+      return;
+    }
+
+    // ✅ Allowed paths
+    const allowedPaths = [
+      'cart-dashboard',
+      'reports/cart-report',
+      'reports/cart-report-exception',
+      'reports/franchise-report',
+    ];
+    //add  cart report frenchise
+
+    // ✅ Build new menu
+    const filteredMenu: Menu[] = [];
+
+    this.MENUITEMS.forEach((menu) => {
+      if (menu.children) {
+        const filteredChildren = menu.children.filter((child) =>
+          allowedPaths.includes(child.path || ''),
+        );
+
+        if (filteredChildren.length > 0) {
+          filteredMenu.push({
+            ...menu,
+            children: filteredChildren,
+          });
+        }
+      }
+    });
+
+    this.items.next(filteredMenu);
+  }
 
   items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
 }

@@ -1,0 +1,923 @@
+<app-header [title]="'Home'">
+
+</app-header>
+<div class="container-fluid">
+    <div class="map-page">
+
+
+        <google-map height="100%" width="100%" [center]="center" [zoom]="zoom" [options]="mapOptions"
+            (mapInitialized)="onMapReady($event)">
+            <map-marker *ngFor="let m of markers" [position]="m.position" [icon]="m.icon" [title]="m.title"
+                [visible]="m.visible">
+            </map-marker>
+        </google-map>
+        <div class="map-loader" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <p>Loading live tracking…</p>
+        </div>
+
+    </div>
+
+
+    <div class="slider-section top-bar" [class.open]="isSliderVisible">
+
+
+
+        <button class="filter-btn" (click)="toggleSlider()">
+            {{ isOpen ? '▲' : '▼' }}
+        </button>
+
+
+
+
+        <div class="status-panel small">
+            <div class="status-card filter-card" (click)="openFilter(GSPREPORT)"
+                style="border:#1d4380 1px solid; cursor:pointer;">
+
+                <div class="status-label" style="color:#1d4380;">
+                    Filter
+                </div>
+
+                <div class="status-count">
+                    <i class="fa fa-filter" style="font-size:18px;color:#1d4380;"></i>
+                </div>
+
+            </div>
+            <!-- ////////////////////////////////////////////////////////// -->
+            <div class="status-card" *ngFor="let item of items" (click)="onButtonClick(item.label)"
+                [style.border]="'1px solid ' + item.color">
+
+                <div class="status-label" [style.color]="item.color">{{ item.label }}</div>
+                <div class="status-count" [style.color]="item.color">
+                    {{ item.count }}
+                </div>
+            </div>
+            <div class="status-card" style="border: #1d4380 1px solid;">
+                <div class="status-label" style="color:#1d4380;">
+                    <!-- {{ isReport ? 'Report' : 'Map' }} -->
+                    {{ isReport ? 'Map' : 'Report' }}
+                </div>
+
+                <div class="status-count">
+                    <label class="tab-switch">
+                        <input type="checkbox" [(ngModel)]="isReport">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- <div class="status-card" style="border: #1d4380 1px solid; padding: 10px;">
+
+             
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <div class="status-label" style="color: #1d4380;">
+                        Stoppage
+                    </div>
+
+                    <select class="tab-select" (change)="filterStoppagesByDuration($event)">
+                        <option value="0" selected>All</option>
+                        <option value="5">5 Min</option>
+                        <option value="10">10 Min</option>
+                        <option value="15">15 Min</option>
+                        <option value="30">30 Min</option>
+                        <option value="60">1 Hr.</option>
+                        <option value="120">2 Hr.</option>
+                        <option value="300">5 Hr.</option>
+                        <option value="600">10 Hr.</option>
+                        <option value="720">12 Hr.</option>
+                        <option value="1440">24 Hr.</option>
+                        <option value="10080">7 Days</option>
+                    </select>
+                </div>
+
+               
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="status-label" style="color: #1d4380;">
+                        Interval
+                    </div>
+
+                    <select class="tab-select" (change)="getIntervalValaue($event)">
+                        <option value="5">5 sec</option>
+                        <option value="30" selected>30 sec</option>
+                        <option value="60">1 min</option>
+                        <option value="120">2 min</option>
+                        <option value="240">4 min</option>
+                        <option value="300">5 min</option>
+                        <option value="600">10 min</option>
+                        <option value="900">15 min</option>
+                        <option value="1200">20 min</option>
+                        <option value="1800">30 min</option>
+                        <option value="3600">60 min</option>
+                        <option value="7200">120 min</option>
+                    </select>
+                </div>
+
+            </div> -->
+            <div class="status-card" style="border: #1d4380 1px solid;" *ngIf="vehiclegtrackingflag">
+                <div class="status-label" style="color: #1d4380;">Stoppage</div>
+                <div class="status-count">
+                    <select class="tab-select" (change)="filterStoppagesByDuration($event)">
+
+                        <option value="0" selected>All</option>
+                        <option value="5">5 Min</option>
+                        <option value="10">10 Min</option>
+                        <option value="15">15 Min</option>
+                        <option value="30">30 Min</option>
+                        <option value="60">1 Hr.</option>
+                        <option value="120">2 Hr.</option>
+                        <option value="300">5 Hr.</option>
+                        <option value="600">10 Hr.</option>
+                        <option value="720">12 Hr.</option>
+                        <option value="1440">24 Hr.</option>
+                        <option value="10080">7 Days</option>
+                    </select>
+                </div>
+            </div>
+            <div class="status-card" style="border: #1d4380 1px solid;" *ngIf="vehiclegtrackingflag">
+                <div class="status-label" style="color: #1d4380;">Interval</div>
+                <div class="status-count">
+                    <select class="tab-select" (change)="getIntervalValaue($event)">
+
+                        <option value="5">5 sec</option>
+                        <option value="30" selected>30 sec</option>
+                        <option value="60">1 min</option>
+                        <option value="120">2 min</option>
+                        <option value="240">4 min</option>
+                        <option value="300">5 min</option>
+                        <option value="600">10 min</option>
+                        <option value="900">15 min</option>
+                        <option value="1200">20 min</option>
+                        <option value="1800">30 min</option>
+                        <option value="3600">60 min</option>
+                        <option value="7200">120 min</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- <div class="status-card" style="border: #1d4380 1px solid;" *ngIf="!isTracking">
+                <div class="status-label" style="color:#1d4380;">
+                    Track {{ plauytrackFlag ? 'On' : 'Off' }}
+                </div>
+
+                <div class="status-count">
+                    <label class="tab-switch">
+                        <input type="checkbox" [(ngModel)]="plauytrackFlag" (change)="playpausetrack($event)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="top-slider" [class.open]="isOpen">
+
+
+        <div class="slider-section menu-section">
+            <span class="tab-icon" [class.active]="activeTab === 'vehicle'" (click)="setTab('vehicle')">
+                <i class=" fa fa-truck" style=" color: #2d8d4e;"></i>
+            </span>
+
+            <span class="tab-icon" [class.active]="activeTab === 'location'" (click)="setTab('location')">
+                <!-- <i class='fa fa-route' title="Route List"></i> -->
+                <img src="assets/images/Tabs_button_icon/Group.svg">
+            </span>
+
+            <span class="tab-icon" [class.active]="activeTab === 'company'" (click)="setTab('company')">
+                <img src="assets/images/users/Landmark icon (inactive state).svg">
+            </span>
+
+            <span class="tab-icon" [class.active]="activeTab === 'user'" (click)="setTab('user')">
+                <i class='fa-solid fa-user-alt' title="Driver List"></i>
+
+            </span>
+
+            <span class="tab-icon" [class.active]="activeTab === 'link'" (click)="setTab('link')">
+                <!-- <img src="assets/images/Tabs_button_icon/Group.svg"> -->
+                <i class="fa-solid fa-route" title="Route List"></i>
+                <!-- <i class='fa fa-route' title="Route List"></i> -->
+            </span>
+            <span class="tab-icon">
+                <div class="search-wrapper">
+                    <input type="text" class="search-input" placeholder="Search..." [(ngModel)]="searchText"
+                        (input)="onSearchChange(searchText)" />
+
+                    <button class="filter-btn" (click)="toggleSearch()">
+                        🔍
+                    </button>
+                </div>
+                <!-- <div class="search-wrapper">
+                    <input *ngIf="showSearch" type="text" class="search-input" placeholder="Search..."
+                        [(ngModel)]="searchText" (input)="onSearchChange(searchText)" />
+
+                    <button class="filter-btn" (click)="toggleSearch()">
+                        🔍
+                    </button>
+                </div> -->
+
+            </span>
+
+
+
+
+        </div>
+
+
+        <div class="slider-section content-section">
+
+            <div *ngIf="activeTab === 'vehicle'" (click)="tabfunction('vehicle')">
+
+
+                <div class="link-panel">
+
+
+                    <form [formGroup]="filterForm" (ngSubmit)="onSubmit()" class="control-row compact-form">
+
+
+                        <div class="switch-wrapper">
+
+                            <span class="switch-label">Tracking</span>
+                            <label class="switch">
+                                <input type="checkbox" formControlName="tracking" (change)="onTrackingToggle($event)">
+                                <span class="slider"></span>
+                            </label>
+
+
+                            <span class="switch-label">Location</span>
+                        </div>
+
+
+                        <input type="datetime-local" class="form-control form-control-sm" formControlName="fromDate" />
+
+
+                        <input type="datetime-local" class="form-control form-control-sm" formControlName="toDate" />
+
+
+                        <button type="submit" class="go-btn">
+                            Go
+                        </button>
+
+                    </form>
+
+
+
+                    <div class="table-wrapper">
+
+                        <ag-grid-angular class="ag-theme-alpine" style="width: 100%; height: 400px;" [rowHeight]="28"
+                            [headerHeight]="30" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)"
+                            (selectionChanged)="onSelectionChanged($event)" [rowData]="filteredVehicleArray"
+                            [columnDefs]="columnDefs" [defaultColDef]="defaultColDef">
+                        </ag-grid-angular>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div *ngIf="activeTab === 'location'" (click)="tabfunction('location')">
+                <div class="link-panel">
+                    <form class="control-row compact-form">
+                        <div class="icon-bar">
+
+
+                            <i class="fa fa-eye icon-btn" title="Show on Map" (click)="showOnMap()">
+                            </i>
+
+
+                            <i class="fa fa-file-excel icon-btn excel" title="Download Excel" (click)="downloadExcel()">
+                            </i>
+                            <i class="fa fa-plus icon-btn" title="Add Geofence" (click)="AddGeofence()">
+                            </i>
+                        </div>
+                    </form>
+                    <app-link-panel [rowData]="rowData" [columns]="columns" (iconAction)="onIconClick($event)"
+                        [searchText]="searchText" (selectedRowsChange)="onSelectedRows($event)">
+                    </app-link-panel>
+                    
+
+                </div>
+
+            </div>
+            <div *ngIf="activeTab === 'company'" (click)="tabfunction('company')">
+                <div class="link-panel">
+                    <form class="control-row compact-form">
+                        <div class="icon-bar">
+
+
+                            <i class="fa fa-file-excel icon-btn excel" title="Download Excel" (click)="downloadExcel()">
+                            </i>
+                            <i class="fa fa-plus icon-btn" title="Add Landmark" (click)="AddLandmark()">
+                            </i>
+                        </div>
+                    </form>
+                    <app-link-panel [rowData]="rowData" [columns]="columns" (iconAction)="onIconClick($event)"
+                        [searchText]="searchText" (selectedRowsChange)="onSelectedRows($event)">
+                    </app-link-panel>
+                </div>
+            </div>
+
+
+            <div *ngIf="activeTab === 'user'">
+                <div class="link-panel">
+                    <form class="control-row compact-form">
+                        <div class="icon-bar">
+
+                            <button class="btn btn-success btn-xs" (click)="activateSelected()">
+                                <i class="fa fa-check"></i> Active
+                            </button>
+
+                            <button class="btn btn-warning btn-xs" (click)="deactivateSelected()">
+                                <i class="fa fa-ban"></i> Deactive
+                            </button>
+
+                            <button class="btn btn-danger btn-xs" (click)="deleteSelected()">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+
+                            <button class="btn btn-primary btn-xs" (click)="addUser()">
+                                <i class="fa fa-plus"></i> Add
+                            </button>
+
+                        </div>
+                    </form>
+                    <app-link-panel [rowData]="rowData" [columns]="columns" (iconAction)="onIconClick($event)"
+                        [searchText]="searchText" (selectedRowsChange)="onSelectedRows($event)">
+                    </app-link-panel>
+                </div>
+
+
+            </div>
+
+            <div *ngIf="activeTab === 'link'">
+                <div class="link-panel">
+                    <form class="control-row compact-form">
+                        <div class="icon-bar">
+
+                            <i class="fa fa-eye icon-btn" title="Show on Map" (click)="Polyline_list()">
+                            </i>
+                            <i class="fa fa-file-excel icon-btn excel" title="Download Excel" (click)="downloadExcel()">
+                            </i>
+
+                        </div>
+                    </form>
+                    <app-link-panel [rowData]="rowData" [columns]="columns" (iconAction)="onIconClick($event)"
+                        [searchText]="searchText" (selectedRowsChange)="onSelectedRows($event)">
+                    </app-link-panel>
+                </div>
+            </div>
+            <div *ngIf="activeTab === 'vehicle'" class="checkbox-group mt-2">
+                <label class="small-checkbox">
+                    <input type="checkbox" (change)="onCellIdChange($event)">
+                    <i class="fa fa-signal icon"></i>
+                    Use cellId
+                </label>
+                <label class="small-checkbox">
+                    <input type="checkbox" (change)="onLandmarkChange($event)">
+                    <img src="assets/images/users/Landmark icon (inactive state).svg" class="icon">
+                    Landmark
+                </label>
+
+                <label class="small-checkbox">
+                    <input type="checkbox" (change)="onGeofenceChange($event)">
+                    <img src="assets/images/Tabs_button_icon/Group.svg" class="icon">
+                    Geofence
+                </label>
+                <label class="small-checkbox toggle-switch">
+
+                    <input type="checkbox" [(ngModel)]="plauytrackFlag" (change)="playpausetrack($event)">
+
+                    <!-- icon same style as others -->
+                    <span class="slider"></span>
+                    <!-- text -->
+                    Play Track {{ plauytrackFlag ? 'On' : 'Off' }}
+
+                    <!-- switch -->
+
+                    <i class="fa icon" [ngClass]="plauytrackFlag ? 'fa-pause' : 'fa-play'">
+                    </i>
+
+                </label>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- /////////////////////////////////////////////////////////// -->
+
+    <!-- <div class="balloons" (click)="show_balloons()" [style.height]="show_balloons_div ? '55px' : '22px'"><i
+            class="fa fa-map-marker"></i> Filter Speed balloons<i class="glyphicon glyphicon-triangle-bottom"></i></div>
+    <span *ngIf="show_balloons_div==true">
+
+        <div class="balloons-show">
+            <div class="row">
+                <div class="col-lg-3 col-md-3"><a (click)="toggleMarkersByColor('yellow')">
+                        <i class="fa fa-map-marker markers-size" style="color: yellow;"></i>
+                    </a>1 to 20
+                </div>
+                <div class="col-lg-3 col-md-3"><a (click)="toggleMarkersByColor('green')"><i
+                            class="fa fa-map-marker markers-size" style="color: green;"></i>
+                    </a> > 20
+                </div>
+                <div class="col-lg-2 col-md-2"><a (click)="toggleMarkersByColor('red')"><i
+                            class="fa fa-map-marker markers-size" style="color: red;"></i>
+                    </a>
+                    < 1 </div>
+                        <div class="col-lg-3 col-md-3">
+                            <a (click)="togglePolyline()" title="polyline Arrow"><i class="fa fa-arrow-up markers-size"
+                                    style="color:blue"> </i></a>
+                        </div>
+
+                </div>
+
+            </div>
+
+
+
+    </span>
+</div> -->
+    <div class="bottom-popup" [class.show]="isPopupVisible" [class.minimized]="isMinimized">
+
+        <div>
+            <div class="d-flex justify-content-between align-items-center" style="background-color: #E6EFF1;">
+                <!-- <h5 class="mb-0">Tracker</h5> -->
+                <hr *ngIf="!isMinimized">
+
+                <!-- Content visible only when not minimized -->
+                <div class="container mt-3">
+                    <div class="controls">
+                        <button (click)="togglePlayPause()">
+                            {{ isPaused ? '▶ Play' : '⏸ Pause' }}
+                        </button>
+                        <button (click)="resetTrack()">⏮ Reset</button>
+
+                        <label class="ml-3">
+                            Speed:
+                            <input type="range" min="500" max="5000" step="500" [value]="playbackSpeed"
+                                (input)="updateSpeed($event)">
+                            <span>{{playbackSpeed / 1000}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn" (click)="toggleMinimize()">
+                        <i class="fa" [ngClass]="isMinimized ? 'fa-window-maximize' : 'fa-window-minimize'"
+                            style="font-size:15px"></i>
+                    </button>
+                    <button class="btn btn-sm btn" (click)="hidePopup()">
+                        <i class="fa fa-close" style="font-size:20px"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="linechart" (chartMouseOver)="onChartEvent($event)" class="demo-chart">
+            </div>
+
+        </div>
+    </div>
+    <!-- Overlay -->
+    <div class="modal-overlay" *ngIf="isGeoModalOpen">
+
+        <div class="geo-modal">
+
+            <h3>Create Geofence</h3>
+
+            <form (ngSubmit)="saveGeofence()">
+
+                <div class="form-group">
+                    <label>Geofence Name</label>
+                    <input type="text" [(ngModel)]="geoForm.name" name="name" required />
+                </div>
+
+                <div class="form-group">
+                    <label>Remark</label>
+                    <input type="text" [(ngModel)]="geoForm.remark" name="remark" />
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="cancel-btn" (click)="closeGeoModal()">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="save-btn">
+                        Save
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="landmark-modal" *ngIf="showLandmarkPopup">
+
+        <div class="geo-modal" [formGroup]="landmarkForm">
+
+            <h5>Add Landmark</h5>
+            <div class="form-group">
+                <label>Landmark Name</label>
+                <input type="text" formControlName="landmarkName">
+            </div>
+            <div class="form-group">
+                <label>Landmark Type</label>
+            </div>
+            <select formControlName="landmarkType">
+                <option value="">Select Type</option>
+                <option *ngFor="let type of Landmarktype" [value]="type.id">
+                    {{type.name}}
+                </option>
+            </select>
+            <div class="form-group">
+                <label>Zoom Level</label>
+                <select formControlName="zoomLevel">
+                    <option *ngFor="let z of zoomLevels" [value]="z">
+                        {{z}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Distance Variable</label>
+                <select formControlName="distanceVariable">
+                    <option *ngFor="let d of Distance_variable" [value]="d.id">
+                        {{d.id}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Coordinates</label>
+                <input type="text" formControlName="coords" readonly>
+            </div>
+            <div class="form-group">
+                <label>Remarks</label>
+                <textarea formControlName="remark"></textarea>
+            </div>
+
+            <div class="btn-row">
+
+                <button (click)="saveLandmark()" [disabled]="landmarkForm.invalid" class="btn btn-outline-primary">
+                    Save
+                </button>
+
+                <button (click)="cancelLandmark()" class="btn btn-outline-secondary ">
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="status-modal" *ngIf="showStatusPopup">
+
+        <div class="geo-modal" [formGroup]="statusForm">
+
+            <h5>Change Status</h5>
+
+            <div class="form-group">
+                <label>Status Type</label>
+                <select formControlName="statusType">
+                    <option value="">Select Status</option>
+                    <option *ngFor="let arr of vehicleStatus_Types " value="{{arr.Id}}">{{arr.Name}}</option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="datetime-local" formControlName="startDate">
+            </div>
+
+            <div class="form-group">
+                <label>Remark</label>
+                <textarea rows="3" formControlName="remark"></textarea>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-outline-secondary " (click)="closeStatusPopup()">Cancel</button>
+                <button class="btn btn-outline-primary" (click)="saveStatus()"
+                    [disabled]="statusForm.invalid">Save</button>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="status-modal" *ngIf="showdriverPopup">
+
+        <div class="geo-modal" [formGroup]="driverForm">
+
+            <h5>Change Driver</h5>
+
+            <div class="form-group">
+                <label>Driver Name</label>
+                <select formControlName="driverName">
+                    <option value="">Select Driver</option>
+                    <option *ngFor="let arr of driver_list " value="{{arr.Name}}">{{arr.Name}}</option>
+                    <!-- <option value="Running">Running</option>
+                    <option value="Stopped">Stopped</option>
+                    <option value="Idle">Idle</option>
+                    <option value="Maintenance">Maintenance</option> -->
+                </select>
+            </div>
+
+
+
+            <div class="btn-row">
+                <button class="btn btn-outline-secondary " (click)="closedriverPopup()">Cancel</button>
+                <button class="btn btn-outline-primary" (click)="saveDriver()"
+                    [disabled]="statusForm.invalid">Save</button>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- //////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <div class="model-content">
+
+        <ng-template #GSPREPORT let-modal class="summarymodal">
+
+            <div class="model-content">
+
+                <!-- HEADER -->
+                <div class="modal-header">
+                    <h6 class="modal-title">Filter</h6>
+
+                    <button type="button" class="close" (click)="modal.dismiss('Cross click')">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <div ngbAccordion [closeOthers]="true">
+
+                        <div ngbAccordionItem *ngFor="let key of Filter_list_keys">
+
+                            <h2 ngbAccordionHeader>
+                                <button ngbAccordionButton>
+                                    {{ key }}
+                                </button>
+                            </h2>
+
+                            <div ngbAccordionCollapse>
+                                <div ngbAccordionBody>
+
+                                    <!-- SEARCH -->
+                                    <input type="text" class="form-control" placeholder="Search"
+                                        [(ngModel)]="searchKeyword[key]" (input)="onsearch_filter(key)" />
+
+                                    <!-- CHECK ALL -->
+                                    <div class="row details">
+                                        <div class="col-2">
+                                            <input type="checkbox" class="form-check-input" [(ngModel)]="selectAll[key]"
+                                                (change)="toggleSelectAll(key)">
+                                        </div>
+
+                                        <div class="col-10">
+                                            <label>Select All</label>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- DATA -->
+                                    <div class="filter-list">
+                                        <div class="row details"
+                                            *ngFor="let head of filteredFilterList[key] || [] ;let k = index">
+
+                                            <div class="col-2">
+                                                <input type="checkbox" class="form-check-input"
+                                                    [(ngModel)]="head.checked" *ngIf="head" id="head{{k}}"
+                                                    [value]="head">
+                                            </div>
+
+                                            <div class="col-10">
+                                                <label>{{ head?.name }}</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-outline-danger" (click)="resetFilters()">
+
+                        Reset Filter
+                    </button>
+
+                    <button type="button" class="btn btn-outline-secondary"
+                        (click)="filters(); modal.dismiss('Cross click')">
+
+                        Apply Filter
+                    </button>
+
+                </div>
+
+            </div>
+
+        </ng-template>
+
+    </div>
+
+
+
+    <!-- <div class="balloonsnew" (mousedown)="startDrag($event)" [ngStyle]="{ top: top + 'px', left: left + 'px' }">
+    <div class="">
+        <div class="row">
+            <div class="col-lg-3 col-md-3"><a (click)="toggleMarkersByColor('yellow')">
+                    <i class="fa fa-map-marker markers-size" style="color: yellow;"></i>
+                </a>1 to 20
+            </div>
+            <div class="col-lg-3 col-md-3"><a (click)="toggleMarkersByColor('green')"><i
+                        class="fa fa-map-marker markers-size" style="color: green;"></i>
+                </a> > 20
+            </div>
+            <div class="col-lg-2 col-md-2"><a (click)="toggleMarkersByColor('red')"><i
+                        class="fa fa-map-marker markers-size" style="color: red;"></i>
+                </a>
+                < 1 </div>
+                    <div class="col-lg-3 col-md-3">
+                        <a (click)="togglePolyline()" title="polyline Arrow"><i class="fa fa-arrow-up markers-size"
+                                style="color:blue"> </i></a>
+                    </div>
+
+            </div>
+
+        </div>
+    </div> -->
+
+    <div class="balloonsnew" (mousedown)="startDrag($event)" [ngStyle]="{ top: top + 'px', left: left + 'px' }">
+        <div class="icon-row">
+
+            <div (click)="toggleMarkersByColor('yellow')">
+                <i class="fa fa-map-marker markers-size" style="color: yellow;"></i> 1 to 20
+            </div>
+
+            <div (click)="toggleMarkersByColor('green')">
+                <i class="fa fa-map-marker markers-size" style="color: green;"></i> > 20
+            </div>
+
+            <div (click)="toggleMarkersByColor('red')">
+                <i class="fa fa-map-marker markers-size" style="color: red;"></i>
+                < 1 </div>
+
+                    <div (click)="togglePolyline()" title="polyline">
+                        <i class="fa fa-arrow-up markers-size" style="color: blue;"></i>
+                    </div>
+                    <div (click)="toggleArrows()" title="polyline Arrow">
+                        <i class="fa" [ngClass]="showArrows ? 'fa-eye-slash' : 'fa-eye'"></i>
+                    </div>
+
+            </div>
+        </div>
+
+        <!-- //////////////////////report modal////////////////// -->
+
+    </div>
+    <div class="modal fade" id="reportModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Vehicle Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- 🔍 Toolbar -->
+                    <div class="report-toolbar d-flex justify-content-between align-items-center mb-2">
+
+                        <!-- Search -->
+                        <div class="search-box_table">
+                            <input type="text" class="form-control" id="filter-text-box"
+                                placeholder="🔍 Search vehicles..." (input)="onQuickFilterChanged($event)" />
+                        </div>
+
+                        <!-- Export Buttons -->
+                        <div class="export-buttons d-flex gap-2">
+
+                            <button class="btn btn-excel" (click)="exportExcel()">
+                                <i class="bi bi-file-earmark-excel"></i>
+                            </button>
+
+                            <button class="btn btn-csv" (click)="exportCSV()">
+                                <i class="bi bi-filetype-csv"></i>
+                            </button>
+
+                            <button class="btn btn-pdf" (click)="exportPDF()">
+                                <i class="bi bi-file-earmark-pdf"></i>
+                            </button>
+
+                            <button class="btn btn-copy" (click)="copyData()">
+                                <i class="bi bi-clipboard"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <!-- <div class="table-responsive">
+                            <table class="table table-bordered table-striped w-100" id="reportTable">
+                                <thead>
+                                    <tr>
+                                        <th>Vehicle No</th>
+                                        <th>IMEI</th>
+                                        <th>SIM No</th>
+                                        <th>Contact</th>
+                                        <th>Registration No</th>
+                                        <th>Temperature</th>
+                                        <th>Main Hole Door</th>
+                                        <th>Speed</th>
+                                        <th>Battery</th>
+                                        <th>Date Time</th>
+                                        <th>Last Halt</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let row of reportTableData">
+                                        <td>{{ row.vehicleNo }}</td>
+                                        <td>{{ row.imei }}</td>
+                                        <td>{{ row.simNo }}</td>
+                                        <td>{{ row.contact }}</td>
+                                        <td>{{ row.registrationNo }}</td>
+                                        <td>{{ row.temperature }}</td>
+                                        <td>{{ row.mainHoleDoor }}</td>
+                                        <td>{{ row.speed }}</td>
+                                        <td>{{ row.battery }}</td>
+                                        <td>{{ row.datetime }}</td>
+                                        <td>{{ row.lastHalt }}</td>
+                                        <td>{{ row.address }}</td>
+                                    </tr>
+
+                                   
+                                    <tr *ngIf="reportTableData.length === 0">
+                                        <td colspan="12" class="text-center text-muted">
+                                            No data available
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> -->
+                    <div class="table-wrapper">
+                        <ag-grid-angular [rowData]="reportTableData" [columnDefs]="columnDefsReport" [rowHeight]="28"
+                            style="width: 100%; height: 400px;" class="ag-theme-alpine" [headerHeight]="30"
+                            [defaultColDef]="defaultColDefReport" (gridReady)="onGridReadyreport($event)">
+                        </ag-grid-angular>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- <div class="search-box d-flex align-items-center gap-2">
+        <input type="text" [(ngModel)]="searchName" placeholder="Search landmark..."
+            class="form-control form-control-sm" />
+
+        <button class="btn btn-primary btn-sm" (click)="searchByName()">
+            Search
+        </button>
+    </div> -->
+    <div class="search-box d-flex align-items-center gap-2 flex-wrap" *ngIf="searchtab">
+
+        <!-- 🔤 Search by Name -->
+        <input type="text" [(ngModel)]="searchName" placeholder="Landmark Name" class="form-control form-control-sm"
+            style="width: 120px;" />
+
+        <button class="btn btn-primary btn-sm" (click)="searchByName()">
+            Search
+        </button>
+
+        <!-- 🌍 Search by Lat-Long -->
+        <input type="text" [(ngModel)]="searchCoord" placeholder="Lat,Lng" class="form-control form-control-sm"
+            style="width: 140px;" />
+
+        <button class="btn btn-success btn-sm" (click)="plotSearchLocation()">
+            Go
+        </button>
+
+    </div>

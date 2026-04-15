@@ -35,6 +35,7 @@ import {
 import { commonService } from '../../services/common.service';
 import { LiveTrackingService } from './shared/LiveTracking.service';
 import { PlayTrackService } from './shared/play-track.service';
+import { MapInfoContentComponent } from '../map-info-content/map-info-content.component';
 // ✅ Define allowed drawing tool types for easier parent usage
 export type DrawingTool = 'marker' | 'circle' | 'polygon' | 'rectangle';
 
@@ -80,6 +81,7 @@ export interface GeofenceData {
     MapCircle, // ✅ Added for <map-circle>
     MapPolygon,
     MapRectangle,
+    MapInfoContentComponent,
   ],
   templateUrl: './google-map-viewer.component.html',
   styleUrls: ['./google-map-viewer.component.scss'],
@@ -338,6 +340,7 @@ export class GoogleMapViewerComponent implements OnInit, OnDestroy {
   openInfo(marker: any, markerRef: MapMarker): void {
     const params = marker.params || {};
     this.selectedMarkerData.set(params);
+    console.log('marker', marker, markerRef);
     this.infoWindow.open(markerRef);
 
     // ✅ Check Address on manual click too

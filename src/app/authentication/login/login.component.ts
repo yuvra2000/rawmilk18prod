@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, inject, Renderer2 } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,6 +13,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { AppStateService } from '../../shared/services/app-state.service';
 import { NgIf } from '../../../../node_modules/@angular/common/index';
 import { firstValueFrom } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,8 @@ import { firstValueFrom } from 'rxjs';
 })
 export class LoginComponent {
   public showPassword: boolean = false;
+  submitted = false;
+  isSubmitting = false;
 
   toggleClass = 'ri-eye-off-line';
   active = 'Angular';
@@ -31,7 +34,7 @@ export class LoginComponent {
   databaseModule: any;
   authModule: any;
   show_html: boolean = true;
-
+  private spinner = inject(NgxSpinnerService);
   public togglePassword() {
     this.showPassword = !this.showPassword;
     if (this.toggleClass === 'ri-eye-line') {
@@ -58,9 +61,9 @@ export class LoginComponent {
   }
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      UserId: ['test_procurement', [Validators.required]],
-      Password: ['Dairy@2024', Validators.required],
-      GroupId: ['5731', Validators.required],
+      UserId: ['', [Validators.required]],
+      Password: ['', Validators.required],
+      GroupId: ['', Validators.required],
     });
     this.access_token();
   }
@@ -70,9 +73,9 @@ export class LoginComponent {
   }
 
   // firebase
-  email = 'test_procurement';
-  Password = 'Dairy@2024';
-  GroupId = '5731';
+  email = '';
+  Password = '';
+  GroupId = '';
   errorMessage = ''; // validation _error handle
   _error: { name: string; message: string } = { name: '', message: '' }; // for firbase _error handle
   clearErrorMessage() {
@@ -98,7 +101,7 @@ export class LoginComponent {
     const formData = new FormData();
     formData.append('AccessToken', acc);
     // if (this.validateForm(this.loginForm.controls['userid'].value, this.loginForm.controls['Password'].value)) {
-    this.authservice.Access(formData).subscribe((resp: any) => {
+    this.authservice.Access(formData).subscribe(async (resp: any) => {
       console.log('login123', resp);
       if (resp.Status === 'error') {
         alert(resp.Result);
@@ -129,9 +132,18 @@ export class LoginComponent {
         localStorage.setItem('makerchecker', resp.Data.MakerChecker);
         localStorage.setItem('mcm', resp.Data.MCM);
         localStorage.setItem('termsAccepted', resp.Data.termAccepted);
+        const formData = new FormData();
+        formData.append('AccessToken', acc);
+        const res: any = await firstValueFrom(
+          this.authservice.loginByAccessToken(formData),
+        );
+        localStorage.setItem('SegmentType', res.Data.SegmentType);
 
-        this.router.navigate(['/trip-dashboard']);
-
+        if (resp.Data.GroupId == 5938) {
+          this.router.navigate(['/cart-dashboard']);
+        } else {
+          this.router.navigate(['/trip-dashboard']);
+        }
         //           if (resp.Data.termAccepted == 1) {
 
         //              if (resp.Data.remoteLocation_based == 1){
@@ -464,14 +476,36 @@ export class LoginComponent {
     return this.loginForm.controls;
   }
 
+  isInvalid(controlName: string): boolean {
+    const control = this.loginForm.get(controlName);
+    return !!(
+      control &&
+      control.invalid &&
+      (control.touched || control.dirty || this.submitted)
+    );
+  }
+
   async Submit() {
     // debugger;
     try {
+      if (this.isSubmitting) {
+        return;
+      }
+
+      this.submitted = true;
+      if (this.loginForm.invalid) {
+        this.loginForm.markAllAsTouched();
+        return;
+      }
+
+      this.isSubmitting = true;
+
       const formData = new FormData();
       formData.append('UserId', this.loginForm.controls['UserId'].value);
       formData.append('Password', this.loginForm.controls['Password'].value);
       formData.append('GroupId', this.loginForm.controls['GroupId'].value);
       formData.append('Json', '1');
+      // this.spinner.show();
       const res: any = await firstValueFrom(this.authservice.login(formData));
       if (res.Status === 'success') {
         localStorage.setItem('AccessToken', res.Data.AccessToken);
@@ -484,8 +518,13 @@ export class LoginComponent {
         localStorage.setItem('usertype', res.Data.UserType);
         localStorage.setItem('AccessMenu', JSON.stringify(res.AccessMenu));
         this.router.navigate(['/trip-dashboard']);
+      } else if (res.Status === 'fail') {
+        this.toastr.error(res.Result || res.Message);
       }
-    } catch (error) { }
+    } catch (error) {
+    } finally {
+      this.isSubmitting = false;
+    }
   }
 
   toggleVisibility() {

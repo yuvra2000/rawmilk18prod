@@ -3,7 +3,10 @@ import {
   Component,
   ElementRef,
   inject,
+  Input,
+  Output,
   TemplateRef,
+  EventEmitter,
 } from '@angular/core';
 import { AppStateService } from '../../services/app-state.service';
 import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +15,7 @@ import { Menu, NavService } from '../../services/navservice';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { SidebarStateService } from '../../services/sidebar-state-service.service';
+import { HeaderTile } from '../../../components/rawmilk/trip-dashboard/state-service/config';
 interface Item {
   id: number;
   name: string;
@@ -26,6 +30,12 @@ interface Item {
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  @Input() title: string = '';
+  @Input() tiles: HeaderTile[] = [];
+  @Input() activeFilter!: string;
+
+  @Output() tileClick = new EventEmitter<string>();
+
   private modalService = inject(NgbModal);
   UserName: string = localStorage.getItem('UserName') || 'User';
   routerEvents: string[] = [];
@@ -455,5 +465,16 @@ export class HeaderComponent {
       .split('-')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
+  }
+
+  goToOldPage() {
+    const token = localStorage.getItem('AccessToken');
+
+    if (token) {
+      const url = `https://uat-dairy12.secutrak.in/auth/login?exttkn=${token}`;
+      window.open(url, '_self'); // same tab
+    } else {
+      console.error('Token not found');
+    }
   }
 }

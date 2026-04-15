@@ -10,17 +10,19 @@ import { AlertService } from '../../../shared/services/alert.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { ViewChild, TemplateRef } from '@angular/core';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-elock-trip-report',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './elock-trip-report.component.html',
   styleUrl: './elock-trip-report.component.scss'
 })
 export class ElockTripReportComponent implements OnInit {
   token: string = localStorage.getItem('AccessToken') || '';
   
+  loading = signal<boolean>(false);
   vehicleList = signal<any[]>([]);
   filterfields = computed<FieldConfig[]>(() => elockFilterFields(this.vehicleList()));
 
@@ -57,6 +59,7 @@ export class ElockTripReportComponent implements OnInit {
       ForWeb: '1'
     });
 
+    this.loading.set(true);
     this.elockService.getVehicleList(payload).subscribe({
       next: (res) => {
         if (res?.VehicleList) {
@@ -68,20 +71,31 @@ export class ElockTripReportComponent implements OnInit {
       error: (err) => {
         this.alertService.error('Failed to load vehicles');
         console.error('API Error:', err);
-      }
+      },
+      complete: () => {this.loading.set(false);}
     });
   }
 
   onFormSubmit(formData: any) {
     console.log('Form Data:', formData);
+    const vehicleList = formData.vehicleNumber.map((v: any) => v.ImeiNo + '$' + v.VehicleId).join(',');
+    
+    // Format dates to yyyy-mm-dd hh:mm:ss
+    const formatDate = (dateStr: string): string => {
+      if (!dateStr) return '';
+      let str = String(dateStr).replace('T', ' ');
+      if (str.split(':').length === 2) str += ':00'; // Append seconds if missing
+      return str;
+    };
+
     const payload = createFormData(this.token, {
-      from_date: formData.fromDate || '2026-04-06 00:00:00',
-      to_date: formData.toDate || '2026-04-06 23:55:55',
-      vehicle: formData?.vehicleNumber?.ImeiNo + '$' + formData?.vehicleNumber?.VehicleId,
+      from_date: formData.fromDate ? formatDate(formData.fromDate) : '2026-04-08 00:00:00',
+      to_date: formData.toDate ? formatDate(formData.toDate) : '2026-04-08 23:55:55',
+      vehicle: vehicleList,
       otp_for: formData?.otpFor?.id,
       status: formData?.status?.id
     });
-
+    this.loading.set(true);
     this.elockService.getTableData(payload).subscribe({
       next: (res: any) => {
         if (res && res.Report) {
@@ -103,7 +117,8 @@ export class ElockTripReportComponent implements OnInit {
       },
       error: (error: any) => {
         this.alertService.error(error?.message || 'Error fetching data');
-      }
+      },
+      complete: () => {this.loading.set(false);}
     });
   }
 

@@ -13,23 +13,35 @@ import { ToastrModule } from 'ngx-toastr';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './shared/interceptors/auth.interceptor';
 
+// ✅ ADD THIS
+import { provideEcharts } from 'ngx-echarts';
+// import { provideEcharts } from 'ngx-echarts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(routes),
-    
+
     RouterOutlet,
+
     provideCharts(withDefaultRegisterables()),
     MaterialModuleModule,
+
+    // ✅ ADD HERE
+    // provideEcharts({
+    //   echarts: () => import('echarts')
+    // }),
+    provideEcharts(),
     importProvidersFrom(
       BrowserAnimationsModule,
       FlatpickrModule.forRoot(),
       ToastrModule.forRoot({
-        timeOut: 5000, // 5 seconds
+        timeOut: 5000,
         closeButton: true,
         progressBar: true,
+        maxOpened: 1,
+        preventDuplicates: true,
       }),
     ),
   ],

@@ -42,7 +42,7 @@ const dayLabelMap: Record<string, string> = {
   SUN: 'Sunday',
 };
 const exceptionList: Option[] = [
-  { id: '', name: 'Low stoppage time' },
+  { id: 'Low stoppage time', name: 'Low stoppage time' },
   { id: 'UnAuthorized', name: 'UnAuthorized' },
 ];
 export const filterfields = (
@@ -78,8 +78,8 @@ export const filterfields = (
   {
     name: 'franchise_code',
     type: 'select',
-    label: 'Milk Type',
-    placeholder: 'Select Milk Type',
+    label: 'Franchise',
+    placeholder: 'Select Franchise',
     options: franchiseList,
     bindLabel: 'name',
     class: 'col-md-2',

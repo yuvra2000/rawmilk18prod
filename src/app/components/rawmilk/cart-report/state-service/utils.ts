@@ -35,23 +35,6 @@ function formatDateTimeForApi(value: any, defaultTime: string): string {
   return `${stringValue} ${defaultTime}`;
 }
 
-export function mapVehicleListToOptions(vehicleList: any): any[] {
-  if (!vehicleList) {
-    return [];
-  }
-
-  const normalizedList = Array.isArray(vehicleList)
-    ? vehicleList
-    : Object.values(vehicleList);
-  return normalizedList.map((item: any) => {
-    const vehicleNo = item?.VehicleNo || item?.vehicleNo || '';
-    return {
-      id: vehicleNo,
-      name: vehicleNo,
-    };
-  });
-}
-
 export function createReportParams(
   dateFrom: string,
   dateTo?: string,

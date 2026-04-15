@@ -1,12 +1,11 @@
-<!-- <app-filter>
-  <div class="row"> -->
-<!-- Example Filter Field 1 -->
-<!-- <div class="col-md-4">
-      <ng-select [items]="cars()" bindLabel="name" bindValue="id"> </ng-select>
-    </div>
-  </div>
-</app-filter> -->
-
+<app-header
+  [title]="'Trip Dashboard'"
+  [tiles]="Header_tiles()"
+  [activeFilter]="selectedFilter()"
+  (tileClick)="onTileClick($event)"
+>
+  ></app-header
+>
 <app-collapse-wrapper>
   <div
     class="header h-5 w-5 cursor-pointer"
@@ -22,18 +21,10 @@
     (controlValueChange)="onFilterChange($event)"
   >
   </filter-form>
-  <!-- (controlValueChange)="onFilterChange($event)"
-    [initialData]="initialData()" -->
 </app-collapse-wrapper>
-
-<!-- <div align="right">
-  <button class="btn btn-primary" (click)="directdispatch()">
-    Export to Excel
-  </button>
-</div> -->
-
+<app-dashboard-tiles [tilesData]="tiles()"></app-dashboard-tiles>
 <app-advanced-grid
-  [rowData]="TripRowData()"
+  [rowData]="filteredData()"
   [config]="tripConfig()"
   (selectionChanged)="handleSelectionChange($event)"
 >

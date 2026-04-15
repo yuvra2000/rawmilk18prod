@@ -1,0 +1,25 @@
+<app-header [title]="'Trip Summary Report'"> </app-header>
+
+<!-- report filter start -->
+<app-collapse-wrapper>
+  <filter-form #filterRef 
+               [dynamicFields]="filterfields()" 
+               [initialData]="initialFilterData"
+               (formSubmit)="onFormSubmit($event)" 
+               (controlValueChange)="onFilterChange($event)">
+  </filter-form>
+</app-collapse-wrapper>
+<!-- report filter end -->
+
+<!-- Component content -->
+<div class="card custom-card mt-3">
+  <div class="card-header border-bottom-0 pb-0">
+    <div class="card-title">Trip Summary Report</div>
+  </div>
+  <div class="card-body">
+    
+    <app-advanced-grid
+      [rowData]="tableData()"
+      [config]="gridConfig()"></app-advanced-grid>
+  </div>
+</div>

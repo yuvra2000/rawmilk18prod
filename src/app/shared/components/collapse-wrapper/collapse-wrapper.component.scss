@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
   // border-bottom: 1px solid #e0e0e0;
   // border-bottom: 1.5px solid #9ba9b591;
 }
@@ -47,5 +48,9 @@ $allocated-indent-card-shadow:
   border-top: none;
   box-shadow: $allocated-indent-card-shadow;
   // border: 0.4px solid var(--primary-color);
+  border-radius: 5px;
+}
+#collapseSection {
+  border: 1px solid var(--primary-color);
   border-radius: 5px;
 }

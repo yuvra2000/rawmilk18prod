@@ -1,0 +1,123 @@
+<app-header [title]="'Cart Dashboard'"> ></app-header>
+<!-- <div class="mt-2 mb-0">
+ 
+</div> -->
+<div [ngbCollapse]="isChartCollapsed()" id="alertStatsSection">
+  <section class="dashboard-cards-grid">
+    <app-reusable-stat-card
+      [config]="store.cartStatusCardConfig()"
+      [overrideColumns]="2"
+      [titleStyle]="{
+        'font-size': '18px',
+        color: '#1d4380',
+        'font-weight': '700',
+      }"
+      [iconStyle]="{
+        'font-size': '24px',
+        opacity: '1',
+        right: '8px',
+        top: '5px',
+      }"
+      [legendStyle]="{
+        'font-size': '14px',
+        'font-weight': '600',
+        'margin-top': '5px',
+      }"
+      (sliceClick)="store.onCartStatusSliceClick($event)"
+    >
+    </app-reusable-stat-card>
+
+    <app-reusable-stat-card
+      [config]="store.addaStatusCardConfig()"
+      [overrideColumns]="2"
+      [titleStyle]="{
+        'font-size': '18px',
+        color: '#1d4380',
+        'font-weight': '700',
+      }"
+      [iconStyle]="{
+        'font-size': '24px',
+        opacity: '1',
+        right: '8px',
+        top: '5px',
+      }"
+      [legendStyle]="{
+        'font-size': '14px',
+        'font-weight': '600',
+        'margin-top': '5px',
+      }"
+      (sliceClick)="store.onAddaStatusSliceClick($event)"
+    >
+    </app-reusable-stat-card>
+
+    <article class="franchise-chart-card">
+      <div class="d-flex title-icon">
+        <h5 class="franchise-chart-title">VRS Wise Active Carts</h5>
+        <i class="fa-solid fa-chart-column"></i>
+      </div>
+      <app-reusable-chart
+        [config]="store.franchiseActiveCartChartConfig()"
+        [style]="{ height: '200px', width: '100%' }"
+        (chartEvent)="store.onFranchiseWiseCartChartClick($event)"
+      >
+      </app-reusable-chart>
+    </article>
+  </section>
+</div>
+<app-collapse-wrapper [collapseSectionClass]="'mt-1'">
+  <span class="filter-toggle-row" toggle (click)="$event.stopPropagation()">
+    <span class="filter-divider" aria-hidden="true"></span>
+
+    <span class="adda-toggle-wrap">
+      <input
+        type="checkbox"
+        class="adda-toggle-input"
+        id="highShipment"
+        [checked]="store.isAddaFilterEnabled()"
+        (change)="
+          store.onFilterControlChange({
+            controlName: 'highShipment',
+            value: $any($event.target).checked,
+          })
+        "
+      />
+      <label class="adda-toggle-label" for="highShipment">
+        <span class="adda-toggle-track" aria-hidden="true">
+          <span class="adda-toggle-thumb"></span>
+        </span>
+        <span class="adda-toggle-text">{{
+          store.isAddaFilterEnabled() ? "Adda Wise" : "VRS Wise"
+        }}</span>
+      </label>
+    </span>
+  </span>
+
+  <filter-form
+    #dispatchPlanningFilter
+    [dynamicFields]="store.filterfields()"
+    (formSubmit)="store.onFormSubmit($event)"
+    (controlValueChange)="store.onFilterControlChange($event)"
+    [initialData]="store.initialData()"
+  >
+  </filter-form>
+  <div custom-icon class="d-flex gap-2">
+    <i
+      class="fa-solid fa-chart-pie icon-add"
+      (click)="onChartIconClick()"
+      [ngbTooltip]="'Toggle Chart'"
+    ></i>
+    <!-- <i
+      class="fa-solid fa-map icon-add"
+      [ngbTooltip]="'View Map'"
+      (click)="store.onMapClick()"
+    ></i> -->
+  </div>
+</app-collapse-wrapper>
+
+<app-advanced-grid
+  [rowData]="store.rowData()"
+  [config]="store.columnConfig()"
+  [loadingRowData]="store.loading()"
+>
+  <h5 class="text-center table-heading">Cart Dashboard</h5>
+</app-advanced-grid>

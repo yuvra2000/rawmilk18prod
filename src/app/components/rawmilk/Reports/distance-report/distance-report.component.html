@@ -1,0 +1,37 @@
+<app-header [title]="'Distance Report'"></app-header>
+
+<app-collapse-wrapper>
+  <filter-form
+    #Distanceform
+    [dynamicFields]="filterfields()"
+    (formSubmit)="onFormSubmit($event)"
+  >
+  </filter-form>
+</app-collapse-wrapper>
+
+@if (vehicleWiseData() && objectKeys(vehicleWiseData()).length > 0) {
+  @for (key of objectKeys(vehicleWiseData()); track key; let i = $index) {
+    <div class="col-lg-12">
+      <div class="container-fluid mt-2">
+        <!-- 🔥 HEADER (your old caption) -->
+        <div style="font-weight: bold; color: #1d4380; margin-bottom: 10px">
+          Distance Report From: Vehicle:
+          {{ vehicleWiseData()[key]?.Report[0]?.vehicle_no }}, IMEI:
+          {{ vehicleWiseData()[key]?.Report[0]?.imei_no }},
+          <!-- From {{ date }} To {{ date2 }}, -->
+          Distance: {{ vehicleWiseData()[key]?.Total?.totalDis }}, Travel
+          Duration: {{ vehicleWiseData()[key]?.Total?.travelDuration }}
+        </div>
+
+        <!-- 🔥 GRID -->
+        <app-advanced-grid
+          [config]="distanceConfig()"
+          [rowData]="vehicleWiseData()[key]?.Report"
+        >
+        </app-advanced-grid>
+      </div>
+    </div>
+  }
+} @else {
+  <div class="text-center mt-3">No Data Available</div>
+}

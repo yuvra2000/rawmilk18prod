@@ -11,11 +11,13 @@ import { leciDashboardFilterFields, leciDashboardColumns, alertDetailColumns } f
 import { LeciDashboardService } from './leci-dashboard.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
+import { SharedModule } from '../../../shared/shared.module';
+import { MapLoader } from './state-service/map.loader';
 
 @Component({
   selector: 'app-leci-dashboard',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent],
+  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
   templateUrl: './leci-dashboard.component.html',
   styleUrl: './leci-dashboard.component.scss'
 })
@@ -23,6 +25,7 @@ export class LeciDashboardComponent implements OnInit {
   private service = inject(LeciDashboardService);
   private modalService = inject(UniversalModalService);
   private router = inject(Router);
+   private mapLoader = inject(MapLoader);
 
   supplierList = signal<any[]>([]);
   plantList = signal<any[]>([]);
@@ -188,5 +191,10 @@ export class LeciDashboardComponent implements OnInit {
     } else {
       console.log('User selected: NO');
     }
+  }
+
+  onVehicleClick(event: any) {
+    console.log('Vehicle clicked:', event);
+    this.mapLoader.openMapCallApi(event);
   }
 }

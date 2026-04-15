@@ -1,0 +1,9 @@
+<app-header [title]="'Trip Dashboard VLC'"> ></app-header>
+
+<app-collapse-wrapper>
+  <filter-form [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"> 
+  </filter-form>
+</app-collapse-wrapper>
+
+<app-advanced-grid  [config]="gridConfig()" [loadingRowData]="isLoadingRowData()">
+</app-advanced-grid>

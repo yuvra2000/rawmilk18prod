@@ -3,6 +3,7 @@ import { FilterFormComponent } from '../../../shared/components/filter-form/filt
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { EtaStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-eta-report',
@@ -11,6 +12,7 @@ import { EtaStore } from './state-service/store';
     FilterFormComponent,
     CollapseWrapperComponent,
     AdvancedGridComponent,
+    SharedModule,
   ],
   templateUrl: './eta-report.component.html',
   styleUrl: './eta-report.component.scss',

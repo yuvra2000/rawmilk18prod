@@ -4,11 +4,11 @@ export const token = localStorage.getItem('AccessToken') || '';
 export const GroupId = localStorage.getItem('GroupId') || '';
 export const userType = localStorage.getItem('usertype') || '';
 export function createFormData(
-  token: string = localStorage.getItem('AccessToken') || '',
+  tokenn: string = token || '',
   params: Record<string, any> = {},
 ): FormData {
   const formData = new FormData();
-  formData.append('AccessToken', token);
+  formData.append('AccessToken', tokenn);
   Object.entries(params).forEach(([key, value]) => {
     formData.append(key, value || '');
   });
@@ -48,19 +48,23 @@ export function handleApiResponse(
   const status = response.Status || response.status;
   const isSuccess =
     status === 'success' || status === 1 || response.success === true;
-  const apiMessage = response.Message || response.message || response.Data;
+  const apiMessage = response.Message || response.message;
 
   // Check for session expiration
-  if (response.Result === 'Session Expired' || status === 'Session Expired') {
+  if (
+    response.Result === 'Session Expired due to new login.' ||
+    apiMessage == 'Invalid or expired accesstoken.' ||
+    apiMessage == 'Sorry! Session expired, Please login again ..!'
+  ) {
     toastService.error(apiMessage || 'Session expired. Please log in again.');
+    window.location.href = 'https://secutrak.in/logout';
     return false;
   }
-
   if (isSuccess) {
     const message =
-      successMessage || apiMessage || 'Operation completed successfully';
-    // Only show success toast if a custom message is provided or it's a non-data action
-    if (successMessage) {
+      apiMessage || successMessage || 'Operation completed successfully';
+    console.log('API Success:', message);
+    if (message) {
       toastService.success(message);
     }
 
@@ -73,7 +77,8 @@ export function handleApiResponse(
     return true;
   } else {
     const message =
-      errorMessage || apiMessage || response.Data || 'Operation failed';
+      apiMessage || errorMessage || response.Data || 'Operation failed';
+    console.log('API Error:', message);
     toastService.error(message);
     return false;
   }
@@ -99,7 +104,6 @@ export function handleSessionExpiry(res: any, toastService: any) {
   // debugger;
   if (
     res?.Result == 'Session Expired due to new login.' ||
-    res?.Status == 'failed' ||
     res?.Message == 'Invalid or expired accesstoken.' ||
     res?.Message == 'Sorry! Session expired, Please login again ..!'
   ) {
@@ -108,4 +112,20 @@ export function handleSessionExpiry(res: any, toastService: any) {
     return true;
   }
   return false;
+}
+export function mapVehicleListToOptions(vehicleList: any): any[] {
+  if (!vehicleList) {
+    return [];
+  }
+
+  const normalizedList = Array.isArray(vehicleList)
+    ? vehicleList
+    : Object.values(vehicleList);
+  return normalizedList.map((item: any) => {
+    const vehicleNo = item?.VehicleNo || item?.vehicleNo || '';
+    return {
+      id: vehicleNo,
+      name: vehicleNo,
+    };
+  });
 }

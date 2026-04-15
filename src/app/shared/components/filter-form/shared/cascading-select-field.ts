@@ -21,7 +21,7 @@ import { Option, SelectConfig } from './types';
       class="ng-select custom-placeholder-style"
       [formControl]="control()"
       [id]="fieldName()"
-      [items]="options()"
+      [items]="enhancedOptions()"
       [bindLabel]="bindLabel()"
       [clearable]="true"
       [multiple]="multiple()"
@@ -32,8 +32,12 @@ import { Option, SelectConfig } from './types';
       [addTag]="resolvedAddTag()"
       [addTagText]="addTagText()"
       (change)="onSelectChange($event)"
-     
     >
+      <ng-template ng-option-tmp let-item="item" let-index="index">
+        <span [class.fw-bold]="item.isAction">
+          {{ item[bindLabel()] || item.name }}
+        </span>
+      </ng-template>
     </ng-select>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,11 +55,37 @@ export class CascadingSelectFieldComponent {
   selectionChange = output<EventEmitter<any>>();
   addTag = input<boolean | ((term: string) => any)>(false);
   addTagText = input<string>('Add item');
+  showSelectAll = input<boolean>(false);
   selectConfig = input<SelectConfig | undefined>({
     enableExclusiveAll: false,
     allOptionValue: 'all',
   });
+  enhancedOptions = computed(() => {
+    const opts = this.options();
 
+    if (!this.multiple() || !this.showSelectAll() || opts.length === 0) {
+      return opts;
+    }
+
+    const actionOptions: Option[] = [
+      {
+        id: 'SELECT_ALL',
+        name: 'Select All',
+        [this.bindLabel()]: 'Select All',
+        isAction: true,
+      } as any,
+      {
+        id: 'CLEAR_ALL',
+        name: 'Clear All',
+        [this.bindLabel()]: 'Clear All',
+        isAction: true,
+      } as any,
+    ];
+    console.log(
+      `[${this.fieldName()}] Enhanced options with action items: ${actionOptions.length} action items + ${opts.length} real options`,
+    );
+    return [...actionOptions, ...opts];
+  });
   // ✅ Computed: Decides which addTag function to use
   resolvedAddTag = computed(() => {
     const config = this.addTag();
@@ -87,31 +117,81 @@ export class CascadingSelectFieldComponent {
     });
     effect(() => {
       const value = this.control().value;
-      // console.log(value,"hii");
+
       if (value !== null && value !== undefined) {
-        this.selectionChange.emit(value);
+        // Filter out action items before emitting
+        const filteredValue = Array.isArray(value)
+          ? value.filter(
+              (item: any) =>
+                item.id !== 'SELECT_ALL' && item.id !== 'CLEAR_ALL',
+            )
+          : value;
+
+        // If the value changed due to filtering, don't emit the unfiltered value
+        // We will update the control in onSelectChange, which will re-trigger this effect
+        const hasActionItems =
+          Array.isArray(value) && value.length !== filteredValue.length;
+        if (!hasActionItems) {
+          this.selectionChange.emit(filteredValue);
+        }
       }
     });
   }
 
   onSelectChange(selectedItems: any[]) {
+    // 1. SELECT_ALL & CLEAR_ALL Logic
+    if (this.multiple() && Array.isArray(selectedItems)) {
+      const hasSelectAll = selectedItems.some(
+        (item: any) => item.id === 'SELECT_ALL',
+      );
+      const hasClearAll = selectedItems.some(
+        (item: any) => item.id === 'CLEAR_ALL',
+      );
+
+      if (hasSelectAll) {
+        // Select all real options (exclude action items)
+        const allRealOptions = this.options();
+        this.control().setValue(allRealOptions);
+        return; // Return early since we updated the whole selection
+      } else if (hasClearAll) {
+        // Clear all selections
+        this.control().setValue([]);
+        return; // Return early
+      } else {
+        // Remove action items from selection if somehow still present without triggering SELECT_ALL
+        const filteredValues = selectedItems.filter(
+          (item: any) => item.id !== 'SELECT_ALL' && item.id !== 'CLEAR_ALL',
+        );
+
+        if (filteredValues.length !== selectedItems.length) {
+          this.control().setValue(filteredValues);
+          return;
+        }
+      }
+    }
+
+    // 2. Existing enableExclusiveAll config Logic
     const config = this.selectConfig();
     const bLabel = this.bindLabel();
     // Feature check
-    if (!this.multiple() || !config?.enableExclusiveAll || !Array.isArray(selectedItems) || selectedItems.length <= 1) {
+    if (
+      !this.multiple() ||
+      !config?.enableExclusiveAll ||
+      !Array.isArray(selectedItems) ||
+      selectedItems.length <= 1
+    ) {
       return;
     }
-
 
     const allLabelName = config.allOptionValue; // E.g., 'All'
 
     // ✅ Helper: Object ke andar label field check karega
     const isItemAll = (item: any) => {
-      const labelValue = (item && typeof item === 'object') ? item[bLabel] : item;
+      const labelValue = item && typeof item === 'object' ? item[bLabel] : item;
       return labelValue === allLabelName;
     };
 
-    const hasAll = selectedItems.some(item => isItemAll(item));
+    const hasAll = selectedItems.some((item) => isItemAll(item));
 
     if (hasAll) {
       const lastSelectedItem = selectedItems[selectedItems.length - 1];
@@ -121,7 +201,9 @@ export class CascadingSelectFieldComponent {
         this.control().setValue([lastSelectedItem]);
       } else {
         // Case B: 'All' pehle se tha, naya item select kiya -> 'All' object filter kardo
-        const filteredObjects = selectedItems.filter(item => !isItemAll(item));
+        const filteredObjects = selectedItems.filter(
+          (item) => !isItemAll(item),
+        );
         this.control().setValue(filteredObjects);
       }
     }

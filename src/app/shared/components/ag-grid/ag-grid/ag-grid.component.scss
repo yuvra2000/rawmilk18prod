@@ -290,6 +290,10 @@ Status Cell Styling
     color: #895129;
     box-shadow: 0 0 10px #fef2f2;
   }
+
+  .ag-header-cell-text, .ag-header-group-text{
+    color: white;
+  }
 }
 
 /* Responsive design */

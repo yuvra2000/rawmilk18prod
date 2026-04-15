@@ -3,6 +3,7 @@ import { FilterFormComponent } from '../../../shared/components/filter-form/filt
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
 import { AdvancedGridComponent } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { CartReportStore } from './state-service/store';
+import { SharedModule } from '../../../shared/shared.module';
 @Component({
   selector: 'app-cart-report',
   standalone: true,
@@ -10,6 +11,7 @@ import { CartReportStore } from './state-service/store';
     FilterFormComponent,
     CollapseWrapperComponent,
     AdvancedGridComponent,
+    SharedModule,
   ],
   templateUrl: './cart-report.component.html',
   styleUrl: './cart-report.component.scss',

@@ -49,9 +49,6 @@ export interface AlertBadge {
   `,
   styles: [`
     .alerts-cell-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
       align-items: center;
       height: 100%;
     }
@@ -68,6 +65,7 @@ export interface AlertBadge {
       transition: opacity 0.15s, transform 0.1s;
       border: 1px solid transparent;
       height: 22px;
+      margin: 0 2px;
     }
     .alert-badge:hover {
       opacity: 0.8;

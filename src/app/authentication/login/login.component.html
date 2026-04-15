@@ -1,4 +1,5 @@
-<div class="container">
+@if(show_html){
+<div class="login-shell">
   <div
     class="row justify-content-center align-items-center authentication authentication-basic h-100"
   >
@@ -6,29 +7,44 @@
     <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
       <div class="my-4 d-flex justify-content-center">
         <a [routerLink]="['/sales']">
-          <img
+          <!-- <img
             src="./assets/images/secutrak/white-logo.png"
             alt="logo"
-            class="desktop-dark"
-          />
+            class="w-25"
+          /> -->
         </a>
       </div>
-      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="">
         <li ngbNavItem="Angular">
-          <a ngbNavLink>
-            <img src="" alt="" />
+          <a
+            class="d-flex justify-content-center anchor-logo align-items-center"
+          >
+            <img
+              src="./assets/images/secutrak/brand-logo.png"
+              alt="logo"
+              class="brand-logo"
+            />
           </a>
           <ng-template ngbNavContent class="mt-2">
-            <form [formGroup]="loginForm" (ngSubmit)="Submit()">
+            <form
+              class="login-form"
+              [formGroup]="loginForm"
+              (ngSubmit)="Submit()"
+              (keydown.enter)="Submit()"
+            >
               <div class="text-danger">{{ error }}</div>
               <div class="col-xl-12">
-                <label for="signin-UserId" class="form-label text-default"
+                <label for="signin-GroupId" class="form-label text-default"
                   >GroupId</label
                 >
                 <input
                   type="text"
                   class="form-control mb-3"
-                  id="signin-UserId"
+                  [class.invalid-control]="isInvalid('GroupId')"
+                  [ngbTooltip]="isInvalid('GroupId') ? 'Required' : ''"
+                  tooltipClass="required-tooltip"
+                  placement="right"
+                  id="signin-GroupId"
                   placeholder="GroupId"
                   autocomplete
                   formControlName="GroupId"
@@ -42,30 +58,38 @@
                 <input
                   type="text"
                   class="form-control mb-3"
+                  [class.invalid-control]="isInvalid('UserId')"
+                  [ngbTooltip]="isInvalid('UserId') ? 'Required' : ''"
+                  tooltipClass="required-tooltip"
+                  placement="right"
                   id="signin-UserId"
                   placeholder="user name"
                   formControlName="UserId"
                   autocomplete
                 />
               </div>
-              <div class="col-xl-12 mb-2">
+              <div class="col-xl-12 mb-3">
                 <label
                   for="signin-Password"
                   class="form-label text-default d-block"
                   >Password
-                  <a class="float-end text-danger">Forget Password ?</a></label
-                >
-                <div class="input-group">
+                  <!-- <a class="float-end text-danger">Forget Pass/word ?</a> -->
+                </label>
+                <div class="input-group password-group">
                   <input
                     formControlName="Password"
                     autocomplete
                     [type]="showPassword ? 'text' : 'Password'"
                     class="form-control"
+                    [class.invalid-control]="isInvalid('Password')"
+                    [ngbTooltip]="isInvalid('Password') ? 'Required' : ''"
+                    tooltipClass="required-tooltip"
+                    placement="right"
                     id="signin-Password"
                     placeholder="Password"
                   />
                   <button
-                    class="btn btn-light"
+                    class="btn btn-light eye-toggle"
                     type="button"
                     (click)="toggleVisibility()"
                   >
@@ -73,6 +97,7 @@
                   </button>
                 </div>
                 <div class="mt-2">
+                  <!--
                   <div class="form-check">
                     <input
                       class="form-check-input"
@@ -80,18 +105,26 @@
                       value=""
                       id="defaultCheck1"
                     />
-                    <label
+                     <label
                       class="form-check-label text-muted fw-normal"
                       for="defaultCheck1"
                     >
                       Remember Password ?
-                    </label>
-                  </div>
+                    </label> 
+                  </div>-->
                 </div>
               </div>
               <div class="col-xl-12 d-grid mt-2">
-                <button type="submit" class="btn btn-lg btn-primary">
-                  Sign In
+                <button
+                  type="submit"
+                  class="btn btn-lg btn-primary sign-in-btn"
+                  [disabled]="isSubmitting"
+                >
+                  <span [class.d-none]="isSubmitting">Sign In</span>
+                  <span class="btn-loading" [class.d-none]="!isSubmitting">
+                    <span class="btn-loading-spinner" aria-hidden="true"></span>
+                    Loading...
+                  </span>
                 </button>
               </div>
             </form>
@@ -99,18 +132,21 @@
         </li>
       </ul>
       <div class="card custom-card">
-        <div class="card-body p-5">
-          <p class="h4 mb-2 fw-semibold">Sign In</p>
-          <p class="mb-4 text-muted fw-normal">Welcome back Jhon !</p>
+        <div class="card-body p-5 login-card-body">
+          <p class="h4 mb-2 fw-semibold login-title">Sign In</p>
+          <p class="login-subtitle">
+            Welcome back. Please enter your credentials.
+          </p>
+          <!-- <p class="mb-4 text-muted fw-normal">Welcome back Jhon !</p> -->
           <div class="login-option"></div>
           <div class="" [ngbNavOutlet]="nav"></div>
-          <div class="text-center">
+          <!-- <div class="text-center">
             <p class="fs-12 text-muted mt-3">
               Dont have an account?
               <a [routerLink]="['/sales']" class="text-primary">Sign Up</a>
             </p>
-          </div>
-          <div class="text-center my-3 authentication-barrier">
+          </div> -->
+          <!-- <div class="text-center my-3 authentication-barrier">
             <span>OR</span>
           </div>
           <div class="btn-list text-center">
@@ -123,9 +159,10 @@
             <button class="btn btn-icon btn-light">
               <i class="ri-twitter-x-line fw-bold text-dark op-7"></i>
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
 </div>
+}

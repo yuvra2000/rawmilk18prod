@@ -1,0 +1,61 @@
+.label {
+  font-size: 11px;
+  font-weight: 900;
+  font-family: Roboto;
+}
+.colon {
+  width: 1%;
+  color: blue;
+}
+.value {
+  color: blue;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+:host{
+  margin-top: 0px;
+}
+/* GLOBAL STYLES (e.g., styles.scss) */
+
+/* 1. Google के शीर्षक कंटेनर को Flex बनाकर क्लोज बटन के लिए जगह तैयार करें */
+/* यह वह क्षेत्र है जिसमें क्लोज बटन होता है */
+.gm-style-iw-ch {
+    display: flex; 
+    /* क्लोज बटन को दाईं ओर धकेलें */
+    justify-content: flex-end; 
+    align-items: center; 
+    /* हेडिंग के लिए जगह बनाने हेतु एक ऊँचाई सेट करें */
+    height: 35px; 
+    padding: 0; 
+}
+
+/* 2. मुख्य सामग्री कंटेनर (जिसमें आपका कंपोनेंट है) को ऊपर खींचें */
+/* यह InfoWindow content area है (.gm-style-iw-d) */
+.gm-style-iw-d {
+    /* इसे gm-style-iw-ch की ऊँचाई के बराबर ऊपर खींचें */
+    transform: translateY(-35px); 
+    padding: 10px; 
+    /* हेडिंग के नीचे सामग्री को धकेलने के लिए टॉप पैडिंग बढ़ाएँ */
+    padding-top: 0px; 
+    z-index: 1; 
+}
+
+/* 3. आपकी हेडिंग को क्लोज बटन के साथ संरेखित करने के लिए एब्सोल्यूट पोजीशनिंग दें */
+.infowindow-header-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1d4380;
+    margin: 0;
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    padding-right: 40px;
+}
+
+/* 4. बाकी कंटेंट को हेडिंग के नीचे शुरू करने के लिए मार्जिन एडजस्ट करें */
+.infowindow-body-content {
+    /* हेडिंग को एडजस्ट करने के बाद कंटेंट को नीचे धकेलें */
+    margin-top: 0px !important; 
+}

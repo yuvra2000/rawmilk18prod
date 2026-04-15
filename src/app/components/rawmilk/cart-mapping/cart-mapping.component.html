@@ -1,0 +1,18 @@
+<!-- @if (store.rowData().length > 0) { -->
+<app-header [title]="'Cart Mapping'">
+  ></app-header>
+<app-advanced-grid [rowData]="store.rowData()" [config]="store.columnConfig()"
+  (selectionChanged)="store.onRowSelection($event)" [loadingRowData]="store.loading()">
+  <h5 class="text-center table-heading">Cart Mapping list</h5>
+  <div slot="right" class="d-flex gap-2">
+    <app-action-button name="Assign Cart" color="primary" [icon]="{ type: 'fa', value: 'fa-plus' }"
+      actionType="assign-cart" (buttonClick)="store.handleButtonAction($event)" />
+    <app-action-button name="Assign" color="success" [icon]="{ type: 'fa', value: 'fa-check' }" actionType="assign"
+      [data]="{ selectedRows: store.selectedRows() }" (buttonClick)="store.handleButtonAction($event)"
+      [disabled]="store.selectedRows().length == 0" />
+    <app-action-button name="De-assign" color="danger" [icon]="{ type: 'fa', value: 'fa-ban' }" actionType="de-assign"
+      [data]="{ selectedRows: store.selectedRows() }" (buttonClick)="store.handleButtonAction($event)"
+      [disabled]="store.selectedRows().length == 0" />
+  </div>
+</app-advanced-grid>
+<!-- } -->

@@ -1,0 +1,14 @@
+@defer (on viewport) {
+  <div
+    echarts
+    [options]="chartOption()"
+    [ngStyle]="style()"
+    (chartClick)="onChartClick($event)"
+    class="chart-container"
+  ></div>
+} @placeholder {
+  <div [ngStyle]="style()" class="chart-placeholder">
+    <span>Loading Chart...</span>
+  </div>
+}
+ <!-- [theme]="themeService.isDark() ? 'dark' : 'light'" -->

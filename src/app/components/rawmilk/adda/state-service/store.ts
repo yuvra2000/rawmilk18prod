@@ -19,6 +19,10 @@ interface InitialData {
   addaList: any[];
   regionList?: any[];
 }
+export interface Option {
+  id: string | number;
+  name: string;
+}
 export class AddaStore {
   private toast = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
@@ -85,14 +89,21 @@ export class AddaStore {
   }
   
   onEdit(data: any) {
+    const statusList: Option[] = [
+      { name: 'Active', id: 1 },
+      { name: 'Deactive', id: 2 },
+    ];
     console.log('Edit data', data);
+     const selectedStatus = statusList.find(
+    (item) => item.id === data.status
+  );
     this.modal.openForm({
       title: 'Edit Adda',
       mode: 'form',
       fields: editFields(this.initialData().regionList || []),
       initialData: {
         ...data,
-        status: data.status === 1 ? 'Active' : 'Deactive',
+        status: selectedStatus,
       },
       onSave: async (formData: any) => {
         await this.saveForm(formData, data, 'edit');

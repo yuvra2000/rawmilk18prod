@@ -83,6 +83,7 @@ export class AddaStore {
       this.spinner.hide();
     }
   }
+  
   onEdit(data: any) {
     console.log('Edit data', data);
     this.modal.openForm({

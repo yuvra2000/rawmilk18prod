@@ -139,6 +139,12 @@ export const editFields = (regionList: any[]): FieldConfig[] => [
     placeholder: 'Select Status',
     options: statusList,
   },
+  {
+    name: 'radius',
+    type: 'number',
+    label: 'Radius',
+    required: true,
+  },
 ];
 export const addFields = (regionList: any[]): FieldConfig[] => [
   {
@@ -178,6 +184,14 @@ export const addFields = (regionList: any[]): FieldConfig[] => [
     label: 'Region',
     placeholder: 'Select Region',
     options: regionList,
+    required: true,
+  },
+  {
+    name: 'radius',
+    type: 'number',
+    label: 'Radius',
+    placeholder: 'Enter Radius',
+    min:0,
     required: true,
   },
 ];

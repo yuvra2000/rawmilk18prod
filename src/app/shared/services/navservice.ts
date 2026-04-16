@@ -60,8 +60,9 @@ export class NavService implements OnDestroy {
 
   constructor(private router: Router) {
     const groupId: number = Number(localStorage.getItem('GroupId')); // ✅ DEFINE HERE
+    const accounttype: number = Number(localStorage.getItem('AccountType')); // ✅ DEFINE HERE
 
-    this.filterMenuByGroup(groupId); // ✅ NOW VALID
+    this.filterMenuByGroup(groupId,accounttype); // ✅ NOW VALID
 
     this.setScreenWidth(window.innerWidth);
     fromEvent(window, 'resize')
@@ -407,9 +408,9 @@ export class NavService implements OnDestroy {
     },
   ];
 
-  filterMenuByGroup(groupId: number) {
+  filterMenuByGroup(groupId: any,accounttype:any) {
     // ✅ If NOT 5839 → show full menu
-    if (groupId != 5938) {
+    if (groupId != 5938 && accounttype !=12 ) {
       this.items.next(this.MENUITEMS);
       return;
     }

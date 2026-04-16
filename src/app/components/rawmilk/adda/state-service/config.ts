@@ -138,6 +138,8 @@ export const editFields = (regionList: any[]): FieldConfig[] => [
     label: 'Status',
     placeholder: 'Select Status',
     options: statusList,
+    bindLabel:'name',
+   
   },
   {
     name: 'radius',

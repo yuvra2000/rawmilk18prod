@@ -410,10 +410,11 @@ export class NavService implements OnDestroy {
 
   filterMenuByGroup(groupId: any,accounttype:any) {
     // ✅ If NOT 5839 → show full menu
-    if (groupId != 5938 && accounttype !=12 ) {
-      this.items.next(this.MENUITEMS);
-      return;
-    }
+     // ✅ Apply filter ONLY when BOTH match
+  if (!(groupId == 5938 && accounttype == '12')) {
+    this.items.next(this.MENUITEMS);
+    return;
+  }
 
     // ✅ Allowed paths
     const allowedPaths = [

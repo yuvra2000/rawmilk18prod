@@ -17,7 +17,7 @@ export const travelfeilds: FieldConfig[] = [
     name: 'Vehicle',
     type: 'select',
     label: 'Vehicle',
-    placeholder: 'Select Plant',
+    placeholder: 'Select Vehicle',
     multiple: true,
     showSelectAll: true,
     options: [], // 🔥 dynamic

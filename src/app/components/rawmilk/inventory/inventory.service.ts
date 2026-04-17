@@ -70,9 +70,14 @@ export class InventoryService {
    * Initialize page data - fetches all required data in parallel
    * Use this when component loads to get both filter options and initial inventory data
    */
-  initializePageData(filterParams: any, reportParams: any): Observable<any> {
+  initializePageData(
+    mccParams: any,
+    masterParams: any,
+    reportParams: any,
+  ): Observable<any> {
     return forkJoin({
-      filterOptions: this.getFilterOptions(filterParams),
+      mccData: this.getMCCData(mccParams),
+      masterData: this.getCreateIndentMaster(masterParams),
       inventoryData: this.getInventoryReport(reportParams),
     });
   }

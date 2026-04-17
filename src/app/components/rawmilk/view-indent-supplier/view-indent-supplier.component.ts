@@ -120,6 +120,7 @@ export class ViewIndentSupplierComponent implements OnInit {
   private async loadInitialData() {
     try {
       this.loading.set(true);
+      this.spinner.show();
       const res: any = await firstValueFrom(
         this.viewIndentSupplierService.getIndentData(formData),
       );
@@ -131,6 +132,7 @@ export class ViewIndentSupplierComponent implements OnInit {
       console.error('Error occurred while fetching indent data:', error);
     } finally {
       this.loading.set(false);
+      this.spinner.hide();
     }
   }
   setupGrid() {

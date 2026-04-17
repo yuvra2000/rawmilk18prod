@@ -213,7 +213,7 @@ export const actionColumn: GridColumnConfig = {
     actions: [
       // ✅ View Intent - when action_type == 3
       {
-        icon: 'fa fa-eye',
+        icon: 'fa-regular fa-eye',
         action: 'view',
         tooltip: 'View',
         visible: (data: any) => data?.action_type == 3,
@@ -222,9 +222,8 @@ export const actionColumn: GridColumnConfig = {
             params.context.componentParent.viewIndent(data.id);
           }
         },
-
         iconStyle: {
-          color: 'grey',
+          color: 'black',
           cursor: 'pointer',
           fontSize: '18px',
           marginRight: '10px',

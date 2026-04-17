@@ -4,6 +4,14 @@
   padding: 0.1rem;
 }
 
+.nav-tab-header {
+  padding: 0.1rem 0.2rem 0;
+}
+
+.nav-tab-header > :first-child {
+  margin-bottom: 0;
+}
+
 .custom-nav-tabs .nav-link {
   color: #1d4380;
   border: none;
@@ -33,5 +41,5 @@
     color 0.2s;
 }
 .custom-nav-tabs .nav-link:not(.active) {
-  border: 0.1px solid #62799e27;
+  // border: 0.1px solid #62799e27;
 }

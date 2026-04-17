@@ -131,7 +131,7 @@ export class InventoryComponent implements OnInit {
   private initializePageData(): void {
     const mccParams = createFormData(this.token, {
       GroupId: this.groupId,
-      supplier_id: this.supplierId,
+      supplier_id: this.supplierId == undefined ? '' : this.supplierId,
       ForApp: '0',
     });
 
@@ -142,7 +142,7 @@ export class InventoryComponent implements OnInit {
 
     const reportParams = createFormData(this.token, {
       GroupId: this.groupId,
-      SupplierId: this.supplierId,
+      SupplierId: this.supplierId == undefined ? '' : this.supplierId,
       FromDate: getTodayDate(),
       ToDate: getTodayDate(),
       ForWeb: '1',

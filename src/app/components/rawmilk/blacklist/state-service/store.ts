@@ -114,7 +114,7 @@ export class BlackListStore {
     console.log('Form submitted with data:', data);
     this.initialData.update((prev) => ({
       ...prev,
-      reportType: data.reportType?.id,
+      reportType: data.reportType?.id || { id: '1', name: 'Vehiclewise' },
     }));
 
     this.lastFilterValues.set(data);

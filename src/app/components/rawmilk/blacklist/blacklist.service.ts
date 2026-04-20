@@ -19,7 +19,7 @@ export class BlacklistService {
   }
   vehicleWiseReport(params: any): Observable<any> {
     return this.masterRequestService.postFormData(
-      '/vehicleListVehicleWisee',
+      '/vehicleListVehicleWise',
       params,
     );
   }

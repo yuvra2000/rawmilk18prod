@@ -111,9 +111,10 @@ export class BlackListStore {
     }
   }
   onFormSubmit(data: any) {
+    console.log('Form submitted with data:', data);
     this.initialData.update((prev) => ({
       ...prev,
-      reportType: data.reportType,
+      reportType: data.reportType?.id,
     }));
 
     this.lastFilterValues.set(data);

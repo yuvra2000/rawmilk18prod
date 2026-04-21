@@ -49,6 +49,7 @@ export class CartReportStore {
     context: {
       componentParent: this,
     },
+    height: '50vh',
   }));
   rowData = computed<any[]>(() => this.initialData().cartReportData || []);
   filterfields = computed<any[]>(() =>

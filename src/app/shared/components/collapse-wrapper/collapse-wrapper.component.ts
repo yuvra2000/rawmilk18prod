@@ -13,7 +13,7 @@ export class CollapseWrapperComponent {
   @Output() iconClick = new EventEmitter<void>();
   collapseSectionClass = input<string>(''); // Input for additional classes to collapse section
   collapsed = model(false);
-  filterText = input('FILTER');
+  filterText = input('Filter');
   toggleCollapse(): void {
     this.collapsed.update((value) => !value);
   }

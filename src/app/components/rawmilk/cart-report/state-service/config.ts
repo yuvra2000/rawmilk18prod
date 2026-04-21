@@ -141,4 +141,14 @@ export const cartColumns: GridColumnConfig[] = [
     field: 'region_code',
     width: 120,
   },
+  {
+    headerName: 'Adda GeoCoords',
+    field: 'adda_latlng',
+  },
+  {
+    headerName: 'Base Location Dist',
+    field: 'nearest_base_dist',
+    width: 100,
+    headerTooltip: 'Distance from nearest base location in km',
+  },
 ];

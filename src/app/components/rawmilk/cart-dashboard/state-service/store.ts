@@ -304,6 +304,11 @@ export class CartDashboardStore {
     });
   }
   onCartStatusSliceClick(event: any) {
+    const cartData = this.initialData().tileData?.cart_data;
+    if (cartData?.[event.clickedSlice?.name]?.length === 0) {
+      this.toast.info('No data available for the selected criteria');
+      return;
+    }
     this.modal.openGridModal({
       title: `Carts with status: ${event.clickedSlice?.name}`,
       columns: cartDetailsColumns,
@@ -316,6 +321,13 @@ export class CartDashboardStore {
     });
   }
   onAddaStatusSliceClick(event: any) {
+    if (
+      this.initialData().tileData?.adda_data?.[event.clickedSlice?.name]
+        ?.length === 0
+    ) {
+      this.toast.info('No data available for the selected criteria');
+      return;
+    }
     this.modal.openGridModal({
       title: `Adda with status: ${event.clickedSlice?.name}`,
       columns: addaDetailsColumns,

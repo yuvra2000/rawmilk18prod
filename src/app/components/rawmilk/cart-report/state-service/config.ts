@@ -74,15 +74,12 @@ export const cartColumns: GridColumnConfig[] = [
     headerName: 'S No',
     field: 'serialNo',
     valueGetter: (params: any) => params.node.rowIndex + 1,
-    width: 90,
+    width: 70,
   },
   {
-    headerName: 'Start Time',
-    field: 'start_time',
-  },
-  {
-    headerName: 'End Time',
-    field: 'end_time',
+    headerName: 'Cart no',
+    field: 'cart_no',
+    width: 150,
   },
   {
     headerName: 'Adda Name',
@@ -98,6 +95,7 @@ export const cartColumns: GridColumnConfig[] = [
   {
     headerName: 'Franchise Name',
     field: 'franchise_name',
+    width: 150,
     valueGetter: (params: any) => {
       const franchiseName = params.data?.franchise_name || '';
       const franchiseCode = params.data?.franchise_code || '';
@@ -106,17 +104,21 @@ export const cartColumns: GridColumnConfig[] = [
         : franchiseName || franchiseCode || '-';
     },
   },
+
   {
-    headerName: 'Cart no',
-    field: 'cart_no',
-  },
-  {
-    headerName: 'Cart Start Time',
+    headerName: 'Start Time',
     field: 'cart_start_time',
   },
   {
-    headerName: 'Cart End Time',
+    headerName: 'End Time',
     field: 'cart_end_time',
+  },
+  {
+    headerName: 'Duration',
+    field: 'duration',
+    minWidth: 100,
+    width: 100,
+    headerTooltip: 'Duration in minutes',
   },
   {
     headerName: 'Day',
@@ -128,9 +130,25 @@ export const cartColumns: GridColumnConfig[] = [
       const dayKey = String(dayValue).toUpperCase();
       return dayLabelMap[dayKey] || String(dayValue);
     },
+    width: 120,
+  },
+  {
+    headerName: 'Scheduled Time ',
+    field: 'scheduled_time',
   },
   {
     headerName: 'Region',
     field: 'region_code',
+    width: 120,
+  },
+  {
+    headerName: 'Adda GeoCoords',
+    field: 'adda_latlng',
+  },
+  {
+    headerName: 'Base Location Dist',
+    field: 'nearest_base_dist',
+    width: 100,
+    headerTooltip: 'Distance from nearest base location in km',
   },
 ];

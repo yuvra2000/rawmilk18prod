@@ -243,6 +243,7 @@ export const cartDetailsColumns: GridColumnConfig[] = [
     headerName: 'S No',
     headerTooltip: 'Serial Number',
     valueGetter: (params: any) => params.node.rowIndex + 1,
+    width: 40,
   },
   {
     headerName: 'Cart Number',
@@ -255,6 +256,7 @@ export const addaDetailsColumns: GridColumnConfig[] = [
     headerName: 'S No',
     headerTooltip: 'Serial Number',
     field: 'serialNo',
+    width: 40,
     valueGetter: (params: any) => params.node.rowIndex + 1,
   },
   {
@@ -268,6 +270,7 @@ export const franchiseDetailsColumns: GridColumnConfig[] = [
     headerName: 'S No',
     headerTooltip: 'Serial Number',
     field: 'serialNo',
+    width: 40,
     valueGetter: (params: any) => params.node.rowIndex + 1,
   },
   {

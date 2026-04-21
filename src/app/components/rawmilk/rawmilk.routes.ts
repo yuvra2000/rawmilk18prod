@@ -391,6 +391,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Adda Wise Report',
       },
+      {
+        path: 'cart-wise-report',
+        loadComponent: () =>
+          import('./cart-wise-report/cart-wise-report.component').then(
+            (m) => m.CartWiseReportComponent,
+          ),
+        title: 'Cart Wise Report',
+      },
     ],
   },
 ];

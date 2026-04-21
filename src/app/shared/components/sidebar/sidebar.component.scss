@@ -1,13 +1,3 @@
-// #sidebar-scroll,
-// .main-sidebar-header {
-//   background-color: var(--primary-color) !important;
-// }
-// .side-menu__label,
-// .side-menu__item,
-// .side-menu__icon {
-//   color: #fff !important;
-// }
-
 .app-sidebar .slide-menu.child1:after {
   content: "";
   position: absolute;
@@ -44,4 +34,9 @@
 .app-sidebar .slide-menu.child1 .side-menu__item.active::before {
   content: "";
   background-color: white !important;
+}
+::ng-deep {
+  .os-scrollbar-handle {
+    background-color: black !important;
+  }
 }

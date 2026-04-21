@@ -419,9 +419,11 @@ export class NavService implements OnDestroy {
     // ✅ Allowed paths
     const allowedPaths = [
       'cart-dashboard',
+      'Home',
       'reports/cart-report',
       'reports/cart-report-exception',
       'reports/franchise-report',
+
     ];
     //add  cart report frenchise
 

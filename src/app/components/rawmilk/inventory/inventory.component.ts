@@ -129,15 +129,20 @@ export class InventoryComponent implements OnInit {
    * Initialize all page data using forkJoin for parallel API calls
    */
   private initializePageData(): void {
-    const filterParams = createFormData(this.token, {
+    const mccParams = createFormData(this.token, {
       GroupId: this.groupId,
-      supplier_id: this.supplierId,
+      supplier_id: this.supplierId == undefined ? '' : this.supplierId,
+      ForApp: '0',
+    });
+
+    const masterParams = createFormData(this.token, {
+      GroupId: this.groupId,
       ForApp: '0',
     });
 
     const reportParams = createFormData(this.token, {
       GroupId: this.groupId,
-      SupplierId: this.supplierId,
+      SupplierId: this.supplierId == undefined ? '' : this.supplierId,
       FromDate: getTodayDate(),
       ToDate: getTodayDate(),
       ForWeb: '1',
@@ -146,18 +151,18 @@ export class InventoryComponent implements OnInit {
       MccId: '',
     });
 
-    this.spinner.show();
     this.loading.set(true);
 
     this.inventoryService
-      .initializePageData(filterParams, reportParams)
+      .initializePageData(mccParams, masterParams, reportParams)
       .subscribe({
         next: (result) => {
           this.handleInitializationSuccess(result);
-          this.spinner.hide();
+          this.spinner.show();
         },
         error: (error) => {
           handleError(error, this.toast);
+          this.spinner.hide();
         },
         complete: () => {
           this.loading.set(false);
@@ -171,35 +176,34 @@ export class InventoryComponent implements OnInit {
    */
   private handleInitializationSuccess(result: any): void {
     // Populate filter options
-    if (result.filterOptions) {
-      // Handle MCC data
-      if (result.filterOptions.mccData?.Status === 'success') {
-        this.mccList.set(result.filterOptions.mccData.Data || []);
-        addInventory.forEach((field) => {
-          if (field.name === 'mcc') {
-            field.options = result.filterOptions.mccData.Data || [];
-          }
-        });
-      }
+    // Handle MCC data
+    console.log('mcc data', result.mccData);
+    if (result.mccData?.Status === 'success') {
+      this.mccList.set(result.mccData.Data || []);
+      addInventory.forEach((field) => {
+        if (field.name === 'mcc') {
+          field.options = result.mccData.Data || [];
+        }
+      });
+    }
 
-      // Handle master data (milk types, plants, etc.)
-      if (result.filterOptions.masterData?.Status === 'success') {
-        const masterData = result.filterOptions.masterData;
-        this.milkTypeList.set(masterData.Milk || []);
-        this.milkTypeListModal.set(masterData.Milk || []);
-        this.supplierList.set(
-          masterData.PlantSupplier?.filter((s: any) => s.type == 6) || [],
-        );
-        addInventory.forEach((field) => {
-          if (field.name === 'milkSamples') {
-            field.formArrayFields?.forEach((subField) => {
-              if (subField.name === 'milkType') {
-                subField.options = masterData.Milk || [];
-              }
-            });
-          }
-        });
-      }
+    // Handle master data (milk types, plants, etc.)
+    if (result.masterData?.Status === 'success') {
+      const masterData = result.masterData;
+      this.milkTypeList.set(masterData.Milk || []);
+      this.milkTypeListModal.set(masterData.Milk || []);
+      this.supplierList.set(
+        masterData.PlantSupplier?.filter((s: any) => s.type == 6) || [],
+      );
+      addInventory.forEach((field) => {
+        if (field.name === 'milkSamples') {
+          field.formArrayFields?.forEach((subField) => {
+            if (subField.name === 'milkType') {
+              subField.options = masterData.Milk || [];
+            }
+          });
+        }
+      });
     }
 
     // Populate initial inventory data
@@ -259,13 +263,12 @@ export class InventoryComponent implements OnInit {
    */
   onFormSubmit(formData: any): void {
     const params = createFormData(this.token, {
-      GroupId: this.groupId,
-      supplier_id: this.supplierId,
-      from: formData.from || '',
-      to: formData.to || '',
-      mcc_id: formData.mcc?.mcc_id || '',
-      milk_type_id: formData.milkType?.id || '',
-      category: formData.category?.id || '',
+      SupplierId: this.supplierId,
+      FromDate: formData.from || '',
+      ToDate: formData.to || '',
+      MccId: formData.mcc?.mcc_id || '',
+      MilkId: formData.milkType?.id || '',
+      Category: formData.category?.id || '',
     });
 
     this.spinner.show();

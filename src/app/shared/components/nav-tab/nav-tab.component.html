@@ -1,39 +1,40 @@
-<div
-  class="nav-tab-wrapper rounded bg-white mb-3 d-flex align-items-center"
-  [ngStyle]="wrapperStyle()"
->
-  <ul
-    ngbNav
-    #nav="ngbNav"
-    [(activeId)]="active"
-    class="nav nav-tabs nav-justified custom-nav-tabs"
-    [ngStyle]="tabStyle()"
-  >
-    @for (tab of tabs(); track tab) {
-      <li [ngbNavItem]="tabs()?.indexOf(tab)">
-        <button
-          ngbNavLink
-          class="nav-link fw-semibold"
-          [ngClass]="{ 'active-tab': active() === tabs()?.indexOf(tab) }"
-        >
-          {{ tab.title }}
-        </button>
-        <ng-template ngbNavContent>
-          @if (tab.component) {
-            <ng-container
-              *ngComponentOutlet="
-                tab.component;
-                inputs: tab.componentInputs || {}
-              "
-            >
-            </ng-container>
-          } @else {
-            {{ tab.content || "" }}
-          }
-        </ng-template>
-      </li>
-    }
-  </ul>
+<div class="nav-tab-wrapper rounded bg-white mb-3" [ngStyle]="wrapperStyle()">
+  <div class="nav-tab-header d-flex align-items-center gap-3 flex-wrap">
+    <ng-content select="[slot='title-before']"></ng-content>
+
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      [(activeId)]="active"
+      class="nav nav-tabs nav-justified custom-nav-tabs mb-0"
+      [ngStyle]="tabStyle()"
+    >
+      @for (tab of tabs(); track tab) {
+        <li [ngbNavItem]="tabs()?.indexOf(tab)">
+          <button
+            ngbNavLink
+            class="nav-link fw-semibold"
+            [ngClass]="{ 'active-tab': active() === tabs()?.indexOf(tab) }"
+          >
+            {{ tab.title }}
+          </button>
+          <ng-template ngbNavContent>
+            @if (tab.component) {
+              <ng-container
+                *ngComponentOutlet="
+                  tab.component;
+                  inputs: tab.componentInputs || {}
+                "
+              >
+              </ng-container>
+            } @else {
+              {{ tab.content || "" }}
+            }
+          </ng-template>
+        </li>
+      }
+    </ul>
+  </div>
 
   <div class="ms-auto">
     <ng-content></ng-content>

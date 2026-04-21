@@ -2,7 +2,7 @@
 .advanced-grid-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  // gap: 10px;
   position: relative;
   background: #fff;
   margin-top: 1rem;
@@ -15,7 +15,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 8px 2px;
+  padding: 4px 2px;
   // background: #f8f9fa;
   // border: 1px solid #dee2e6;
   border-radius: 4px;
@@ -291,7 +291,8 @@ Status Cell Styling
     box-shadow: 0 0 10px #fef2f2;
   }
 
-  .ag-header-cell-text, .ag-header-group-text{
+  .ag-header-cell-text,
+  .ag-header-group-text {
     color: white;
   }
 }

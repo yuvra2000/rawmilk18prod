@@ -176,7 +176,6 @@ export const detailsColumns: GridColumnConfig[] = [
     headerName: 'Cart No',
     field: 'cart_no',
     valueGetter: (params: any) => params.data?.cart_no || '-',
-    minWidth: 130,
   },
   {
     headerName: 'Scheduled Time',
@@ -186,7 +185,6 @@ export const detailsColumns: GridColumnConfig[] = [
       const endTime = params.data?.end_time?.split(' ')[1] || '';
       return params.data?.scheduled_time || `${startTime} - ${endTime}` || '-';
     },
-    minWidth: 130,
   },
   {
     headerName: 'Actual Time',
@@ -196,7 +194,6 @@ export const detailsColumns: GridColumnConfig[] = [
       const endTime = params.data?.cart_end_time?.split(' ')[1] || '';
       return params.data?.actual_time || `${startTime} - ${endTime}` || '-';
     },
-    minWidth: 130,
   },
   {
     headerName: 'Adda',
@@ -213,7 +210,7 @@ export const detailsColumns: GridColumnConfig[] = [
         '-'
       );
     },
-    minWidth: 220,
+
     cellStyle: {
       cursor: 'pointer',
       color: '#1d4380',
@@ -239,7 +236,6 @@ export const detailsColumns: GridColumnConfig[] = [
       cursor: 'pointer',
       color: '#1d4380',
     },
-    minWidth: 230,
   },
 ];
 export const cartDetailsColumns: GridColumnConfig[] = [

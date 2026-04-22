@@ -409,9 +409,9 @@ private validateExportData(gridApi: GridApi, columns: GridColumnConfig[]): PdfVa
       ? gridApi.getSelectedRows()
       : this.getAllRowsData(gridApi);
 
-    rowsToProcess.forEach(rowData => {
+    rowsToProcess.forEach((rowData, index) => {
       const rowForPdf = exportableColumns.map(col => {
-        let value = this.getCellValue(rowData, col, gridApi);
+        let value = this.getCellValue(rowData, col, gridApi, index);
         return this.formatCellValue(value, col);
       });
       processedData.push(rowForPdf);
@@ -430,14 +430,14 @@ private validateExportData(gridApi: GridApi, columns: GridColumnConfig[]): PdfVa
     return rowData;
   }
 
-  private getCellValue(rowData: any, column: GridColumnConfig, gridApi: GridApi): any {
+  private getCellValue(rowData: any, column: GridColumnConfig, gridApi: GridApi, rowIndex: number = 0): any {
     let value: any;
 
     // Handle value getter
     if (column.valueGetter && typeof column.valueGetter === 'function') {
       value = column.valueGetter({
         data: rowData,
-        node: null,
+        node: { data: rowData, rowIndex },
         colDef: column,
         api: gridApi,
         getValue: (field: string) => rowData[field]
@@ -453,7 +453,7 @@ private validateExportData(gridApi: GridApi, columns: GridColumnConfig[]): PdfVa
       value = column.valueFormatter({
         value,
         data: rowData,
-        node: null,
+        node: { data: rowData, rowIndex },
         colDef: column,
         api: gridApi
       } as any);
@@ -572,7 +572,7 @@ private validateExportData(gridApi: GridApi, columns: GridColumnConfig[]): PdfVa
     const x = (pageWidth - textWidth) / 2;
 
     doc.text(title, x, y);
-    return y + 15;
+    return y + 6;
   }
 
   private addSubtitle(doc: jsPDF, subtitle: string, y: number, styles: PdfStyleOptions): number {
@@ -585,7 +585,7 @@ private validateExportData(gridApi: GridApi, columns: GridColumnConfig[]): PdfVa
     const x = (pageWidth - textWidth) / 2;
 
     doc.text(subtitle, x, y);
-    return y + 10;
+    return y + 6;
   }
 
   private addTimestamp(doc: jsPDF, y: number, styles: PdfStyleOptions): number {
@@ -599,7 +599,7 @@ private validateExportData(gridApi: GridApi, columns: GridColumnConfig[]): PdfVa
     const x = pageWidth - textWidth - 20;
 
     doc.text(timestamp, x, y);
-    return y + 8;
+    return y + 6;
   }
 
   private async addLogo(doc: jsPDF, logo: NonNullable<PdfExportOptions['logo']>): Promise<void> {

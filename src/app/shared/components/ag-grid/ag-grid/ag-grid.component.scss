@@ -30,6 +30,8 @@
   position: relative;
   width: 100%;
   max-width: 153px; // Set a max-width for better aesthetics on large screens.
+  border: 1px solid rgb(29, 67, 128);
+  border-radius: 6px;
 }
 
 .search-input {
@@ -311,4 +313,8 @@ Status Cell Styling
   .toolbar-actions {
     justify-content: center;
   }
+}
+
+::ng-deep .ag-header-cell-comp-wrapper {
+  justify-content: center;
 }

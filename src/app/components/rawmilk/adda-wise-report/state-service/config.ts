@@ -11,13 +11,14 @@ export const addaWiseFilterFields: FieldConfig[] = [
     label: 'From Date',
     type: 'date',
     required: true,
+    maxDate: -1,
   },
   {
     name: 'to',
     label: 'To Date',
     type: 'date',
     required: true,
-    maxDate: 1,
+    maxDate: -1,
   },
 ];
 
@@ -29,7 +30,7 @@ export const cartDetailColumns: GridColumnConfig[] = [
     headerName: 'S.No.',
     field: 'serialNo',
     valueGetter: (params: any) => params.node?.rowIndex + 1,
-    width: 80,
+    width: 120,
   },
   {
     headerName: 'Cart No',

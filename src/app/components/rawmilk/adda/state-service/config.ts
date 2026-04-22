@@ -21,12 +21,10 @@ export const addaColumns: GridColumnConfig[] = [
   {
     headerName: 'Adda Name',
     field: 'name',
-    minWidth: 200,
   },
   {
     headerName: 'Adda code',
     field: 'code',
-    width: 100,
     headerTooltip: 'Adda code',
     cellStyle: { textAlign: 'center' },
     headerClass: 'text-center',
@@ -34,7 +32,10 @@ export const addaColumns: GridColumnConfig[] = [
   {
     headerName: 'Cords',
     field: 'latlng',
-    minWidth: 320,
+    headerTooltip: 'Geo Coordinates',
+    cellStyle: { textAlign: 'center' },
+    headerClass: 'text-center',
+    minWidth: 250,
   },
   {
     headerName: 'Region',

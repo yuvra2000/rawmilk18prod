@@ -28,4 +28,12 @@ export class LeciDashboardService {
   getLeciDashboardData(payload: FormData): Observable<any> {
     return this.masterRequest.postFormData('/leciDashboard', payload);
   }
+
+  checkLeciPre(payload: FormData): Observable<any> {
+    return this.masterRequest.postFormData('/leci_dasPre', payload);
+  }
+
+  deleteLeciReport(payload: FormData): Observable<any> {
+    return this.masterRequest.postFormData('/deleteleci', payload);
+  }
 }

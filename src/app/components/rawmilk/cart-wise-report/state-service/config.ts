@@ -11,13 +11,14 @@ export const cartWiseFilterFields: FieldConfig[] = [
     label: 'From Date',
     type: 'date',
     required: true,
+    maxDate: -1,
   },
   {
     name: 'to',
     label: 'To Date',
     type: 'date',
     required: true,
-    maxDate: 1,
+    maxDate: -1,
   },
 ];
 

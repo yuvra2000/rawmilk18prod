@@ -65,14 +65,15 @@ export class AddaWiseReportState {
     this.loadReportData(params);
   }
 
-  showDetailModal(tooltip: any, dateHeader: string) {
+  showDetailModal(tooltip: any, dateHeader: string, event?: any) {
+    console.log('Tooltip data for details modal:', event);
     const detailRows = Array.isArray(tooltip) ? tooltip : [tooltip];
     if (detailRows.length === 0) {
       this.toast.info('No details available for this entry.');
       return;
     }
     this.modalService.openGridModal({
-      title: `Cart Details - ${dateHeader}`,
+      title: `Cart Details - ${dateHeader} - ${event.data?.['Adda Name'] || ''}`,
       columns: cartDetailColumns,
       rowData: detailRows,
       size: 'lg',
@@ -95,8 +96,8 @@ export class AddaWiseReportState {
       const payload = res || [];
       const { columns, rows } = parseAddaWiseDynamicGridData(
         payload,
-        (tooltip: any, dateHeader: string) =>
-          this.showDetailModal(tooltip, dateHeader),
+        (tooltip: any, dateHeader: string, event?: any) =>
+          this.showDetailModal(tooltip, dateHeader, event),
       );
 
       this.columns.set(columns);

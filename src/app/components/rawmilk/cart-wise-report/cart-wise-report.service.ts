@@ -8,9 +8,6 @@ import { Observable } from 'rxjs';
 export class CartWiseReportService {
   constructor(private masterRequestService: MasterRequestService) {}
   getCartWiseReportData(params: any): Observable<any> {
-    return this.masterRequestService.postFormData(
-      '/cartWiseCartReport',
-      params,
-    );
+    return this.masterRequestService.postFormData('/cartWiseReport', params);
   }
 }

@@ -65,6 +65,12 @@ export function buildAddaWiseDynamicColumns(
       valueGetter: !isDateColumn
         ? (params: any) => getDisplayValue(params.data?.[header])
         : undefined,
+      tooltipValueGetter: (params: any) => {
+        if (isDateColumn) {
+          return 'Count of Adda (Total Time)';
+        }
+        return '';
+      },
     } as GridColumnConfig;
   });
 }

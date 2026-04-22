@@ -88,7 +88,7 @@ export class CartWiseReportState {
         return;
       }
 
-      const payload = res?.data || res?.Data || [];
+      const payload = res || [];
       const { columns, rows } = parseAddaWiseDynamicGridData(
         payload,
         (tooltip: any, dateHeader: string) =>

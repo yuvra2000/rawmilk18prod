@@ -3,23 +3,23 @@ import {
   GridColumnConfig,
   GridConfig,
 } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { addaWiseFilterFields, cartDetailColumns } from './config';
+import { cartWiseFilterFields, cartDetailColumns } from './config';
 import { handleSessionExpiry } from '../../../../shared/utils/shared-utility.utils';
 import { firstValueFrom } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { createReportParams, parseAddaWiseDynamicGridData } from './utils';
-import { AddaWiseReportService } from '../adda-wise-report.service';
 import { FieldConfig } from '../../../../shared/components/filter-form/filter-form.component';
 import { UniversalModalService } from '../../../../shared/services/universal-modal.service';
+import { CartWiseReportService } from '../cart-wise-report.service';
 
 export class InitialData {
   addaWiseReportList: any[] = [];
 }
-export class AddaWiseReportState {
+export class CartWiseReportState {
   private toast = inject(ToastrService);
   private spinner = inject(NgxSpinnerService);
-  private addaWiseReportService = inject(AddaWiseReportService);
+  private cartWiseReportService = inject(CartWiseReportService);
   private modalService = inject(UniversalModalService);
   columns = signal<GridColumnConfig[]>([]);
   date = signal<string>('');
@@ -41,7 +41,7 @@ export class AddaWiseReportState {
   });
   loading = signal(false);
   rowData = computed<any[]>(() => this.initialData().addaWiseReportList || []);
-  filterfields = signal<FieldConfig[]>(addaWiseFilterFields);
+  filterfields = signal<FieldConfig[]>(cartWiseFilterFields);
   onFormSubmit(data: any) {
     const from = data?.from || data?.fromDate;
     const to = data?.to || data?.toDate;
@@ -65,15 +65,10 @@ export class AddaWiseReportState {
     this.loadReportData(params);
   }
 
-  showDetailModal(tooltip: any, dateHeader: string, event?: any) {
-    console.log('Tooltip data for details modal:', event);
+  showDetailModal(tooltip: any, dateHeader: string) {
     const detailRows = Array.isArray(tooltip) ? tooltip : [tooltip];
-    if (detailRows.length === 0) {
-      this.toast.info('No details available for this entry.');
-      return;
-    }
     this.modalService.openGridModal({
-      title: `Cart Details - ${dateHeader} - ${event.data?.['Adda Name'] || ''}`,
+      title: `Cart Details - ${dateHeader}`,
       columns: cartDetailColumns,
       rowData: detailRows,
       size: 'lg',
@@ -87,7 +82,7 @@ export class AddaWiseReportState {
     this.loading.set(true);
     try {
       const res: any = await firstValueFrom(
-        this.addaWiseReportService.getAddaWiseReportData(params),
+        this.cartWiseReportService.getCartWiseReportData(params),
       );
       if (handleSessionExpiry(res, this.toast)) {
         return;
@@ -96,8 +91,8 @@ export class AddaWiseReportState {
       const payload = res || [];
       const { columns, rows } = parseAddaWiseDynamicGridData(
         payload,
-        (tooltip: any, dateHeader: string, event?: any) =>
-          this.showDetailModal(tooltip, dateHeader, event),
+        (tooltip: any, dateHeader: string) =>
+          this.showDetailModal(tooltip, dateHeader),
       );
 
       this.columns.set(columns);

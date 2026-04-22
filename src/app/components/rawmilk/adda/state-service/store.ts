@@ -45,6 +45,7 @@ export class AddaStore {
     context: {
       componentParent: this,
     },
+    height: '70vh',
   }));
   async loadInitialData() {
     try {
@@ -87,16 +88,14 @@ export class AddaStore {
       this.spinner.hide();
     }
   }
-  
+
   onEdit(data: any) {
     const statusList: Option[] = [
       { name: 'Active', id: 1 },
       { name: 'Deactive', id: 2 },
     ];
     console.log('Edit data', data);
-     const selectedStatus = statusList.find(
-    (item) => item.id === data.status
-  );
+    const selectedStatus = statusList.find((item) => item.id === data.status);
     this.modal.openForm({
       title: 'Edit Adda',
       mode: 'form',

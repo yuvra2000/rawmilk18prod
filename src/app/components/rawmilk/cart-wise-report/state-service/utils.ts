@@ -1,7 +1,4 @@
-import {
-  createFormData,
-  GroupId,
-} from '../../../../shared/utils/shared-utility.utils';
+import { createFormData } from '../../../../shared/utils/shared-utility.utils';
 import { GridColumnConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 
 const token = localStorage.getItem('AccessToken') || '';
@@ -13,7 +10,6 @@ export interface AddaWiseDynamicPayload {
 
 export function createReportParams(filterValues?: any) {
   return createFormData(token, {
-    group_id: GroupId,
     fromDate: filterValues?.from || filterValues?.fromDate || '',
     toDate: filterValues?.to || filterValues?.toDate || '',
   });
@@ -28,26 +24,9 @@ function getDisplayValue(cellValue: any): any {
   return cellValue;
 }
 
-function getColumnWidth(header: string): number {
-  const normalizedHeader = header.trim().toLowerCase();
-
-  if (normalizedHeader === 'sr no') {
-    return 80;
-  }
-
-  if (
-    normalizedHeader === 'adda name' ||
-    normalizedHeader === 'adda geocoords'
-  ) {
-    return 210;
-  }
-
-  return 140;
-}
-
 export function buildAddaWiseDynamicColumns(
   headers: string[] = [],
-  onDetailClick?: (tooltip: any, headerName: string, event?: any) => void,
+  onDetailClick?: (tooltip: any, headerName: string) => void,
 ): GridColumnConfig[] {
   return headers.map((header, index) => {
     const isPinned = index <= 2;
@@ -59,7 +38,7 @@ export function buildAddaWiseDynamicColumns(
       sortable: true,
       filter: true,
       pinned: isPinned ? 'left' : undefined,
-      width: getColumnWidth(header),
+      width: header === 'Sr No' ? 90 : undefined,
       cellRenderer: isDateColumn
         ? (params: any) => {
             const cellValue = params.data?.[header];
@@ -72,21 +51,23 @@ export function buildAddaWiseDynamicColumns(
 
             const span = document.createElement('span');
             span.innerText = displayValue;
-            span.style.color = displayValue != 0 ? '#1D4380' : 'inherit';
-            span.style.cursor = displayValue != 0 ? 'pointer' : 'default';
-            span.style.textDecoration =
-              displayValue != 0 ? 'underline' : 'none';
+            span.style.color = '#1D4380';
+            span.style.cursor = 'pointer';
+            span.style.textDecoration = 'underline';
             span.addEventListener('click', () => {
               if (onDetailClick) {
-                onDetailClick(tooltip, header, params);
+                onDetailClick(tooltip, header);
               }
             });
             return span;
           }
         : undefined,
+      valueGetter: !isDateColumn
+        ? (params: any) => getDisplayValue(params.data?.[header])
+        : undefined,
       tooltipValueGetter: (params: any) => {
         if (isDateColumn) {
-          return 'Count of Cart (Avg Time)';
+          return 'Count of Adda (Total Time)';
         }
         return '';
       },
@@ -96,7 +77,7 @@ export function buildAddaWiseDynamicColumns(
 
 export function parseAddaWiseDynamicGridData(
   payload: any,
-  onDetailClick?: (tooltip: any, headerName: string, event?: any) => void,
+  onDetailClick?: (tooltip: any, headerName: string) => void,
 ): {
   columns: GridColumnConfig[];
   rows: any[];

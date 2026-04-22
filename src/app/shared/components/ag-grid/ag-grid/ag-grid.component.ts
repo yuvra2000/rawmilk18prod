@@ -473,7 +473,18 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
           </div>
 
           <!-- Action Buttons -->
+
+          <!-- PDF -->
           <div class="toolbar-actions">
+            <button
+              class="toolbar-btn"
+              (click)="exportToPdf()"
+              ngbTooltip="Export to PDF"
+            >
+              <img src="assets/grid-icon/pdf_dock.svg" class="tbl-icon" />
+            </button>
+
+            <!-- CSV -->
             <button
               *ngIf="
                 config().enableExport !== false && exportConfig.enableCsvExport
@@ -482,10 +493,19 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
               (click)="exportToCsv()"
               ngbTooltip="Export CSV"
             >
-              <!-- <i class="fas fa-file-csv"></i> -->
               <img src="assets/grid-icon/csv.svg" class="tbl-icon" />
             </button>
 
+            <!-- Copy to Clipboard -->
+            <button
+              class="toolbar-btn"
+              (click)="copyToClipboard()"
+              ngbTooltip="Copy to Clipboard"
+            >
+              <img src="assets/grid-icon/copy.svg" class="tbl-icon" />
+            </button>
+
+            <!-- Excel -->
             <button
               *ngIf="
                 config().enableExport !== false &&
@@ -495,40 +515,10 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
               (click)="exportToExcel()"
               ngbTooltip="Export Excel"
             >
-              <!-- <i class="fas fa-file-excel"></i> -->
               <img src="assets/grid-icon/excel.svg" class="tbl-icon" />
             </button>
-            <!-- 
-          <button
-            class="toolbar-btn"
-            (click)="refreshGrid()"
-            ngbTooltip="Refresh Data"
-          >
-  
-           <img src='assets/grid-icon/pdf_dock.svg' class="tbl-icon">
-          </button> -->
 
-            <!-- PDF Export -->
-            <button
-              class="toolbar-btn"
-              (click)="exportToPdf()"
-              ngbTooltip="Export to PDF"
-            >
-              <img src="assets/grid-icon/pdf_dock.svg" class="tbl-icon" />
-            </button>
-
-            <button
-              class="toolbar-btn"
-              (click)="copyToClipboard()"
-              ngbTooltip="Copy to Clipboard"
-            >
-              <img
-                src="assets/grid-icon/copy.svg"
-                class="tbl-icon"
-              />
-            </button>
             <!-- <div class="btn-group" dropdown>
-
       <ul class="dropdown-menu" *dropdownMenu>
         <li>
           <a 
@@ -1698,7 +1688,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
     // Configure export options
 
     const exportOptions: ExcelExportOptions = {
-      fileName: this.config().Title || 'grid-export.xlsx',
+      fileName: `${this.config().Title || 'grid-export'}.xlsx`,
       sheetName: 'Data',
       includeHeaders: this.exportConfig.includeHeaders !== false,
       onlySelected: this.exportConfig.onlySelected || false,
@@ -1744,7 +1734,7 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
 
     // Configure PDF export options
     const pdfOptions: PdfExportOptions = {
-      fileName: this.config().pdfTitle || 'grid-export.pdf',
+      fileName: `${this.config().Title || 'grid-export'}.pdf`,
       title: this.config().Title || this.config().pdfTitle || 'Data Export',
       subtitle: `Exported on ${new Date().toLocaleDateString()}`,
       orientation: 'landscape',

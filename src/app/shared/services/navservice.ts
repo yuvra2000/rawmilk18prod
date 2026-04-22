@@ -202,6 +202,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'complaint-dashboard',
+          title: 'Complaint Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
         // {
         //   path: 'mcc-mapping-info',
         //   title: 'MCC Mapping Info',
@@ -388,6 +394,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'reports/cart-wise-report',
+          title: 'Adda Wise Report',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     {
@@ -429,7 +441,6 @@ export class NavService implements OnDestroy {
       'reports/cart-report',
       'reports/cart-report-exception',
       'reports/franchise-report',
-
     ];
     //add  cart report frenchise
 

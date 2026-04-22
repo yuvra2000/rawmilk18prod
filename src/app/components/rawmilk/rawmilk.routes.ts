@@ -14,6 +14,14 @@ export const rawMilkRoutes: Routes = [
         title: 'Trip Dashboard',
       },
       {
+        path: 'complaint-dashboard',
+        loadComponent: () =>
+          import('./complaint-dashboard/complaint-dashboard.component').then(
+            (m) => m.ComplaintDashboardComponent,
+          ),
+        title: 'Complaint Dashboard',
+      },
+      {
         path: 'trip-dashboard-vlc',
         loadComponent: () =>
           import('./trip-dashboard-vlc/trip-dashboard-vlc.component').then(

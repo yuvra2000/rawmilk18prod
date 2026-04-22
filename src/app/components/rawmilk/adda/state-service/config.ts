@@ -44,6 +44,13 @@ export const addaColumns: GridColumnConfig[] = [
     headerClass: 'text-center',
   },
   {
+    headerName: 'Radius (in meters)',
+    field: 'radius',
+    minWidth: 140,
+    cellStyle: { textAlign: 'center' },
+    headerClass: 'text-center',
+  },
+  {
     headerName: 'Status',
     field: 'status',
     minWidth: 140,
@@ -138,8 +145,7 @@ export const editFields = (regionList: any[]): FieldConfig[] => [
     label: 'Status',
     placeholder: 'Select Status',
     options: statusList,
-    bindLabel:'name',
-   
+    bindLabel: 'name',
   },
   {
     name: 'radius',
@@ -193,7 +199,7 @@ export const addFields = (regionList: any[]): FieldConfig[] => [
     type: 'number',
     label: 'Radius',
     placeholder: 'Enter Radius',
-    min:0,
+    min: 0,
     required: true,
   },
 ];

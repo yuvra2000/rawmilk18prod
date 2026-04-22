@@ -67,12 +67,17 @@ export class AddaWiseReportState {
 
   showDetailModal(tooltip: any, dateHeader: string) {
     const detailRows = Array.isArray(tooltip) ? tooltip : [tooltip];
+    if (detailRows.length === 0) {
+      this.toast.info('No details available for this entry.');
+      return;
+    }
     this.modalService.openGridModal({
       title: `Cart Details - ${dateHeader}`,
       columns: cartDetailColumns,
       rowData: detailRows,
       size: 'lg',
       showFooter: false,
+      height: '300px',
     });
   }
 
@@ -87,7 +92,7 @@ export class AddaWiseReportState {
         return;
       }
 
-      const payload = res?.data || res?.Data || [];
+      const payload = res || [];
       const { columns, rows } = parseAddaWiseDynamicGridData(
         payload,
         (tooltip: any, dateHeader: string) =>

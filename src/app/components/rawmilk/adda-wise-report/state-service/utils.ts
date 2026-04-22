@@ -1,4 +1,7 @@
-import { createFormData } from '../../../../shared/utils/shared-utility.utils';
+import {
+  createFormData,
+  GroupId,
+} from '../../../../shared/utils/shared-utility.utils';
 import { GridColumnConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 
 const token = localStorage.getItem('AccessToken') || '';
@@ -10,6 +13,7 @@ export interface AddaWiseDynamicPayload {
 
 export function createReportParams(filterValues?: any) {
   return createFormData(token, {
+    group_id: GroupId,
     fromDate: filterValues?.from || filterValues?.fromDate || '',
     toDate: filterValues?.to || filterValues?.toDate || '',
   });

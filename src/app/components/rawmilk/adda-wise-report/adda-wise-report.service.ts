@@ -8,6 +8,9 @@ import { forkJoin, Observable } from 'rxjs';
 export class AddaWiseReportService {
   constructor(private masterRequestService: MasterRequestService) {}
   getAddaWiseReportData(params: any): Observable<any> {
-    return this.masterRequestService.postFormData('/addaWiseReport', params);
+    return this.masterRequestService.postFormData(
+      '/addaWiseCartReport',
+      params,
+    );
   }
 }

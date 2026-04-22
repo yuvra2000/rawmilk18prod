@@ -615,7 +615,7 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
           [dataTypeDefinitions]="dataTypeDefinitions"
           [theme]="theme"
           [style.height]="
-            config().autoHeight ? undefined : config().height || '500px'
+            config().autoHeight ? undefined : config().height || '400px'
           "
           [loading]="loadingComputed()"
           [style.width]="config().width || '100%'"

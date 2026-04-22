@@ -35,19 +35,16 @@ export const indentTripGridColumns: GridColumnConfig[] = [
     headerName: 'MPC Name',
     field: 'mpcName',
     minWidth: 200,
-    pinned: 'left',
   },
   {
     headerName: 'Mother Dairy Received Plant',
     field: 'motherDairyPlant',
-    minWidth: 220,
-    pinned: 'left',
+    minWidth: 250,
   },
   {
     headerName: 'Milk Type',
     field: 'milkType',
     width: 120,
-    pinned: 'left',
   },
   {
     headerName: 'Indent No.',
@@ -62,7 +59,7 @@ export const indentTripGridColumns: GridColumnConfig[] = [
   {
     headerName: 'Dispatch Date',
     field: 'dispatchDate',
-    width: 140,
+    width: 160,
   },
   {
     headerName: 'Dispatch Location',
@@ -162,7 +159,7 @@ export const indentTripGridColumns: GridColumnConfig[] = [
       {
         headerName: 'Indent Qty vs Dispatch Qty',
         field: 'deviation_indentVsDispatch',
-        width: 180,
+        width: 250,
         valueFormatter: (params: any) => params.value ?? 0
       },
       {

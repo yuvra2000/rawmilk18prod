@@ -108,7 +108,7 @@ export class AddaWiseReportState {
         addaWiseReportList: rows,
       }));
     } catch (error: any) {
-      this.toast.error(error?.error?.message || 'Error loading report data:');
+      this.toast.error(error?.error?.message || 'Error loading report data');
     } finally {
       this.loading.set(false);
       this.spinner.hide();

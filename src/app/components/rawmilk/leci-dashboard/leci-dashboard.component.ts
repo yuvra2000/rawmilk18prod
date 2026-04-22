@@ -57,6 +57,7 @@ export class LeciDashboardComponent implements OnInit {
   );
 
   gridConfig = signal<GridConfig>({
+    Title: 'leci-dashboard-report',
     theme: 'alpine',
     height: '600px',
     columns: leciDashboardColumns,

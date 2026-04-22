@@ -33,6 +33,7 @@ export class TankerWiseTripReportComponent {
   chamberDetailRows = signal<any[]>([]);
   stopaggesList = signal<any[]>([]);
   tankerWiseTripReportConfig = signal<GridConfig>({
+    Title: 'tanker-wise-trip-report',
     theme: 'alpine',
     rowSelectionMode: 'multiple',
     context: {

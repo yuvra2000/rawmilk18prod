@@ -383,6 +383,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Monthly Report',
       },
+      {
+        path: 'adda-wise-report',
+        loadComponent: () =>
+          import('./adda-wise-report/adda-wise-report.component').then(
+            (m) => m.AddaWiseReportComponent,
+          ),
+        title: 'Adda Wise Report',
+      },
     ],
   },
 ];

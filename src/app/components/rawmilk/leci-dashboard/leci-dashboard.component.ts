@@ -13,6 +13,8 @@ import { createFormData } from '../../../shared/utils/shared-utility.utils';
 import { UniversalModalService } from '../../../shared/services/universal-modal.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { MapLoader } from './state-service/map.loader';
+import { AlertService } from '../../../shared/services/alert.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-leci-dashboard',
@@ -26,6 +28,7 @@ export class LeciDashboardComponent implements OnInit {
   private modalService = inject(UniversalModalService);
   private router = inject(Router);
    private mapLoader = inject(MapLoader);
+   private alertService = inject(AlertService);
 
   supplierList = signal<any[]>([]);
   plantList = signal<any[]>([]);
@@ -170,7 +173,7 @@ export class LeciDashboardComponent implements OnInit {
     const row = this.selectedRow();
     console.log('selected row', row);
     if (!row) {
-      alert('Please select a row first.');
+      this.alertService.warning('Please select a row first.');
       return;
     }
     const isConfirmed = window.confirm('Are you sure you want to add new LECI?');
@@ -185,12 +188,70 @@ export class LeciDashboardComponent implements OnInit {
   }
 
   deleteLeci() {
-    const isConfirmed = window.confirm('Are you sure you want to delete LECI?');
-    if (isConfirmed) {
-      console.log('User selected: YES');
-    } else {
-      console.log('User selected: NO');
+    const row = this.selectedRow();
+    if (!row) {
+      this.alertService.warning('Please select a row first.');
+      return;
     }
+
+    const isConfirmed = window.confirm('Are you sure you want to Going to Delete this Report?');
+    if (!isConfirmed) return;
+
+    const token = localStorage.getItem('AccessToken') || '';
+    const payloadPre = createFormData(token, {
+      dispatchid: String(row.id || ''),
+      chamber_no: String(row.chamber || ''),
+      ForApp: '0'
+    });
+
+    this.service.checkLeciPre(payloadPre).subscribe({
+      next: (res: any) => {
+        if (res?.alreadySubmited === 'YES') {
+          this.modalService.openForm({
+            title: 'Delete LECI Report',
+            mode: 'form',
+            size: 'md',
+            fields: [
+              {
+                name: 'remark',
+                type: 'textarea',
+                label: 'Remark',
+                placeholder: 'Enter reason for deletion',
+                required: true,
+                class: 'col-12'
+              }
+            ],
+            onSave: async (formData) => {
+              const deletePayload = createFormData(token, {
+                dispatchId: String(row.id || ''),
+                chamber_no: String(row.chamber || ''),
+                ForApp: '0',
+                remark: formData.remark
+              });
+              return firstValueFrom(this.service.deleteLeciReport(deletePayload));
+            }
+          }).then((modalRes) => {
+            if (modalRes?.Status === 'success' || modalRes?.status === 1) {
+              this.alertService.success(modalRes?.Message || 'Successfully deleted.');
+              // Refresh data after successful deletion
+              const today = new Date().toISOString().split('T')[0];
+              this.loadDashboardData({ fromDate: today, toDate: today });
+            } else if (modalRes) {
+              // Assume if modalRes exists but isn't success, it's an error from the API
+              this.alertService.error(modalRes?.Message || 'Failed to delete report.');
+            }
+          }).catch(() => {
+            // Modal was dismissed or closed without saving, do nothing
+          });
+        } else {
+          this.alertService.warning('There Is No Details Found In This dispatch');
+        }
+      },
+      error: (err) => {
+        this.alertService.error('Error validating report deletion.');
+        console.error('API Error:', err);
+      }
+    });
   }
 
   onVehicleClick(event: any) {

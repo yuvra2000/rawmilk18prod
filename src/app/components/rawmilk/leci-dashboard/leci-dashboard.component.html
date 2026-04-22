@@ -45,8 +45,8 @@
   <div class="col-12">
     <app-advanced-grid [rowData]="tableData()" [config]="gridConfig()" [loadingRowData]="isLoading()" (selectionChanged)="onSelectionChanged($event)">
       <span slot="right">
-        <i class="bi bi-plus-square-dotted me-2 cursor-pointer" (click)="addNewLeci()"></i>
-        <i class="bi bi-trash3 cursor-pointer" (click)="deleteLeci()"></i>
+        <i class="bi bi-plus-square-dotted me-2" style="font-size: 20px; cursor: pointer;" (click)="addNewLeci()"></i>
+        <i class="bi bi-trash3 cursor-pointer" style="font-size: 20px; cursor: pointer;" (click)="deleteLeci()"></i>
       </span>
     </app-advanced-grid>
   </div>

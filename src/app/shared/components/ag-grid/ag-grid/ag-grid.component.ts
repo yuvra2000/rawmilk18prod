@@ -508,30 +508,26 @@ export class StatusCellRendererComponent implements ICellRendererAngularComp {
            <img src='assets/grid-icon/pdf_dock.svg' class="tbl-icon">
           </button> -->
 
-            <!-- PDF Export Dropdown (NEW) -->
-            <!-- <div class="btn-group" dropdown>
-      <button 
-        type="button" 
-        class="btn btn-outline-danger btn-sm"
-        (click)="exportToPdf()"
-        [disabled]="!gridApi || isPdfExporting()"
-        title="Export to PDF">
-        <i class="fas fa-file-pdf"></i> 
-        <span *ngIf="!isPdfExporting()">PDF</span>
-        <span *ngIf="isPdfExporting()">
-          <i class="fas fa-spinner fa-spin"></i> {{ pdfExportProgress().progress }}%
-        </span>
-      </button>
+            <!-- PDF Export -->
+            <button
+              class="toolbar-btn"
+              (click)="exportToPdf()"
+              ngbTooltip="Export to PDF"
+            >
+              <img src="assets/grid-icon/pdf_dock.svg" class="tbl-icon" />
+            </button>
 
-      <button 
-        type="button" 
-        class="btn btn-outline-danger btn-sm dropdown-toggle dropdown-toggle-split"
-        dropdownToggle
-        [disabled]="!gridApi || isPdfExporting()"
-        aria-haspopup="true" 
-        aria-expanded="false">
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
+            <button
+              class="toolbar-btn"
+              (click)="copyToClipboard()"
+              ngbTooltip="Copy to Clipboard"
+            >
+              <img
+                src="assets/grid-icon/copy.svg"
+                class="tbl-icon"
+              />
+            </button>
+            <!-- <div class="btn-group" dropdown>
 
       <ul class="dropdown-menu" *dropdownMenu>
         <li>
@@ -1757,12 +1753,16 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       onlySelected: false,
       addTimestamp: true,
       addPageNumbers: true,
+      margins: { top: 0, right: 10, bottom: 0, left: 10 },
       customStyles: {
         primaryColor: '#2563eb',
         headerBackgroundColor: '#1e40af',
         headerTextColor: '#ffffff',
         alternateRowColors: true,
         theme: 'grid',
+        fontSize: 7,
+        headerFontSize: 8,
+        cellPadding: 1,
       },
       ...customOptions,
     };
@@ -1778,6 +1778,47 @@ export class AdvancedGridComponent implements OnInit, OnDestroy {
       console.error('PDF export failed:', error);
       alert('PDF export failed. Please try again.');
     }
+  }
+
+  copyToClipboard() {
+    if (!this.gridApi) return;
+
+    const rowData: any[] = [];
+
+    this.gridApi.forEachNode((node: any) => {
+      if (node.data) {
+        const rowDataObj: any = {};
+        this.processedColumnDefs().forEach((col: any) => {
+          if (!col.hide) {
+            rowDataObj[col.headerName] = node.data[col.field] || '';
+          }
+        });
+        rowData.push(rowDataObj);
+      }
+    });
+
+    // ✅ Correct header generation
+    const headers = this.processedColumnDefs()
+      .filter((col: any) => !col.hide)
+      .map((col: any) => col.headerName)
+      .join('\t');
+
+    // ✅ Correct row data formatting
+    const rows = rowData.map((row) => Object.values(row).join('\t')).join('\n');
+
+    // ✅ Correct template string
+    const text = `${headers}\n${rows}`;
+
+    // ✅ Copy to clipboard
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert('Data copied to clipboard');
+      })
+      .catch((err) => {
+        console.error('Failed to copy data:', err);
+        alert('Failed to copy data to clipboard');
+      });
   }
 
   /**

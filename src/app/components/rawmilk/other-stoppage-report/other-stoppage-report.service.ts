@@ -8,7 +8,15 @@ import { forkJoin, Observable } from 'rxjs';
 export class OtherStoppageReportService {
   constructor(private masterRequestService: MasterRequestService) {}
 
-  getCartReport(params: any): Observable<any> {
+  getReport(params: any): Observable<any> {
     return this.masterRequestService.postFormData('/cartReport', params);
+  }
+  getVehicleList(params: any): Observable<any> {
+    return this.masterRequestService.postFormData(
+      '/userVehicleListV3',
+      params,
+      false,
+      true,
+    );
   }
 }

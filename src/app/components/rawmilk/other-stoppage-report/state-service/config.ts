@@ -4,7 +4,9 @@ import {
 } from '../../../../shared/components/filter-form/filter-form.component';
 import { GridColumnConfig } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 
-export const otherStoppageFilterFields: FieldConfig[] = [
+export const otherStoppageFilterFields = (
+  vehicleList: Option[] = [],
+): FieldConfig[] => [
   {
     name: 'from',
     label: 'From Date',
@@ -18,6 +20,13 @@ export const otherStoppageFilterFields: FieldConfig[] = [
     type: 'date',
     required: true,
     maxDate: -1,
+  },
+  {
+    name: 'cart',
+    label: 'Cart Number',
+    type: 'select',
+    required: true,
+    options: vehicleList,
   },
 ];
 // export const cartColumns: GridColumnConfig[] = [];

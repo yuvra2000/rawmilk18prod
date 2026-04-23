@@ -65,10 +65,14 @@ export class CartWiseReportState {
     this.loadReportData(params);
   }
 
-  showDetailModal(tooltip: any, dateHeader: string) {
+  showDetailModal(tooltip: any, dateHeader: string, event?: any) {
     const detailRows = Array.isArray(tooltip) ? tooltip : [tooltip];
+    if (detailRows.length === 0) {
+      this.toast.info('No details available for this entry.');
+      return;
+    }
     this.modalService.openGridModal({
-      title: `Cart Details - ${dateHeader}`,
+      title: `Adda Details - ${dateHeader} - - ${event.data?.['Cart Name'] || ''}`,
       columns: cartDetailColumns,
       rowData: detailRows,
       size: 'lg',
@@ -91,8 +95,8 @@ export class CartWiseReportState {
       const payload = res || [];
       const { columns, rows } = parseAddaWiseDynamicGridData(
         payload,
-        (tooltip: any, dateHeader: string) =>
-          this.showDetailModal(tooltip, dateHeader),
+        (tooltip: any, dateHeader: string, event: any) =>
+          this.showDetailModal(tooltip, dateHeader, event),
       );
 
       this.columns.set(columns);

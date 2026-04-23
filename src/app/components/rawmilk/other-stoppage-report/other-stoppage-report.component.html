@@ -1,0 +1,19 @@
+<app-header [title]="'Cart Report'"> ></app-header>
+<app-collapse-wrapper>
+  <filter-form
+    #dispatchPlanningFilter
+    [dynamicFields]="store.filterfields()"
+    (formSubmit)="store.onFormSubmit($event)"
+    [initialData]="store.initialData()"
+  >
+  </filter-form>
+</app-collapse-wrapper>
+@if (store.rowData().length > 0) {
+  <app-advanced-grid
+    [rowData]="store.rowData()"
+    [config]="store.columnConfig()"
+    [loadingRowData]="store.loading()"
+  >
+    <h5 class="text-center table-heading">Cart Report</h5>
+  </app-advanced-grid>
+}

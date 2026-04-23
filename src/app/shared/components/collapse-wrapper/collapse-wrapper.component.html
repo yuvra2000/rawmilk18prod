@@ -1,6 +1,10 @@
-<div class="toggle-container mt-1">
-  <button type="button selectClass" class="toggle-link" [attr.aria-expanded]="!collapsed()"
-    aria-controls="collapseSection" (click)="toggleCollapse()">
+<div class="toggle-container mt-1" (click)="toggleCollapse()">
+  <button
+    type="button selectClass"
+    class="toggle-link"
+    [attr.aria-expanded]="!collapsed()"
+    aria-controls="collapseSection"
+  >
     <p>
       <!-- <i class="fa-solid fa-filter" aria-hidden="true"></i> -->
       <img src="./assets/images/secutrak/filter-logo.svg" alt="FilterLogo" />
@@ -10,7 +14,11 @@
   </button>
   <ng-content (click)="onIconClick()" select="[custom-icon]"></ng-content>
 </div>
-<div [ngbCollapse]="collapsed()" id="collapseSection" [ngClass]="collapseSectionClass()">
+<div
+  [ngbCollapse]="collapsed()"
+  id="collapseSection"
+  [ngClass]="collapseSectionClass()"
+>
   <div class="collapsible-content p-0">
     <ng-content></ng-content>
   </div>

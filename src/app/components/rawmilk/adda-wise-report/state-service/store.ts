@@ -99,8 +99,9 @@ export class AddaWiseReportState {
         (tooltip: any, dateHeader: string, event?: any) =>
           this.showDetailModal(tooltip, dateHeader, event),
       );
-
+      // this.columns = columns;
       this.columns.set(columns);
+      // this.columns()
       if (rows.length === 0) {
         this.toast.info('No data found for the selected criteria.');
       }

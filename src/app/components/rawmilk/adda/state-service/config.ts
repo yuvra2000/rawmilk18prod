@@ -79,9 +79,9 @@ export const addaColumns: GridColumnConfig[] = [
           tooltip: 'Edit',
           onClick: (data: any, node: any, params: any) => {
             const parent = params?.context?.componentParent;
-            if (parent && typeof parent.onEdit === 'function') {
-              parent.onEdit(data);
-            }
+            // if (parent && typeof parent.onEdit === 'function') {
+            parent.onEdit(data);
+            // }
           },
           iconStyle: {
             color: colors.primary,

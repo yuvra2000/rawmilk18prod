@@ -104,14 +104,14 @@ export const statusOptions: Option[] = [
 export const mpcFilterFields = (dispatchLocations: any[] = [], plants: any[] = []): FieldConfig[] => [
   {
     name: "fromDate",
-    label: "From Date",
+    label: "From",
     type: "date",
     placeholder: "Select Date",
     required: false,
   },
   {
     name: "toDate",
-    label: "To Date",
+    label: "To",
     type: "date",
     placeholder: "Select Date",
     required: false,

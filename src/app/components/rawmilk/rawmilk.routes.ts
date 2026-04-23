@@ -14,6 +14,14 @@ export const rawMilkRoutes: Routes = [
         title: 'Trip Dashboard',
       },
       {
+        path: 'complaint-dashboard',
+        loadComponent: () =>
+          import('./complaint-dashboard/complaint-dashboard.component').then(
+            (m) => m.ComplaintDashboardComponent,
+          ),
+        title: 'Complaint Dashboard',
+      },
+      {
         path: 'trip-dashboard-vlc',
         loadComponent: () =>
           import('./trip-dashboard-vlc/trip-dashboard-vlc.component').then(
@@ -398,6 +406,30 @@ export const rawMilkRoutes: Routes = [
             (m) => m.MonthlyReportComponent,
           ),
         title: 'Monthly Report',
+      },
+      {
+        path: 'adda-wise-report',
+        loadComponent: () =>
+          import('./adda-wise-report/adda-wise-report.component').then(
+            (m) => m.AddaWiseReportComponent,
+          ),
+        title: 'Adda Wise Report',
+      },
+      {
+        path: 'cart-wise-report',
+        loadComponent: () =>
+          import('./cart-wise-report/cart-wise-report.component').then(
+            (m) => m.CartWiseReportComponent,
+          ),
+        title: 'Cart Wise Report',
+      },
+      {
+        path: 'other-stoppage-report',
+        loadComponent: () =>
+          import('./other-stoppage-report/other-stoppage-report.component').then(
+            (m) => m.OtherStoppageReportComponent,
+          ),
+        title: 'Other Stoppage Report',
       },
     ],
   },

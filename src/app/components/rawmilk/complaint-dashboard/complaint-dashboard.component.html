@@ -1,0 +1,9 @@
+<app-header [title]="'Complaint Dashboard'"></app-header>
+<app-collapse-wrapper>
+  <filter-form
+    #addaWiseReportFilterForm
+    [dynamicFields]="store.filterfields()"
+    (formSubmit)="store.onFormSubmit($event)"
+  >
+  </filter-form>
+</app-collapse-wrapper>

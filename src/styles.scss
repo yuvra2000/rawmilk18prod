@@ -137,7 +137,7 @@ spk-flatpickr {
 /* ERROR State (Red) */
 .toast-container .toast-error {
   border-left: 5px solid #6b5b5b !important; /* Red Strip */
-  background: #722723 !important; /* Dark Red Background */
+  background: #822e2a !important; /* Dark Red Background */
   background-image: none !important;
 }
 // .toast-container .toast-error .toast-message {
@@ -146,8 +146,8 @@ spk-flatpickr {
 
 /* INFO State (Blue - Aapke brand color ke hisaab se) */
 .toast-container .toast-info {
-  border-left: 5px solid #1d4380 !important; /* Brand Blue */
-  background: #13243f !important; /* Dark Red Background */
+  border-left: 5px solid #1b3e75 !important; /* Brand Blue */
+  background: #1b3e75 !important; /* Dark Red Background */
   background-image: none !important;
 }
 
@@ -206,8 +206,6 @@ spk-flatpickr {
 .ag-cell-value {
   font-weight: 400;
 }
-
-
 
 .vehicle-active {
   color: #28a745;
@@ -321,12 +319,10 @@ spk-flatpickr {
 }
 
 .loc-dot.other {
-
   background-color: #1976d2;
   // background-color: #43a047;
   /* other devices */
 }
-
 
 ///////////////////////update theme//////////////////////////////////////////////////
 /* Light Theme */
@@ -348,8 +344,6 @@ html[data-theme="light"] .status-card {
 html[data-theme="light"] .slider-section {
   // background: #f7f9fc;
 }
-
-
 
 /* DARK THEME */
 html[data-theme="dark"] .slider-section {
@@ -479,8 +473,6 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb {
 //   color: #8ec3ff;
 // }
 
-
-
 // [data-theme="dark"] .coords {
 //   color: #999;
 // }
@@ -551,5 +543,20 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb {
 }
 
 .loc-dot.NoGPS {
-  background-color: #1D4380;
+  background-color: #1d4380;
+}
+.os-scrollbar-handle {
+  background: black !important;
+}
+.os-scrollbar .os-scrollbar-handle {
+  background: var(--gray-2) !important;
+  border-radius: 0.3rem !important;
+  inset-inline-end: 0 !important;
+  width: 0.375rem;
+}
+.os-scrollbar .os-scrollbar-handle:hover {
+  background: var(--gray-5) !important;
+  border-radius: 0.3rem !important;
+  inset-inline-end: 0 !important;
+  width: 0.375rem;
 }

@@ -62,7 +62,7 @@ export class NavService implements OnDestroy {
     const groupId: number = Number(localStorage.getItem('GroupId')); // ✅ DEFINE HERE
     const accounttype: number = Number(localStorage.getItem('AccountType')); // ✅ DEFINE HERE
 
-    this.filterMenuByGroup(groupId,accounttype); // ✅ NOW VALID
+    this.filterMenuByGroup(groupId, accounttype); // ✅ NOW VALID
 
     this.setScreenWidth(window.innerWidth);
     fromEvent(window, 'resize')
@@ -199,6 +199,12 @@ export class NavService implements OnDestroy {
         {
           path: 'cart-dashboard',
           title: 'Cart Dashboard',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'complaint-dashboard',
+          title: 'Complaint Dashboard',
           type: 'link',
           dirchange: false,
         },
@@ -382,6 +388,24 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'reports/adda-wise-report',
+          title: 'Adda Wise Report',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'reports/cart-wise-report',
+          title: 'Cart Wise Report',
+          type: 'link',
+          dirchange: false,
+        },
+        {
+          path: 'reports/other-stoppage-report',
+          title: 'Other Stoppage Report',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     {
@@ -408,13 +432,13 @@ export class NavService implements OnDestroy {
     },
   ];
 
-  filterMenuByGroup(groupId: any,accounttype:any) {
+  filterMenuByGroup(groupId: any, accounttype: any) {
     // ✅ If NOT 5839 → show full menu
-     // ✅ Apply filter ONLY when BOTH match
-  if (!(groupId == 5938 && accounttype == '12')) {
-    this.items.next(this.MENUITEMS);
-    return;
-  }
+    // ✅ Apply filter ONLY when BOTH match
+    if (!(groupId == 5938 && accounttype == '12')) {
+      this.items.next(this.MENUITEMS);
+      return;
+    }
 
     // ✅ Allowed paths
     const allowedPaths = [
@@ -423,7 +447,6 @@ export class NavService implements OnDestroy {
       'reports/cart-report',
       'reports/cart-report-exception',
       'reports/franchise-report',
-
     ];
     //add  cart report frenchise
   

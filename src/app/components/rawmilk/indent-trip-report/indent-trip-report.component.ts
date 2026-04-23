@@ -41,6 +41,7 @@ export class IndentTripReportComponent implements OnInit {
   );
 
   gridConfig = signal<GridConfig>({
+    Title: 'Indent_Trip_Report',
     theme: 'alpine',
     columns: indentTripGridColumns,
     pagination: true,
@@ -179,7 +180,7 @@ export class IndentTripReportComponent implements OnInit {
       deviation_actual_fat: this.avgSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.ActualDispatch?.Fat),
       deviation_actual_snf: this.avgSubIndentValue(subIndents, (detail) => detail?.DeviationReport?.ActualDispatch?.Snf),
       
-      deviation_remarks: subIndents.map((detail: any) => detail?.Remark).filter(Boolean).join(', '),
+      deviation_remarks: '',
     };
   }
 

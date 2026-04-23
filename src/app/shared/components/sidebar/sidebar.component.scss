@@ -1,13 +1,3 @@
-// #sidebar-scroll,
-// .main-sidebar-header {
-//   background-color: var(--primary-color) !important;
-// }
-// .side-menu__label,
-// .side-menu__item,
-// .side-menu__icon {
-//   color: #fff !important;
-// }
-
 .app-sidebar .slide-menu.child1:after {
   content: "";
   position: absolute;
@@ -20,7 +10,8 @@
 
 #sidebar-scroll,
 .main-sidebar-header {
-  background-color: var(--primary-color) !important;
+  // background-color: var(--primary-color) !important;
+  background-color: #153363 !important;
 }
 
 .side-menu__label,
@@ -30,11 +21,11 @@
 }
 
 .app-sidebar #sidebar-scroll {
-  background-color: #1d4380 !important;
+  background-color: #153363 !important;
 }
 
 .app-sidebar {
-  background-color: #1d4380 !important;
+  background-color: #153363 !important;
 }
 
 .app-sidebar .side-menu__item.active {
@@ -44,4 +35,9 @@
 .app-sidebar .slide-menu.child1 .side-menu__item.active::before {
   content: "";
   background-color: white !important;
+}
+::ng-deep {
+  .os-scrollbar-handle {
+    background-color: black !important;
+  }
 }

@@ -21,12 +21,10 @@ export const addaColumns: GridColumnConfig[] = [
   {
     headerName: 'Adda Name',
     field: 'name',
-    minWidth: 200,
   },
   {
     headerName: 'Adda code',
     field: 'code',
-    width: 100,
     headerTooltip: 'Adda code',
     cellStyle: { textAlign: 'center' },
     headerClass: 'text-center',
@@ -34,11 +32,21 @@ export const addaColumns: GridColumnConfig[] = [
   {
     headerName: 'Cords',
     field: 'latlng',
-    minWidth: 320,
+    headerTooltip: 'Geo Coordinates',
+    cellStyle: { textAlign: 'center' },
+    headerClass: 'text-center',
+    minWidth: 250,
   },
   {
     headerName: 'Region',
     field: 'region_code',
+    minWidth: 140,
+    cellStyle: { textAlign: 'center' },
+    headerClass: 'text-center',
+  },
+  {
+    headerName: 'Radius (in meters)',
+    field: 'radius',
     minWidth: 140,
     cellStyle: { textAlign: 'center' },
     headerClass: 'text-center',
@@ -71,9 +79,9 @@ export const addaColumns: GridColumnConfig[] = [
           tooltip: 'Edit',
           onClick: (data: any, node: any, params: any) => {
             const parent = params?.context?.componentParent;
-            if (parent && typeof parent.onEdit === 'function') {
-              parent.onEdit(data);
-            }
+            // if (parent && typeof parent.onEdit === 'function') {
+            parent.onEdit(data);
+            // }
           },
           iconStyle: {
             color: colors.primary,
@@ -138,8 +146,7 @@ export const editFields = (regionList: any[]): FieldConfig[] => [
     label: 'Status',
     placeholder: 'Select Status',
     options: statusList,
-    bindLabel:'name',
-   
+    bindLabel: 'name',
   },
   {
     name: 'radius',
@@ -193,7 +200,7 @@ export const addFields = (regionList: any[]): FieldConfig[] => [
     type: 'number',
     label: 'Radius',
     placeholder: 'Enter Radius',
-    min:0,
+    min: 0,
     required: true,
   },
 ];

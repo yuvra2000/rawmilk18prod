@@ -26,6 +26,7 @@ export class LeciReportComponent implements OnInit {
   tableData = signal<any[]>([]);
 
   gridConfig = signal<GridConfig>({
+    Title: 'leci-report',
     theme: 'alpine',
     columns: leciReportColumns,
     pagination: true,

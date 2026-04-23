@@ -15,14 +15,14 @@ export const lidTripReportFilterFields = (mpcNameList: Option[] = []): FieldConf
 		type: 'datetime',
 		label: 'From Date',
 		placeholder: 'Select Date & Time',
-		required: false,
+		required: true,
 	},
 	{
 		name: 'toDate',
 		type: 'datetime',
 		label: 'To Date',
 		placeholder: 'Select Date & Time',
-		required: false,
+		required: true,
 	},
 	{
 		name: 'mpcName',

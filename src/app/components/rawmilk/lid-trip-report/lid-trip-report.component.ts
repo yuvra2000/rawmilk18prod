@@ -1,20 +1,36 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CollapseWrapperComponent } from '../../../shared/components/collapse-wrapper/collapse-wrapper.component';
-import { FieldConfig, FilterFormComponent, Option } from '../../../shared/components/filter-form/filter-form.component';
-import { AdvancedGridComponent, GridConfig } from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
+import {
+  FieldConfig,
+  FilterFormComponent,
+  Option,
+} from '../../../shared/components/filter-form/filter-form.component';
+import {
+  AdvancedGridComponent,
+  GridConfig,
+} from '../../../shared/components/ag-grid/ag-grid/ag-grid.component';
 import { AlertService } from '../../../shared/services/alert.service';
 import { createFormData } from '../../../shared/utils/shared-utility.utils';
-import { lidTripReportFilterFields, lidTripGridColumns } from './state-service/config';
+import {
+  lidTripReportFilterFields,
+  lidTripGridColumns,
+} from './state-service/config';
 import { LidTripReportService } from './lid-trip-report.service';
 import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-lid-trip-report',
   standalone: true,
-  imports: [CommonModule, CollapseWrapperComponent, FilterFormComponent, AdvancedGridComponent, SharedModule],
+  imports: [
+    CommonModule,
+    CollapseWrapperComponent,
+    FilterFormComponent,
+    AdvancedGridComponent,
+    SharedModule,
+  ],
   templateUrl: './lid-trip-report.component.html',
-  styleUrl: './lid-trip-report.component.scss'
+  styleUrl: './lid-trip-report.component.scss',
 })
 export class LidTripReportComponent implements OnInit {
   private lidTripReportService = inject(LidTripReportService);
@@ -26,7 +42,9 @@ export class LidTripReportComponent implements OnInit {
   mpcNameList = signal<Option[]>([]);
   responseData = signal<any[]>([]);
 
-  filterfields = computed<FieldConfig[]>(() => lidTripReportFilterFields(this.mpcNameList()));
+  filterfields = computed<FieldConfig[]>(() =>
+    lidTripReportFilterFields(this.mpcNameList()),
+  );
 
   initialFilterData = this.getInitialFilterData();
 
@@ -97,15 +115,21 @@ export class LidTripReportComponent implements OnInit {
 
     this.lidTripReportService.getIndentMasterDetails(payload).subscribe({
       next: (res: any) => {
-        const plantSupplier = Array.isArray(res?.PlantSupplier) ? res.PlantSupplier : [];
-        const mpcData = plantSupplier
+        const plantSupplier = Array.isArray(res?.PlantSupplier)
+          ? res.PlantSupplier
+          : [];
+        let mpcData = plantSupplier
           .filter((item: any) => item?.type === 6)
           .map((item: any) => ({
             id: item?.id,
             name: item?.name || item?.displayName || '',
           }))
           .filter((item: Option) => !!item.name);
-
+        const allField = {
+          name: 'All',
+          id: '',
+        };
+        mpcData = [allField, ...mpcData];
         this.mpcNameList.set(mpcData);
       },
       error: (error: any) => {
@@ -136,14 +160,17 @@ export class LidTripReportComponent implements OnInit {
         }
 
         this.responseData.set([]);
-        this.toastService.error(res?.Message || 'Error fetching lid trip report');
+        this.toastService.error(
+          res?.Message || 'Error fetching lid trip report',
+        );
       },
       error: (error: any) => {
         console.error('Error fetching lid trip report:', error);
         this.responseData.set([]);
-        this.toastService.error(error?.message || 'Error fetching lid trip report');
+        this.toastService.error(
+          error?.message || 'Error fetching lid trip report',
+        );
       },
     });
   }
-
 }

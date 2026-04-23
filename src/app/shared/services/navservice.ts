@@ -396,7 +396,7 @@ export class NavService implements OnDestroy {
         },
         {
           path: 'reports/cart-wise-report',
-          title: 'Adda Wise Report',
+          title: 'Cart Wise Report',
           type: 'link',
           dirchange: false,
         },

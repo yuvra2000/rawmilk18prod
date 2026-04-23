@@ -26,10 +26,10 @@ function getDisplayValue(cellValue: any): any {
 
 export function buildAddaWiseDynamicColumns(
   headers: string[] = [],
-  onDetailClick?: (tooltip: any, headerName: string) => void,
+  onDetailClick?: (tooltip: any, headerName: string, event?: any) => void,
 ): GridColumnConfig[] {
   return headers.map((header, index) => {
-    const isPinned = index <= 2;
+    const isPinned = index <= 1;
     const isDateColumn = /^\d{4}-\d{2}-\d{2}$/.test(header);
 
     return {
@@ -51,12 +51,13 @@ export function buildAddaWiseDynamicColumns(
 
             const span = document.createElement('span');
             span.innerText = displayValue;
-            span.style.color = '#1D4380';
-            span.style.cursor = 'pointer';
-            span.style.textDecoration = 'underline';
+            span.style.color = displayValue != 0 ? '#1D4380' : 'inherit';
+            span.style.cursor = displayValue != 0 ? 'pointer' : 'default';
+            span.style.textDecoration =
+              displayValue != 0 ? 'underline' : 'none';
             span.addEventListener('click', () => {
               if (onDetailClick) {
-                onDetailClick(tooltip, header);
+                onDetailClick(tooltip, header, params);
               }
             });
             return span;
@@ -77,7 +78,7 @@ export function buildAddaWiseDynamicColumns(
 
 export function parseAddaWiseDynamicGridData(
   payload: any,
-  onDetailClick?: (tooltip: any, headerName: string) => void,
+  onDetailClick?: (tooltip: any, headerName: string, event?: any) => void,
 ): {
   columns: GridColumnConfig[];
   rows: any[];

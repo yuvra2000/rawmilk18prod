@@ -258,6 +258,22 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Blacklist Report',
       },
+      {
+        path: 'map',
+        loadComponent: () =>
+          import('./map/map/map.component').then(
+            (m) => m.MapComponent,
+          ),
+        title: '',
+      },
+      {
+        path: 'homeN',
+        loadComponent: () =>
+          import('./map/home/home.component').then(
+            (m) => m.HomeComponent,
+          ),
+        title: 'Blacklist Report',
+      },
     ],
   },
   {

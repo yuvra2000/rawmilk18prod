@@ -426,7 +426,7 @@ export class NavService implements OnDestroy {
 
     ];
     //add  cart report frenchise
-
+  
     // ✅ Build new menu
     const filteredMenu: Menu[] = [];
 

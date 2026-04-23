@@ -50,7 +50,7 @@ declare var bootstrap: any;
 })
 export class HomeComponent {
   searchCoord: string = '';
-  searchtab: boolean = false
+  searchtab: boolean = true
 
   searchName: string = '';
   // landmarkData: any[] = []; // store your API response here
@@ -2875,88 +2875,7 @@ Speed: ${event.value[1]} km/h`);
 
     let address = "Loading address...";
 
-    // const content = () => {
-
-    //   // ✅ OTHER DEVICES SECTION
-    //   let otherDevicesHtml = '';
-
-    //   if (v.otherDevices && v.otherDevices.length > 0) {
-    //     otherDevicesHtml = v.otherDevices.map((d: any) => {
-
-    //       const titleColor =
-    //         d.Location === 'Main hole' ? '#1d4380' : 'green';
-
-    //       return `
-    //       <hr/>
-    //       <div style="margin-top:8px; padding-left:8px; border-left:3px solid ${titleColor};">
-
-    //         <div style="font-weight:600; color:${titleColor};">
-    //           ${d.Location || 'Device'}
-    //         </div>
-
-    //         <div><b>IMEI:</b> ${d.ImeiNo || '-'}</div>
-    //         <div><b>Status:</b> ${d.VehicleStatus || d.RunningStatus || '-'}</div>
-    //         <div><b>Running:</b> ${d.RunningStatus || '-'}</div>
-    //         <div><b>Battery:</b> ${d.Battery || 0}% (${d.BatteryVoltage || 0}v)</div>
-    //         <div><b>Speed:</b> ${d.Speed || 0} km/h</div>
-    //         <div><b>Last Update:</b> ${d.DeviceTime || '-'}</div>
-
-    //       </div>
-    //     `;
-    //     }).join('');
-    //   }
-
-    //   // ✅ MAIN UI (UNCHANGED + EXTENDED)
-    //   return `
-    //   <div class="info-card" style="color:#1d4380">
-
-    //     <div class="info-header">
-    //       🚚 ${v.VehicleNo || v.vnumber} ${(v?.Location)}
-    //       <span class="status ${v.VehicleStatus?.toLowerCase()}">
-    //         ${v?.VehicleStatus}
-    //       </span>
-    //     </div>
-
-    //     <div class="info-body">
-    //       <div><b>Driver Name:</b> ${v.DriverName || '-'}</div>
-    //       <div><b>IMEI No:</b> ${v.ImeiNo || v.imei}</div>
-    //       <div><b>Speed:</b> ${v.Speed || 0} km/h</div>
-    //       <div><b>Date Time:</b> ${v.DateTime || v.device_time || '-'}</div>
-    //       <div><b>Battery:</b> ${v.Battery || v.BatteryValue}% (${v.BatteryVoltage}v)</div>
-    //       <div><b>Last Halt:</b> ${v.LastHaltTime || '-'}</div>
-
-    //       <div>
-    //         <b>Address:</b>
-    //         <span class="address">${address}</span>
-    //       </div>
-
-    //       <div class="coords">
-    //         (${marker.getPosition()?.lat().toFixed(6)},
-    //          ${marker.getPosition()?.lng().toFixed(6)})
-    //       </div>
-
-    //       ${otherDevicesHtml} <!-- 🔥 injected here -->
-
-    //     </div>
-
-    //     <div class="info-actions">
-    //       <button onclick="window.changeDriver('${v.VehicleId}')">
-    //         <i class="fa fa-edit"></i> Driver
-    //       </button>
-    //       <button onclick="window.changeStatus('${v.VehicleId}')">
-    //         <i class="fa fa-edit"></i> Status
-    //       </button>
-    //       <button onclick="window.addLandmark('${v.VehicleId}')">
-    //         <i class="fa fa-plus"></i> Landmark
-    //       </button>
-    //       <button onclick="window.addGeofence('${v.VehicleId}')">
-    //         <i class="fa fa-plus"></i> Geofence
-    //       </button>
-    //     </div>
-
-    //   </div>
-    // `;
-    // };
+    
     const content = () => {
 
       // 🔵 MAIN HOLE (PRIMARY DEVICE)
@@ -3091,6 +3010,7 @@ Speed: ${event.value[1]} km/h`);
 
     });
   }
+  
   openDriverPopup(vehicleId: string) {
     // this.vehicle_id = vehicleId;
     // this.showDriverModal = true;
@@ -3518,6 +3438,8 @@ Speed: ${event.value[1]} km/h`);
   AddLandmark() {
 
   }
+
+  
   landmarklist() {
     var formData = new FormData();
     formData.append('AccessToken', localStorage.getItem('AccessToken')!);
@@ -3974,6 +3896,7 @@ Speed: ${event.value[1]} km/h`);
     }
 
   }
+
   enableLandmarkMode() {
     this.landmarkMode = true;
     this.mapInstance?.addListener('click', (event: any) => {

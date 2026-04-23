@@ -25,7 +25,9 @@ export class AlertReportComponent {
   today = new Date().toISOString().split('T')[0];
   initialData = {
     from: `${this.today} 00:00:00`,
-    to: `${this.today} 23:55:55`
+    to: `${this.today} 23:55:55`,
+    mpcName: { id: '', name: 'All' },
+    alertType: { id: '', name: '', labelName: 'All' },
   };
 
   mpcName = signal<Option[]>([]);
@@ -74,6 +76,7 @@ export class AlertReportComponent {
           }
         });
       }
+      this.mpcName.set([{ id: '', name: 'All' }, ...this.mpcName()]);
       console.log("mpcName", this.mpcName());
     });
   }

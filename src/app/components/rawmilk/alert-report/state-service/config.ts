@@ -2,8 +2,9 @@ import { GridColumnConfig } from "../../../../shared/components/ag-grid/ag-grid/
 import { FieldConfig, Option } from "../../../../shared/components/filter-form/shared/types";
 
 const alertTypeOptions: Option[] = [
-    { id: 1, name: 'S30' },
-    { id: 2, name: 'LId' }
+    { id: 1, labelName: 'S30', name: 'S30' },
+    { id: 2, labelName: 'LId', name: 'LId' },
+    { id: '', labelName: 'All', name: '' },
 ];
 
 export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfig[] => [
@@ -34,6 +35,7 @@ export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfi
         type: 'select',
         placeholder: '--Select--',
         options: alertTypeOptions,
+        bindLabel: 'labelName'
     },
 ];
 

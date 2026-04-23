@@ -4,6 +4,7 @@ import { InputFormatConfig } from '../../../directives/input-format.directive';
 export interface Option {
   id: string | number;
   name: string;
+  labelName?: string;
 }
 
 export type FieldType =

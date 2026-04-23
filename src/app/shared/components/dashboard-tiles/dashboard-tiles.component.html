@@ -10,7 +10,12 @@
         </span>
 
         <!-- RIGHT: ICON -->
-        <i class="fa" [ngClass]="getIcon(tile)" [style.color]="getIconColor(tile)"> </i>
+        <i
+          class="fa"
+          [ngClass]="getIcon(tile)"
+          [style.color]="getIconColor(tile)"
+        >
+        </i>
       </div>
 
       <!-- BODY -->
@@ -18,50 +23,27 @@
         @if (loading()) {
           <div class="skeleton-chart"></div>
         } @else {
-          <!-- CHART (TOP) -->
+          <!-- CHART (LEFT) -->
           <div class="chart-section">
             <div echarts [options]="chartOptions[tile]" class="chart"></div>
           </div>
 
-          <!-- COUNT (BOTTOM RIGHT) -->
-          <div class="count-section">
-            <!-- <div class="counts">
-              {{ countsMap[tile] }}
-            </div> -->
-            <div class="counts">
-              @for (c of legendMap[tile]; track c; let i = $index) {
-                <span [style.color]="c.color">
-                  {{ c.value }}
-                </span>
-
-                @if (i < legendMap[tile].length - 1) {
-                  <span class="separator"> / </span>
-                }
-              }
-            </div>
+          <!-- LEGEND + COUNTS (RIGHT, KEY VALUE) -->
+          <div class="details-section">
+            @for (item of legendMap[tile]; track item) {
+              <div class="detail-row">
+                <div class="detail-key" [style.color]="item.color">
+                  <span class="dot" [style.background]="item.color"></span>
+                  <span>{{ item.name }}</span>
+                </div>
+                <div class="detail-value" [style.color]="item.color">
+                  {{ item.value }}
+                </div>
+              </div>
+            }
           </div>
         }
       </div>
-
-      <!-- LEGEND -->
-       @if (tile !== 'supplier') {
-  <div class="tile-legend">
-    @for (l of legendMap[tile]; track l) {
-      <div class="legend" [style.color]="l.color">
-        <span class="dot" [style.background]="l.color"></span>
-        {{ l.name }}
-      </div>
-    }
-  </div>
-}
-      <!-- <div class="tile-legend">
-        @for (l of legendMap[tile]; track l) {
-          <div class="legend" [style.color]="l.color">
-            <span class="dot" [style.background]="l.color"></span>
-            {{ l.name }}
-          </div>
-        }
-      </div> -->
     </div>
   }
 </div>

@@ -3,7 +3,7 @@ import {
   GridConfig,
   GridColumnConfig,
 } from '../../../../shared/components/ag-grid/ag-grid/ag-grid.component';
-import { cartColumns, otherStoppageFilterFields } from './config';
+import { stoppageReportColumns, otherStoppageFilterFields } from './config';
 import {
   createFormData,
   GroupId,
@@ -41,7 +41,7 @@ export class OtherStoppageReportStore {
   });
   columnConfig = computed<GridConfig>(() => ({
     theme: 'alpine',
-    columns: cartColumns,
+    columns: stoppageReportColumns,
     pagination: true,
     paginationPageSize: 50,
     enableSearch: true,

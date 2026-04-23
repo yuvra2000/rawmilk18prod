@@ -10,14 +10,16 @@ export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfi
     {
         name: 'from',
         label: 'From Date',
-        type: 'date',
+        type: 'datetime',
         placeholder: 'Select Date',
+        required: true,
     },
     {
         name: 'to',
         label: 'To Date',
-        type: 'date',
+        type: 'datetime',
         placeholder: 'Select Date',
+        required: true,
     },
     {
         name: 'mpcName',
@@ -36,6 +38,11 @@ export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfi
 ];
 
 export const alertReportGridColumns: GridColumnConfig[] = [
+    {
+        headerName: 'Sr. No.',
+        valueGetter: (params: any) => params.node.rowIndex + 1,
+        width: 120,
+    },
     {
         headerName: 'Alert Type',
         field: 'AlertType',

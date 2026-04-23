@@ -1,6 +1,6 @@
 <app-header [title]="'Alert Report'"> </app-header>
 <app-collapse-wrapper>
-    <filter-form [dynamicFields]="filterfields()" (formSubmit)="onFormSubmit($event)"></filter-form>
+    <filter-form [dynamicFields]="filterfields()" [initialData]="initialData" (formSubmit)="onFormSubmit($event)"></filter-form>
 </app-collapse-wrapper>
 <app-advanced-grid [rowData]="alertRowData()" [config]="alertConfig()">
 </app-advanced-grid>

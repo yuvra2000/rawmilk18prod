@@ -69,6 +69,7 @@ export class LidTripReportComponent implements OnInit {
       fromDate: `${today}T00:00:00`,
       toDate: `${today}T23:55:55`,
       lidOpenLocation: { id: 'All', name: 'All' },
+      mpcName: { id: '', name: 'All' },
     };
   }
 

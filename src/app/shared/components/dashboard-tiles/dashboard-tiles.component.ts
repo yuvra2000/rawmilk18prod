@@ -166,14 +166,14 @@ export class DashboardTilesComponent implements OnChanges {
     return map[tile] || 'fa-circle';
   }
 
- getIconColor(tile: string): string {
-  const map: any = {
-    gps: '#31AA87',        // blue
-    alert: '#E74C3C',      // red
-    eta: '#F39C12',        // orange
-    supplier: '#1D4380',   // green
-  };
+  getIconColor(tile: string): string {
+    const map: any = {
+      gps: '#31AA87', // blue
+      alert: '#E74C3C', // red
+      eta: '#F39C12', // orange
+      supplier: '#1D4380', // green
+    };
 
-  return map[tile] || '#666';
-}
+    return map[tile] || '#666';
+  }
 }

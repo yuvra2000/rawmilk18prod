@@ -38,6 +38,7 @@
                 </div>
                 <div class="detail-value" [style.color]="item.color">
                   {{ item.value }}
+                  {{ tile == "MCC" || tile == "supplier" ? "KL" : "" }}
                 </div>
               </div>
             }

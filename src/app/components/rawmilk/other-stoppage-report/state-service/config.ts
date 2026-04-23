@@ -21,7 +21,7 @@ export const otherStoppageFilterFields: FieldConfig[] = [
   },
 ];
 // export const cartColumns: GridColumnConfig[] = [];
-export const cartColumns: GridColumnConfig[] = [
+export const stoppageReportColumns: GridColumnConfig[] = [
   {
     headerName: 'S No',
     field: 'serialNo',

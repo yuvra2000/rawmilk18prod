@@ -21,7 +21,6 @@ export class DashboardTilesComponent implements OnChanges {
 
   tiles: string[] = [];
   chartOptions: any = {};
-  countsMap: any = {};
   legendMap: any = {};
 
   loading = signal(true);
@@ -33,7 +32,6 @@ export class DashboardTilesComponent implements OnChanges {
 
     this.tiles.forEach((tile) => {
       this.chartOptions[tile] = this.buildOptions(tile);
-      this.countsMap[tile] = this.buildCounts(tile);
       this.legendMap[tile] = this.buildLegend(tile);
     });
 
@@ -69,10 +67,8 @@ export class DashboardTilesComponent implements OnChanges {
       '#C7C7CC',
       '#1D4380',
       '#2f54eb',
-
       '#9254de',
       '#2db783',
-
       '#f08a24',
     ];
 
@@ -82,7 +78,7 @@ export class DashboardTilesComponent implements OnChanges {
     let i = 0;
 
     Object.keys(d).forEach((key) => {
-      // if (key === 'total') return;
+      if (key === 'total') return;
 
       // ✅ supplier case
       if (key.startsWith('quantity')) {
@@ -153,12 +149,6 @@ export class DashboardTilesComponent implements OnChanges {
         },
       ],
     };
-  }
-
-  buildCounts(type: string) {
-    return this.parseTile(type)
-      .map((x) => x.value)
-      .join(' / ');
   }
 
   buildLegend(type: string) {

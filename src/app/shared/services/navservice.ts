@@ -400,6 +400,12 @@ export class NavService implements OnDestroy {
           type: 'link',
           dirchange: false,
         },
+        {
+          path: 'reports/other-stoppage-report',
+          title: 'Other Stoppage Report',
+          type: 'link',
+          dirchange: false,
+        },
       ],
     },
     {

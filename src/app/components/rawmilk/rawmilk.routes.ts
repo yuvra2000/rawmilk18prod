@@ -407,6 +407,14 @@ export const rawMilkRoutes: Routes = [
           ),
         title: 'Cart Wise Report',
       },
+      {
+        path: 'other-stoppage-report',
+        loadComponent: () =>
+          import('./other-stoppage-report/other-stoppage-report.component').then(
+            (m) => m.OtherStoppageReportComponent,
+          ),
+        title: 'Other Stoppage Report',
+      },
     ],
   },
 ];

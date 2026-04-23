@@ -1,0 +1,30 @@
+.info-card {
+  font-size: 13px;
+  color: #1d4380;
+  min-width: 250px;
+}
+
+.info-header {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.status {
+  float: right;
+  font-size: 11px;
+}
+
+.info-body {
+  line-height: 1.6;
+}
+
+.location {
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.other-device {
+  border-left: 3px solid green;
+  padding-left: 8px;
+  margin-top: 8px;
+}

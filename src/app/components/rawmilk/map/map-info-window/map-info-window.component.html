@@ -1,0 +1,60 @@
+<div class="info-card">
+
+  <!-- HEADER -->
+  <div class="info-header">
+    🚚 {{ vehicle?.VehicleNo || vehicle?.vnumber }}
+    <span class="category">
+      ({{ vehicle?.VehicleCategory || 'N/A' }})
+    </span>
+
+    <span class="status" [ngClass]="vehicle?.VehicleStatus?.toLowerCase()">
+      {{ vehicle?.VehicleStatus }}
+    </span>
+  </div>
+
+  <!-- BODY -->
+  <div class="info-body">
+
+    <div><b>Driver:</b> {{ vehicle?.DriverName || '-' }}</div>
+
+    <div>
+      <b>Address:</b>
+      <span>{{ address || 'Loading...' }}</span>
+    </div>
+
+    <div><b>IMEI:</b> {{ vehicle?.ImeiNo }}</div>
+    <div><b>Status:</b> {{ vehicle?.VehicleStatus }}</div>
+    <div><b>Running:</b> {{ vehicle?.RunningStatus }}</div>
+    <div><b>Battery:</b> {{ vehicle?.Battery }}% ({{ vehicle?.BatteryVoltage }}v)</div>
+    <div><b>Speed:</b> {{ vehicle?.Speed }} km/h</div>
+    <div><b>Last Update:</b> {{ vehicle?.DeviceTime }}</div>
+
+    <div class="location">
+      {{ vehicle?.Location }}
+    </div>
+
+    <!-- OTHER DEVICES -->
+    <div *ngIf="vehicle?.otherDevices?.length">
+
+      <hr />
+
+      <div *ngFor="let d of vehicle.otherDevices" class="other-device">
+
+        <div class="title">
+          {{ d.Location || 'Delivery Hole' }}
+        </div>
+
+        <div><b>IMEI:</b> {{ d.ImeiNo }}</div>
+        <div><b>Status:</b> {{ d.VehicleStatus || d.RunningStatus }}</div>
+        <div><b>Running:</b> {{ d.RunningStatus }}</div>
+        <div><b>Battery:</b> {{ d.Battery }}% ({{ d.BatteryVoltage }}v)</div>
+        <div><b>Speed:</b> {{ d.Speed }} km/h</div>
+        <div><b>Last Update:</b> {{ d.DeviceTime }}</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

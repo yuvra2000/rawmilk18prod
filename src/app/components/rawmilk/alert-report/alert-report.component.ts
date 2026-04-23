@@ -22,6 +22,13 @@ export class AlertReportComponent {
 
   private toastService = inject(AlertService);
 
+  today = new Date().toISOString().split('T')[0];
+  initialData = {
+    from: `${this.today} 00:00:00`,
+    to: `${this.today} 23:55:55`,
+    mpcName: { id: '', name: 'All' },
+    alertType: { id: '', name: '', labelName: 'All' },
+  };
 
   mpcName = signal<Option[]>([]);
   filterfields = computed<FieldConfig[]>(() => reportAlertReportFilterField(this.mpcName()));
@@ -42,14 +49,14 @@ export class AlertReportComponent {
 
   onFormSubmit(data: any) {
     console.log('Form submitted with data:', data);
-    this.populateTable({
-      FromDate: data.from,
-      ToDate: data.to,
-      AccessToken: this.token,
+    const payload = {
+      FromDate: data.from || '',
+      ToDate: data.to || '',
       ForWeb: '1',
-      AlertType: data.alertType?.name,
-      MpcId: data.mpcName?.id
-    })
+      AlertType: data.alertType?.name || '',
+      MpcId: data.mpcName?.id || ''
+    };
+    this.populateTable(createFormData(this.token, payload));
   }
 
 
@@ -69,20 +76,20 @@ export class AlertReportComponent {
           }
         });
       }
+      this.mpcName.set([{ id: '', name: 'All' }, ...this.mpcName()]);
       console.log("mpcName", this.mpcName());
     });
   }
 
   populateTable(payload?: any) {
     const today = new Date().toISOString().split('T')[0];
-    const defaultPayload = {
+    const defaultPayload = createFormData(this.token, {
       FromDate: `${today} 00:00:00`,
       ToDate: `${today} 23:55:55`,
-      AccessToken: this.token,
       ForWeb: '1',
       AlertType: '',
       MpcId: ''
-    };
+    });
 
     this.alertReportService.getTableData(payload || defaultPayload)
       .subscribe({

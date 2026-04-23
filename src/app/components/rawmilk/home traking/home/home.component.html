@@ -1,6 +1,7 @@
 <app-header [title]="'Home'">
 
 </app-header>
+
 <div class="container-fluid">
     <div class="map-page">
 
@@ -313,6 +314,7 @@
                 </div>
 
             </div>
+            
             <div *ngIf="activeTab === 'company'" (click)="tabfunction('company')">
                 <div class="link-panel">
                     <form class="control-row compact-form">
@@ -418,6 +420,14 @@
 
     </div>
 
+
+
+
+
+
+
+
+
     <!-- /////////////////////////////////////////////////////////// -->
 
     <!-- <div class="balloons" (click)="show_balloons()" [style.height]="show_balloons_div ? '55px' : '22px'"><i
@@ -451,6 +461,10 @@
 
     </span>
 </div> -->
+
+
+
+
     <div class="bottom-popup" [class.show]="isPopupVisible" [class.minimized]="isMinimized">
 
         <div>
@@ -490,6 +504,8 @@
 
         </div>
     </div>
+
+
     <!-- Overlay -->
     <div class="modal-overlay" *ngIf="isGeoModalOpen">
 
@@ -523,6 +539,8 @@
 
         </div>
     </div>
+
+    
 
     <div class="landmark-modal" *ngIf="showLandmarkPopup">
 

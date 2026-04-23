@@ -31,6 +31,6 @@ export class AlertReportService {
   }
 
   getTableData(payload: any): Observable<AlertReportResponse> {
-    return this.masterRequestService.post<AlertReportResponse>('/rm_searchAlertReport', payload);
+    return this.masterRequestService.postFormData<AlertReportResponse>('/rm_searchAlertReport', payload);
   }
 }

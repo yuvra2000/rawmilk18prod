@@ -449,7 +449,7 @@ export class NavService implements OnDestroy {
       'reports/franchise-report',
     ];
     //add  cart report frenchise
-
+  
     // ✅ Build new menu
     const filteredMenu: Menu[] = [];
 

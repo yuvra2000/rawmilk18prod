@@ -70,7 +70,7 @@
         </a>
         <div class="d-flex align-items-center gap-3">
           <h1 class="page-title m-0">{{ title }}</h1>
-
+ <ng-content select="[header-right]"></ng-content>
           <div class="header-tiles">
             @for (tile of tiles; track tile.key) {
               <div

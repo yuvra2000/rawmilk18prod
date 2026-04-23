@@ -2,22 +2,25 @@ import { GridColumnConfig } from "../../../../shared/components/ag-grid/ag-grid/
 import { FieldConfig, Option } from "../../../../shared/components/filter-form/shared/types";
 
 const alertTypeOptions: Option[] = [
-    { id: 1, name: 'S30' },
-    { id: 2, name: 'LId' }
+    { id: 1, labelName: 'S30', name: 'S30' },
+    { id: 2, labelName: 'LId', name: 'LId' },
+    { id: '', labelName: 'All', name: '' },
 ];
 
 export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfig[] => [
     {
         name: 'from',
         label: 'From Date',
-        type: 'date',
+        type: 'datetime',
         placeholder: 'Select Date',
+        required: true,
     },
     {
         name: 'to',
         label: 'To Date',
-        type: 'date',
+        type: 'datetime',
         placeholder: 'Select Date',
+        required: true,
     },
     {
         name: 'mpcName',
@@ -32,10 +35,16 @@ export const reportAlertReportFilterField = (mpcName: Option[] = []): FieldConfi
         type: 'select',
         placeholder: '--Select--',
         options: alertTypeOptions,
+        bindLabel: 'labelName'
     },
 ];
 
 export const alertReportGridColumns: GridColumnConfig[] = [
+    {
+        headerName: 'Sr. No.',
+        valueGetter: (params: any) => params.node.rowIndex + 1,
+        width: 120,
+    },
     {
         headerName: 'Alert Type',
         field: 'AlertType',

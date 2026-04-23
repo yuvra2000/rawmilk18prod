@@ -1,0 +1,281 @@
+<app-header [title]="'Home'">
+  <!-- <div header-right>
+  HELLO HEADER
+</div> -->
+  <!-- ✅ ONLY THIS goes inside header -->
+  <div header-right>
+    <div class="slider-section top-bar" [class.open]="isSliderVisible">
+      <button class="filter-btn" (click)="toggleSlider()">
+        {{ isOpen ? "▼" : "▲" }}
+      </button>
+
+      <div class="status-panel small">
+        <div class="status-card filter-card" (click)="openFilter('')">
+          <div class="status-label" style="color: #1d4380">Filter</div>
+          <div class="status-count">
+            <i class="fa fa-filter"></i>
+          </div>
+        </div>
+
+        <div
+          class="status-card"
+          *ngFor="let item of items"
+          (click)="onButtonClick(item.label)"
+          [style.border]="'1px solid ' + item.color"
+        >
+          <div class="status-label" [style.color]="item.color">
+            {{ item.label }}
+          </div>
+
+          <div class="status-count" [style.color]="item.color">
+            {{ item.count }}
+          </div>
+        </div>
+
+        <div class="status-card" style="border: #1d4380 1px solid">
+          <div class="status-label">
+            {{ isReport ? "Map" : "Report" }}
+          </div>
+
+          <div class="status-count">
+            <label class="tab-switch">
+              <input type="checkbox" [(ngModel)]="isReport" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- *ngIf="vehiclegtrackingflag" (change)="filterStoppagesByDuration($event)" -->
+        <!-- <div class="status-card" style="border: #1d4380 1px solid">
+          <div class="status-label" style="color: #1d4380">Stoppage</div>
+          <div class="status-count">
+            <select class="tab-select">
+              <option value="0" selected>All</option>
+              <option value="5">5 Min</option>
+              <option value="10">10 Min</option>
+              <option value="15">15 Min</option>
+              <option value="30">30 Min</option>
+              <option value="60">1 Hr.</option>
+              <option value="120">2 Hr.</option>
+              <option value="300">5 Hr.</option>
+              <option value="600">10 Hr.</option>
+              <option value="720">12 Hr.</option>
+              <option value="1440">24 Hr.</option>
+              <option value="10080">7 Days</option>
+            </select>
+          </div>
+        </div> -->
+        <!-- *ngIf="vehiclegtrackingflag"  (change)="getIntervalValaue($event)"-->
+        <div class="status-card" style="border: #1d4380 1px solid" *ngIf="vehiclegtrackingflag">
+          <div class="status-label" style="color: #1d4380" >Interval</div>
+          <div class="status-count">
+            <select class="tab-select" (change)="getIntervalValaue($event)">
+              <option value="5">5 sec</option>
+              <option value="30" selected>30 sec</option>
+              <option value="60">1 min</option>
+              <option value="120">2 min</option>
+              <option value="240">4 min</option>
+              <option value="300">5 min</option>
+              <option value="600">10 min</option>
+              <option value="900">15 min</option>
+              <option value="1200">20 min</option>
+              <option value="1800">30 min</option>
+              <option value="3600">60 min</option>
+              <option value="7200">120 min</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-header>
+
+<div class="map-container">
+  <!-- 🗺️ MAP -->
+  <app-map
+  [trackingData]="mapData"
+  [selectedVehicle]="selectedVehicles[0]"
+  [landmarks]="landmarkStore.landmarks$()"
+  [geofences]="geofenceStore.geofences$()"
+  [showLandmarks]="useLandmark === '1'"
+  [showGeofences]="useGeofence === '1'"
+  
+     [playTrack]="plauytrackFlag"
+></app-map>
+  <!-- 🔥 TOP SLIDER (OVERLAY ON MAP) -->
+  <div class="top-slider" [class.open]="isOpen">
+    <!-- 🔹 TAB SECTION -->
+    <div class="slider-section menu-section">
+      <span
+        class="tab-icon"
+        [class.active]="activeTab === 'vehicle'"
+        (click)="setTab('vehicle')"
+      >
+        <i class="fa fa-truck" style="color: #2d8d4e"></i>
+      </span>
+
+      <span
+        class="tab-icon"
+        [class.active]="activeTab === 'location'"
+        (click)="setTab('location')"
+      >
+        <img src="assets/images/Tabs_button_icon/Group.svg" />
+      </span>
+
+      <span
+        class="tab-icon"
+        [class.active]="activeTab === 'company'"
+        (click)="setTab('company')"
+      >
+        <img src="assets/images/users/Landmark icon (inactive state).svg" />
+      </span>
+
+      <span
+        class="tab-icon"
+        [class.active]="activeTab === 'user'"
+        (click)="setTab('user')"
+      >
+        <i class="fa-solid fa-user-alt"></i>
+      </span>
+
+      <span
+        class="tab-icon"
+        [class.active]="activeTab === 'link'"
+        (click)="setTab('link')"
+      >
+        <i class="fa-solid fa-route"></i>
+      </span>
+
+      <!-- 🔍 SEARCH -->
+      <span class="tab-icon">
+        <div class="search-wrapper">
+          <input type="text" class="search-input" placeholder="Search..." />
+
+          <button class="filter-btn">🔍</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- 🔹 CONTENT SECTION -->
+
+    <div class="slider-section content-section">
+      <div *ngIf="activeTab === 'vehicle'">
+        <div class="link-panel">
+          <form
+            [formGroup]="filterForm"
+            (ngSubmit)="onSubmit()"
+            class="control-row compact-form"
+          >
+            <div class="switch-wrapper">
+              <span class="switch-label">Tracking</span>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  formControlName="tracking"
+                  (change)="onTrackingToggle($event)"
+                />
+                <span class="slider"></span>
+              </label>
+
+              <span class="switch-label">Location</span>
+            </div>
+
+            <input
+              type="datetime-local"
+              class="form-control form-control-sm"
+              formControlName="fromDate"
+            />
+
+            <input
+              type="datetime-local"
+              class="form-control form-control-sm"
+              formControlName="toDate"
+            />
+
+            <button type="submit" class="go-btn">Go</button>
+          </form>
+
+          <div class="table-wrapper">
+            <!-- <ag-grid-angular class="ag-theme-alpine" style="width: 100%; height: 400px;" [rowHeight]="28"
+                            [headerHeight]="30" [gridOptions]="gridOptions" (gridReady)="onGridReady($event)"
+                            (selectionChanged)="onSelectionChanged($event)" [rowData]="filteredVehicleArray"
+                            [columnDefs]="columnDefs" [defaultColDef]="defaultColDef">
+                        </ag-grid-angular> -->
+
+            <!-- <app-vehicle-grid></app-vehicle-grid> -->
+            <app-vehicle-grid
+              [rowData]="vehicleStore.filteredVehicles$()"
+              [columnDefs]="columnDefs"
+              [isTracking]="isTracking"
+              (selectionChange)="onSelectionChanged($event)"
+            >
+            </app-vehicle-grid>
+          </div>
+        </div>
+      </div>
+
+
+        <div *ngIf="activeTab === 'vehicle'" class="checkbox-group mt-2">
+                <label class="small-checkbox">
+                    <input type="checkbox" (change)="onCellIdChange($event)">
+                    <i class="fa fa-signal icon"></i>
+                    Use cellId
+                </label>
+                <label class="small-checkbox">
+                    <input type="checkbox" (change)="onLandmarkChange($event)">
+                    <img src="assets/images/users/Landmark icon (inactive state).svg" class="icon">
+                    Landmark
+                </label>
+
+                <label class="small-checkbox">
+                    <input type="checkbox" (change)="onGeofenceChange($event)">
+                    <img src="assets/images/Tabs_button_icon/Group.svg" class="icon">
+                    Geofence
+                </label>
+               <label class="small-checkbox toggle-switch">
+
+  <input type="checkbox"
+         [(ngModel)]="plauytrackFlag"
+          (ngModelChange)="onPlayToggle($event)">
+
+  <span class="slider"></span>
+
+  Play Track {{ plauytrackFlag ? 'On' : 'Off' }}
+
+  <i class="fa icon"
+     [ngClass]="plauytrackFlag ? 'fa-pause' : 'fa-play'">
+  </i>
+
+</label>
+            </div>
+
+
+             <div *ngIf="activeTab === 'location'">
+                <div class="link-panel">
+                    <!-- <form class="control-row compact-form">
+                        <div class="icon-bar">
+
+
+                            <i class="fa fa-eye icon-btn" title="Show on Map" (click)="showOnMap()">
+                            </i>
+
+
+                            <i class="fa fa-file-excel icon-btn excel" title="Download Excel" (click)="downloadExcel()">
+                            </i>
+                            <i class="fa fa-plus icon-btn" title="Add Geofence" (click)="AddGeofence()">
+                            </i> -->
+                        <!-- </div>
+                    </form> -->
+                    <!-- <app-link-panel [rowData]="rowData" [columns]="columns" (iconAction)="onIconClick($event)"
+                        [searchText]="searchText" (selectedRowsChange)="onSelectedRows($event)">
+                    </app-link-panel> -->
+                    
+
+                </div>
+
+            </div>
+
+
+    </div>
+  </div>
+</div>

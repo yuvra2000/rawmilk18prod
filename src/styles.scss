@@ -23,8 +23,9 @@
 @import "overlayscrollbars/overlayscrollbars.css";
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
-body {
-  font-family: "Work Sans", sans-serif;
+body,
+* {
+  font-family: "Work Sans", sans-serif !important;
 }
 .swiper-view-details {
   height: 400px; /* Adjust thumbnail swiper height */
@@ -72,6 +73,8 @@ spk-flatpickr {
   background-color: var(--light) !important;
 }
 .table-heading {
+  font-size: 20px !important;
+  font-weight: 500 !important;
   color: var(--primary-color) !important;
 }
 .icon-add {

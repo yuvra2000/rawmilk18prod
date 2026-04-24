@@ -703,6 +703,8 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
 
     const date = new Date();
 
+    const pad = (value: number): string => value.toString().padStart(2, '0');
+
     if (type === 'month') {
       // 1. Pehle date ko mahine ki 1st tarikh par set karo (Overflow se bachne ke liye)
       date.setDate(1);
@@ -721,6 +723,15 @@ export class FilterFormComponent implements OnInit, OnDestroy, OnChanges {
 
     // 🚨 Safety Check: RangeError se bachne ke liye
     if (isNaN(date.getTime())) return '';
+
+    if (type === 'datetime') {
+      const year = date.getFullYear();
+      const month = pad(date.getMonth() + 1);
+      const day = pad(date.getDate());
+      const hours = pad(date.getHours());
+      const minutes = pad(date.getMinutes());
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
 
     return date.toISOString().split('T')[0];
   }

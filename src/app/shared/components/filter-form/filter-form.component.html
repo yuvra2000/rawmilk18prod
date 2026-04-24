@@ -217,6 +217,7 @@
             [class.disabled-field]="field.disabled"
             [required]="field.required ?? false"
           />
+
         } @else if (field.type === "datetime") {
           <input
             type="datetime-local"
@@ -228,8 +229,8 @@
             [step]="field.step || 0"
             [class.disabled-field]="field.disabled"
             [required]="field.required ?? false"
-            [min]="computeDateConstraint(field.minDate)"
-            [max]="computeDateConstraint(field.maxDate)"
+            [min]="computeDateConstraint(field.minDate, 'datetime')"
+            [max]="computeDateConstraint(field.maxDate, 'datetime')"
           />
         }
 
@@ -475,8 +476,18 @@
                                 [step]="0"
                                 [class.disabled-field]="subField.disabled"
                                 [required]="subField.required ?? false"
-                                [min]="computeDateConstraint(subField.minDate)"
-                                [max]="computeDateConstraint(subField.maxDate)"
+                                [min]="
+                                  computeDateConstraint(
+                                    subField.minDate,
+                                    'datetime'
+                                  )
+                                "
+                                [max]="
+                                  computeDateConstraint(
+                                    subField.maxDate,
+                                    'datetime'
+                                  )
+                                "
                               />
                             } @else if (subField.type === "select") {
                               <ng-select

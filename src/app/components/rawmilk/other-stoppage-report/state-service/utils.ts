@@ -3,7 +3,6 @@ import { createFormData } from '../../../../shared/utils/shared-utility.utils';
 const token = localStorage.getItem('AccessToken') || '';
 const GroupId = localStorage.getItem('GroupId') || '';
 const user_type = localStorage.getItem('AccountType') || '';
-
 function formatDateTimeForApi(value: any, defaultTime: string): string {
   const today = new Date().toISOString().split('T')[0];
 
@@ -20,7 +19,7 @@ function formatDateTimeForApi(value: any, defaultTime: string): string {
     const [datePart, timePartRaw] = stringValue.split('T');
     const timePart = (timePartRaw || defaultTime).trim();
     if (!timePart) return `${datePart} ${defaultTime}`;
-    if (timePart.length === 5) return `${datePart} ${timePart}:00`;
+    if (timePart.length === 5) return `${datePart} ${timePart}`;
     return `${datePart} ${timePart}`;
   }
 
@@ -28,23 +27,17 @@ function formatDateTimeForApi(value: any, defaultTime: string): string {
     const [datePart, timePartRaw] = stringValue.split(' ');
     const timePart = (timePartRaw || defaultTime).trim();
     if (!timePart) return `${datePart} ${defaultTime}`;
-    if (timePart.length === 5) return `${datePart} ${timePart}:00`;
+    if (timePart.length === 5) return `${datePart} ${timePart}`;
     return `${datePart} ${timePart}`;
   }
 
   return `${stringValue} ${defaultTime}`;
 }
-
-export function createReportParams(
-  dateFrom: string,
-  dateTo?: string,
-  filterValues?: any,
-) {
+export function createReportParams(filterValues?: any) {
+  console.log('filterValues in params creation', filterValues);
   return createFormData(token, {
-    fromDate: formatDateTimeForApi(dateFrom, '00:00:00'),
-    toDate: formatDateTimeForApi(dateTo || dateFrom, '23:59:59'),
-    franchise_code: filterValues?.franchise_code?.code || '',
-    adda_code: filterValues?.adda_code?.code || '',
+    fromDate: formatDateTimeForApi(filterValues?.from, '00:00:00'),
+    toDate: formatDateTimeForApi(filterValues?.to, '23:59:59'),
     cart_no: filterValues?.cart_no?.id || '',
     group_id: GroupId,
   });

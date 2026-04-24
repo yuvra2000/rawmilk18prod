@@ -98,7 +98,7 @@ jobs:
         with:
           switches: -avzr --delete --progress
           path: build/ # Path of the downloaded artifact
-          remote_path: /var/www/html/Rdairy/browser
+          remote_path: /var/www/html/RdairyV2/browser
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}

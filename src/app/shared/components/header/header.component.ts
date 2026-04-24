@@ -471,7 +471,7 @@ export class HeaderComponent {
     const token = localStorage.getItem('AccessToken');
 
     if (token) {
-      const url = `https://uat-dairy12.secutrak.in/auth/login?exttkn=${token}`;
+      const url = `https://dairy.secutrak.in/auth/login?exttkn=${token}`;
       window.open(url, '_self'); // same tab
     } else {
       console.error('Token not found');

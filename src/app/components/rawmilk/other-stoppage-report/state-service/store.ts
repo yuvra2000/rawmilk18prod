@@ -49,7 +49,8 @@ export class OtherStoppageReportStore {
     context: {
       componentParent: this,
     },
-    height: '50vh',
+    isFitGridWidth: true,
+    height: '55vh',
   }));
   rowData = computed<any[]>(
     () => this.initialData().otherStoppageReportData || [],
@@ -61,16 +62,28 @@ export class OtherStoppageReportStore {
   loading = signal(false);
   async loadInitialData() {
     try {
+      this.spinner.show();
+      this.loading.set(true);
       const formData = createFormData(token, {});
       const res: any = await firstValueFrom(
         this.otherStoppageService.getVehicleList(formData),
       );
       this.initialData.set({
-        vehicleList: mapVehicleListToOptions(res.vehicleList?.VehicleList),
+        vehicleList: mapVehicleListToOptions(res.VehicleList),
       });
-    } catch (error: any) {}
+    } catch (error: any) {
+    } finally {
+      this.loading.set(false);
+      this.spinner.hide();
+    }
   }
   onFormSubmit(data: any) {
+    const fromDate = data?.from;
+    const toDate = data?.to;
+    if (fromDate && toDate && new Date(fromDate) > new Date(toDate)) {
+      this.toast.error('From date cannot be later than To date.');
+      return;
+    }
     const params = createReportParams(data);
     this.loadReportData(params);
   }

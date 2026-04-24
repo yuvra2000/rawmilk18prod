@@ -18,5 +18,7 @@ import { SharedModule } from '../../../shared/shared.module';
 })
 export class OtherStoppageReportComponent {
   store: OtherStoppageReportStore = new OtherStoppageReportStore();
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.loadInitialData();
+  }
 }

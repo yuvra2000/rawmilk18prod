@@ -9,7 +9,10 @@ export class OtherStoppageReportService {
   constructor(private masterRequestService: MasterRequestService) {}
 
   getReport(params: any): Observable<any> {
-    return this.masterRequestService.postFormData('/cartReport', params);
+    return this.masterRequestService.postFormData(
+      '/otherStoppageReport',
+      params,
+    );
   }
   getVehicleList(params: any): Observable<any> {
     return this.masterRequestService.postFormData(

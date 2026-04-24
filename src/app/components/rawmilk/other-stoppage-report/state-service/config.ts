@@ -10,22 +10,23 @@ export const otherStoppageFilterFields = (
   {
     name: 'from',
     label: 'From Date',
-    type: 'date',
-    required: true,
+    type: 'datetime',
+    // required: true,
     maxDate: -1,
   },
   {
     name: 'to',
     label: 'To Date',
-    type: 'date',
-    required: true,
+    type: 'datetime',
+    // required: true,
     maxDate: -1,
   },
   {
-    name: 'cart',
+    name: 'cart_no',
     label: 'Cart Number',
     type: 'select',
-    required: true,
+    // required: true,
+    multiple: true,
     options: vehicleList,
   },
 ];
@@ -38,66 +39,33 @@ export const stoppageReportColumns: GridColumnConfig[] = [
     width: 70,
   },
   {
-    headerName: 'Cart no',
+    headerName: 'Stoppage Name',
+    field: 'stoppage_name',
+  },
+  {
+    headerName: 'Lat Long',
+    field: 'latlong',
+  },
+  // {
+  //   headerName: 'Latitude',
+  //   field: 'latitude',
+  //   width: 120,
+  // },
+  // {
+  //   headerName: 'Longitude',
+  //   field: 'longitude',
+  //   width: 120,
+  // },
+  {
+    headerName: 'Cart No',
     field: 'cart_no',
-    width: 150,
   },
-  {
-    headerName: 'Adda Name',
-    field: 'adda_name',
-    valueGetter: (params: any) => {
-      const addaName = params.data?.adda_name || '';
-      const addaCode = params.data?.adda_code || '';
-      return addaName && addaCode
-        ? `${addaName} -${addaCode}`
-        : addaName || addaCode || '-';
-    },
-  },
-  {
-    headerName: 'Franchise Name',
-    field: 'franchise_name',
-    width: 150,
-    valueGetter: (params: any) => {
-      const franchiseName = params.data?.franchise_name || '';
-      const franchiseCode = params.data?.franchise_code || '';
-      return franchiseName && franchiseCode
-        ? `${franchiseName} -${franchiseCode}`
-        : franchiseName || franchiseCode || '-';
-    },
-  },
-
   {
     headerName: 'Start Time',
-    field: 'cart_start_time',
+    field: 'start_time',
   },
   {
     headerName: 'End Time',
-    field: 'cart_end_time',
-  },
-  {
-    headerName: 'Duration',
-    field: 'duration',
-    minWidth: 100,
-    width: 100,
-    headerTooltip: 'Duration in minutes',
-  },
-  {
-    headerName: 'Scheduled Time ',
-    field: 'scheduled_time',
-  },
-  {
-    headerName: 'Region',
-    field: 'region_code',
-    width: 120,
-  },
-  {
-    headerName: 'Adda GeoCoords',
-    field: 'adda_latlng',
-  },
-  {
-    headerName: 'Base Location Dist',
-    field: 'nearest_base_dist',
-    width: 100,
-    headerTooltip: 'Distance from nearest base location in km',
+    field: 'end_time',
   },
 ];

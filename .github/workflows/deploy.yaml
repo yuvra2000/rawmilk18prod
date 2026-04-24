@@ -3,7 +3,7 @@ name: Build, Test & Deploy Rdairy
 on:
   push:
     branches:
-      - uat
+      - main
 
 env:
   NODE_VERSION: "22.15.1" # Use a modern LTS Node version

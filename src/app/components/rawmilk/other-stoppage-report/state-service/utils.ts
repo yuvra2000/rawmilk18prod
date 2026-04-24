@@ -38,7 +38,7 @@ export function createReportParams(filterValues?: any) {
   return createFormData(token, {
     fromDate: formatDateTimeForApi(filterValues?.from, '00:00:00'),
     toDate: formatDateTimeForApi(filterValues?.to, '23:59:59'),
-    cart_no: filterValues?.cart_no?.id || '',
+    cart_no: filterValues?.cart_no?.map((cart: any) => cart.id).join(',') || '',
     group_id: GroupId,
   });
 }
